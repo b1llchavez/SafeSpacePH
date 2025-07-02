@@ -68,16 +68,18 @@
                     </table>
                     </td>
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord menu-active menu-icon-dashbord-active" >
-                        <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Dashboard</p></a></div></a>
-                    </td>
-                </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-doctor ">
-                        <a href="doctors.php" class="non-style-link-menu "><div><p class="menu-text">Doctors</p></a></div>
-                    </td>
+                <td class="menu-btn menu-icon-dashbord menu-active menu-icon-dashbord-active">
+                     <a href="index.php" class="non-style-link-menu non-style-link-menu-active">
+                        <div><p class="menu-text menu-text-active">Dashboard</p></div>
+                     </a>
+                </td>
                 </tr>
+                    <tr class="menu-row">
+                        <td class="menu-btn menu-icon-lawyers ">
+                            <a href="doctors.php" class="non-style-link-menu"><div><p class="menu-text">Lawyers</p></a></div>
+                        </td>
+                    </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-schedule">
                         <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Schedule</p></div></a>
@@ -89,8 +91,8 @@
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Patients</p></a></div>
+                    <td class="menu-btn menu-icon-client">
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Clients</p></a></div>
                     </td>
                 </tr>
             </table>
@@ -172,10 +174,10 @@
                                                     <?php    echo $doctorrow->num_rows  ?>
                                                 </div><br>
                                                 <div class="h3-dashboard">
-                                                    Doctors &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    Doctors &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </div>
                                         </div>
-                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/doctors-hover.svg');"></div>
+                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/lawyers-hover.svg');"></div>
                                     </div>
                                 </td>
                                 <td style="width: 25%;">
@@ -185,10 +187,10 @@
                                                     <?php    echo $patientrow->num_rows  ?>
                                                 </div><br>
                                                 <div class="h3-dashboard">
-                                                    Client &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    Clients &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </div>
                                         </div>
-                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/patients-hover.svg');"></div>
+                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/clients-hover.svg');"></div>
                                     </div>
                                 </td>
                                 <td style="width: 25%;">
@@ -201,9 +203,10 @@
                                                     New Booking &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </div>
                                         </div>
-                                                <div class="btn-icon-back dashboard-icons" style="margin-left: 0px; background-image: "></div>
+                                                <div class="btn-icon-back dashboard-icons" style="margin-left: 0px; background-image: url('../img/icons/newbookings-hover.svg')"></div>
                                     </div>
                                 </td>
+                                
                                 <td style="width: 25%;">
                                     <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex">
                                         <div>
@@ -211,10 +214,10 @@
                                                     <?php    echo $schedulerow ->num_rows  ?>
                                                 </div><br>
                                                 <div class="h3-dashboard">
-                                                    Sessions &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    Sessions &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </div>
                                         </div>
-                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/session-iceblue.svg');"></div>
+                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/sessions-hover.svg');"></div>
                                     </div>
                                 </td>
                                 

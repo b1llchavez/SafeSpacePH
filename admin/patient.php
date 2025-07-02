@@ -70,8 +70,8 @@
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-doctor ">
-                        <a href="doctors.php" class="non-style-link-menu "><div><p class="menu-text">Doctors</p></a></div>
+                    <td class="menu-btn menu-icon-lawyers ">
+                            <a href="doctors.php" class="non-style-link-menu"><div><p class="menu-text">Lawyers</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -85,8 +85,8 @@
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-patient  menu-active menu-icon-patient-active">
-                        <a href="patient.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">Patients</p></a></div>
+                    <td class="menu-btn menu-icon-client  menu-active menu-icon-client-active">
+                        <a href="patient.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text menu-text-active">Clients</p></a></div>
                     </td>
                 </tr>
 

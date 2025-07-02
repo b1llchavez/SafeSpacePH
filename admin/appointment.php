@@ -71,9 +71,9 @@
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-doctor ">
-                        <a href="doctors.php" class="non-style-link-menu "><div><p class="menu-text">Doctors</p></a></div>
-                    </td>
+                        <td class="menu-btn menu-icon-lawyers ">
+                            <a href="doctors.php" class="non-style-link-menu"><div><p class="menu-text">Lawyers</p></a></div>
+                        </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-schedule ">
@@ -82,12 +82,12 @@
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment menu-active menu-icon-appoinment-active">
-                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Appointment</p></a></div>
+                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">Appointment</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Patients</p></a></div>
+                    <td class="menu-btn menu-icon-client">
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Clients</p></a></div>
                     </td>
                 </tr>
 
