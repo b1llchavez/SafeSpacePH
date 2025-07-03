@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSpacePH</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Your existing CSS files -->
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- Link to your new external CSS file for custom styles -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* This inline style is kept from your original code for the table animation */
+        table{
+            animation: transitionIn-Y-bottom 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Header -->
+    <!-- This header will stay at the top of the viewport as the user scrolls.
+         It uses Tailwind CSS classes for styling and responsiveness. -->
+    <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-6 rounded-b-lg">
+        <div class="container mx-auto flex items-center justify-between">
+            <!-- Logo and Site Name Container -->
+            <div class="flex items-center space-x-3">
+                <!-- Using a placeholder image for demonstration. Replace with your actual img/logo.png -->
+                <img src="img\logo.png" alt="SafeSpacePH Logo" class="logo-img h-12 w-12 rounded-full shadow-sm">
+                <span class="edoc-logo-sub">SafeSpacePH</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex items-center space-x-4">
+                <a href="login.php" class="nav-button">LOGIN</a>
+                <a href="signup.php" class="nav-button">REGISTER</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <!-- The rest of your page content will go here.
+         The 'body' tag has padding-top in style.css to prevent content from being hidden by the fixed header. -->
+    <div class="full-height">
+        <center>
+            <table border="0">
+                <!-- The original header row is now removed as it's replaced by the fixed <header> above -->
+
+                <tr>
+                    <td colspan="3">
+                        <p class="heading-text">Welcome To SafeSpace PH</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="3">
+                        <p class="sub-text2">Free legal support under the Safe Spaces Act (RA 11313).<br>
+                            Connect with volunteer lawyers, know your rights, and access justice.<br><br></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <center>
+                            <a href="login.php">
+                                <input type="button" value="Make Appointment" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
+                            </a>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <!-- Empty cell from original code -->
+                    </td>
+                </tr>
+                <!-- Add more content here to test scrolling -->
+            </table>
+        </center>
+    </div>
+
+    <main class="volunteers-section">
+        <h2 class="section-title">Our Volunteers for Justice</h2>
+        <p class="section-subtitle">Meet the lawyers making a difference with SafeSpace PH.</p>
+
+        <div class="volunteer-cards-container">
+            <div class="volunteer-card">
+                <img src="https://imgur.com/W0EvqFj.jpg" alt="Atty. Miguel Torres">
+                <h3>Atty. Miguel Torres</h3>
+                <p class="specialty">Human Rights Specialist</p>
+                <p class="description">Defending equality with 15+ years of expertise</p>
+            </div>
+
+            <div class="volunteer-card">
+                <img src="https://imgur.com/jqGiywa.jpg" alt="Atty. Sofia Rivera">
+                <h3>Atty. Sofia Rivera</h3>
+                <p class="specialty">Gender Rights Advocate</p>
+                <p class="description">Fighting for victims' rights with 12+ years of experience.</p>
+            </div>
+
+            <div class="volunteer-card">
+                <img src="https://imgur.com/M315Bkj.jpg" alt="Atty. Rafael Lim">
+                <h3>Atty. Rafael Lim</h3>
+                <p class="specialty">Online Harassment Specialist</p>
+                <p class="description">Championing justice for digital safe Spaces Act violations.</p>
+            </div>
+
+            <div class="volunteer-card">
+                <img src="https://imgur.com/MQJ6lzE.jpg" alt="Atty. Sofia Rivera">
+                <h3>Atty. Sofia Rivera</h3>
+                <p class="specialty">Youth Rights Defender</p>
+                <p class="description">Protecting students and professionals from abuse and misconduct.</p>
+            </div>
+        </div>
+        
+        <center>
+            <a href="volunteer_form.php">
+                <input type="button" value="Be a Volunteer" class="signup-btn btn-primary btn"
+                    style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
+            </a>
+        </center>
+      </main>
+</body>
+</html>
