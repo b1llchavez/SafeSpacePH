@@ -150,6 +150,8 @@ $stmt->bind_param(
             <head>
               <meta charset="UTF-8">
               <title>Volunteer Lawyer Confirmation</title>
+                  <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+
               <style>
                 body {
                   background: rgba(0,0,0,0.15);
@@ -191,7 +193,7 @@ $stmt->bind_param(
                   display: block;
                 }
                 .confirmation-box h2 {
-                  color: #8a2be2;
+                  color: #6a0dad;
                   font-size: 2.1rem;
                   font-weight: 800;
                   margin-bottom: 16px;
@@ -209,7 +211,7 @@ $stmt->bind_param(
                 }
                 .popup-notification {
                   background: #f7f4fd;
-                  border-left: 5px solid #8a2be2;
+                  border-left: 5px solid #6a0dad;
                   padding: 18px 20px;
                   margin: 26px 0 22px 0;
                   border-radius: 7px;
@@ -221,12 +223,12 @@ $stmt->bind_param(
                   line-height: 1.7;
                 }
                 .popup-notification strong {
-                  color: #8a2be2;
+                  color: #6a0dad;
                   font-weight: 700;
                 }
                 .go-back-button {
                   display: inline-block;
-                  background: #8a2be2;
+                  background: #6a0dad;
                   color: #fff;
                   padding: 14px 38px;
                   border-radius: 7px;
@@ -266,8 +268,8 @@ $stmt->bind_param(
                   <div class="confirmation-check">
                     <!-- Big purple check icon SVG -->
                     <svg viewBox="0 0 80 80" fill="none">
-                      <circle cx="40" cy="40" r="38" fill="#f7f4fd" stroke="#8a2be2" stroke-width="4"/>
-                      <path d="M25 43.5L37.5 56L56 28" stroke="#8a2be2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="40" cy="40" r="38" fill="#f7f4fd" stroke="#6a0dad" stroke-width="4"/>
+                      <path d="M25 43.5L37.5 56L56 28" stroke="#6a0dad" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </div>
                   <h2>Form Submitted Successfully!</h2>
@@ -281,14 +283,14 @@ $stmt->bind_param(
   Our team will review your application and contact you within 
   <strong>
     <span style="vertical-align:middle;display:inline-flex;align-items:center;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="margin-right:4px;vertical-align:middle;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#8a2be2" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#8a2be2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="margin-right:4px;vertical-align:middle;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#6a0dad" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#6a0dad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       24 hours
     </span>
   </strong>
   for verification.<br>
   Please ensure you can access the email address and phone number you provided.<br>
   <br>
-  <span style="color:#8a2be2;">If you have questions, email us at <strong>safespaceph2025@gmail.com</strong>.</span>
+  <span style="color:#6a0dad;">If you have questions, email us at <strong>safespaceph2025@gmail.com</strong>.</span>
 </div>
                   <a href="index.html" class="go-back-button">Go back</a>
                 </div>
@@ -312,6 +314,8 @@ $stmt->bind_param(
     <title>Volunteer Lawyer Application</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/admin.css">
+        <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+
     <style>
         /* Extra popup centering for standalone use */
         body {
@@ -348,7 +352,7 @@ $stmt->bind_param(
         }
         .form-title {
             text-align: center;
-            color: #8a2be2;
+            color: #6a0dad;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0;
@@ -358,14 +362,14 @@ $stmt->bind_param(
         .form-divider {
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #8a2be2 0%, #1b5fa7 100%);
+            background: linear-gradient(90deg, #6a0dad 0%, #1b5fa7 100%);
             border: none;
             border-radius: 2px;
             margin: 18px 0 32px 0;
         }
         .section-title {
             font-size: 1.18rem;
-            color: #8a2be2;   /* Changed to match your accent color */
+            color: #6a0dad;   /* Changed to match your accent color */
             font-weight: 600;
             margin: 32px 0 14px 0;
             letter-spacing: 0.2px;
@@ -409,7 +413,7 @@ $stmt->bind_param(
         }
 
         input[type="file"]::-webkit-file-upload-button {
-            background: #8a2be2;
+            background: #6a0dad;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -426,7 +430,7 @@ $stmt->bind_param(
         }
 
         input[type="file"]::file-selector-button {
-            background: #8a2be2;
+            background: #6a0dad;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -465,13 +469,13 @@ $stmt->bind_param(
         .checkbox-group input[type="checkbox"] {
             margin-right: 10px;
             margin-top: 3px;
-            accent-color: #8a2be2;
+            accent-color: #6a0dad;
             width: 18px;
             height: 18px;
             flex-shrink: 0;
         }
         button[type="submit"] {
-            background: #8a2be2;
+            background: #6a0dad;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -482,7 +486,7 @@ $stmt->bind_param(
         }
         button[type="submit"]:hover {
             background: #6d1bbd;
-            border: 2px solid #8a2be2;
+            border: 2px solid #6a0dad;
             color: #fff;
             box-shadow: 0 4px 16px rgba(138,43,226,0.10);
         }
@@ -493,7 +497,7 @@ input[type="number"]:focus,
 input[type="file"]:focus, 
 textarea:focus, 
 select:focus {
-    border-color: #8a2be2 !important;
+    border-color: #6a0dad !important;
     box-shadow: none;
     outline: none;
     transition: border-color 0.2s;
@@ -502,7 +506,7 @@ select:focus {
 /* Button active/pressed and focus state */
 button[type="submit"]:focus, 
 button[type="submit"]:active {
-    border: 2px solid #8a2be2;
+    border: 2px solid #6a0dad;
     background: #6d1bbd;
     color: #fff;
     outline: none;
@@ -514,12 +518,12 @@ button[type="submit"]:active {
 button[type="submit"]:hover,
 button[type="submit"]:focus,
 button[type="submit"]:active {
-    background: #8a2be2;
-    border: 2px solid #8a2be2;
+    background: #6a0dad;
+    border: none;
     color: #fff;
     box-shadow: none;
     outline: none;
-    transition: background 0.2s, border-color 0.2s;
+    transition: none;
 }
 
 /* Input, textarea, and select focus/active border color: purple, no scaling */
@@ -529,7 +533,7 @@ input[type="number"]:focus,
 input[type="file"]:focus, 
 textarea:focus, 
 select:focus {
-    border-color: #8a2be2 !important;
+    border-color: #6a0dad !important;
     box-shadow: none;
     outline: none;
     transition: border-color 0.2s;
@@ -558,7 +562,7 @@ select:focus {
 }
         select,
 select:focus {
-    background: #8a2be2 url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 16px center/18px 18px;
+    background: #6a0dad url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 16px center/18px 18px;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -580,17 +584,17 @@ select:hover {
 
 /* Custom checkbox styles */
 input[type="checkbox"] {
-    accent-color: #8a2be2;
+    accent-color: #6a0dad;
     width: 18px;
     height: 18px;
     border-radius: 4px;
-    border: 2px solid #8a2be2;
+    border: 2px solid #6a0dad;
     transition: border-color 0.2s, background 0.2s;
     cursor: pointer;
 }
 input[type="checkbox"]:checked {
-    background-color: #8a2be2;
-    border-color: #8a2be2;
+    background-color: #6a0dad;
+    border-color: #6a0dad;
 }
 
 .preferred-areas-list {
@@ -769,54 +773,67 @@ We’d love to know what drives you to offer your time and expertise. Please sha
                 </label>
             </div>
             <div style="text-align: right;">
-                <button type="submit" style="margin-top:24px;">Submit Application</button>
-            </div>
+    <button type="button" class="back-btn" style="margin-top:24px; margin-right:12px; background:#b48be3;" onclick="window.location.href='index.html';">Back</button>
+    <button type="submit" style="margin-top:24px;">Submit Application</button>
+</div>  
         </form>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const othersCheckbox = document.getElementById('preferred_areas_others');
+    const othersInput = document.getElementById('preferred_areas_others_input');
+    if (othersCheckbox) {
+        othersCheckbox.addEventListener('change', function() {
+            othersInput.style.display = this.checked ? 'inline-block' : 'none';
+            if (!this.checked) othersInput.value = '';
+        });
+    }
 
+});
+</script>
 <div id="terms-popup" class="overlay">
   <div class="popup" style="max-height: 80vh; overflow-y: auto;">
-    <h2 style="color: #8a2be2; font-size: 28px; font-weight: 700;">Terms and Conditions</h2>
+    <h2 style="color: #6a0dad; font-size: 28px; font-weight: 700;">Terms and Conditions</h2>
     <a class="close" href="#" style="position:absolute;top:18px;right:22px;font-size:22px;color:#888;text-decoration:none;">&times;</a>
     <div class="content" style="padding-top: 10px; line-height: 1.6; font-size: 14.5px; color: #333;">
       <p><strong>Effective Date:</strong> July 12, 2025</p>
-      <h3 style="color: #8a2be2;">1. Overview of the Platform</h3>
+      <h3 style="color: #6a0dad;">1. Overview of the Platform</h3>
       <p>SafeSpace PH is a web application providing free legal assistance and education related to the Safe Spaces Act (RA 11313) in the Philippines. It connects victims of gender-based harassment with volunteer lawyers and offers resources for legal awareness.</p>
-      <h3 style="color: #8a2be2;">2. Eligibility</h3>
+      <h3 style="color: #6a0dad;">2. Eligibility</h3>
       <ul>
         <li>Users must be 18 years or older or supervised by a guardian.</li>
         <li>The platform is to be used only for lawful purposes under the Act.</li>
         <li>Legal services are pro bono, and outcomes are not guaranteed.</li>
       </ul>
-      <h3 style="color: #8a2be2;">3. Use of Services</h3>
+      <h3 style="color: #6a0dad;">3. Use of Services</h3>
       <p><strong>For Users:</strong> Submit honest, complete info. We connect you to volunteer lawyers privately and securely.</p>
       <p><strong>For Lawyers:</strong> Only licensed lawyers may join. You must provide pro bono consultations, and SafeSpace PH may verify credentials.</p>
-      <h3 style="color: #8a2be2;">4. No Attorney-Client Relationship</h3>
+      <h3 style="color: #6a0dad;">4. No Attorney-Client Relationship</h3>
       <p>Using SafeSpace PH does not automatically create an attorney-client relationship. This occurs only through mutual agreement between user and lawyer.</p>
-      <h3 style="color: #8a2be2;">5. No Guarantees or Warranties</h3>
+      <h3 style="color: #6a0dad;">5. No Guarantees or Warranties</h3>
       <p>We do not guarantee availability of services, outcomes of consultations, or the accuracy of content. Platform changes may occur without prior notice.</p>
-      <h3 style="color: #8a2be2;">6. User Conduct</h3>
+      <h3 style="color: #6a0dad;">6. User Conduct</h3>
       <ul>
         <li>No fraudulent or malicious activity allowed.</li>
         <li>No impersonation or misrepresentation.</li>
         <li>Users must respect privacy and platform guidelines.</li>
       </ul>
-      <h3 style="color: #8a2be2;">7. Data Privacy</h3>
+      <h3 style="color: #6a0dad;">7. Data Privacy</h3>
       <p>Your data is protected under RA 10173 (Data Privacy Act of 2012). Please refer to our Privacy Policy for full details.</p>
-      <h3 style="color: #8a2be2;">8. Intellectual Property</h3>
+      <h3 style="color: #6a0dad;">8. Intellectual Property</h3>
       <p>All website content is owned by SafeSpace PH and may not be reproduced or distributed without permission.</p>
-      <h3 style="color: #8a2be2;">9. Third-Party Links</h3>
+      <h3 style="color: #6a0dad;">9. Third-Party Links</h3>
       <p>We are not responsible for content or privacy practices of third-party links provided on the site.</p>
-      <h3 style="color: #8a2be2;">10. Limitation of Liability</h3>
+      <h3 style="color: #6a0dad;">10. Limitation of Liability</h3>
       <p>SafeSpace PH is not liable for any damage, data loss, or legal consequences from use of the site or consultations made.</p>
-      <h3 style="color: #8a2be2;">11. Changes to the Terms</h3>
+      <h3 style="color: #6a0dad;">11. Changes to the Terms</h3>
       <p>We may revise these Terms at any time. Continued use of the site implies agreement with any changes made.</p>
-      <h3 style="color: #8a2be2;">12. Governing Law</h3>
+      <h3 style="color: #6a0dad;">12. Governing Law</h3>
       <p>These Terms are governed by the laws of the Republic of the Philippines.</p>
-      <h3 style="color: #8a2be2;">13. Contact</h3>
+      <h3 style="color: #6a0dad;">13. Contact</h3>
       <p>📧 safespaceph2025@gmail.com<br>📍 SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015</p>
-      <h3 style="color: #8a2be2;">14. Acceptance</h3>
+      <h3 style="color: #6a0dad;">14. Acceptance</h3>
       <p>By using this platform, you confirm that you have read and agree to these Terms and Conditions.</p>
       <div style="text-align:center; margin-top: 28px;">
         <a href="#" class="back-btn">Back</a>
@@ -849,7 +866,7 @@ We’d love to know what drives you to offer your time and expertise. Please sha
 }
 .back-btn {
   display: inline-block;
-  background: #8a2be2;
+  background: #6a0dad; /* lighter purple */
   color: #fff !important;
   border: none;
   border-radius: 6px;
@@ -858,25 +875,8 @@ We’d love to know what drives you to offer your time and expertise. Please sha
   font-weight: 500;
   text-decoration: none;
   margin-top: 10px;
-  transition: background 0.2s;
+  transition: none;
   cursor: pointer;
 }
-.back-btn:hover {
-  background: #1b5fa7;
-  color: #fff;
-}
+
 </style>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const othersCheckbox = document.getElementById('preferred_areas_others');
-    const othersInput = document.getElementById('preferred_areas_others_input');
-    if (othersCheckbox) {
-        othersCheckbox.addEventListener('change', function() {
-            othersInput.style.display = this.checked ? 'inline-block' : 'none';
-            if (!this.checked) othersInput.value = '';
-        });
-    }
-});
-</script>
-</body>
-</html>
