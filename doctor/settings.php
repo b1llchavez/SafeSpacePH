@@ -95,9 +95,9 @@
                         <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">My Sessions</p></div></a>
                     </td>
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">My Patients</p></a></div>
+               <tr class="menu-row" >
+                    <td class="menu-btn menu-icon-client">
+                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text"> My Clients</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
