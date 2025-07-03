@@ -249,6 +249,34 @@ INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('doctor@edoc.com', 'd'),
 ('patient@edoc.com', 'p'),
 ('emhashenudara@gmail.com', 'p');
+
+CREATE TABLE IF NOT EXISTS `volunteer_lawyer` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `last_name` VARCHAR(255) NOT NULL,
+  `first_name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `contact_number` VARCHAR(20) NOT NULL,
+  `home_address` TEXT NOT NULL,
+  `years_experience` INT NOT NULL,
+  `roll_number` VARCHAR(50) NOT NULL,
+  `license_file` VARCHAR(255) DEFAULT NULL,
+  `profile_photo` VARCHAR(255) DEFAULT NULL,
+  `motivation` TEXT,
+  `consent_background_check` BOOLEAN DEFAULT FALSE,
+  `agree_terms` BOOLEAN DEFAULT FALSE,
+  `info_certified` BOOLEAN DEFAULT FALSE,
+  `submitted_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `availability_hours` INT DEFAULT NULL,
+  `urgent_consult` VARCHAR(20) DEFAULT NULL,
+  `commitment_months` INT DEFAULT NULL,
+  `preferred_areas` TEXT DEFAULT NULL,
+  `bar_region` VARCHAR(255) DEFAULT NULL,
+  `resume_file` VARCHAR(255) DEFAULT NULL,
+  `affiliation` VARCHAR(255) DEFAULT NULL,
+  `reference_contact` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
