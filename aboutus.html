@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSpacePH</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Your existing CSS files -->
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/aboutus.css">
+    <style>
+        /* This inline style is kept from your original code for the table animation */
+        table{
+            animation: transitionIn-Y-bottom 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Header -->
+    <!-- This header will stay at the top of the viewport as the user scrolls.
+         It uses Tailwind CSS classes for styling and responsiveness. -->
+    <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-6 rounded-b-lg">
+        <div class="container mx-auto flex items-center justify-between">
+            <!-- Logo and Site Name Container -->
+            <div class="flex items-center space-x-3">
+                <!-- Using a placeholder image for demonstration. Replace with your actual img/logo.png -->
+                <img src="img\logo.png" alt="SafeSpacePH Logo" class="logo-img h-12 w-12 rounded-full shadow-sm">
+                <span class="edoc-logo-sub">SafeSpacePH</span>
+            </div>  
+            
+            <nav class="flex items-center space-x-4">
+                <a href="index.html" class="nav-button">HOME</a>
+                <a href="volunteers.html" class="nav-button ">VOLUNTEERS</a>
+                <a href="about.html" class="nav-button active-nav-link">ABOUT</a>
+            </nav>
+
+            <!-- Navigation Links -->
+            <nav class="flex items-center space-x-4">
+                <a href="login.php" class="btn btn-primary-soft">LOGIN</a>
+                <a href="signup.php" class="btn btn-primary-soft">REGISTER</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <!-- The rest of your page content will go here.
+         The 'body' tag has padding-top in style.css to prevent content from being hidden by the fixed header. -->
+   <div class="branding">
+  <img src="https://i.ibb.co/qYYZs46L/logo.png" alt="LOGO-About" class="LOGO-AboutUs" />
+  <span class="safespace-text">SafeSpace PH</span>
+</div>
+
+        <!-- WHO WE ARE Section -->
+       <main class="who-we-are-section">
+  <div class="section-header">
+    <h2>WHO WE ARE</h2>
+  </div>
+  <div class="who-we-are-content">
+                <p>
+                    SafeSpaces PH is a digital initiative committed to empowering victims of sexual harassment, abuse, and other violations under the Safe Spaces Act (RA 11313). We provide a platform that bridges the gap between marginalized individuals and pro bono legal professionals, ensuring that no one is denied the right to justice due to lack of access or resources.
+                </p>
+                <p>
+                    We believe in a Philippines where everyone—regardless of gender, age, or background—can exist and move freely in public and private spaces without fear of harassment or violence.
+                </p>
+            </div>
+
+            <!-- Mission and Vision sub-sections, displayed side-by-side (styling via styles.css) -->
+            <div class="mission-vision-container">
+                <div>
+                    <h3>OUR MISSION</h3>
+                    <p>
+                        To promote peace, justice, and strong institutions by ensuring that legal support is accessible, inclusive, and empowering, especially for the marginalized and vulnerable sectors of society.
+                    </p>
+                </div>
+                <div>
+                    <h3>OUR VISION</h3>
+                    <p>
+                        To build a Philippines where every individual—regardless of gender, background, or status—feels safe, heard, and protected, supported by strong institutions and accessible legal services that uphold justice, equality, and human dignity.
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <!-- WHAT WE DO Section: Details about the services provided by SafeSpaces PH -->
+        <main class="what-we-do-section">
+  <div class="section-header">
+        <h2>WHAT WE DO</h2>
+    </div>
+    <div class="what-we-do-cards-container">
+                <!-- Card 1: Free Legal Appointments -->
+                <div class="what-we-do-card">
+                    <h3>Free Legal Appointments</h3>
+                    <p>
+                        Victims can book sessions with verified, volunteer legal professionals based on their situation.
+                    </p>
+                </div>
+
+                <!-- Card 2: Lawyer Collaboration -->
+                <div class="what-we-do-card">
+                    <h3>Lawyer Collaboration</h3>
+                    <p>
+                        Licensed lawyers and legal groups can register to volunteer their services through our platform.
+                    </p>
+                </div>
+
+                <!-- Card 3: Reporting Made Accessible -->
+                <div class="what-we-do-card">
+                    <h3>Reporting Made Accessible</h3>
+                    <p>
+                        Victims can submit violation reports and upload supporting documents securely.
+                    </p>
+                </div>
+
+                <!-- Card 4: Community-Driven Support -->
+                <div class="what-we-do-card">
+                    <h3>Community-Driven Support</h3>
+                    <p>
+                        A team of legal professionals, developers, and advocates working together to promote safer institutions.
+                    </p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-branding">
+                    <img src="img/logo.png" alt="LOGO" class="footer-logo" />
+                    <h2>SafeSpacePH</h2>
+                </div>
+                <div class="footer-bottom-row">
+                    <p>&copy; 2025 SafeSpacePH. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Use</a>
+                        <a href="#">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>

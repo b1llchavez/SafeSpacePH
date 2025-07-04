@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/index.css">
-                <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
-
+    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
     <style>
         /* This inline style is kept from your original code for the table animation */
         table{
@@ -34,9 +33,9 @@
             </div>  
             
             <nav class="flex items-center space-x-4">
-                <a href="index.php" class="nav-button active-nav-link">HOME</a>
-                <a href="volunteers.php" class="nav-button">VOLUNTEERS</a>
-                <a href="about.php" class="nav-button">ABOUT</a>
+                <a href="index.html" class="nav-button active-nav-link">HOME</a>
+                <a href="volunteers.html" class="nav-button">VOLUNTEERS</a>
+                <a href="aboutus.html" class="nav-button">ABOUT</a>
             </nav>
 
             <!-- Navigation Links -->
@@ -127,5 +126,108 @@
             </a>
         </center>
       </main>
+
+      <main class="faq-container">
+        <div class="faq-left">
+            <div class="faq-item">
+                <button class="faq-question">
+                    Are the legal services really free?
+                    <span class="toggle-icon">−</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. All legal services offered through our platform are pro bono and provided by verified volunteer lawyers committed to justice and inclusivity.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    What if I don’t have complete evidence?
+                    <span class="toggle-icon">−</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. While evidence helps, you can still report an incident. Our volunteer lawyers can assist you in building your case and understanding your legal options.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    How are lawyers matched with victims?
+                    <span class="toggle-icon">−</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Our system considers the lawyer’s specialization, availability, and location to ensure victims are matched with the most suitable legal volunteer.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-right">
+            <h1>Frequently Asked Questions</h1>
+        </div>
+      </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-branding">
+                    <img src="img/logo.png" alt="LOGO" class="footer-logo" />
+                    <h2>SafeSpacePH</h2>
+                </div>
+                <div class="footer-bottom-row">
+                    <p>&copy; 2025 SafeSpacePH. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Use</a>
+                        <a href="#">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+            </div>
+        </div>
+    </footer>
+
+      <script>
+    function openTOS() {
+    document.getElementById('tosOverlay').classList.add('active');
+  }
+
+  function closeTOS() {
+    document.getElementById('tosOverlay').classList.remove('active');
+  }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const faqItem = question.closest('.faq-item');
+            const faqAnswer = faqItem.querySelector('.faq-answer');
+
+            // Close all other open answers
+            document.querySelectorAll('.faq-item.active').forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').style.maxHeight = 0;
+                    item.querySelector('.faq-answer').style.paddingTop = 0;
+                }
+            });
+
+            // Toggle the clicked answer
+            if (faqItem.classList.contains('active')) {
+                faqItem.classList.remove('active');
+                faqAnswer.style.maxHeight = 0;
+                faqAnswer.style.paddingTop = 0;
+            } else {
+                faqItem.classList.add('active');
+                // Set max-height to the scrollHeight to allow smooth transition to full height
+                // A fixed max-height can be problematic if content varies greatly.
+                // A better approach for dynamic content is to set it to scrollHeight + some buffer.
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 30 + 'px'; // +30px for padding/buffer
+                faqAnswer.style.paddingTop = '15px';
+              }
+          });
+       });
+    });
+ </script>
 </body>
 </html>
