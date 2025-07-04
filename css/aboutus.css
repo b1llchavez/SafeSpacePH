@@ -1,0 +1,573 @@
+body,
+html {
+    margin: 0;
+    padding-top: 100px;
+    box-sizing: border-box;
+    /* Important for consistent box model */
+}
+
+/* General body styles */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Apply Inter font */
+    margin: 0;
+    /* Remove default body margin */
+    padding: 0;
+    /* Remove default body padding */
+    background-color: #ffffff;
+    /* Light gray background color */
+    line-height: 1.6;
+    /* Improve readability */
+}
+
+.header-bg {
+    background-image: url('https://i.ibb.co/bMVDZvnP/aboutUs.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+
+    height: 600px;
+    /* Increase this for more vertical space */
+    width: 100%;
+    /* Full width */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.edoc-logo {
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+    padding-left: 20px;
+    animation: transitionIn-Y-over 0.5s;
+}
+
+.logo-container {
+    display: flex;
+    /* Use flexbox for easy alignment */
+    align-items: center;
+    /* Vertically center items */
+    padding-left: 20px;
+    /* Add space from the left edge of the td */
+    box-sizing: border-box;
+    /* Include padding in width calculation */
+}
+
+.logo-img {
+    height: 60px;
+    /* Increased height for larger logo */
+    width: auto;
+    /* Maintain aspect ratio */
+    margin-right: 10px;
+    /* Increased space between logo and text */
+    vertical-align: middle;
+    /* Ensures alignment with text */
+}
+
+.edoc-logo-sub {
+    /* Ensure the font class styles are defined in main.css or here */
+    font-size: 32px;
+    /* Example: Adjust font size to match logo better */
+    font-weight: 1000;
+    /* Example */
+    color: #391053;
+    /* Example: A color that goes well with purple */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+    text-shadow: 2px 2px 10px #3910534b;
+}
+
+.nav-button {
+    display: block;
+    /* Ensures padding and margin work correctly */
+    color: #770888;
+    /* text-gray-700 */
+    font-weight: 500;
+    /* font-medium */
+    padding-top: 0.5rem;
+    /* py-2 */
+    padding-bottom: 0.5rem;
+    /* py-2 */
+    padding-left: 1rem;
+    /* px-4 */
+    padding-right: 1rem;
+    /* px-4 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    text-decoration: none;
+    /* non-style-link */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size;
+    /* transition */
+    transition-duration: 200ms;
+    /* duration-200 */
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    /* ease-in-out */
+}
+
+/* Hover styles for both nav links */
+.nav-button:hover {
+    font-size: 1.1rem;
+    /* hover:text-lg */
+    color: #851abf;
+    /* hover:text-blue-600 */
+}
+
+/* Active link highlight styles */
+.nav-button.active-nav-link {
+    color: #851abf;
+    /* Same as hover color, or a distinct active color */
+    background-color: #f0e4ff;
+    /* A light background highlight */
+    /* You could also add a border or thicker underline */
+    /* border-bottom: 2px solid #851abf; */
+    /* font-weight: 700; /* Make it bolder */
+}
+
+/* Optional: Adjust hover for active link */
+/* This ensures the active state is always dominant, even on hover */
+.nav-button.active-nav-link:hover {
+    font-size: 1.1rem;
+    /* Maintain hover effect */
+    color: #851abf;
+    /* Keep color consistent or darken slightly */
+    background-color: #cba6f6;
+    /* Slightly darker background on hover for active link */
+}
+
+.container {
+    max-width: 1200px;
+    /* Use the exact max-width from your homepage */
+    margin: 0 auto;
+    /* Remove or adjust any conflicting width: 100%; or padding properties */
+}
+
+.header-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    /* 80% opacity for the image (100%-80%=20% black overlay) */
+    z-index: 1;
+    pointer-events: none;
+}
+
+.header-content {
+    position: relative;
+    z-index: 10;
+}
+
+.header-content h1,
+.header-content h2 {
+    text-align: center;
+    font-family: "Inter-SemiBold", Helvetica, Arial, sans-serif;
+    color: #FFF;
+    font-size: 73px;
+    font-style: normal;
+    font-weight: 900;
+    width: 1156.037px;
+    line-height: normal;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-content h1 {
+    margin-bottom: 10px;
+    /* Increase or decrease this value as needed */
+}
+
+.header-content h2 {
+    margin-top: 0;
+    /* Usually not needed if h1 has margin-bottom */
+}
+
+/* Responsive header text sizes */
+@media (min-width: 640px) {
+    .header-content h1 {
+        font-size: 73px;
+    }
+
+    .header-content h2 {
+        font-size: 73px;
+    }
+}
+
+.branding {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center horizontally */
+    gap: 24px;
+    /* Space between logo and text */
+}
+
+
+.LOGO-AboutUs {
+    height: 271.24px;
+    /* Adjust as needed */
+    width: auto;
+    max-width: 400px;
+}
+
+.safespace-text {
+    color: #391053;
+    font-size: 128px;
+    /* Adjust as needed */
+    font-style: normal;
+    font-weight: 900;
+    margin-left: 12;
+    /* gap handles spacing */
+    text-align: center;
+}
+
+/* Logo Section Styles */
+.logo-section {
+    background-color: white;
+    padding-top: 2rem;
+    /* py-8 */
+    padding-bottom: 2rem;
+    /* py-8 */
+    display: flex;
+    /* Flexbox for centering */
+    justify-content: center;
+    /* Center horizontally */
+}
+
+.logo-section img {
+    height: 4rem;
+    /* h-16 */
+    max-width: 100%;
+    /* max-w-full */
+    object-fit: contain;
+    /* object-contain */
+}
+
+@media (min-width: 640px) {
+
+    /* sm breakpoint */
+    .logo-section img {
+        height: 5rem;
+        /* sm:h-20 */
+    }
+}
+
+/* WHO WE ARE Section Styles */
+
+.who-we-are-section h2 {
+    color: #000000;
+    font-size: 64px;
+    /* text-3xl */
+    font-weight: 900;
+    /* font-bold */
+    text-align: left;
+    line-height: normal;
+    margin-left: 60px;
+    /* Adjusted for left alignment */
+
+}
+
+@media (min-width: 640px) {
+
+    /* sm breakpoint */
+    .who-we-are-section h2 {
+        font-size: 2.5rem;
+        /* sm:text-4xl */
+    }
+}
+
+.who-we-are-content {
+    max-width: 80rem;
+    /* max-w-5xl */
+    font-family: 'Inter', sans-serif;
+    padding: 2rem 0;
+    /* Top/bottom padding for the text block */
+    margin: 0 auto;
+    color: #000000;
+    font-size: 30px;
+    /* text-lg */
+    line-height: 1.75;
+    /* leading-relaxed */
+}
+
+.who-we-are-content p+p {
+    /* space-y-6 equivalent for paragraphs */
+    line-height: 2;
+}
+
+.mission-vision-container {
+    margin-top: -20px;
+    max-width: 80rem;
+    /* max-w-5xl */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    display: grid;
+    /* Grid layout for columns */
+    grid-template-columns: 1fr;
+    /* Single column by default */
+    gap: 2rem;
+    /* gap-8 */
+    color: white;
+}
+
+@media (min-width: 768px) {
+
+    /* md breakpoint */
+    .mission-vision-container {
+        grid-template-columns: 1fr 1fr;
+        /* Two columns on medium screens and above */
+    }
+}
+
+.mission-vision-container div {
+    padding: 1rem;
+    /* p-4 */
+}
+
+.mission-vision-container h3 {
+    font-size: 30px;
+    /* text-2xl */
+    font-weight: 900;
+    /* font-bold */
+    margin-bottom: 1rem;
+    /* mb-4 */
+    color: #000000;
+}
+
+.mission-vision-container p {
+    font-size: 30px;
+    /* text-base */
+    line-height: 1.625;
+    /* leading-relaxed */
+    color: #000000
+}
+
+/* WHAT WE DO Section Styles */
+.what-we-do-section {
+    width: 100%;
+    background-color: #ffffff; /* Add your desired background */
+}
+
+.what-we-do-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 3rem 1rem; /* Top/Bottom 3rem, Left/Right 1rem */
+}
+
+.what-we-do-section h2 {
+    color: white;
+    font-size: 2.25rem;
+    /* text-3xl */
+    font-weight: 700;
+    /* font-bold */
+    text-align: center;
+    margin-bottom: 2rem;
+    /* mb-8 */
+}
+
+@media (min-width: 640px) {
+
+    /* sm breakpoint */
+    .what-we-do-section h2 {
+        font-size: 2.5rem;
+        /* sm:text-4xl */
+    }
+}
+
+.what-we-do-cards-container {
+    max-width: 80rem;
+    /* max-w-5xl */
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    /* Grid layout for cards */
+    grid-template-columns: 1fr;
+    /* Single column by default */
+    gap: 1.5rem;
+    /* gap-6 */
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+
+@media (min-width: 640px) {
+
+    /* sm breakpoint */
+    .what-we-do-cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* Two columns on small screens and above */
+    }
+}
+
+@media (min-width: 1024px) {
+
+    /* lg breakpoint */
+    .what-we-do-cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* Still two columns on large screens for this specific design */
+    }
+}
+
+.what-we-do-card {
+    margin-top: 30px;
+    background-color: #C9A8F1;
+    /* app-purple-light */
+    padding: 1.5rem;
+    /* p-6 */
+    border-radius: 30px;
+    /* rounded-lg */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* shadow-md */
+}
+
+.what-we-do-card h3 {
+    font-size: 30px;
+    font-weight: 700;
+    /* font-bold */
+    color: #000000;
+    margin-bottom: 0.5rem;
+    /* mb-2 */
+}
+
+.what-we-do-card p {
+    color: #000000;
+    font-size: 30px;
+}
+
+
+.section-header {
+    background: linear-gradient(90deg, #C9A8F1 0%, #A180C9 50.48%, #2E0E55 100%);
+    padding: 1.5rem 2rem;
+}
+
+.section-header h2 {
+    color: #000000;
+    font-size: 48px;
+    font-weight: 900;
+    margin: 0;
+    text-align: left;
+    line-height: normal;
+    margin-left: 60px;
+}
+
+/* Footer Styles */
+.container {
+    width: 100%;
+    /* Ensures the container takes the full width available */
+    max-width: none;
+    /* Removes any maximum width constraint that might be centering the content */
+    margin-left: 0;
+    /* Eliminates left margin */
+    margin-right: 0;
+    /* Eliminates right margin */
+    padding-left: 0;
+    /* Eliminates left padding */
+    padding-right: 0;
+    /* Eliminates right padding */
+}
+
+.footer {
+    background-color: #391053;
+    color: white;
+    padding: 30px;
+}
+
+
+
+.footer-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    gap: 50px;
+}
+
+.footer-branding {
+    display: flex;
+    font-size: 28px;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-logo {
+    height: 100px;
+}
+
+.footer-branding h2 {
+    font-size: 32px;
+    /* Example: Adjust font size to match logo better */
+    font-weight: 1000;
+    /* Example */
+    color: #ffffff;
+    /* Example: A color that goes well with purple */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+    text-shadow: 2px 2px 10px #3910534b;
+}
+
+.footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1 1 0;
+    justify-content: center;
+}
+
+.footer-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 23px;
+    margin: 0 42px;
+    font-weight: bold;
+
+}
+
+.divider {
+    height: 53px;
+    width: 2.625px;
+    background-color: white;
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+.footer-bottom-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    font-size: 16px;
+}
+
+.footer-bottom-row p {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
