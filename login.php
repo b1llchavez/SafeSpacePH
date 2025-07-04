@@ -48,19 +48,14 @@
         $result= $database->query("select * from webuser where email='$email'");
         if($result->num_rows==1){
             $utype=$result->fetch_assoc()['usertype'];
-            if ($utype=='p'){
-                $checker = $database->query("select * from patient where pemail='$email' and ppassword='$password'");
-                if ($checker->num_rows==1){
-
-
-                    //   Patient dashbord
-                    $_SESSION['user']=$email;
-                    $_SESSION['usertype']='p';
-                    
+            if ($utype == 'c') {
+                $checker = $database->query("SELECT * FROM client WHERE pemail='$email' AND ppassword='$password'");
+                if ($checker->num_rows == 1) {
+                    $_SESSION['user'] = $email;
+                    $_SESSION['usertype'] = 'c';
                     header('location: patient/index.php');
-
-                }else{
-                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+                } else {
+                    $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
                 }
 
             }elseif($utype=='a'){
@@ -79,20 +74,15 @@
                 }
 
 
-            }elseif($utype=='d'){
-                $checker = $database->query("select * from doctor where docemail='$email' and docpassword='$password'");
-                if ($checker->num_rows==1){
-
-
-                    //   doctor dashbord
-                    $_SESSION['user']=$email;
-                    $_SESSION['usertype']='d';
-                    header('location: doctor/index.php');
-
-                }else{
-                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+            } elseif ($utype == 'l') {
+                $checker = $database->query("SELECT * FROM lawyer WHERE lawyeremail='$email' AND lawyerpassword='$password'");
+                if ($checker->num_rows == 1) {
+                    $_SESSION['user'] = $email;
+                    $_SESSION['usertype'] = 'l';
+                    header('location: lawyer/index.php');
+                } else {
+                    $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
                 }
-
             }
             
         }else{
