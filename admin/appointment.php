@@ -161,27 +161,25 @@
 
                         </td>
                         <td width="5%" style="text-align: center;">
-                        Doctor:
+                        Lawyer:
                         </td>
                         <td width="30%">
-                        <select name="docid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
-                            <option value="" disabled selected hidden>Choose Doctor Name from the list</option><br/>
+                        <select name="lawyerid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
+                            <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>
                                 
-                            <?php 
-                             
-                                $list11 = $database->query("select  * from  doctor order by docname asc;");
+                            <?php
+
+                                $list11 = $database->query("select  * from  lawyer order by lawyername asc;");
 
                                 for ($y=0;$y<$list11->num_rows;$y++){
                                     $row00=$list11->fetch_assoc();
-                                    $sn=$row00["docname"];
-                                    $id00=$row00["docid"];
+                                    $sn=$row00["lawyername"];
+                                    $id00=$row00["lawyerid"];
                                     echo "<option value=".$id00.">$sn</option><br/>";
                                 };
 
 
-                                ?>
-
-                        </select>
+                                ?></select>
                     </td>
                     <td width="12%">
                         <input type="submit"  name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
@@ -207,13 +205,13 @@
 
 
                         $sqlpt2="";
-                        if(!empty($_POST["docid"])){
-                            $docid=$_POST["docid"];
-                            $sqlpt2=" doctor.docid=$docid ";
+                        if(!empty($_POST["lawyerid"])){
+                            $lawyerid=$_POST["lawyerid"];
+                            $sqlpt2=" lawyer.lawyerid=$lawyerid ";
                         }
                         //echo $sqlpt2;
                         //echo $sqlpt1;
-                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid";
+                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join lawyer on schedule.lawyerid=lawyer.lawyerid";
                         $sqllist=array($sqlpt1,$sqlpt2);
                         $sqlkeywords=array(" where "," and ");
                         $key2=0;
@@ -230,7 +228,7 @@
                         
                         //
                     }else{
-                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  order by schedule.scheduledate desc";
+                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  order by schedule.scheduledate desc";
 
                     }
 
