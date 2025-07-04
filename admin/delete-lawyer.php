@@ -16,12 +16,12 @@
         //import database
         include("../connection.php");
         $id=$_GET["id"];
-        $result001= $database->query("select * from doctor where docid=$id;");
-        $email=($result001->fetch_assoc())["docemail"];
+        $result001= $database->query("select * from lawyer where lawyerid=$id;");
+        $email=($result001->fetch_assoc())["lawyeremail"];
         $sql= $database->query("delete from webuser where email='$email';");
-        $sql= $database->query("delete from doctor where docemail='$email';");
+        $sql= $database->query("delete from lawyer where lawyeremail='$email';");
         //print_r($email);
-        header("location: doctors.php");
+        header("location: lawyers.php");
     }
 
 

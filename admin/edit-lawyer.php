@@ -19,14 +19,14 @@
         $tele=$_POST['Tele'];
         $password=$_POST['password'];
         $cpassword=$_POST['cpassword'];
-        $id=$_POST['id00'];
+        $id=$_POST['id00']; 
         
         if ($password==$cpassword){
             $error='3';
-            $result= $database->query("select doctor.docid from doctor inner join webuser on doctor.docemail=webuser.email where webuser.email='$email';");
-            //$resultqq= $database->query("select * from doctor where docid='$id';");
+            $result= $database->query("select lawyer.lawyerid from lawyer inner join webuser on lawyer.lawyeremail=webuser.email where webuser.email='$email';");
+            //$resultqq= $database->query("select * from lawyer where lawyerid='$id';");
             if($result->num_rows==1){
-                $id2=$result->fetch_assoc()["docid"];
+                $id2=$result->fetch_assoc()["lawyerid"];
             }else{
                 $id2=$id;
             }
@@ -34,14 +34,14 @@
             echo $id2."jdfjdfdh";
             if($id2!=$id){
                 $error='1';
-                //$resultqq1= $database->query("select * from doctor where docemail='$email';");
-                //$did= $resultqq1->fetch_assoc()["docid"];
+                //$resultqq1= $database->query("select * from lawyer where lawyeremail='$email';");
+                //$did= $resultqq1->fetch_assoc()["lawyerid"];
                 //if($resultqq1->num_rows==1){
                     
             }else{
 
                 //$sql1="insert into doctor(docemail,docname,docpassword,docnic,doctel,specialties) values('$email','$name','$password','$nic','$tele',$spec);";
-                $sql1="update doctor set docemail='$email',docname='$name',docpassword='$password',docnic='$nic',doctel='$tele',specialties=$spec where docid=$id ;";
+                $sql1="update lawyer set lawyeremail='$email',lawyername='$name',lawyerpassword='$password',lawyernic='$nic',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
                 $database->query($sql1);
                 
                 $sql1="update webuser set email='$email' where email='$oldemail' ;";
@@ -63,9 +63,8 @@
         //header('location: signup.php');
         $error='3';
     }
-    
 
-    header("location: doctors.php?action=edit&error=".$error."&id=".$id);
+    header("location: lawyers.php?action=edit&error=".$error."&id=".$id);
     ?>
     
    

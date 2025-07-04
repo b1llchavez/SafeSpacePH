@@ -211,7 +211,7 @@
                         }
                         //echo $sqlpt2;
                         //echo $sqlpt1;
-                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join lawyer on schedule.lawyerid=lawyer.lawyerid";
+                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,client.cname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.pid inner join lawyer on schedule.lawyerid=lawyer.lawyerid";
                         $sqllist=array($sqlpt1,$sqlpt2);
                         $sqlkeywords=array(" where "," and ");
                         $key2=0;
@@ -228,7 +228,7 @@
                         
                         //
                     }else{
-                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  order by schedule.scheduledate desc";
+                        $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,client.cname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  order by schedule.scheduledate desc";
 
                     }
 
@@ -244,7 +244,7 @@
                         <thead>
                         <tr>
                                 <th class="table-headin">
-                                    Patient name
+                                    Client name
                                 </th>
                                 <th class="table-headin">
                                     
@@ -254,7 +254,7 @@
                                
                                 
                                 <th class="table-headin">
-                                    Doctor
+                                    Lawyer
                                 </th>
                                 <th class="table-headin">
                                     
@@ -311,7 +311,7 @@
                                     $appoid=$row["appoid"];
                                     $scheduleid=$row["scheduleid"];
                                     $title=$row["title"];
-                                    $docname=$row["docname"];
+                                    $lawyername=$row["lawyername"];
                                     $scheduledate=$row["scheduledate"];
                                     $scheduletime=$row["scheduletime"];
                                     $pname=$row["pname"];
@@ -327,7 +327,7 @@
                                         
                                         </td>
                                         <td>
-                                        '.substr($docname,0,25).'
+                                        '.substr($lawyername,0,25).'
                                         </td>
                                         <td>
                                         '.substr($title,0,15).'
@@ -384,7 +384,7 @@
                         <a class="close" href="schedule.php">&times;</a> 
                         <div style="display: flex;justify-content: center;">
                         <div class="abc">
-                        <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
+                        <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
                         <tr>
                                 <td class="label-td" colspan="2">'.
                                    ""
@@ -411,21 +411,21 @@
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
-                                    <label for="docid" class="form-label">Select Doctor: </label>
+                                    <label for="lawyerid" class="form-label">Select Lawyer: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <select name="docid" id="" class="box" >
-                                    <option value="" disabled selected hidden>Choose Doctor Name from the list</option><br/>';
+                                    <select name="lawyerid" id="" class="box" >
+                                    <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>';
                                         
         
-                                        $list11 = $database->query("select  * from  doctor;");
+                                        $list11 = $database->query("select  * from  lawyer;");
         
                                         for ($y=0;$y<$list11->num_rows;$y++){
                                             $row00=$list11->fetch_assoc();
-                                            $sn=$row00["docname"];
-                                            $id00=$row00["docid"];
+                                            $sn=$row00["lawyername"];
+                                            $id00=$row00["lawyerid"];
                                             echo "<option value=".$id00.">$sn</option><br/>";
                                         };
         
@@ -437,7 +437,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nop" class="form-label">Number of Patients/Appointment Numbers : </label>
+                                    <label for="nop" class="form-label">Number of Clients/Appointment Numbers : </label>
                                 </td>
                             </tr>
                             <tr>
@@ -519,7 +519,7 @@
                         <a class="close" href="appointment.php">&times;</a>
                         <div class="content">
                             You want to delete this record<br><br>
-                            Patient Name: &nbsp;<b>'.substr($nameget,0,40).'</b><br>
+                            Client Name: &nbsp;<b>'.substr($nameget,0,40).'</b><br>
                             Appointment number &nbsp; : <b>'.substr($apponum,0,40).'</b><br><br>
                             
                         </div>
@@ -533,31 +533,31 @@
             </div>
             '; 
         }elseif($action=='view'){
-            $sqlmain= "select * from doctor where docid='$id'";
+            $sqlmain= "select * from lawyer where lawyerid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
-            $name=$row["docname"];
-            $email=$row["docemail"];
+            $name=$row["lawyername"];
+            $email=$row["lawyeremail"];
             $spe=$row["specialties"];
             
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
-            $nic=$row['docnic'];
-            $tele=$row['doctel'];
+            $nic=$row['lawyernic'];
+            $tele=$row['lawyertel'];
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
                     <center>
                         <h2></h2>
-                        <a class="close" href="doctors.php">&times;</a>
+                        <a class="close" href="lawyers.php">&times;</a>
                         <div class="content">
                             eDoc Web App<br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
-                        <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
-                        
+                        <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
+
                             <tr>
                                 <td>
                                     <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
@@ -619,7 +619,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <a href="doctors.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
+                                    <a href="lawyers.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
                                 
                                     
                                 </td>
