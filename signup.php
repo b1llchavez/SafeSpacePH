@@ -38,7 +38,6 @@ if($_POST){
         'fname'=>$_POST['fname'],
         'lname'=>$_POST['lname'],
         'address'=>$_POST['address'],
-        'nic'=>$_POST['nic'],
         'dob'=>$_POST['dob']
     );
 
@@ -89,16 +88,6 @@ if($_POST){
             </tr>
             <tr>
                 <td class="label-td" colspan="2">
-                    <label for="nic" class="form-label">NIC: </label>
-                </td>
-            </tr>
-            <tr>
-                <td class="label-td" colspan="2">
-                    <input type="text" name="nic" class="input-text" placeholder="NIC Number" required>
-                </td>
-            </tr>
-            <tr>
-                <td class="label-td" colspan="2">
                     <label for="dob" class="form-label">Date of Birth: </label>
                 </td>
             </tr>
@@ -119,7 +108,13 @@ if($_POST){
                 <td>
                     <input type="submit" value="Next" class="login-btn btn-primary btn">
                 </td>
-
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button" onclick="window.location.href='index.html';" class="back-btn btn btn-primary-soft">
+                        Back
+                    </button>
+                </td>
             </tr>
             <tr>
                 <td colspan="2">
@@ -136,5 +131,22 @@ if($_POST){
 
     </div>
 </center>
+<style>
+.login-btn {
+  width: 100%;
+}
+
+.back-btn {
+  width: 100%;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+</style>
 </body>
 </html>
