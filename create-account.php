@@ -48,7 +48,6 @@ if($_POST){
     $lname=$_SESSION['personal']['lname'];
     $name=$fname." ".$lname;
     $address=$_SESSION['personal']['address'];
-    $nic=$_SESSION['personal']['nic'];
     $dob=$_SESSION['personal']['dob'];
     $email=$_POST['newemail'];
     $tele=$_POST['tele'];
@@ -61,12 +60,12 @@ if($_POST){
             $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Already have an account for this Email address.</label>';
         }else{
             
-            $database->query("insert into client(cemail,cname,cpassword, paddress, pnic,pdob,ptel) values('$email','$name','$newpassword','$address','$nic','$dob','$tele');");
+            $database->query("insert into client(cemail,cname,cpassword, caddress,cdob,ctel) values('$email','$name','$newpassword','$address','$dob','$tele');");
             $database->query("insert into webuser values('$email','c')");
 
             //print_r("insert into client values($cid,'$email','$fname','$lname','$newpassword','$address','$nic','$dob','$tele');");
             $_SESSION["user"]=$email;
-            $_SESSION["usertype"]="p";
+            $_SESSION["usertype"]="c";
             $_SESSION["username"]=$fname;
 
             header('Location: client/index.php');
@@ -116,7 +115,7 @@ if($_POST){
             </tr>
             <tr>
                 <td class="label-td" colspan="2">
-                    <input type="tel" name="tele" class="input-text"  placeholder="ex: 0712345678" pattern="[0]{1}[0-9]{9}" >
+                    <input type="tel" name="tele" class="input-text"  placeholder="ex: 09123456789" pattern="[0]{1}[0-9]{10}" >
                 </td>
             </tr>
             <tr>

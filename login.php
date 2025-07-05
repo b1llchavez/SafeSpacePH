@@ -154,7 +154,7 @@
             </tr>
             <tr>
                 <td>
-                    <button type="button" onclick="window.location.href='index.html';" class="back-btn">
+                    <button type="button" onclick="window.location.href='index.html';" class="back-btn btn btn-primary-soft">
                         Back
                     </button>
                 </td>
@@ -181,21 +181,11 @@
 .login-btn {
   width: 100%;
 }
+
 .back-btn {
-  display: inline-block;
-  background: #b57cf6;
-  color: #fff !important;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 0;
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: none;
-  margin-top: -10px;
   width: 100%;
-  transition: none;
-  cursor: pointer;
 }
+
 .error-message label {
   display: block;
   background: #ffeaea;
