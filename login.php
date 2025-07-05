@@ -43,24 +43,19 @@
         $email=$_POST['useremail'];
         $password=$_POST['userpassword'];
         
-        $error='<label for="promter" class="form-label"></label>';
+        $error = ''; // Only set error if needed
 
         $result= $database->query("select * from webuser where email='$email'");
         if($result->num_rows==1){
             $utype=$result->fetch_assoc()['usertype'];
-            if ($utype=='p'){
-                $checker = $database->query("select * from patient where pemail='$email' and ppassword='$password'");
-                if ($checker->num_rows==1){
-
-
-                    //   Patient dashbord
-                    $_SESSION['user']=$email;
-                    $_SESSION['usertype']='p';
-                    
-                    header('location: patient/index.php');
-
-                }else{
-                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+            if ($utype == 'c') {
+                $checker = $database->query("SELECT * FROM client WHERE cemail='$email' AND cpassword='$password'");
+                if ($checker->num_rows == 1) {
+                    $_SESSION['user'] = $email;
+                    $_SESSION['usertype'] = 'c';
+                    header('location: client/index.php');
+                } else {
+                    $error = '<label for="promter" class="form-label">Wrong credentials: Invalid email or password</label>';
                 }
 
             }elseif($utype=='a'){
@@ -75,38 +70,27 @@
                     header('location: admin/index.php');
 
                 }else{
-                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+                    $error='<label for="promter" class="form-label">Wrong credentials: Invalid email or password</label>';
                 }
 
 
-            }elseif($utype=='d'){
-                $checker = $database->query("select * from doctor where docemail='$email' and docpassword='$password'");
-                if ($checker->num_rows==1){
-
-
-                    //   doctor dashbord
-                    $_SESSION['user']=$email;
-                    $_SESSION['usertype']='d';
-                    header('location: doctor/index.php');
-
-                }else{
-                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+            } elseif ($utype == 'l') {
+                $checker = $database->query("SELECT * FROM lawyer WHERE lawyeremail='$email' AND lawyerpassword='$password'");
+                if ($checker->num_rows == 1) {
+                    $_SESSION['user'] = $email;
+                    $_SESSION['usertype'] = 'l';
+                    header('location: lawyer/index.php');
+                } else {
+                    $error = '<label for="promter" class="form-label">Wrong credentials: Invalid email or password</label>';
                 }
-
             }
             
         }else{
-            $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">We cant found any acount for this email.</label>';
+            $error='<label for="promter" class="form-label">We cannot found any account for this email.</label>';
         }
 
-
-
-
-
-
-        
-    }else{
-        $error='<label for="promter" class="form-label">&nbsp;</label>';
+    } else {
+        $error = ''; // No error by default
     }
 
     ?>
@@ -155,13 +139,24 @@
 
             <tr>
                 <td><br>
-                <?php echo $error ?>
+                <?php if (!empty($error)): ?>
+                <div class="error-message">
+                    <?php echo $error ?>
+                </div>
+                <?php endif; ?>
                 </td>
             </tr>
 
             <tr>
                 <td>
                     <input type="submit" value="Login" class="login-btn btn-primary btn">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" onclick="window.location.href='index.html';" class="back-btn">
+                        Back
+                    </button>
                 </td>
             </tr>
         </div>
@@ -182,5 +177,49 @@
 
     </div>
 </center>
+<style>
+.login-btn {
+  width: 100%;
+}
+.back-btn {
+  display: inline-block;
+  background: #b57cf6;
+  color: #fff !important;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  margin-top: -10px;
+  width: 100%;
+  transition: none;
+  cursor: pointer;
+}
+.error-message label {
+  display: block;
+  background: #ffeaea;
+  color: #b71c1c;
+  border: 1.5px solid #f5c2c7;
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin: 0 auto 10px auto;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+  max-width: 100%;
+  box-sizing: border-box;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(183,28,28,0.07);
+  animation: shake 0.2s 1;
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+</style>
 </body>
 </html>
