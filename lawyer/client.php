@@ -88,8 +88,8 @@
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-client">
-                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text"> My Clients</p></a></div>
+                    <td class="menu-btn menu-icon-client menu-active menu-icon-client-active">
+                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text menu-text-active"> My Clients</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >

@@ -4,6 +4,9 @@
   --primarycolorhover: #571779;
   --btnice:#5A2675;
   --btnnicetext:#61327a;
+  --icon-size: 30px;
+  --icon-padding-left: 40px;
+  --icon-bg-position: center;
 }
 
 body{
@@ -390,11 +393,13 @@ input[type=search]:focus {
   background-image: url('../img/icons/client.svg');
 }
 .menu-icon-settings{
-  background-image: url('../img/icons/settings.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/settings-icon.svg');
 }
 
 .menu-icon-session{
-  background-image: url('../img/icons/session.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/session-icon.svg');
 }
 .menu-icon-home{
   background-image: url('../img/icons/home.svg');
@@ -407,7 +412,6 @@ input[type=search]:focus {
   background-size: 30px 30px;
   background-image: url('../img/icons/dashboard2-hover.svg');
 }
-
 
 .menu-icon-lawyers:hover,.menu-icon-lawyers-active{
   color: var(--primarycolor);
@@ -433,14 +437,15 @@ input[type=search]:focus {
 .menu-icon-settings:hover,.menu-icon-settings-active{
   color: var(--primarycolor);
   
-  background-image: url('../img/icons/settings-iceblue.svg');
+  background-image: url('../img/icons/settings-icon-hover.svg');
 }
 
 .menu-icon-session:hover,.menu-icon-session-active{
   color: var(--primarycolor);
   
-  background-image: url('../img/icons/session-iceblue.svg');
+  background-image: url('../img/icons/session-icon-hover.svg');
 }
+
 .menu-icon-home:hover,.menu-icon-home-active{
   color: var(--primarycolor);
   
@@ -464,6 +469,19 @@ input[type=search]:focus {
   background-image: url('../img/icons/back-arrow-hover.svg');
 }
 
+.btn-icon-settings{
+  background-image: url('../img/icons/back-arrow.svg');
+  background-size: var(--icon-size) var(--icon-size);
+  background-position: var(--icon-bg-position);
+  background-repeat: no-repeat;
+  transition: 0.5s;
+  padding: 8px 20px 8px var(--icon-padding-left);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--icon-size);
+  min-height: var(--icon-size);
+}
 
 .btn-edit{
   background-size: 30px 30px;
