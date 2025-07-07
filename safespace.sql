@@ -69,14 +69,15 @@ INSERT INTO `appointment` (`appoid`, `cid`, `apponum`, `scheduleid`, `appodate`)
 --
 
 CREATE TABLE `client` (
-  `cid` int(11) NOT NULL,
+  `cid` int(11) NOT NULL AUTO_INCREMENT,
   `cemail` varchar(255) DEFAULT NULL,
   `cname` varchar(255) DEFAULT NULL,
   `cpassword` varchar(255) DEFAULT NULL,
   `caddress` varchar(255) DEFAULT NULL,
   `cnic` varchar(15) DEFAULT NULL,
   `cdob` date DEFAULT NULL,
-  `ctel` varchar(20) DEFAULT NULL
+  `ctel` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`cid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -294,10 +295,6 @@ ALTER TABLE `appointment`
   ADD KEY `scheduleid` (`scheduleid`);
 
 --
--- Indexes for table `client`
---
-ALTER TABLE `client`
-  ADD PRIMARY KEY (`cid`);
 
 --
 -- Indexes for table `lawyer`
@@ -357,3 +354,5 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+ALTER TABLE `client` MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT;

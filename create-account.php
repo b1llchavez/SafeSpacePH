@@ -63,10 +63,10 @@ if($_POST){
             $database->query("insert into client(cemail,cname,cpassword, caddress,cdob,ctel) values('$email','$name','$newpassword','$address','$dob','$tele');");
             $database->query("insert into webuser values('$email','c')");
 
-            //print_r("insert into client values($cid,'$email','$fname','$lname','$newpassword','$address','$nic','$dob','$tele');");
-            $_SESSION["user"]=$email;
-            $_SESSION["usertype"]="c";
-            $_SESSION["username"]=$fname;
+            require 'send_email.php'; // make sure this path is correct
+
+            // Call the function with appropriate parameters
+            sendConfirmationEmail($email, $name);
 
             header('Location: client/index.php');
             $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>';
