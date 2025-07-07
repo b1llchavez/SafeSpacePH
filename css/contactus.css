@@ -1,0 +1,371 @@
+
+  
+.full-height {
+    background: rgba(93, 75, 75, 0.676);
+    background-attachment: fixed;
+    max-height: 100vh;
+    height: 100vh;
+
+
+}
+table{
+    width: 100%;
+    padding-top: 10px;
+    
+}
+.heading-text{
+    color: white;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 63px;
+    margin-top: 20%;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.sub-text2{
+    color: rgba(255, 255, 255, 0.717);
+    font-size: 17px;
+    line-height: 27px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10;
+}
+
+.nav-button {
+    display: block; /* Ensures padding and margin work correctly */
+    color: #770888; /* text-gray-700 */
+    font-weight: 500; /* font-medium */
+    padding-top: 0.5rem; /* py-2 */
+    padding-bottom: 0.5rem; /* py-2 */
+    padding-left: 1rem; /* px-4 */
+    padding-right: 1rem; /* px-4 */
+    border-radius: 0.5rem; /* rounded-lg */
+    text-decoration: none; /* non-style-link */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size; /* transition */
+    transition-duration: 200ms; /* duration-200 */
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+}
+
+/* Hover styles for both nav links */
+.nav-button:hover {
+    font-size: 1.1rem; /* hover:text-lg */
+    color: #851abf; /* hover:text-blue-600 */
+}
+
+/* Active link highlight styles */
+.nav-button.active-nav-link {
+    color: #851abf; /* Same as hover color, or a distinct active color */
+    background-color: #f0e4ff; /* A light background highlight */
+    /* You could also add a border or thicker underline */
+    /* border-bottom: 2px solid #851abf; */
+    /* font-weight: 700; /* Make it bolder */
+}
+
+/* Optional: Adjust hover for active link */
+/* This ensures the active state is always dominant, even on hover */
+.nav-button.active-nav-link:hover {
+    font-size: 1.1rem; /* Maintain hover effect */
+    color: #851abf; /* Keep color consistent or darken slightly */
+    background-color: #cba6f6; /* Slightly darker background on hover for active link */
+}
+
+.reg ister-btn{
+    background-color: rgba(240, 248, 255, 0.589);
+    color: #345cc4;
+}
+
+
+.safespaceph-logo{
+    color: white;
+    font-weight: bolder;
+    font-size: 20px;
+    padding-left: 20px;
+    animation: transitionIn-Y-over 0.5s;
+}
+
+.logo-container {
+            display: flex; /* Use flexbox for easy alignment */
+            align-items: center; /* Vertically center items */
+            padding-left: 20px; /* Add space from the left edge of the td */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+.logo-img {
+            height: 60px; /* Increased height for larger logo */
+            width: auto; /* Maintain aspect ratio */
+            margin-right: 10px; /* Increased space between logo and text */
+            vertical-align: middle; /* Ensures alignment with text */
+        }
+
+.safespaceph-logo-sub {
+            /* Ensure the font class styles are defined in main.css or here */
+            font-size: 32px; /* Example: Adjust font size to match logo better */
+            font-weight: 1000; /* Example */
+            color: #391053; /* Example: A color that goes well with purple */
+            white-space: nowrap; /* Prevent text from wrapping */
+            text-shadow: 2px 2px 10px #3910534b;
+}
+
+.nav-item{
+    color: rgba(255, 255, 255, 0.671);
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    animation: transitionIn-Y-over 0.5s;
+}
+
+.nav-item:hover{
+    color: #f0f0f0;
+
+}
+
+.footer-hashen{
+    position: absolute;
+    bottom: 0;
+    left: 45%;
+    font-size: 13px;
+    animation: transitionIn-Y-over 0.5s;
+}
+
+
+body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff; /* Lightest purple for the overall background */
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Arrange content in a column: header, main, footer */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+        }
+
+
+       
+        .contact-container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 90%;
+            max-width: 1000px;
+
+            margin: 20px auto; /* Center the container with some margin */
+            display: flex;
+            margin-bottom: 40px; /* Add margin to the bottom for spacing */
+            margin-top: 125px;
+        }
+
+        .contact-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .form-column, .info-column {
+            margin-left: 40px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 1000;
+            color: #391053;
+            white-space: nowrap;
+            text-shadow: 2px 2px 10px #3910534b;
+            text-align: center;
+            margin-bottom: 30px;
+            margin-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            margin-left: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #391053;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 1px solid #9D72B3;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: #5A2675;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+      button[type="submit"] {
+    background-color: #5A2675;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 34   0px; /* Set the button length */
+    display: block;
+    margin: 0 auto; /* Center the button horizontally */
+}
+
+        button[type="submit"]:hover {
+            background-color: #391053;
+        }
+
+        .contact-info p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #391053;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            color: #5A2675;
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .map-container {
+            background-color: #f8f8f8;
+            border: 1px dashed #9D72B3;
+            border-radius: 8px;
+            height: 250px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #bbb;
+            font-size: 1.2em;
+            font-style: italic;
+            text-align: center;
+            /* Placeholder for content */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%239D72B3" width="80px" height="80px"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.802 8.397 8 16.398 4.198-8.001 8-12.201 8-16.398 0-4.199-3.802-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>'); /* Placeholder icon */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80px;
+        }
+
+        /* Footer Styles */
+.container {
+    width: 100%;          /* Ensures the container takes the full width available */
+    max-width: none;      /* Removes any maximum width constraint that might be centering the content */
+    margin-left: 0;       /* Eliminates left margin */
+    margin-right: 0;      /* Eliminates right margin */
+    padding-left: 0;      /* Eliminates left padding */
+    padding-right: 0;     /* Eliminates right padding */
+}
+
+.footer {
+  background-color: #391053;
+  color: white;
+  padding: 30px;
+}
+
+
+
+.footer-top {
+  display: flex;
+  justify-content: center;   
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  gap: 50px; 
+}
+
+.footer-branding {
+  display: flex;
+  font-size: 28px;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-logo {
+  height: 100px;
+}
+
+.footer-branding h2 {
+    font-size: 32px; /* Example: Adjust font size to match logo better */
+    font-weight: 1000; /* Example */
+    color: #ffffff; /* Example: A color that goes well with purple */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-shadow: 2px 2px 10px #3910534b;
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+.footer-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 23px;
+  margin: 0 42px;
+  font-weight: bold;
+  
+}
+
+.divider {
+  height: 53px;
+  width: 2.625px;
+  background-color: white;
+}
+
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-bottom-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  font-size: 16px;
+}
+
+.footer-bottom-row p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
