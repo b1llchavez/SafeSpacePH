@@ -314,20 +314,27 @@ body {
 }
 
 .section-header {
-    background: linear-gradient(90deg, #C9A8F1 0%, #A180C9 50.48%, #2E0E55 100%);
-    padding: 20px; /* Consistent padding */
+    width: 100vw; /* Force full screen width */
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 
-    margin-bottom: 40px; /* Increased margin-bottom to separate from content */
+    background: linear-gradient(90deg, #C9A8F1 0%, #A180C9 50.48%, #2E0E55 100%);
+    padding: 20px;
+    margin-bottom: 40px;
 }
 
 .section-header h2 {
     color: #000000;
-    font-size: 38px; /* Consistent heading size with WHO WE ARE */
+    font-size: 38px;
     font-weight: 900;
-    margin: 0;
-    text-align: left;
     line-height: normal;
-    margin-left: 20px; /* Consistent margin */
+    max-width: 900px;       /* Match the content width of the sections */
+    margin: 0 auto;         /* Center the heading inside the full-width bar */
+    padding: 0 20px;        /* Align with horizontal padding of content */
+    text-align: left;
 }
 
 /* Footer Styles - Keeping consistent with index.css */
