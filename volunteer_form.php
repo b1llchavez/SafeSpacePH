@@ -154,112 +154,123 @@ $stmt->bind_param(
 
               <style>
                 body {
-                  background: rgba(0,0,0,0.15);
-                  min-height: 100vh;
-                  margin: 0;
-                  font-family: 'Inter', Arial, sans-serif;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                }
-                .modal {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  min-height: 100vh;
-                  width: 100vw;
-                }
-                .confirmation-box {
-                  background: #fff;
-                  border-radius: 16px;
-                  box-shadow: 0 8px 32px rgba(138,43,226,0.12), 0 2px 8px rgba(27,95,167,0.10);
-                  padding: 54px 64px 38px 64px;
-                  max-width: 685px;
-                  width: 98%;
-                  margin: 40px auto;
-                  text-align: center;
-                  animation: fadeIn 0.3s;
-                  position: relative;
-                }
-                .confirmation-check {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  margin-bottom: 18px;
-                }
-                .confirmation-check svg {
-                  width: 70px;
-                  height: 70px;
-                  display: block;
-                }
-                .confirmation-box h2 {
-                  color: #6a0dad;
-                  font-size: 2.1rem;
-                  font-weight: 800;
-                  margin-bottom: 16px;
-                  margin-top: 0;
-                  letter-spacing: 0.5px;
-                  line-height: 1.2;
-                }
-                .confirmation-box p {
-                  font-size: 1.13rem;
-                  color: #2d1f44;
-                  margin: 12px 0 22px 0;
-                  font-family: 'Inter', Arial, sans-serif;
-                  font-weight: 500;
-                  line-height: 1.6;
-                }
-                .popup-notification {
-                  background: #f7f4fd;
-                  border-left: 5px solid #6a0dad;
-                  padding: 18px 20px;
-                  margin: 26px 0 22px 0;
-                  border-radius: 7px;
-                  text-align: left;
-                  font-size: 1.01rem;
-                  color: #3a2c5c;
-                  font-family: 'Inter', Arial, sans-serif;
-                  font-weight: 500;
-                  line-height: 1.7;
-                }
-                .popup-notification strong {
-                  color: #6a0dad;
-                  font-weight: 700;
-                }
-                .go-back-button {
-                  display: inline-block;
-                  background: #6a0dad;
-                  color: #fff;
-                  padding: 14px 38px;
-                  border-radius: 7px;
-                  text-decoration: none;
-                  font-size: 1.08rem;
-                  font-weight: 600;
-                  margin-top: 22px;
-                  transition: background 0.2s;
-                  border: none;
-                  cursor: pointer;
-                  box-shadow: 0 2px 8px rgba(138,43,226,0.08);
-                  letter-spacing: 0.2px;
-                }
-                .go-back-button:hover {
-                  background: #1b5fa7;
-                  color: #fff;
-                }
-                @media (max-width: 700px) {
-                  .confirmation-box {
-                    padding: 28px 6vw 24px 6vw;
-                    max-width: 98vw;
-                  }
-                  .confirmation-check svg {
-                    width: 50px;
-                    height: 50px;
-                  }
-                }
-                @keyframes fadeIn {
-                  from { opacity: 0; transform: translateY(-30px);}
-                  to { opacity: 1; transform: translateY(0);}
-                }
+  background: rgba(0, 0, 0, 0.15);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.confirmation-box {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15), 0 2px 8px rgba(90, 38, 117, 0.12);
+  padding: 54px 64px 38px 64px;
+  max-width: 685px;
+  width: 98%;
+  margin: 40px auto;
+  text-align: center;
+  animation: fadeIn 0.3s;
+  position: relative;
+}
+
+.confirmation-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.confirmation-check svg {
+  width: 70px;
+  height: 70px;
+  display: block;
+}
+
+.confirmation-box h2 {
+  color: #391053;
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  margin-top: 0;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.confirmation-box p {
+  font-size: 1.13rem;
+  color: #2d1f44;
+  margin: 12px 0 22px 0;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.popup-notification {
+  background: #f7f4fd;
+  border-left: 5px solid #5A2675;
+  padding: 18px 20px;
+  margin: 26px 0 22px 0;
+  border-radius: 7px;
+  text-align: left;
+  font-size: 1.01rem;
+  color: #3a2c5c;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.popup-notification strong {
+  color: #391053;
+  font-weight: 700;
+}
+
+.go-back-button {
+  display: inline-block;
+  background: #5A2675;
+  color: #fff;
+  padding: 14px 38px;
+  border-radius: 7px;
+  text-decoration: none;
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-top: 22px;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(157, 114, 179, 0.12);
+  letter-spacing: 0.2px;
+}
+
+.go-back-button:hover {
+  background: #391053;
+}
+
+@media (max-width: 700px) {
+  .confirmation-box {
+    padding: 28px 6vw 24px 6vw;
+    max-width: 98vw;
+  }
+
+  .confirmation-check svg {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
               </style>
             </head>
             <body>
@@ -268,29 +279,29 @@ $stmt->bind_param(
                   <div class="confirmation-check">
                     <!-- Big purple check icon SVG -->
                     <svg viewBox="0 0 80 80" fill="none">
-                      <circle cx="40" cy="40" r="38" fill="#f7f4fd" stroke="#6a0dad" stroke-width="4"/>
-                      <path d="M25 43.5L37.5 56L56 28" stroke="#6a0dad" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="40" cy="40" r="38" fill="#f7f4fd" stroke="#391053" stroke-width="4"/>
+                      <path d="M25 43.5L37.5 56L56 28" stroke="#391053" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </div>
                   <h2>Form Submitted Successfully!</h2>
                   <p>
                     Thank you for applying as a <strong>Volunteer Lawyer</strong> with SafeSpace PH.<br>
                     Your application has been received.<br>
-                    <span style="color:#1b5fa7;font-weight:600;">We appreciate your willingness to help!</span>
+                    <span style="color:#391053;font-weight:600;">We appreciate your willingness to help!</span>
                   </p>
                   <div class="popup-notification">
   <strong>What happens next?</strong><br>
   Our team will review your application and contact you within 
   <strong>
     <span style="vertical-align:middle;display:inline-flex;align-items:center;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="margin-right:4px;vertical-align:middle;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#6a0dad" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#6a0dad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="margin-right:4px;vertical-align:middle;" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#391053" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#6a0dad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       24 hours
     </span>
   </strong>
   for verification.<br>
   Please ensure you can access the email address and phone number you provided.<br>
   <br>
-  <span style="color:#6a0dad;">If you have questions, email us at <strong>safespaceph2025@gmail.com</strong>.</span>
+  <span style="color:#391053;">If you have questions, email us at <strong>safespaceph2025@gmail.com</strong>.</span>
 </div>
                   <a href="index.html" class="go-back-button">Go back</a>
                 </div>
@@ -317,208 +328,212 @@ $stmt->bind_param(
         <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
     <style>
-        /* Extra popup centering for standalone use */
         body {
-            background: rgba(0,0,0,0.15);
-            min-height: 100vh;
-            margin: 0;
-            font-family: 'Inter', Arial, sans-serif;
-        }
-        .modal {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .modal-content {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            padding: 40px 64px;           /* Increased horizontal padding */
-            max-width: 800px;             /* Increased max width */
-            width: 100%;
-            position: relative;
-            animation: fadeIn 0.3s;
-        }
-        .close {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 22px;
-            color: #888;
-            cursor: pointer;
-            border: none;
-            background: none;
-        }
-        .form-title {
-            text-align: center;
-            color: #6a0dad;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0;
-            margin-top: 0;
-            letter-spacing: 0.5px;
-        }
-        .form-divider {
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #6a0dad 0%, #1b5fa7 100%);
-            border: none;
-            border-radius: 2px;
-            margin: 18px 0 32px 0;
-        }
-        .section-title {
-            font-size: 1.18rem;
-            color: #6a0dad;   /* Changed to match your accent color */
-            font-weight: 600;
-            margin: 32px 0 14px 0;
-            letter-spacing: 0.2px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #e2d8fa;
-        }
-        .section-title:first-of-type {
-            margin-top: 0;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px 32px;
-            margin-bottom: 18px;
-        }
-        .form-group {
-            margin-bottom: 0; /* spacing handled by grid gap */
-        }
-        .form-group.full-width {
-            grid-column: 1 / 3;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-        input[type="text"], input[type="email"], input[type="number"], textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-        }
-        input[type="file"] {
-            margin-top: 4px;
-            padding: 8px 0;
-            border: none;
-            background: none;
-            font-size: 15px;
-            color: #3a2c5c;
-        }
+    background: rgba(0, 0, 0, 0.15);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Inter', Arial, sans-serif;
+}
 
-        input[type="file"]::-webkit-file-upload-button {
-            background: #6a0dad;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 22px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-right: 10px;
-        }
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
 
-        input[type="file"]:hover::-webkit-file-upload-button {
-            background: #1b5fa7;
-        }
+.modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    padding: 40px 64px;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    animation: fadeIn 0.3s;
+}
 
-        input[type="file"]::file-selector-button {
-            background: #6a0dad;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 22px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-right: 10px;
-        }
+.close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 22px;
+    color: #888;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
 
-        input[type="file"]:hover::file-selector-button {
-            background: #1b5fa7;
-        }
-        textarea {
-            resize: vertical;
-        }
-        .checkbox-group {
-            margin-bottom: 16px;
-            padding: 12px 16px;
-            background: #f7f4fd;
-            border-radius: 5px;
-            border: 1px solid #e2d8fa;
-            display: flex;
-            align-items: flex-start;
-        }
-        .checkbox-group label {
-            display: flex;
-            align-items: flex-start;
-            font-weight: 500;
-            font-size: 14px;
-            color: #3a2c5c;
-            line-height: 1.6;
-            cursor: pointer;
-        }
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 10px;
-            margin-top: 3px;
-            accent-color: #6a0dad;
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-        button[type="submit"] {
-            background: #6a0dad;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 28px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button[type="submit"]:hover {
-            background: #6d1bbd;
-            border: 2px solid #6a0dad;
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(138,43,226,0.10);
-        }
-        /* Input, textarea, and select focus/active border color */
-input[type="text"]:focus, 
-input[type="email"]:focus, 
-input[type="number"]:focus, 
-input[type="file"]:focus, 
-textarea:focus, 
+.form-title {
+    text-align: center;
+    color: #391053;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 0;
+    letter-spacing: 0.5px;
+}
+
+.form-divider {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+    border: none;
+    border-radius: 2px;
+    margin: 18px 0 32px 0;
+}
+
+.section-title {
+    font-size: 1.18rem;
+    color: #391053;
+    font-weight: 600;
+    margin: 32px 0 14px 0;
+    letter-spacing: 0.2px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e2d8fa;
+}
+
+.section-title:first-of-type {
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 32px;
+    margin-bottom: 18px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / 3;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+input[type="file"] {
+    margin-top: 4px;
+    padding: 8px 0;
+    border: none;
+    background: none;
+    font-size: 15px;
+    color: #3a2c5c;
+}
+
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::file-selector-button {
+    background: #5A2675;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 22px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-right: 10px;
+}
+
+input[type="file"]:hover::-webkit-file-upload-button,
+input[type="file"]:hover::file-selector-button {
+    background: #391053;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.checkbox-group {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #f7f4fd;
+    border-radius: 5px;
+    border: 1px solid #e2d8fa;
+    display: flex;
+    align-items: flex-start;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: flex-start;
+    font-weight: 500;
+    font-size: 14px;
+    color: #3a2c5c;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    margin-top: 3px;
+    accent-color: #5A2675;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+button[type="submit"] {
+    background: #5A2675;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #391053;
+    border: 2px solid #9D72B3;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(157, 114, 179, 0.18);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus,
+textarea:focus,
 select:focus {
-    border-color: #6a0dad !important;
+    border-color: #5A2675 !important;
     box-shadow: none;
     outline: none;
     transition: border-color 0.2s;
 }
 
-/* Button active/pressed and focus state */
-button[type="submit"]:focus, 
+button[type="submit"]:focus,
 button[type="submit"]:active {
-    border: 2px solid #6a0dad;
-    background: #6d1bbd;
+    border: 2px solid #5A2675;
+    background: #391053;
     color: #fff;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(138,43,226,0.18);
+    box-shadow: 0 0 0 2px rgba(157, 114, 179, 0.18);
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
-/* Button hover/focus/active: purple border and background, no scaling or shadow */
 button[type="submit"]:hover,
 button[type="submit"]:focus,
 button[type="submit"]:active {
-    background: #6a0dad;
+    background: #5A2675;
     border: none;
     color: #fff;
     box-shadow: none;
@@ -526,47 +541,13 @@ button[type="submit"]:active {
     transition: none;
 }
 
-/* Input, textarea, and select focus/active border color: purple, no scaling */
-input[type="text"]:focus, 
-input[type="email"]:focus, 
-input[type="number"]:focus, 
-input[type="file"]:focus, 
-textarea:focus, 
+select,
 select:focus {
-    border-color: #6a0dad !important;
-    box-shadow: none;
-    outline: none;
-    transition: border-color 0.2s;
-}
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-30px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        @media (max-width: 800px) {
-            .modal-content, .popup {
-                padding: 24px 8vw;
-                max-width: 98vw;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 18px 0;
-            }
-            .form-group.full-width {
-                grid-column: 1 / 2;
-            }
-        }
-        @media (max-width: 600px) {
-    .preferred-areas-list {
-        grid-template-columns: 1fr;
-    }
-}
-        select,
-select:focus {
-    background: #6a0dad url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 16px center/18px 18px;
+    background: #5A2675 url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 16px center/18px 18px;
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 10px 38px 10px 22px; /* extra right padding for icon */
+    padding: 10px 38px 10px 22px;
     font-size: 15px;
     font-weight: 500;
     outline: none;
@@ -577,24 +558,25 @@ select:focus {
     cursor: pointer;
     box-shadow: none;
 }
+
 select:hover {
-    background-color: #1b5fa7;
+    background-color: #391053;
     color: #fff;
 }
 
-/* Custom checkbox styles */
 input[type="checkbox"] {
-    accent-color: #6a0dad;
+    accent-color: #5A2675;
     width: 18px;
     height: 18px;
     border-radius: 4px;
-    border: 2px solid #6a0dad;
+    border: 2px solid #5A2675;
     transition: border-color 0.2s, background 0.2s;
     cursor: pointer;
 }
+
 input[type="checkbox"]:checked {
-    background-color: #6a0dad;
-    border-color: #6a0dad;
+    background-color: #5A2675;
+    border-color: #5A2675;
 }
 
 .preferred-areas-list {
@@ -604,6 +586,7 @@ input[type="checkbox"]:checked {
     margin-top: 6px;
     margin-bottom: 4px;
 }
+
 .preferred-areas-list label {
     font-size: 15px;
     font-weight: 500;
@@ -613,6 +596,42 @@ input[type="checkbox"]:checked {
     gap: 6px;
     margin-bottom: 0;
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 800px) {
+    .modal-content,
+    .popup {
+        padding: 24px 8vw;
+        max-width: 98vw;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px 0;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .preferred-areas-list {
+        grid-template-columns: 1fr;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -794,55 +813,69 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <div id="terms-popup" class="overlay">
   <div class="popup" style="max-height: 80vh; overflow-y: auto;">
-    <h2 style="color: #6a0dad; font-size: 28px; font-weight: 700;">Terms and Conditions</h2>
+    <h2 style="color: #5A2675; font-size: 28px; font-weight: 700;">Terms and Conditions</h2>
     <a class="close" href="#" style="position:absolute;top:18px;right:22px;font-size:22px;color:#888;text-decoration:none;">&times;</a>
-    <div class="content" style="padding-top: 10px; line-height: 1.6; font-size: 14.5px; color: #333;">
+    <div class="content" style="padding-top: 10px; line-height: 1.6; font-size: 14.5px; color: #2c2040;">
       <p><strong>Effective Date:</strong> July 12, 2025</p>
-      <h3 style="color: #6a0dad;">1. Overview of the Platform</h3>
+      <h3 style="color: #5A2675;">1. Overview of the Platform</h3>
       <p>SafeSpace PH is a web application providing free legal assistance and education related to the Safe Spaces Act (RA 11313) in the Philippines. It connects victims of gender-based harassment with volunteer lawyers and offers resources for legal awareness.</p>
-      <h3 style="color: #6a0dad;">2. Eligibility</h3>
+      
+      <h3 style="color: #5A2675;">2. Eligibility</h3>
       <ul>
         <li>Users must be 18 years or older or supervised by a guardian.</li>
         <li>The platform is to be used only for lawful purposes under the Act.</li>
         <li>Legal services are pro bono, and outcomes are not guaranteed.</li>
       </ul>
-      <h3 style="color: #6a0dad;">3. Use of Services</h3>
+
+      <h3 style="color: #5A2675;">3. Use of Services</h3>
       <p><strong>For Users:</strong> Submit honest, complete info. We connect you to volunteer lawyers privately and securely.</p>
       <p><strong>For Lawyers:</strong> Only licensed lawyers may join. You must provide pro bono consultations, and SafeSpace PH may verify credentials.</p>
-      <h3 style="color: #6a0dad;">4. No Attorney-Client Relationship</h3>
+
+      <h3 style="color: #5A2675;">4. No Attorney-Client Relationship</h3>
       <p>Using SafeSpace PH does not automatically create an attorney-client relationship. This occurs only through mutual agreement between user and lawyer.</p>
-      <h3 style="color: #6a0dad;">5. No Guarantees or Warranties</h3>
+
+      <h3 style="color: #5A2675;">5. No Guarantees or Warranties</h3>
       <p>We do not guarantee availability of services, outcomes of consultations, or the accuracy of content. Platform changes may occur without prior notice.</p>
-      <h3 style="color: #6a0dad;">6. User Conduct</h3>
+
+      <h3 style="color: #5A2675;">6. User Conduct</h3>
       <ul>
         <li>No fraudulent or malicious activity allowed.</li>
         <li>No impersonation or misrepresentation.</li>
         <li>Users must respect privacy and platform guidelines.</li>
       </ul>
-      <h3 style="color: #6a0dad;">7. Data Privacy</h3>
+
+      <h3 style="color: #5A2675;">7. Data Privacy</h3>
       <p>Your data is protected under RA 10173 (Data Privacy Act of 2012). Please refer to our Privacy Policy for full details.</p>
-      <h3 style="color: #6a0dad;">8. Intellectual Property</h3>
+
+      <h3 style="color: #5A2675;">8. Intellectual Property</h3>
       <p>All website content is owned by SafeSpace PH and may not be reproduced or distributed without permission.</p>
-      <h3 style="color: #6a0dad;">9. Third-Party Links</h3>
+
+      <h3 style="color: #5A2675;">9. Third-Party Links</h3>
       <p>We are not responsible for content or privacy practices of third-party links provided on the site.</p>
-      <h3 style="color: #6a0dad;">10. Limitation of Liability</h3>
+
+      <h3 style="color: #5A2675;">10. Limitation of Liability</h3>
       <p>SafeSpace PH is not liable for any damage, data loss, or legal consequences from use of the site or consultations made.</p>
-      <h3 style="color: #6a0dad;">11. Changes to the Terms</h3>
+
+      <h3 style="color: #5A2675;">11. Changes to the Terms</h3>
       <p>We may revise these Terms at any time. Continued use of the site implies agreement with any changes made.</p>
-      <h3 style="color: #6a0dad;">12. Governing Law</h3>
+
+      <h3 style="color: #5A2675;">12. Governing Law</h3>
       <p>These Terms are governed by the laws of the Republic of the Philippines.</p>
-      <h3 style="color: #6a0dad;">13. Contact</h3>
+
+      <h3 style="color: #5A2675;">13. Contact</h3>
       <p>📧 safespaceph2025@gmail.com<br>📍 SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015</p>
-      <h3 style="color: #6a0dad;">14. Acceptance</h3>
+
+      <h3 style="color: #5A2675;">14. Acceptance</h3>
       <p>By using this platform, you confirm that you have read and agree to these Terms and Conditions.</p>
+
       <div style="text-align:center; margin-top: 28px;">
         <a href="#" class="back-btn">Back</a>
       </div>
     </div>
   </div>
 </div>
+
 <style>
-/* Overlay and popup styles for Terms and Conditions */
 .overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -857,8 +890,8 @@ document.addEventListener('DOMContentLoaded', function() {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  padding: 48px 64px 36px 64px; /* Wider horizontal padding */
-  max-width: 720px;             /* Increased max width */
+  padding: 48px 64px 36px 64px;
+  max-width: 720px;
   width: 98%;
   margin: 60px auto;
   position: relative;
@@ -866,7 +899,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 .back-btn {
   display: inline-block;
-  background: #6a0dad; /* lighter purple */
+  background: #5A2675;
   color: #fff !important;
   border: none;
   border-radius: 6px;
@@ -875,8 +908,15 @@ document.addEventListener('DOMContentLoaded', function() {
   font-weight: 500;
   text-decoration: none;
   margin-top: 10px;
-  transition: none;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(90,38,117,0.2);
 }
-
+.back-btn:hover {
+  background: #391053;
+  color: #fff;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
