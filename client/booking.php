@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/admin.css">
                 <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
-    <title></title>
+    <title>Bookings | SafeSpace PH</title>
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;

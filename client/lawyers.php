@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../css/admin.css">
             <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
-        
     <title>All Lawyers | SafeSpace PH</title>
     <style>
         .popup{
