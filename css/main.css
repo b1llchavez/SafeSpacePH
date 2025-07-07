@@ -402,7 +402,8 @@ input[type=search]:focus {
   background-image: url('../img/icons/session-icon.svg');
 }
 .menu-icon-home{
-  background-image: url('../img/icons/home.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/home-icon.svg');
 }
 
 
@@ -449,7 +450,7 @@ input[type=search]:focus {
 .menu-icon-home:hover,.menu-icon-home-active{
   color: var(--primarycolor);
   
-  background-image: url('../img/icons/home-iceblue.svg');
+  background-image: url('../img/icons/home-icon-hover.svg');
 }
 
 
