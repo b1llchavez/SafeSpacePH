@@ -1,0 +1,17 @@
+{
+    "name": "billmamorno/safe-space-ph-5",
+    "autoload": {
+        "psr-4": {
+            "Billmamorno\\SafeSpacePh5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bill Mamorno",
+            "email": "mamornobillc@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

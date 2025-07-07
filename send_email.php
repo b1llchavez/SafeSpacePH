@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php'; // Composer autoloader
 require 'phpmailer/PHPMailer.php';
 require 'phpmailer/SMTP.php';
 require 'phpmailer/Exception.php';
@@ -6,18 +7,22 @@ require 'phpmailer/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+// Load .env variables
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 function sendConfirmationEmail($recipientEmail, $recipientName) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'safespaceph2025@gmail.com';
-        $mail->Password   = 'dacpnzeouomqejyk';
+        $mail->Username   = $_ENV['EMAIL_USER'];
+        $mail->Password   = $_ENV['EMAIL_PASS'];
         $mail->SMTPSecure = 'tls'; 
         $mail->Port       = 587;
 
-        $mail->setFrom('safespaceph2025@gmail.com', 'SafeSpace PH');
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
         $mail->addAddress($recipientEmail, $recipientName);
 
         $mail->isHTML(true);
