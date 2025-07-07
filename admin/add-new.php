@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
-        
-    <title>Lawyer</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+
+    <title>Add New Lawyer | SafeSpace PH</title>
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;

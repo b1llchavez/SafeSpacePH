@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
-        
-    <title>Dashboard</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+
+
+    <title>Dashboard | SafeSpace PH</title>
     <style>
         .dashbord-tables,.lawyer-heade{
             animation: transitionIn-Y-over 0.5s;

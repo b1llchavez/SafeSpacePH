@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
     <link rel="stylesheet" href="../css/admin.css">
-        
+    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
-
-    <title>Settings</title>
+    <title>Settings | SafeSpace PH</title>
     <style>
         .dashbord-tables{
             animation: transitionIn-Y-over 0.5s;
