@@ -1,20 +1,19 @@
-.container{
+.container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     height: 100vh;
+    overflow: hidden; /* Prevent entire page from scrolling */
 }
 
-.menu{
-    border-right: 1.5px solid #ffffff;
-    width: 21%;
-    height: 100vh;
-    box-shadow: 0 0px 0px 2px rgba(240, 240, 240, 0.3);
+.menu {
+    width: 320px;
+    min-height: 100vh;
     background-color: #C9A8F1;
 }
 
-.dash-body{
-    width: 79%;
-    height: 100vh;
+.dash-body {
+    flex: 1;
+    background-color: #ffffff;
 }
 
 .menu-container{
@@ -28,7 +27,7 @@
     font-size: 22px;
     margin: 0;
     text-align: left;
-    padding-left: 8%;
+    padding-left: 5%;
 }
 
 .profile-subtitle{
@@ -37,7 +36,7 @@
     font-size: 15px;
     margin: 0;
     text-align: left;
-    padding-left: 8%;
+    padding-left: 5%;
 }
 
 .logout-btn{
