@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeSpacePH</title>
+    <title>SafeSpacePH | Contact Us</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Your existing CSS files -->
@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/aboutus.css">      
      <link rel="stylesheet" href="css/us.css"> 
-  
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
     <style>
         /* This inline style is kept from your original code for the table animation */
         table{
@@ -75,7 +77,20 @@
                     <p><i class="fas fa-envelope"></i> Email Us: safespaceph2025@gmail.com</p>
                 </div>
                 <div class="map-container">
-                    <!-- This is your empty map container -->
+                    <div
+                        id="map"
+                        style="
+                            height: 300px;
+                            width: 100%;
+                            border: 3px solid #5A2675;              /* Matches .what-we-do-card bg and section-header gradient */
+                            border-radius: 1rem;                    /* More rounded corners */
+                            box-shadow: 0 4px 16px 0 rgba(201,168,241,0.25), 0 2px 8px 0 rgba(0,0,0,0.07); /* purple glow + subtle shadow */
+                            margin-top: 0.5rem;
+                            transition: box-shadow 0.3s, border-color 0.3s;
+                        "
+                        onmouseover="this.style.boxShadow='0 6px 24px 0 rgba(201,168,241,0.35), 0 2px 8px 0 rgba(0,0,0,0.10)'; this.style.borderColor='#A180C9';"
+                        onmouseout="this.style.boxShadow='0 4px 16px 0 rgba(201,168,241,0.25), 0 2px 8px 0 rgba(0,0,0,0.07)'; this.style.borderColor='#C9A8F1';"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -102,6 +117,25 @@
             </div>
         </div>
     </footer>
-    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      // Coordinates for SafeSpace PH (Padre Paredes St, Sampaloc, Manila)
+      var safespaceCoords = [14.604119, 120.9886247];
+
+      // Initialize map
+      var map = L.map('map').setView(safespaceCoords, 16);
+
+      // Add OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add marker
+      L.marker(safespaceCoords)
+        .addTo(map)
+        .bindPopup("<b>SafeSpace PH Office</b><br>Padre Paredes St, Sampaloc, Manila")
+        .openPopup();
+    </script>
 </body>
 </html>
