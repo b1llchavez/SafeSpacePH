@@ -266,12 +266,12 @@
             $row=$result->fetch_assoc();
             $name=$row["cname"];
             $email=$row["cemail"];
-            $address=$row["paddress"];
+            $address=$row["caddress"];
             
            
-            $dob=$row["pdob"];
-            $nic=$row['pnic'];
-            $tele=$row['ptel'];
+            $dob=$row["cdob"];
+            $nic=$row['cnic'];
+            $tele=$row['ctel'];
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
@@ -381,9 +381,9 @@
            
             
             
-            $address=$row["paddress"];
-            $nic=$row['pnic'];
-            $tele=$row['ptel'];
+            $address=$row["caddress"];
+            $nic=$row['cnic'];
+            $tele=$row['ctel'];
 
             $error_1=$_GET["error"];
                 $errorlist= array(
