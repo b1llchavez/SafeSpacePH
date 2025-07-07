@@ -10,7 +10,7 @@
         <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
         
-    <title>SafeSpace PH | Login</title>
+    <title>Login | SafeSpace PH</title>
 
     
     

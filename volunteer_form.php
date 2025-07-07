@@ -149,7 +149,7 @@ $stmt->bind_param(
             <html lang="en">
             <head>
               <meta charset="UTF-8">
-              <title>Volunteer Lawyer Confirmation</title>
+              <title>Volunteer Registration | SafeSpace PH</title>
                   <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
               <style>

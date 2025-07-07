@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="css/main.css">  
     <link rel="stylesheet" href="css/signup.css">
         <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
-
-        
-    <title>SafeSpace PH | Sign Up</title>
+    <title>Sign Up | SafeSpace PH</title>
     
 </head>
 <body>

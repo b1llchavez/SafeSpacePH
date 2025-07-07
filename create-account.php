@@ -10,7 +10,7 @@
             <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
         
-    <title>SafeSpace PH | Create Account</title>
+    <title>Create Account | SafeSpace PH</title>
     <style>
         .container{
             animation: transitionIn-X 0.5s;
