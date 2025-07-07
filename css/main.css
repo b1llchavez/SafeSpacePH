@@ -452,7 +452,8 @@ input[type=search]:focus {
 
 
 .btn-icon-back{
-  background-image: url('../img/icons/back-iceblue.svg');
+  background-image: url('../img/icons/back-arrow.svg');
+  background-size: 30px 30px;
   background-position: 18px 50%;
   background-repeat: no-repeat;
   transition: 0.5s;
@@ -460,37 +461,42 @@ input[type=search]:focus {
 }
 
 .btn-icon-back:hover{
-  background-image: url('../img/icons/back-white.svg');
+  background-image: url('../img/icons/back-arrow-hover.svg');
 }
 
 
 .btn-edit{
-  background-image: url('../img/icons/edit-iceblue.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/edit-icon.svg');
 }
 .btn-edit:hover{
-  background-image: url('../img/icons/edit-white.svg');
+  background-image: url('../img/icons/edit-icon-hover.svg');
 }
 
 .btn-view{
-  background-image: url('../img/icons/view-iceblue.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/view-icon.svg');
 }
 .btn-view:hover{
-  background-image: url('../img/icons/view-white.svg');
+  background-image: url('../img/icons/view-icon-hover.svg');
 }
 
 .btn-delete{
-  background-image: url('../img/icons/delete-iceblue.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/delete-icon.svg');
 }
 .btn-delete:hover{
-  background-image: url('../img/icons/delete-white.svg');
+  background-image: url('../img/icons/delete-icon-hover.svg');
 }
 
 .btn-filter{
-  background-image: url('../img/icons/filter-iceblue.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/filter-icon.svg');
   background-position: 15px 50%;
 }
 .btn-filter:hover{
-  background-image: url('../img/icons/filter-white.svg');
+  background-size: 30px 30px;
+  background-image: url('../img/icons/filter-icon-hover.svg');
 }
 
 
