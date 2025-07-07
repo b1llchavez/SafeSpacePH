@@ -1,0 +1,137 @@
+body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff; /* Lightest purple for the overall background */
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Arrange content in a column: header, main, footer */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+        }
+
+
+       
+        .contact-container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 90%;
+            max-width: 1000px;
+
+            margin: 20px auto; /* Center the container with some margin */
+            display: flex;
+            margin-bottom: 40px; /* Add margin to the bottom for spacing */
+        }
+
+        .contact-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .form-column, .info-column {
+            margin-left: 40px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 1000;
+            color: #391053;
+            white-space: nowrap;
+            text-shadow: 2px 2px 10px #3910534b;
+            text-align: center;
+            margin-bottom: 30px;
+            margin-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            margin-left: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #391053;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 1px solid #9D72B3;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: #5A2675;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+      button[type="submit"] {
+    background-color: #5A2675;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 34   0px; /* Set the button length */
+    display: block;
+    margin: 0 auto; /* Center the button horizontally */
+}
+
+        button[type="submit"]:hover {
+            background-color: #391053;
+        }
+
+        .contact-info p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #391053;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            color: #5A2675;
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .map-container {
+            background-color: #f8f8f8;
+            border: 1px dashed #9D72B3;
+            border-radius: 8px;
+            height: 250px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #bbb;
+            font-size: 1.2em;
+            font-style: italic;
+            text-align: center;
+            /* Placeholder for content */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%239D72B3" width="80px" height="80px"><path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.802 8.397 8 16.398 4.198-8.001 8-12.201 8-16.398 0-4.199-3.802-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/></svg>'); /* Placeholder icon */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80px;
+        }
+
+        

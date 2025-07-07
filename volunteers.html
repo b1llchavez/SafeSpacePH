@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeSpacePH | Home</title>
+    <title>SafeSpacePH | Volunteers</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Your existing CSS files -->
-    <link rel="stylesheet" href="css/animations.css">
+    <link rel="styleshe et" href="css/animations.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/volunteers.css">
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
-    <style>
+
+                     <style>
         /* This inline style is kept from your original code for the table animation */
         table{
             animation: transitionIn-Y-bottom 0.5s;
@@ -23,18 +25,18 @@
     <!-- Fixed Header -->
     <!-- This header will stay at the top of the viewport as the user scrolls.
          It uses Tailwind CSS classes for styling and responsiveness. -->
-    <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-6 rounded-b-lg">
+     <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-6 rounded-b-lg">
         <div class="container mx-auto flex items-center justify-between">
             <!-- Logo and Site Name Container -->
             <div class="flex items-center space-x-3">
                 <!-- Using a placeholder image for demonstration. Replace with your actual img/logo.png -->
                 <img src="img\logo.png" alt="SafeSpacePH Logo" class="logo-img h-12 w-12 rounded-full shadow-sm">
-                <span class="safespaceph-logo-sub">SafeSpacePH</span>   
+                <span class="safespaceph-logo-sub">SafeSpacePH</span>
             </div>  
-            
+
             <nav class="flex items-center space-x-4">
-                <a href="index.html" class="nav-button active-nav-link">HOME</a>
-                <a href="volunteers.html" class="nav-button">VOLUNTEERS</a>
+                <a href="index.html" class="nav-button">HOME</a>
+                <a href="volunteers.html" class="nav-button active-nav-link">VOLUNTEERS</a>
                 <a href="aboutus.html" class="nav-button">ABOUT US</a>
             </nav>
 
@@ -56,25 +58,21 @@
 
                 <tr>
                     <td colspan="3">
-                        <p class="heading-text">Welcome To SafeSpace PH</p>
+                        <p class="heading-text">Be Part of the Next Generation of Social Justice Advocates</p>
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="3">
-                        <p class="sub-text2">Free legal support under the Safe Spaces Act (RA 11313).<br>
-                            Connect with volunteer lawyers, know your rights, and access justice.<br><br></p>
+                        <p class="sub-text2">Join a growing community of passionate lawyers and individuals committed to making<br>
+                            legal support accessible to all, one pro bono case at a time.<br><br></p>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <center>
-                            <a href="login.php">
-                                <input type="button" value="Make Appointment" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
-                            </a>
-                        </center>
+                        <p class="sub-text2">We are looking for volunteer lawyers to help us provide legal support to those in need.<br>
+                            If you are interested in volunteering, please fill out the form below.</p>
                     </td>
-                </tr>
                 <tr>
                     <td colspan="3">
                         <!-- Empty cell from original code -->
@@ -85,7 +83,34 @@
         </center>
     </div>
 
-    <main class="volunteers-section">
+    <section class="why-volunteer-section">
+        <div class="why-volunteer-content-wrapper">
+            <div class="why-volunteer-text">
+                <h2 class="section-title "style="font-size: 3.1em;margin-button: 40px;" >VOLUNTEER WITH US</h2>
+                <div class="volunteer-reason">
+                    <h3>TURN PASSION INTO ACTION</h3>
+                    <p>Your time and skills directly contribute to fighting injustice and protecting human rights in the Philippines.</p>
+                </div>
+                <div class="volunteer-reason">
+                    <h3>LEARN FROM EXPERTS</h3>
+                    <p>Work alongside leading human rights lawyers and advocates, and gain hands-on experience in social justice law, advocacy and strategic litigation.</p>
+                </div>
+                <div class="volunteer-reason">
+                    <h3>STAND UP FOR WHAT'S RIGHT</h3>
+                    <p>If you believe in fairness, equity, and human rights, we give you the platform to create systemic change and challenge injustice.</p>
+                </div>
+                <div class="volunteer-reason">
+                    <h3>BUILD YOUR SKILLS AND NETWORK</h3>
+                    <p>Beyond legal research and casework, you'll build connections with people who share your passion for a fairer world.</p>
+                </div>
+            </div>
+            <div class="why-volunteer-image">
+                <img src="img/volunteer_group.jpg" alt="Volunteers working together">
+            </div>
+        </div>
+    </section>
+
+<main class="volunteers-section">
         <h2 class="section-title">Our Volunteers for Justice</h2>
         <p class="section-subtitle">Meet the lawyers making a difference with SafeSpace PH.</p>
 
@@ -127,45 +152,33 @@
         </center>
       </main>
 
-      <main class="faq-container">
-        <div class="faq-left">
-            <div class="faq-item">
-                <button class="faq-question">
-                    Are the legal services really free?
-                    <span class="toggle-icon">−</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Yes. All legal services offered through our platform are pro bono and provided by verified volunteer lawyers committed to justice and inclusivity.</p>
-                </div>
-            </div>
+      <section class="get-involved-section">
+  <h2 class="section-title">Make Your Impact Count</h2>
+  <p class="section-subtitle">Whether you're a practicing lawyer or an advocate for human rights, your time and skills can help drive real change.</p>
 
-            <div class="faq-item">
-                <button class="faq-question">
-                    What if I don’t have complete evidence?
-                    <span class="toggle-icon">−</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Yes. While evidence helps, you can still report an incident. Our volunteer lawyers can assist you in building your case and understanding your legal options.</p>
-                </div>
-            </div>
+  <div class="volunteer-roles-container">
+    <div class="role-card">
+      <h3>Pro Bono Legal Work</h3>
+      <p>With your legal knowledge, assist the marginalized groups to reach the law, whether in gender-based violence or upholding their digital rights..</p>
+    </div>
+    <div class="role-card">
+      <h3>Community Legal Education</h3>
+      <p>Conduct classes on legal literacy, compose informational reports, or assist in publicity campaigns via the Internet or without it.</p>
+    </div>
+    <div class="role-card">
+      <h3>Legal Research & Case Support</h3>
+      <p>Case preparation, research and documentation assistance-perfect when used by students or new graduates.</p>
+    </div>
+    <div class="role-card">
+      <h3>Admin & Outreach Volunteers</h3>
+      <p>Assist our operations team with outreach, event planning, or logistics, or design/communications.</p>
+    </div>
+  </div>
 
-            <div class="faq-item">
-                <button class="faq-question">
-                    How are lawyers matched with victims?
-                    <span class="toggle-icon">−</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Our system considers the lawyer’s specialization, availability, and location to ensure victims are matched with the most suitable legal volunteer.</p>
-                </div>
-            </div>
-        </div>
+</section>
 
-        <div class="faq-right">
-            <h1>Frequently Asked Questions</h1>
-        </div>
-      </main>
 
-    <footer class="footer">
+      <footer class="footer">
         <div class="container">
             <div class="footer-top">
                 <div class="footer-branding">
@@ -185,49 +198,3 @@
             </div>
         </div>
     </footer>
-
-      <script>
-    function openTOS() {
-    document.getElementById('tosOverlay').classList.add('active');
-  }
-
-  function closeTOS() {
-    document.getElementById('tosOverlay').classList.remove('active');
-  }
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const faqQuestions = document.querySelectorAll('.faq-question');
-
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const faqItem = question.closest('.faq-item');
-            const faqAnswer = faqItem.querySelector('.faq-answer');
-
-            // Close all other open answers
-            document.querySelectorAll('.faq-item.active').forEach(item => {
-                if (item !== faqItem) {
-                    item.classList.remove('active');
-                    item.querySelector('.faq-answer').style.maxHeight = 0;
-                    item.querySelector('.faq-answer').style.paddingTop = 0;
-                }
-            });
-
-            // Toggle the clicked answer
-            if (faqItem.classList.contains('active')) {
-                faqItem.classList.remove('active');
-                faqAnswer.style.maxHeight = 0;
-                faqAnswer.style.paddingTop = 0;
-            } else {
-                faqItem.classList.add('active');
-                // Set max-height to the scrollHeight to allow smooth transition to full height
-                // A fixed max-height can be problematic if content varies greatly.
-                // A better approach for dynamic content is to set it to scrollHeight + some buffer.
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 30 + 'px'; // +30px for padding/buffer
-                faqAnswer.style.paddingTop = '15px';
-              }
-          });
-       });
-    });
- </script>
-</body>
-</html>
