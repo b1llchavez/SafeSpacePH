@@ -1,4 +1,7 @@
-
+html, body {
+    overflow-x: hidden;   /* Hide horizontal scrollbar */
+    overflow-y: auto;     /* Allow vertical scrolling */
+}
 
 .header-bg::before {
     content: "";
@@ -59,6 +62,7 @@
     justify-content: center;
     gap: 20px; /* Adjusted gap */
     max-width: fit-content; /* Ensure it doesn't stretch unnecessarily */
+    margin-top: 125px;
 }
 
 .LOGO-AboutUs {
