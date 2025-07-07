@@ -112,6 +112,7 @@
 
     </table>
     </div>
+
     <div class="dash-body">
         <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
             <tr>
@@ -122,7 +123,7 @@
                         </button></a>
                 </td>
                 <td>
-                    <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Shedule Manager</p>
+                    <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Schedule Manager</p>
 
                 </td>
                 <td width="15%">
@@ -171,7 +172,7 @@
                 </td>
 
             </tr>
-            
+
             <tr>
                 <td colspan="4" style="padding-top:0px;width: 100%;">
                     <center>
@@ -273,39 +274,28 @@
             ?>
 
             <tr>
-                <td colspan="4">
-                    <center>
-                        <div class="abc scroll">
-                            <table width="93%" class="sub-table scrolldown" border="0">
+    <td colspan="4" style="padding: 0;">
+        <div class="abc scroll" style="margin-left: 45px; height: 350px;">
+                <table width="93%" class="sub-table scrolldown" border="0">
                                 <thead>
-                                    <tr>
-                                        <th class="table-headin">
-
-
-                                            Session Title
-
-                                        </th>
-
-                                        <th class="table-headin">
-                                            Lawyer
-                                        </th>
-                                        <th class="table-headin">
-
-                                            Sheduled Date & Time
-
-                                        </th>
-                                        <th class="table-headin">
-
-                                            Max num that can be booked
-
-                                        </th>
-
-                                        <th class="table-headin">
-
-                                            Events
-
-                                    </tr>
-                                </thead>
+        <tr>
+          <th class="table-headin" style="position: sticky; top: 0; background-color: #ffffff;">
+            Session Title
+          </th>
+          <th class="table-headin" style="position: sticky; top: 0; background-color: #ffffff;">
+            Lawyer
+          </th>
+          <th class="table-headin" style="position: sticky; top: 0; background-color: #ffffff;">
+            Scheduled Date & Time
+          </th>
+          <th class="table-headin" style="position: sticky; top: 0; background-color: #ffffff;">
+            Max num that can be booked
+          </th>
+          <th class="table-headin" style="position: sticky; top: 0; background-color: #ffffff;;">
+            Events
+          </th>
+        </tr>
+      </thead>
                                 <tbody>
 
                                     <?php
