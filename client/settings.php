@@ -159,7 +159,7 @@
                                 <td style="width: 25%;">
                                     <a href="?action=edit&id=<?php echo $userid ?>&error=0" class="non-style-link">
                                     <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/lawyers-hover.svg');"></div>
+                                        <div class="btn-icon-settings dashboard-icons-setting" style="background-image: url('../img/icons/account-settings-icon.svg');"></div>
                                         <div>
                                                 <div class="h1-dashboard">
                                                     Account Settings  &nbsp;
@@ -185,7 +185,7 @@
                             <td style="width: 25%;">
                                     <a href="?action=view&id=<?php echo $userid ?>" class="non-style-link">
                                     <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting " style="background-image: url('../img/icons/view-iceblue.svg');"></div>
+                                        <div class="btn-icon-settings dashboard-icons-setting " style="background-image: url('../img/icons/view-icon.svg');"></div>
                                         <div>
                                                 <div class="h1-dashboard" >
                                                     View Account Details
@@ -210,7 +210,7 @@
                             <td style="width: 25%;">
                                     <a href="?action=drop&id=<?php echo $userid.'&name='.$username ?>" class="non-style-link">
                                     <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/clients-hover.svg');"></div>
+                                        <div class="btn-icon-settings dashboard-icons-setting" style="background-image: url('../img/icons/delete-icon.svg');"></div>
                                         <div>
                                                 <div class="h1-dashboard" style="color: #ff5050;">
                                                     Delete Account
