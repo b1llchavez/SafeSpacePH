@@ -473,7 +473,7 @@
                                                  
                                                  </td>
                                                  <td>
-                                                 '.substr($ptel,0,25).'
+                                                 '.substr($ctel,0,25).'
                                                  </td>
                                                  
                                                  
