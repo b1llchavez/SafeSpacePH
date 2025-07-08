@@ -433,7 +433,7 @@
             </div>
             ';
         }
-        }elseif($action=='edit'){
+        }elseif(isset($action) && $action=='edit'){
             $sqlmain= "select * from lawyer where lawyerid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
