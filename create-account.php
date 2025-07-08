@@ -221,8 +221,7 @@ if($_POST){
                 <td class="label-td" colspan="2">
                     <div class="phone-input-container input-text">
                         <span class="phone-input-prefix">+63</span>
-                        <input type="tel" name="tele" class="phone-input-field" placeholder="e.g., 9123456789" pattern="[9]{1}[0-9]{9}" maxlength="10" required>
-                    </div>
+<input type="tel" name="tele" class="phone-input-field" placeholder="e.g., 9123456789" pattern="9[0-9]{9}" maxlength="10" required>                    </div>
                 </td>
             </tr>
             <tr>
