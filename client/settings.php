@@ -98,7 +98,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-settings  menu-active menu-icon-settings-active">
-                        <a href="settings.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">Settings</p></a></div>
+                        <a href="settings.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text menu-text-active">Settings</p></a></div>
                     </td>
                 </tr>
                 

@@ -80,7 +80,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-home menu-active menu-icon-home-active" >
-                        <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Home</p></a></div></a>
+                        <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">Home</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row">
