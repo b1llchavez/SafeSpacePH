@@ -16,10 +16,9 @@ html, body {
     background: rgba(93, 75, 75, 0.676);
     background-attachment: fixed;
     max-height: 100vh;
-    height: 100vh;s
-
-
+    height: 100vh;
 }
+
 table{
     width: 100%;
     padding-top: 10px;
@@ -553,3 +552,4 @@ table{
 .footer-links a:hover {
   text-decoration: underline;
 }
+

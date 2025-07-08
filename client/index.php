@@ -83,6 +83,11 @@
                         <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">Home</p></a></div></a>
                     </td>
                 </tr>
+                <tr class="menu-row" >
+                    <td class="menu-btn menu-icon-report">
+                        <a href="report.php" class="non-style-link-menu"><div><p class="menu-text">Report Violation</p></a></div>
+                    </td>
+                </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers">
                         <a href="lawyers.php" class="non-style-link-menu"><div><p class="menu-text">All Lawyers</p></a></div>

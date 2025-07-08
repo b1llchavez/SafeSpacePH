@@ -1,2 +1,5 @@
 .env
 /vendor/
+admin/index-responsive.php
+css/responsive.css
+css/style.css

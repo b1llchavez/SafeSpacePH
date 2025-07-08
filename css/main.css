@@ -405,7 +405,10 @@ input[type=search]:focus {
   background-size: 30px 30px;
   background-image: url('../img/icons/home-icon.svg');
 }
-
+.menu-icon-report{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/report-violation-icon.svg');
+}
 
 
 .menu-icon-dashbord:hover,.menu-icon-dashbord-active{
@@ -451,6 +454,12 @@ input[type=search]:focus {
   color: var(--primarycolor);
   
   background-image: url('../img/icons/home-icon-hover.svg');
+}
+
+.menu-icon-report:hover,.menu-icon-report-active{
+  color: var(--primarycolor);
+  
+  background-image: url('../img/icons/report-violation-hover.svg');
 }
 
 
