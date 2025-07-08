@@ -267,21 +267,21 @@ if($_POST){
                 </td>
             </tr>
             
-                <tr>
-                <td>
-                    <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" >
-                </td>
-                <td>
-                    <input type="submit" value="Sign Up" class="login-btn btn-primary btn">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="button" onclick="window.location.href='signup.php';" class="back-btn btn btn-primary-soft">
-                        Back
-                    </button>
-                </td>
-            </tr>
+<tr>
+    <td>
+        <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" style="width: 100%;">
+    </td>
+    <td>
+        <input type="submit" value="Sign Up" class="login-btn btn-primary btn" style="width: 100%;">
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <button type="button" onclick="window.location.href='signup.php';" class="back-btn btn btn-primary-soft" style="width: 100%;">
+            Back
+        </button>
+    </td>
+</tr>
 
             <tr>
                 <td colspan="2">
