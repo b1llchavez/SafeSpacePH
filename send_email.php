@@ -22,11 +22,13 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
         $mail->SMTPSecure = 'tls'; 
         $mail->Port       = 587;
 
-        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');    
         $mail->addAddress($recipientEmail, $recipientName);
 
         $mail->isHTML(true);
         $mail->Subject = 'Welcome to SafeSpacePH!';
+        $mail->addEmbeddedImage('img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage('img/logo.png', 'logoimg_footer');
         $mail->Body    = "
         <!DOCTYPE html>
         <html lang='en'>
@@ -73,7 +75,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                         <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
                                             <tr>
                                                 <td style='text-align: center;'>
-                                                    <img src='https://i.ibb.co/qYYZs46L/logo.png' alt='SafeSpace PH Logo' class='header-logo'>
+                                                    <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                                     <span class='header-title'>SafeSpace PH</span>
                                                 </td>
                                             </tr>
@@ -102,7 +104,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                            <img src='https://i.ibb.co/qYYZs46L/logo.png' alt='SafeSpace PH Logo' class='footer-logo'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
@@ -121,7 +123,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
         </body>
         </html>
         ";
-
+        
         $mail->send();
         // Optionally, you can return true or a success message here
     } catch (Exception $e) {
