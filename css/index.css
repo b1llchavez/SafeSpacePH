@@ -161,7 +161,7 @@ table{
  }
 
  .section-subtitle {
-     font-size: 1.1em;
+     font-size: 1.5em;
      color: #666;
      margin-bottom: 40px;
  }
@@ -324,7 +324,7 @@ table{
 .faq-question {
     background: none;
     border: none;
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: bold;
     color: #333;
     width: 100%;
@@ -338,7 +338,7 @@ table{
 }
 
 .faq-question:hover {
-    color: #8a2be2; /* Example hover color */
+    color: #5A2675; /* Example hover color */
 }
 
 .toggle-icon {
@@ -357,7 +357,7 @@ table{
 }
 
 .faq-answer p {
-    font-size: 1em;
+    font-size: 1.1em;
     color: #555;
     line-height: 1.6;
     margin-top: 10px; /* Space between question and answer text */
@@ -367,7 +367,7 @@ table{
 
 /* Styles for active/open FAQ item */
 .faq-item.active .faq-question {
-    color: #8a2be2; /* Color when active */
+    color: #5A2675; /* Color when active */
 }
 
 .faq-item.active .toggle-icon {
