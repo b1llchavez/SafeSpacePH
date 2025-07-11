@@ -378,7 +378,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">Scheduled Date: </label>
+                                    <label for="lawyerbarid" class="form-label">Scheduled Date: </label>
                                 </td>
                             </tr>
                             <tr>

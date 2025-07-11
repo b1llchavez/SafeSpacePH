@@ -74,7 +74,6 @@ CREATE TABLE `client` (
   `cname` varchar(255) DEFAULT NULL,
   `cpassword` varchar(255) DEFAULT NULL,
   `caddress` varchar(255) DEFAULT NULL,
-  `cnic` varchar(15) DEFAULT NULL,
   `cdob` date DEFAULT NULL,
   `ctel` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`cid`)
@@ -84,11 +83,8 @@ CREATE TABLE `client` (
 -- Dumping data for table `client`
 --
 
-INSERT INTO `client` (`cid`, `cemail`, `cname`, `cpassword`, `caddress`, `cnic`, `cdob`, `ctel`) VALUES
-(1, 'client@safespaceph.com', 'Client User', '123', '', '', NULL, ''),
-(2, 'emhashenudara@gmail.com', 'Hashen Udara', '123', 'Sri Lanka', '0110000000', '2022-06-03', '0700000000'),
-(3, 'gersradas@gmail.com', 'Gerard Doroja', '123456', '123456', '123456', '2025-07-24', '0712345678'),
-(4, 'gerard@gmail.com', 'gerard  doroja', ':E:?Kr96Z72]M3t', 'dwdnwkjn', '1234561', '2025-08-28', '0712345678');
+INSERT INTO `client` (`cid`, `cemail`, `cname`, `cpassword`, `caddress`, `cdob`, `ctel`) VALUES
+(1, 'client@safespaceph.com', 'Client User', '123', '', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -101,7 +97,7 @@ CREATE TABLE `lawyer` (
   `lawyeremail` varchar(255) DEFAULT NULL,
   `lawyername` varchar(255) DEFAULT NULL,
   `lawyerpassword` varchar(255) DEFAULT NULL,
-  `lawyernic` varchar(15) DEFAULT NULL,
+  `lawyerbarid` varchar(15) DEFAULT NULL,
   `lawyertel` varchar(15) DEFAULT NULL,
   `specialties` int(2) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -110,7 +106,7 @@ CREATE TABLE `lawyer` (
 -- Dumping data for table `lawyer`
 --
 
-INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyernic`, `lawyertel`, `specialties`) VALUES
+INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyerbarid`, `lawyertel`, `specialties`) VALUES
 (1, 'lawyer@safespaceph.com', 'Test Lawyer', '123', '000000000', '0110000000', 1);
 
 -- --------------------------------------------------------
@@ -186,7 +182,7 @@ CREATE TABLE `volunteer_lawyer` (
   `years_experience` int(11) NOT NULL,
   `roll_number` varchar(50) NOT NULL,
   `license_file` varchar(255) DEFAULT NULL,
-  `profile_photo` varchar(255) DEFAULT NULL,
+  `profile_photo_lawyer` varchar(255) DEFAULT NULL,
   `motivation` text DEFAULT NULL,
   `consent_background_check` tinyint(1) DEFAULT 0,
   `agree_terms` tinyint(1) DEFAULT 0,
@@ -206,8 +202,8 @@ CREATE TABLE `volunteer_lawyer` (
 -- Dumping data for table `volunteer_lawyer`
 --
 
-INSERT INTO `volunteer_lawyer` (`id`, `last_name`, `first_name`, `email`, `contact_number`, `home_address`, `years_experience`, `roll_number`, `license_file`, `profile_photo`, `motivation`, `consent_background_check`, `agree_terms`, `info_certified`, `submitted_at`, `availability_hours`, `urgent_consult`, `commitment_months`, `preferred_areas`, `bar_region`, `resume_file`, `affiliation`, `reference_contact`) VALUES
-(1, 'Doroja', 'Gerard Eric', 'gerardericdoroja@gmail.com', '09169558346', '123 ', 5, '1234567', 'uploads/license/license_686782d224bbe.png', 'uploads/profile_photo/photo_686782d225233.png', '12313123', 1, 1, 1, '2025-07-04 07:29:22', 3, 'Yes', 3, 'Family Law', '1234567', 'uploads/resume/resume_686782d226416.pdf', '', '');
+INSERT INTO `volunteer_lawyer` (`id`, `last_name`, `first_name`, `email`, `contact_number`, `home_address`, `years_experience`, `roll_number`, `license_file`, `profile_photo_lawyer`, `motivation`, `consent_background_check`, `agree_terms`, `info_certified`, `submitted_at`, `availability_hours`, `urgent_consult`, `commitment_months`, `preferred_areas`, `bar_region`, `resume_file`, `affiliation`, `reference_contact`) VALUES
+(1, 'Doroja', 'Gerard Eric', 'gerardericdoroja@gmail.com', '09169558346', '123 ', 5, '1234567', 'uploads/license/license_686782d224bbe.png', 'uploads/profile_photo_lawyer/photo_686782d225233.png', '12313123', 1, 1, 1, '2025-07-04 07:29:22', 3, 'Yes', 3, 'Family Law', '1234567', 'uploads/resume/resume_686782d226416.pdf', '', '');
 
 -- --------------------------------------------------------
 
@@ -227,10 +223,7 @@ CREATE TABLE `webuser` (
 INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('admin@safespaceph.com', 'a'),
 ('lawyer@safespaceph.com', 'l'),
-('client@safespaceph.com', 'c'),
-('emhashenudara@gmail.com', 'c'),
-('gersradas@gmail.com', 'c'),
-('gerard@gmail.com', 'c');
+('client@safespaceph.com', 'c');
 
 --
 -- Indexes for dumped tables
@@ -312,3 +305,39 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 ALTER TABLE `client` MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Table structure for table `identity_verifications`
+--
+CREATE TABLE `identity_verifications` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(255) NOT NULL,
+  `middle_name` VARCHAR(255) DEFAULT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `suffix` VARCHAR(50) DEFAULT NULL,
+  `dob` DATE NOT NULL,
+  `sex` VARCHAR(20) NOT NULL,
+  `civil_status` VARCHAR(50) NOT NULL,
+  `citizenship` VARCHAR(100) NOT NULL,
+  `birth_place` VARCHAR(255) NOT NULL,
+  `present_address` TEXT NOT NULL,
+  `permanent_address` TEXT NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `contact_number` VARCHAR(20) NOT NULL,
+  `emergency_contact_name` VARCHAR(255) NOT NULL,
+  `emergency_contact_number` VARCHAR(20) NOT NULL,
+  `emergency_contact_relationship` VARCHAR(100) NOT NULL,
+  `id_type` VARCHAR(100) NOT NULL,
+  `id_number` VARCHAR(255) NOT NULL,
+  `id_photo_front_path` VARCHAR(255) DEFAULT NULL,
+  `id_photo_back_path` VARCHAR(255) DEFAULT NULL,
+  `agree_terms` TINYINT(1) NOT NULL,
+  `submission_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_unique` (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+ALTER TABLE `identity_verifications`
+ADD COLUMN `profile_photo_path` VARCHAR(255) DEFAULT NULL AFTER `id_photo_back_path`;
+
+
