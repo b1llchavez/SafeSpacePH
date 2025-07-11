@@ -116,8 +116,7 @@
                         <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
                     </td>
                 </tr>
-                <!-- Add other menu items specific to lawyers if needed -->
-            </table>
+                </table>
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
@@ -179,7 +178,7 @@
                         
                             <?php
                                 // Fetch all appointments associated with the logged-in lawyer, regardless of status
-                                $sql_appointments = "SELECT 
+                                $sql_appointments = "SELECT
                                     appointment.appoid,
                                     appointment.apponum,
                                     appointment.appodate,
@@ -192,7 +191,7 @@
                                     client.cemail,
                                     client.ctel,
                                     client.caddress,
-                                    client.cdob;
+                                    client.cdob
                                 FROM appointment 
                                 INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
                                 INNER JOIN client ON appointment.cid = client.cid
@@ -283,7 +282,7 @@
                 client.cemail,
                 client.ctel,
                 client.caddress,
-                client.cdob;
+                client.cdob
             FROM appointment 
             INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
             INNER JOIN client ON appointment.cid = client.cid
