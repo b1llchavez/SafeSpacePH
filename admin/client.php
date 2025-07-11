@@ -186,7 +186,7 @@
                                 <th class="table-headin">
                                     
                                 
-                                    NIC
+                                    Bar ID
                                     
                                 </th>
                                 <th class="table-headin">
@@ -239,7 +239,7 @@
                                     $cid=$row["cid"];
                                     $name=$row["cname"];
                                     $email=$row["cemail"];
-                                    $nic=$row["cnic"];
+                            
                                     $dob=$row["cdob"];
                                     $tel=$row["ctel"];
                                     
@@ -249,7 +249,7 @@
     substr($name ?? '',0,35)
     .'</td>
     <td>
-    '.substr($nic ?? '',0,12).'
+    '.substr($lawyerbarid ?? '',0,12).'
     </td>
     <td>
         '.substr($tel ?? '',0,10).'
@@ -297,7 +297,7 @@
             $row=$result->fetch_assoc();
             $name=$row["cname"];
             $email=$row["cemail"];
-            $nic=$row["cnic"];
+            $lawyerbarid=$row["lawyerbarid"];
             $dob=$row["cdob"];
             $tele=$row["ctel"];
             $address=$row["caddress"];
@@ -354,12 +354,12 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">NIC: </label>
+                                    <label for="lawyerbarid" class="form-label">Bar ID: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>

@@ -243,7 +243,9 @@
                                 Name
                                 
                                 </th>
-                               
+                                <th class="table-headin"> 
+                                    Bar ID
+                                </th>
                                 <th class="table-headin">
                                 
                             
@@ -294,34 +296,35 @@
                                     $cid=$row["cid"];
                                     $name=$row["cname"];
                                     $email=$row["cemail"];
-                                    $nic=$row["cnic"];
+                                    $lawyerbarid=$row["lawyerbarid"];
                                     $dob=$row["cdob"];
                                     $tel=$row["ctel"];
                                     
                                     echo '<tr>
-                                        <td> &nbsp;'.
-                                        substr($name,0,35)
-                                        .'</td>
-                                        <td>
-                                        '.substr($nic,0,12).'
-                                        </td>
-                                        <td>
-                                            '.substr($tel,0,10).'
-                                        </td>
-                                        <td>
-                                        '.substr($email,0,20).'
-                                         </td>
-                                        <td>
-                                        '.substr($dob,0,10).'
-                                        </td>
-                                        <td >
-                                        <div style="display:flex;justify-content: center;">
-                                        
-                                        <a href="?action=view&id='.$cid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
-                                       
-                                        </div>
-                                        </td>
-                                    </tr>';
+    <td> &nbsp;'.
+
+    substr($name ?? '',0,35)
+    .'</td>
+    <td>
+    '.substr($lawyerbarid ?? '',0,12).'
+    </td>
+    <td>
+        '.substr($tel ?? '',0,10).'
+    </td>
+    <td>
+    '.substr($email ?? '',0,20).'
+     </td>
+    <td>
+    '.substr($dob ?? '',0,10).'
+    </td>
+    <td >
+    <div style="display:flex;justify-content: center;">
+    
+    <a href="?action=view&id='.$cid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
+   
+    </div>
+    </td>
+</tr>';
                                     
                                 }
                             }
@@ -351,7 +354,7 @@
             $row=$result->fetch_assoc();
             $name=$row["cname"];
             $email=$row["cemail"];
-            $nic=$row["cnic"];
+            $lawyerbarid=$row["lawyerbarid"];
             $dob=$row["cdob"];
             $tele=$row["ctel"];
             $address=$row["caddress"];
@@ -408,12 +411,12 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">NIC: </label>
+                                    <label for="lawyerbarid" class="form-label">Bar ID: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>

@@ -12,7 +12,7 @@
         //print_r($_POST);
         $result= $database->query("select * from webuser");
         $name=$_POST['name'];
-        $nic=$_POST['nic'];
+        $lawyerbarid=$_POST['lawyerbarid'];
         $oldemail=$_POST["oldemail"];
         $spec=$_POST['spec'];
         $email=$_POST['email'];
@@ -40,8 +40,8 @@
                     
             }else{
 
-                //$sql1="insert into lawyer(lawyeremail,lawyername,docpassword,lawyernic,lawyertel,specialties) values('$email','$name','$password','$nic','$tele',$spec);";
-                $sql1="update lawyer set lawyeremail='$email',lawyername='$name',lawyerpassword='$password',lawyernic='$nic',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
+                //$sql1="insert into lawyer(lawyeremail,lawyername,docpassword,lawyerbarid,lawyertel,specialties) values('$email','$name','$password','$lawyerbarid','$tele',$spec);";
+                $sql1="update lawyer set lawyeremail='$email',lawyername='$name',lawyerpassword='$password',lawyerbarid='$lawyerbarid',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
                 $database->query($sql1);
                 
                 $sql1="update webuser set email='$email' where email='$oldemail' ;";
