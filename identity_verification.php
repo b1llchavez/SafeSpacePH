@@ -1,5 +1,6 @@
 <?php
 include 'connection.php'; // Ensure this file contains a valid database connection
+include 'send_email.php'; // Include the file containing the email function
 
 // Initialize variables to store form data and errors
 $errors = [];
@@ -119,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         isset($_FILES["idPhotoBack"]) && $_FILES["idPhotoBack"]["error"] == 0) {
         if ($_FILES["idPhotoFront"]["name"] === $_FILES["idPhotoBack"]["name"] &&
             $_FILES["idPhotoFront"]["size"] === $_FILES["idPhotoBack"]["size"] &&
-            $_FILES["idPhotoFront"]["tmp_name"] === $_FILES["idPhotoBack"]["tmp_name"]) { // Compare temporary file paths
+            $_FILES["idPhotoFront"]["tmp_name"] === $_FILES["idPhotoFront"]["tmp_name"]) { // Compare temporary file paths
             $errors['idPhotoFront'] = 'Front and back ID images must be different files.';
             $errors['idPhotoBack'] = 'Front and back ID images must be different files.';
         }
@@ -204,7 +205,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stmt->execute()) {
                     $formSubmittedSuccessfully = true;
-                    // You might want to clear form data here after successful submission
+                    // Send welcome email
+                    $recipientEmail = $formData['email'];
+                    $recipientName = $formData['firstName'] . ' ' . $formData['lastName'];
+                    // Send verification notice email
+                    sendVerificationNoticeToClient($recipientEmail, $recipientName);
                     // $formData = [];
                 } else {
                     $errors['db'] = "Database error: " . $stmt->error;
@@ -232,6 +237,8 @@ if (isset($database) && $database) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Identity Registration | SafeSpace PH</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46/logo.png">
+        <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+
     <style>
         /* General Body and Modal Styling - Matches volunteer_form.php */
         body {
@@ -262,17 +269,6 @@ if (isset($database) && $database) {
             position: relative;
             animation: fadeIn 0.3s;
             box-sizing: border-box; /* Include padding in width */
-        }
-
-        .close {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 22px;
-            color: #888;
-            cursor: pointer;
-            border: none;
-            background: none;
         }
 
         .form-title {
@@ -509,16 +505,12 @@ if (isset($database) && $database) {
 
         /* Confirmation message styling */
         .confirmation-box {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15), 0 2px 8px rgba(90, 38, 117, 0.12);
-            padding: 54px 64px 38px 64px;
-            max-width: 685px;
-            width: 98%;
-            margin: 40px auto;
+            padding: 40px 64px;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
             text-align: center;
             animation: fadeIn 0.3s;
-            position: relative;
             box-sizing: border-box;
         }
 
@@ -557,13 +549,15 @@ if (isset($database) && $database) {
             background: #f7f4fd;
             border-left: 5px solid #5A2675;
             padding: 18px 20px;
-            margin: 26px 0 22px 0;
+            margin: 26px 0;
             border-radius: 7px;
             text-align: left;
             font-size: 1.01rem;
             color: #3a2c5c;
             font-weight: 500;
             line-height: 1.7;
+            box-shadow: none;
+            border-radius: 7px;
         }
 
         .popup-notification strong {
@@ -747,8 +741,7 @@ if (isset($database) && $database) {
     <div class="modal">
         <div class="modal-content" id="registration-form-container">
             <?php if ($formSubmittedSuccessfully): ?>
-                <div class="confirmation-box" id="confirmation-message" style="display:block;">
-                    <button class="close" onclick="window.location.href='index.html';" title="Close" style="position:absolute;top:18px;right:22px;font-size:22px;color:#888;cursor:pointer;border:none;background:none;">&times;</button>
+                <div class="confirmation-box">
                     <div class="confirmation-check">
                         <svg viewBox="0 0 80 80" fill="none" width="70" height="70">
                             <circle cx="40" cy="40" r="38" fill="#f7f4fd" stroke="#391053" stroke-width="4"/>

@@ -299,6 +299,24 @@
             color: #555;
             line-height: 1.5;
             cursor: pointer;
+        }   
+
+        .abc.scroll {
+            padding: 20px;
+            max-width: 800px; /* Set a max-width */
+            margin: 0 auto; /* Center the container */
+            width: 90%; /* Use percentage width for responsiveness */
+        }
+
+        .add-new-form {
+            width: 100%;
+            max-width: 500px; /* Set max-width for the form */
+            margin: 0 auto; /* Center the form */
+        }
+
+        /* Adjust container padding for better spacing */
+        .dash-body {
+            padding: 20px;
         }
     </style>
 </head>
