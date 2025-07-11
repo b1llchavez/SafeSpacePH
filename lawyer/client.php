@@ -72,29 +72,33 @@
                     </table>
                     </td>
                 </tr>
-                <tr class="menu-row" >
+                                <tr class="menu-row" >
                     <td class="menu-btn menu-icon-dashbord" >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Dashboard</p></a></div></a>
+                        <a href="index.php" class="non-style-link"><div><p class="menu-text">Dashboard</p></a></div></a>
+                    </td>
+                </tr>
+                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-session">
+                        <a href="manage-appointments.php" class="non-style-link-menu"><div><p class="menu-text">Share a Safe Space</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
+                        <a href="lawyer_appointments.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
                     </td>
                 </tr>
-                
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">My Sessions</p></div></a>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Manage Appointments</p></a></div>
                     </td>
                 </tr>
-                <tr class="menu-row" >
+               <tr class="menu-row" >
                     <td class="menu-btn menu-icon-client menu-active menu-icon-client-active">
-                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text menu-text-active"> My Clients</p></a></div>
+                        <a href="client.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active"> My Clients</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-settings   ">
+                    <td class="menu-btn menu-icon-settings">
                         <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
                     </td>
                 </tr>
@@ -115,16 +119,16 @@
                         }
                         
                         if(isset($_POST["filter"])){
-                            if($_POST["showonly"]=='all'){
-                                $sqlmain= "select * from client";
-                                $selecttype="All";
-                                $current="All Clients";
-                            }else{
-                                $sqlmain= "select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
-                                $selecttype="My";
-                                $current="My Clients Only";
-                            }
-                        }
+    if(isset($_POST["showonly"]) && $_POST["showonly"]=='all'){
+        $sqlmain= "select * from client";
+        $selecttype="All";
+        $current="All Clients";
+    }else{
+        $sqlmain= "select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
+        $selecttype="My";
+        $current="My Clients Only";
+    }
+}
                     }else{
                         $sqlmain= "select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
                         $selecttype="My";
@@ -239,11 +243,8 @@
                                 Name
                                 
                                 </th>
-                                <th class="table-headin">
-                                    
-                                
+                                <th class="table-headin"> 
                                     Bar ID
-                                    
                                 </th>
                                 <th class="table-headin">
                                 

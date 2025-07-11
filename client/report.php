@@ -11,6 +11,12 @@
     // Include database connection
     include("../connection.php");
 
+    // --- FIX START ---
+    // Retrieve clientid and clientname from session
+    $clientid = $_SESSION['cid']; 
+    $clientname = $_SESSION['cname']; // Retrieve clientname from session
+    // --- FIX END ---
+
     // Fetch logged-in user's details
     $useremail = $_SESSION["user"];
     $userrow = $database->query("SELECT * FROM client WHERE cemail='$useremail'");
@@ -308,8 +314,8 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
-                                    <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
+                                    <p class="profile-title"><?php echo htmlspecialchars($clientname); ?></p>
+                                    <p class="profile-subtitle"><?php echo $_SESSION['user']; ?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -322,22 +328,27 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-home" >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Home</p></a></div></a>
+                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Home</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-report menu-active menu-icon-report-active">
-                        <a href="report.php" class="non-style-link-menu"><div><p class="menu-text menu-text-active">Report Violation</p></a></div>
+                        <a href="report.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">Report Violation</p></a></div>
+                    </td>
+                </tr>
+                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="request-session.php" class="non-style-link-menu"><div><p class="menu-text">Find a Safe Space</p></div></a>
+                    </td>
+                </tr>
+                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-session">
+                        <a href="client-appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers">
                         <a href="lawyers.php" class="non-style-link-menu"><div><p class="menu-text">All Lawyers</p></a></div>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Scheduled Sessions</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >

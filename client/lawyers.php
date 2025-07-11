@@ -72,7 +72,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-home" >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Home</p></a></div></a>
+                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Home</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -80,14 +80,19 @@
                         <a href="report.php" class="non-style-link-menu"><div><p class="menu-text">Report Violation</p></a></div>
                     </td>
                 </tr>
+                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="request-session.php" class="non-style-link-menu"><div><p class="menu-text">Find a Safe Space</p></div></a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-session">
+                        <a href="client-appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
+                    </td>
+                </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers menu-active menu-icon-lawyers-active">
                         <a href="lawyers.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">All Lawyers</p></a></div>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Scheduled Sessions</p></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -100,7 +105,6 @@
                         <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
                     </td>
                 </tr>
-                
             </table>
         </div>
         <div class="dash-body">
@@ -254,7 +258,7 @@
                                         
                                         <a href="?action=view&id='.$lawyerid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
                                        &nbsp;&nbsp;&nbsp;
-                                       <a href="?action=session&id='.$lawyerid.'&name='.$name.'"  class="non-style-link"><button  class="btn-primary-soft btn button-icon menu-icon-session-active"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Sessions</font></button></a>
+                                       <a href="?action=session&id='.$lawyerid.'&name='.$name.'"  class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-session"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Sessions</font></button></a>
                                         </div>
                                         </td>
                                     </tr>';
