@@ -192,8 +192,7 @@
                                     client.cemail,
                                     client.ctel,
                                     client.caddress,
-                                    client.cdob,
-                                    client.cnic
+                                    client.cdob;
                                 FROM appointment 
                                 INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
                                 INNER JOIN client ON appointment.cid = client.cid
@@ -284,8 +283,7 @@
                 client.cemail,
                 client.ctel,
                 client.caddress,
-                client.cdob,
-                client.cnic
+                client.cdob;
             FROM appointment 
             INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
             INNER JOIN client ON appointment.cid = client.cid
@@ -323,7 +321,6 @@
                 $clienttel_details = $row_details["ctel"];
                 $clientaddress_details = $row_details["caddress"];
                 $clientdob_details = $row_details["cdob"];
-                $clientnic_details = $row_details["cnic"];
 
 
                 echo '
