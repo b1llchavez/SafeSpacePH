@@ -553,3 +553,130 @@ table{
   text-decoration: underline;
 }
 
+.register-section {
+     text-align: left;
+     width: 100%;
+     padding: 50px 20px;
+     background-color: #ffffff;
+ }
+
+ .register-title {
+     font-size: 3.5em;
+     /* Example: Adjust font size to match logo better */
+     font-weight: 1000;
+     /* Example */
+     color: #391053;
+     /* Example: A color that goes well with purple */
+     white-space: nowrap;
+     /* Prevent text from wrapping */
+     text-shadow: 2px 2px 10px #3910534b;
+     text-align: center;
+ }
+
+ 
+.flex-container {
+            display: flex;
+            flex-direction: column; /* flex-col */
+            gap: 2rem; /* gap-8 */
+        }
+
+  .left-column {
+            width: 100%; /* Default for mobile */
+        }
+        
+
+        .left-column > div:not(:last-child) {
+            margin-bottom: 5px;
+        }
+
+        .step-container {
+            border-radius: 0.375rem; /* rounded-md */
+            padding: 5px; /* p-2 */
+            margin-bottom: -15px;
+        }
+
+        .step-heading {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+            color: #391053; /* text-gray-800 */
+            margin-bottom: 3px; /* mb-1 */
+            text-align: left; /* Center the heading */
+            margin-left: 80px; /* Add left margin for alignment */
+            margin-top: 4px;
+        }
+
+        .step-paragraph {
+            color: #000000; /* text-gray-700 */
+            margin-left: 90px; /* Add left margin for alignment */
+              text-align: left;
+        }
+
+        .right-column {
+            width: 100%; /* Default for mobile */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-placeholder {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 0.5rem; /* rounded-lg */
+    overflow: hidden; /* Ensure content stays within rounded corners */
+    width: 100%; /* w-full */
+    height: 16rem; /* h-64 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+    margin-right: 30px; /* Add space between video and text */
+    margin-top: 30px; /* Add top margin for spacing */
+}
+
+.video-content {
+    width: 100%; /* Make video fill container */
+    height: 100%; /* Make video fill container */
+    object-fit: cover; /* Ensure video fills container and maintains aspect ratio */
+}
+
+.video-placeholder .play-button {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.video-placeholder .play-button::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 25px solid #333;
+    margin-left: 5px;
+}
+
+@media (min-width: 768px) {
+    .flex-container {
+        flex-direction: row;
+    }
+
+    .left-column,
+    .right-column {
+        width: 50%; /* For medium screens and up */
+    }
+
+    .video-placeholder {
+        height: 24rem; /* For larger screens */
+    }
+}
