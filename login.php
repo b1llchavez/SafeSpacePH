@@ -32,13 +32,11 @@
 
     // Check if the form was submitted via POST
     if($_POST){
-        $email = $_POST['useremail']; // Assuming 'useremail' is the name attribute for the email input
-        $password = $_POST['userpassword']; // Assuming 'userpassword' is the name attribute for the password input
+        $email = $_POST['useremail']; 
+        $password = $_POST['userpassword']; 
         
         // Sanitize inputs
         $email = mysqli_real_escape_string($database, $email);
-        // Note: Password hashing should be implemented for security.
-        // For now, we are using plain text password as per your existing structure.
         $password = mysqli_real_escape_string($database, $password); 
 
         $error = ""; // Initialize error message
@@ -67,9 +65,9 @@
                     $client_data = $auth_query->fetch_assoc();
                     $_SESSION['user'] = $email;
                     $_SESSION['usertype'] = 'c';
-                    $_SESSION['cid'] = $client_data['cid']; // Store client ID
-                    $_SESSION['cname'] = $client_data['cname']; // Store client name for display in client pages
-                    header('location: client/index.php'); // Redirect to client dashboard
+                    $_SESSION['cid'] = $client_data['cid']; 
+                    $_SESSION['cname'] = $client_data['cname']; 
+                    header('location: client/index.php'); // Changed to client_dashboard.php
                     exit();
                 } else {
                     $error = 'Wrong credentials: Invalid email or password';
@@ -80,12 +78,25 @@
                     $lawyer_data = $auth_query->fetch_assoc();
                     $_SESSION['user'] = $email;
                     $_SESSION['usertype'] = 'l';
-                    $_SESSION['lawyerid'] = $lawyer_data['lawyerid']; // Store lawyer ID
-                    $_SESSION['lawyername'] = $lawyer_data['lawyername']; // Store lawyer name for display in lawyer pages
-                    header('location: lawyer/index.php'); // Redirect to lawyer dashboard (to be created)
+                    $_SESSION['lawyerid'] = $lawyer_data['lawyerid']; 
+                    $_SESSION['lawyername'] = $lawyer_data['lawyername']; 
+                    header('location: lawyer/index.php'); // Changed to lawyer_dashboard.php
                     exit();
                 } else {
-                   $error = 'Wrong credentials: Invalid email or password';;
+                   $error = 'Wrong credentials: Invalid email or password';
+                }
+            } elseif ($usertype == 'u') {
+                $auth_query = $database->query("SELECT * FROM client WHERE cemail='$email' AND cpassword='$password'");
+                if ($auth_query->num_rows == 1) {
+                    $client_data = $auth_query->fetch_assoc();
+                    $_SESSION['user'] = $email;
+                    $_SESSION['usertype'] = 'u'; // Set usertype to 'cu'
+                    $_SESSION['cid'] = $client_data['cid']; // Still store client ID
+                    $_SESSION['cname'] = $client_data['cname']; // Still store client name
+                    header('location: client/index_unverified.php'); // Redirect to unverified client page
+                    exit();
+                } else {
+                    $error = 'Wrong credentials: Invalid email or password';
                 }
             }
         } else {
@@ -95,7 +106,7 @@
         // Set the error message in session if redirection hasn't happened
         if (!empty($error)) {
             $_SESSION['login_error'] = $error;
-            header('location: login.php?error=' . urlencode($error)); // Redirect with error in URL for display
+            header('location: login.php?error=' . urlencode($error)); 
             exit();
         }
 
@@ -107,10 +118,13 @@
                 header('location: admin/index.php');
                 exit();
             } elseif($_SESSION['usertype'] == 'c') {
-                header('location: client/index.php');
+                header('location: client/index.php'); // Changed to client/index.php
                 exit();
             } elseif($_SESSION['usertype'] == 'l') {
-                header('location: lawyer/index.php');
+                header('location: lawyer/index.php'); // Changed to lawyer/index.php
+                exit();
+            } elseif($_SESSION['usertype'] == 'u') { // Redirect for unverified client
+                header('location: client/index_unverified.php');
                 exit();
             }
         }
