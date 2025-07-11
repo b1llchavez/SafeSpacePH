@@ -115,16 +115,16 @@
                         }
                         
                         if(isset($_POST["filter"])){
-                            if($_POST["showonly"]=='all'){
-                                $sqlmain= "select * from client";
-                                $selecttype="All";
-                                $current="All Clients";
-                            }else{
-                                $sqlmain= "select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
-                                $selecttype="My";
-                                $current="My Clients Only";
-                            }
-                        }
+    if(isset($_POST["showonly"]) && $_POST["showonly"]=='all'){
+        $sqlmain= "select * from client";
+        $selecttype="All";
+        $current="All Clients";
+    }else{
+        $sqlmain= "select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
+        $selecttype="My";
+        $current="My Clients Only";
+    }
+}
                     }else{
                         $sqlmain= "select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
                         $selecttype="My";
@@ -239,12 +239,7 @@
                                 Name
                                 
                                 </th>
-                                <th class="table-headin">
-                                    
-                                
-                                    NIC
-                                    
-                                </th>
+                               
                                 <th class="table-headin">
                                 
                             
