@@ -275,7 +275,7 @@
             
            
             $dob=$row["cdob"];
-            $nic=$row['cnic'];
+            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['ctel'];
             echo '
             <div id="popup1" class="overlay">
@@ -320,12 +320,12 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">NIC: </label>
+                                    <label for="lawyerbarid" class="form-label">Bar ID: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -387,7 +387,7 @@
             
             
             $address=$row["caddress"];
-            $nic=$row['cnic'];
+            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['ctel'];
 
             $error_1=$_GET["error"];
@@ -449,12 +449,12 @@
                                     
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="nic" class="form-label">NIC: </label>
+                                            <label for="lawyerbarid" class="form-label">Bar ID: </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="nic" class="input-text" placeholder="NIC Number" value="'.$nic.'" required><br>
+                                            <input type="text" name="lawyerbarid" class="input-text" placeholder="Bar ID Number" value="'.$lawyerbarid.'" required><br>
                                         </td>
                                     </tr>
                                     <tr>

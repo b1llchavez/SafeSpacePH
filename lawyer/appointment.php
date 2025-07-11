@@ -505,7 +505,7 @@
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
-            $nic=$row['lawyernic'];
+            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['lawyertel'];
             echo '
             <div id="popup1" class="overlay">
@@ -550,12 +550,12 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="nic" class="form-label">NIC: </label>
+                                    <label for="lawyerbarid" class="form-label">Bar ID: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>

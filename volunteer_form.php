@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Set upload directories
     $license_dir = "uploads/license/";
-    $photo_dir = "uploads/profile_photo/";
+    $photo_dir = "uploads/profile_photo_lawyer/";
     $resume_dir = "uploads/resume/";
 
     // Ensure directories exist
@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Handle profile photo (Image or PDF)
-    if (isset($_FILES["profile_photo"]) && $_FILES["profile_photo"]["error"] === 0) {
-        $photo_tmp = $_FILES["profile_photo"]["tmp_name"];
-        $photo_ext = strtolower(pathinfo($_FILES["profile_photo"]["name"], PATHINFO_EXTENSION));
+    if (isset($_FILES["profile_photo_lawyer"]) && $_FILES["profile_photo_lawyer"]["error"] === 0) {
+        $photo_tmp = $_FILES["profile_photo_lawyer"]["tmp_name"];
+        $photo_ext = strtolower(pathinfo($_FILES["profile_photo_lawyer"]["name"], PATHINFO_EXTENSION));
         $photo_mime = mime_content_type($photo_tmp);
 
         if (in_array($photo_ext, $allowed_exts) && in_array($photo_mime, $allowed_mimes)) {
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare insert query (add new fields)
     $sql = "INSERT INTO volunteer_lawyer 
-        (last_name, first_name, email, contact_number, home_address, years_experience, roll_number, license_file, profile_photo, motivation, consent_background_check, agree_terms, info_certified,
+        (last_name, first_name, email, contact_number, home_address, years_experience, roll_number, license_file, profile_photo_lawyer, motivation, consent_background_check, agree_terms, info_certified,
         availability_hours, urgent_consult, commitment_months, preferred_areas, bar_region, resume_file, affiliation, reference_contact) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -748,8 +748,8 @@ input[type="checkbox"]:checked {
                     <input type="file" name="license_file" id="license_file" accept="application/pdf,image/png,image/jpeg" required>
                 </div>
                 <div class="form-group full-width">
-                    <label for="profile_photo">Profile Photo (Image or PDF)</label>
-                    <input type="file" name="profile_photo" id="profile_photo" accept="application/pdf,image/png,image/jpeg" required>
+                    <label for=""profile_photo_lawyer>Profile Photo (Image or PDF)</label>
+                    <input type="file" name="profile_photo_lawyer" id="profile_photo_lawyer" accept="application/pdf,image/png,image/jpeg" required>
                     <small style="color:#555;display:block;margin-top:4px; font-family: 'Inter', Arial, sans-serif;">
                         Please upload a 2x2 formal photo, preferably with a plain background.
                     </small>
