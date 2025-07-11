@@ -526,7 +526,14 @@ input[type=search]:focus {
   background-size: 30px 30px;
   background-image: url('../img/icons/filter-icon-hover.svg');
 }
-
+.btn-session{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/session-icon.svg');
+}
+.btn-session:hover{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/session-icon-hover.svg');
+}
 
 
 
