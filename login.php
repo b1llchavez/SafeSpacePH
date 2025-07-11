@@ -107,10 +107,10 @@
                 header('location: admin/index.php');
                 exit();
             } elseif($_SESSION['usertype'] == 'c') {
-                header('location: client/client_dashboard.php');
+                header('location: client/index.php');
                 exit();
             } elseif($_SESSION['usertype'] == 'l') {
-                header('location: lawyer/lawyer_dashboard.php');
+                header('location: lawyer/index.php');
                 exit();
             }
         }
