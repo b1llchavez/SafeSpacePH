@@ -97,7 +97,7 @@
                 </tr>
                 <tr class="menu-row" >
                     <td class="menu-btn menu-icon-home" >
-                        <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Home</p></a></div></a>
+                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Home</p></a></div></a>
                     </td>
                 </tr>
                 <tr class="menu-row" >
@@ -105,19 +105,23 @@
                         <a href="report.php" class="non-style-link-menu"><div><p class="menu-text">Report Violation</p></a></div>
                     </td>
                 </tr>
+                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="request-session.php" class="non-style-link-menu"><div><p class="menu-text">Find a Safe Space</p></div></a>
+                    </td>
+                </tr>
+                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-session">
+                        <a href="client-appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
+                    </td>
+                </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers">
                         <a href="lawyers.php" class="non-style-link-menu"><div><p class="menu-text">All Lawyers</p></a></div>
                     </td>
                 </tr>
-                
                 <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Scheduled Sessions</p></div></a>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-appoinment  menu-active menu-icon-appoinment-active">
+                    <td class="menu-btn menu-icon-appoinment menu-active menu-icon-appoinment-active">
                         <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">My Bookings</p></a></div>
                     </td>
                 </tr>
@@ -126,7 +130,6 @@
                         <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
                     </td>
                 </tr>
-                
             </table>
         </div>
         <div class="dash-body">
