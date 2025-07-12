@@ -296,7 +296,6 @@
                                     $cid=$row["cid"];
                                     $name=$row["cname"];
                                     $email=$row["cemail"];
-                                    $lawyerbarid=$row["lawyerbarid"];
                                     $dob=$row["cdob"];
                                     $tel=$row["ctel"];
                                     
@@ -306,7 +305,7 @@
     substr($name ?? '',0,35)
     .'</td>
     <td>
-    '.substr($lawyerbarid ?? '',0,12).'
+    '.substr($cid ?? '',0,12).'
     </td>
     <td>
         '.substr($tel ?? '',0,10).'
@@ -411,12 +410,12 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Valid ID: </label>
+                                    <label for="cid" class="form-label">Valid ID: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$lawyerbarid.'<br><br>
+                                '.$cid.'<br><br>
                                 </td>
                             </tr>
                             <tr>
