@@ -244,7 +244,7 @@
                                 <th class="table-headin">
                                     
                                 
-                                    Bar ID
+                                    Valid ID No.
                                     
                                 </th>
                                 <th class="table-headin">
@@ -411,7 +411,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Bar ID: </label>
+                                    <label for="lawyerbarid" class="form-label">Valid ID No.: </label>
                                 </td>
                             </tr>
                             <tr>
