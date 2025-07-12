@@ -342,7 +342,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Bar ID: </label>
+                                    <label for="lawyerbarid" class="form-label">Valid ID: </label>
                                 </td>
                             </tr>
                             <tr>
@@ -461,12 +461,12 @@
                                     
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="lawyerbarid" class="form-label">Bar ID: </label>
+                                            <label for="lawyerbarid" class="form-label">Valid ID: </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="lawyerbarid" class="input-text" placeholder="Bar ID Number" value="' . $lawyerbarid . '" required><br>
+                                            <input type="text" name="lawyerbarid" class="input-text" placeholder="Valid ID Number" value="' . $lawyerbarid . '" required><br>
                                         </td>
                                     </tr>
                                     <tr>
