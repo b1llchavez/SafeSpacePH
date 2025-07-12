@@ -227,62 +227,69 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 25%;">
-                                                    <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex">
-                                                        <div>
-                                                                <div class="h1-dashboard">
-                                                                    <?php    echo $lawyerrow->num_rows  ?>
-                                                                </div><br>
-                                                                <div class="h3-dashboard">
-                                                                    All Lawyers &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                </div>
-                                                        </div>
-                                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/lawyers-hover.svg');"></div>
-                                                    </div>
-                                                </td>
-                                                <td style="width: 25%;">
-                                                    <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                                        <div>
-                                                                <div class="h1-dashboard">
-                                                                    <?php    echo $clientrow->num_rows  ?>
-                                                                </div><br>
-                                                                <div class="h3-dashboard">
-                                                                    All Clients &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                                </div>
-                                                        </div>
-                                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/clients-hover.svg');"></div>
-                                                    </div>
-                                                </td>
-                                                </tr>
-                                                <tr>
-                                                <td style="width: 25%;">
-                                                    <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex; ">
-                                                        <div>
-                                                                <div class="h1-dashboard" >
-                                                                    <?php    echo $appointmentrow ->num_rows  ?>
-                                                                </div><br>
-                                                                <div class="h3-dashboard" >
-                                                                    NewBooking &nbsp;&nbsp;
-                                                                </div>
-                                                        </div>
-                                                                <div class="btn-icon-back dashboard-icons" style="margin-left: 0px;background-image: url('../img/icons/book-hover.svg');"></div>
-                                                    </div>
-                                                    
-                                                </td>
+                                                <!-- All Lawyers -->
+        <td style="width: 25%;">
+            <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
+                <div style="flex-grow: 1;">
+                    <div class="h1-dashboard">
+                        <?php echo $lawyerrow->num_rows ?>
+                    </div><br>
+                    <div class="h3-dashboard">
+                        All Lawyers
+                    </div>
+                </div>
+                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/lawyers-hover.svg'); width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; margin-left: 20px;"></div>
+            </div>
+        </td>
 
-                                                <td style="width: 25%;">
-                                                    <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex;padding-top:21px;padding-bottom:21px;">
-                                                        <div>
-                                                                <div class="h1-dashboard">
-                                                                    <?php    echo $schedulerow ->num_rows  ?>
-                                                                </div><br>
-                                                                <div class="h3-dashboard" style="font-size: 15px">
-                                                                    Today Sessions
-                                                                </div>
-                                                        </div>
-                                                                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/session-iceblue.svg');"></div>
-                                                    </div>
-                                                </td>
+        <!-- All clients -->
+        <td style="width: 25%;">
+            <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
+                <div style="flex-grow: 1;">
+                    <div class="h1-dashboard">
+                        <?php echo $clientrow->num_rows ?>
+                    </div><br>
+                    <div class="h3-dashboard">
+                        All Clients
+                    </div>
+                </div>
+                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/clients-hover.svg'); width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; margin-left: 20px;"></div>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <!-- New Bookings -->
+        <td style="width: 25%;">
+            <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
+                <div style="flex-grow: 1;">
+                    <div class="h1-dashboard">
+                        <?php echo $appointmentrow->num_rows ?>
+                    </div> <br>
+                    <div class="h3-dashboard">
+                        New Sessions
+                        <br>
+                    </div>
+                </div>
+                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/newbookings-hover.svg'); width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; margin-left: 20px;"></div>
+            </div>
+        </td>
+
+            <!-- Today Sessions -->
+        <td style="width: 25%;">
+            <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
+                <div style="flex-grow: 1;">
+                    <div class="h1-dashboard">
+                        <?php echo $schedulerow->num_rows ?>
+                    </div> <br>
+                    <div class="h3-dashboard">
+                        Today's Sessions
+                        <br>
+                    </div>
+                </div>
+                <div class="btn-icon-back dashboard-icons" style="background-image: url('../img/icons/sessions-hover.svg'); width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; margin-left: 20px;"></div>
+            </div>
+        </td>
                                                 
                                             </tr>
                                         </table>
