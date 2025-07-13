@@ -184,7 +184,7 @@
                     <tr>
                 <td>
                     <button type="button" onclick="window.location.href='index.html';" class="back-btn btn btn-primary-soft">
-                        Back
+                        Return Home
                     </button>
                 </td>
             </tr>

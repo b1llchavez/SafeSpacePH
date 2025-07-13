@@ -1,12 +1,9 @@
-CREATE DATABASE IF NOT EXISTS `SafeSpacePH`;
-USE `SafeSpacePH`;
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 11, 2025 at 11:50 PM
+-- Generation Time: Jul 13, 2025 at 05:20 PM
 -- Server version: 8.0.40
 -- PHP Version: 8.3.14
 
@@ -80,14 +77,9 @@ CREATE TABLE `client` (
 
 INSERT INTO `client` (`cid`, `cemail`, `cname`, `cpassword`, `caddress`, `cdob`, `ctel`) VALUES
 (1, 'client@safespaceph.com', 'Client User', '123', '', NULL, ''),
-(2, 'emhashenudara@gmail.com', 'Hashen Udara', '123', 'Sri Lanka', '2022-06-03', '0700000000'),
-(3, 'gersradas@gmail.com', 'Gerard Doroja', '123456', '123456', '2025-07-24', '0712345678'),
-(4, 'gerard@gmail.com', 'gerard  doroja', ':E:?Kr96Z72]M3t', 'dwdnwkjn', '2025-08-28', '0712345678'),
-(5, '123@safespace.com', 'Eric Doroja', '123', '1234567', '2020-02-06', '09123456789'),
-(6, '123456782@email.com', '1234 5678', '123', '12345678', '4321-03-12', '0712345678'),
-(7, 'ger@gerard.com', 'Geric Boroja', '123', '123456789', '5678-03-12', '09123456789'),
-(8, 'berrycole@gmail.com', 'Nicole Fernandez', '123', 'berrycole@gmail.com', '4567-03-12', '09123456890'),
-(9, 'unverifieduser@safespace.com', 'Unverified Client', '123', NULL, NULL, NULL);
+(14, 'sihareg730@simerm.com', 'SafeSpace PH S', 'Testing123!', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '2005-01-10', '9917912370'),
+(9, 'unverifieduser@safespace.com', 'Unverified Client', '123', NULL, NULL, NULL),
+(13, 'mamornobillc@gmail.com', 'Bill Mamorno', 'Testing123!', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '2006-03-18', '9917912370');
 
 -- --------------------------------------------------------
 
@@ -119,8 +111,16 @@ CREATE TABLE `identity_verifications` (
   `id_photo_back_path` varchar(255) DEFAULT NULL,
   `profile_photo_path` varchar(255) DEFAULT NULL,
   `agree_terms` tinyint(1) NOT NULL,
-  `submission_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `submission_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_verified` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `identity_verifications`
+--
+
+INSERT INTO `identity_verifications` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `dob`, `sex`, `civil_status`, `citizenship`, `birth_place`, `present_address`, `permanent_address`, `email`, `contact_number`, `emergency_contact_name`, `emergency_contact_number`, `emergency_contact_relationship`, `id_type`, `id_number`, `id_photo_front_path`, `id_photo_back_path`, `profile_photo_path`, `agree_terms`, `submission_date`, `is_verified`) VALUES
+(3, 'Bill', 'Chavez', 'Mamorno', '', '2006-03-18', 'Male', 'Single', 'Filipino', 'Manila', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', 'mamornobillc@gmail.com', '09917912370', 'Edmuna Mamorno', '09396035648', 'Mother', 'Driver&#039;s License', '11001212154548', 'uploads/id_front/front_6873c9f225cc6_id 1.jpg', 'uploads/id_back/back_6873c9f225fd7_id 2.png', 'uploads/profile_photo_client/profile_6873c9f226122_profile photo sample.jpg', 1, '2025-07-13 15:00:02', 0);
 
 -- --------------------------------------------------------
 
@@ -154,15 +154,15 @@ INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`,
 CREATE TABLE `reports` (
   `id` int NOT NULL,
   `client_id` int NOT NULL,
-  `reporter_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reporter_phone` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reporter_email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
-  `legal_consultation_requested` varchar(3) COLLATE utf8mb4_general_ci DEFAULT 'No',
-  `supplementary_notes` text COLLATE utf8mb4_general_ci,
-  `file_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `file_path` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reporter_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reporter_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `reporter_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `legal_consultation_requested` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'No',
+  `supplementary_notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `uploaded_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -289,14 +289,9 @@ CREATE TABLE `webuser` (
 INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('admin@safespaceph.com', 'a'),
 ('lawyer@safespaceph.com', 'l'),
-('client@safespaceph.com', 'c'),
-('emhashenudara@gmail.com', 'c'),
-('gersradas@gmail.com', 'c'),
-('gerard@gmail.com', 'c'),
-('123@safespace.com', 'c'),
-('123456782@email.com', 'c'),
-('ger@gerard.com', 'c'),
-('berrycole@gmail.com', 'c'),
+('client@safespaceph.com', 'u'),
+('mamornobillc@gmail.com', 'u'),
+('sihareg730@simerm.com', 'u'),
 ('unverifieduser@safespace.com', 'u');
 
 --
@@ -383,13 +378,13 @@ ALTER TABLE `appointment`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `cid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `identity_verifications`
 --
 ALTER TABLE `identity_verifications`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `reports`

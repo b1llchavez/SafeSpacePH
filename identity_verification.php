@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session at the very beginning
+
 include 'connection.php'; // Ensure this file contains a valid database connection
 include 'send_email.php'; // Include the file containing the email function
 
@@ -6,6 +8,15 @@ include 'send_email.php'; // Include the file containing the email function
 $errors = [];
 $formData = [];
 $formSubmittedSuccessfully = false;
+
+// Retrieve session-based personal details for pre-filling
+// Assuming 'personal' array exists in $_SESSION with 'fname', 'lname', 'address', 'dob', 'email', 'tele'
+$fname_session = $_SESSION['personal']['fname'] ?? '';
+$lname_session = $_SESSION['personal']['lname'] ?? '';
+$address_session = $_SESSION['personal']['address'] ?? '';
+$dob_session = $_SESSION['personal']['dob'] ?? '';
+$email_session = $_SESSION['personal']['email'] ?? ''; // Using session for email as requested for pre-fill
+$tele_session = $_SESSION['personal']['tele'] ?? '';   // Using session for contact number as requested for pre-fill
 
 // Function to sanitize input data
 function sanitize_input($data) {
@@ -32,7 +43,7 @@ function validate_file($file, $allowedTypes, $maxSize = 5242880) { // 5MB
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Collect and sanitize form data
+    // Collect and sanitize form data from POST
     $formData['firstName'] = sanitize_input($_POST['firstName'] ?? '');
     $formData['middleName'] = sanitize_input($_POST['middleName'] ?? '');
     $formData['lastName'] = sanitize_input($_POST['lastName'] ?? '');
@@ -57,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['noMiddleName']) && $_POST['noMiddleName'] === 'on') {
         $formData['middleName'] = ''; // Explicitly set to empty if checkbox is checked
     }
-
 
     // Validate required fields
     if (empty($formData['firstName'])) $errors['firstName'] = "First name is required.";
@@ -210,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $recipientName = $formData['firstName'] . ' ' . $formData['lastName'];
                     // Send verification notice email
                     sendVerificationNoticeToClient($recipientEmail, $recipientName);
-                    // $formData = [];
+                    // $formData = []; // Optionally clear form data after successful submission
                 } else {
                     $errors['db'] = "Database error: " . $stmt->error;
                 }
@@ -222,6 +232,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $errors['db'] = "Database connection not established.";
         }
     }
+} else {
+    // If not a POST request, pre-fill formData with session data
+    $formData['firstName'] = $fname_session;
+    $formData['lastName'] = $lname_session;
+    $formData['permanentAddress'] = $address_session;
+    $formData['dob'] = $dob_session;
+    $formData['email'] = $email_session;
+    $formData['contactNumber'] = $tele_session;
+
+    // For other fields, initialize them as empty if not already set by a previous POST with errors
+    $formData['middleName'] = $formData['middleName'] ?? '';
+    $formData['suffix'] = $formData['suffix'] ?? '';
+    $formData['sex'] = $formData['sex'] ?? '';
+    $formData['civilStatus'] = $formData['civilStatus'] ?? '';
+    $formData['citizenship'] = $formData['citizenship'] ?? '';
+    $formData['birthPlace'] = $formData['birthPlace'] ?? '';
+    $formData['presentAddress'] = $formData['presentAddress'] ?? ''; // This will be handled by JS for "same as permanent"
+    $formData['emergencyContactName'] = $formData['emergencyContactName'] ?? '';
+    $formData['emergencyContactNumber'] = $formData['emergencyContactNumber'] ?? '';
+    $formData['emergencyContactRelationship'] = $formData['emergencyContactRelationship'] ?? '';
+    $formData['idType'] = $formData['idType'] ?? '';
+    $formData['idNumber'] = $formData['idNumber'] ?? '';
+    $formData['agreeTerms'] = $formData['agreeTerms'] ?? 0;
 }
 
 // Close the database connection if it's open
@@ -235,9 +268,9 @@ if (isset($database) && $database) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Identity Registration | SafeSpace PH</title>
+    <title>Identity Verification | SafeSpace PH</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46/logo.png">
-        <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
     <style>
         /* General Body and Modal Styling - Matches volunteer_form.php */
@@ -566,15 +599,16 @@ if (isset($database) && $database) {
         }
 
         .go-back-button {
-            display: inline-block;
-            background: #5A2675;
+            display: inline-flex; /* Use flex to align icon and text */
+            align-items: center;
+            background: #b48be3; /* Lighter purple for back button */
             color: #fff;
-            padding: 14px 38px;
+            padding: 10px 20px;
             border-radius: 7px;
             text-decoration: none;
-            font-size: 1.08rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-top: 22px;
+            margin-top: 0; /* Remove top margin as it's at the very top */
             transition: background 0.2s, box-shadow 0.2s;
             border: none;
             cursor: pointer;
@@ -583,7 +617,7 @@ if (isset($database) && $database) {
         }
 
         .go-back-button:hover {
-            background: #391053;
+            background: #9d72b3; /* Darker shade on hover */
             box-shadow: 0 4px 16px rgba(157, 114, 179, 0.18);
         }
 
@@ -735,6 +769,13 @@ if (isset($database) && $database) {
             accent-color: #5A2675;
             flex-shrink: 0; /* Prevent shrinking */
         }
+
+        /* New styles for read-only inputs */
+        input[readonly], textarea[readonly], select[readonly] {
+            background-color: #e9ecef; /* Light gray background */
+            cursor: not-allowed; /* Indicate not editable */
+            opacity: 0.8; /* Slightly dim it */
+        }
     </style>
 </head>
 <body>
@@ -771,7 +812,16 @@ if (isset($database) && $database) {
                     <a href="index.html" class="go-back-button">Go back</a>
                 </div>
             <?php else: ?>
-                <h2 class="form-title" id="form-title">Identity Registration</h2>
+                <div class="back-button-container" id="globalBackButtonContainer" style="text-align: left; margin-bottom: 20px;">
+                    <button type="button" class="go-back-button" onclick="window.history.back();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 5px;">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Back
+                    </button>
+                </div>
+                <h2 class="form-title" id="form-title">Identity Verification</h2>
                 <div class="form-divider"></div>
 
                 <form id="registrationForm" method="POST" action="identity_verification.php" enctype="multipart/form-data" novalidate>
@@ -780,7 +830,7 @@ if (isset($database) && $database) {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="firstName">First Name <span style="color: red;">*</span></label>
-                                <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($formData['firstName'] ?? ''); ?>" required>
+                                <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($formData['firstName'] ?? ''); ?>" required readonly class="readonly-input">
                                 <span class="error-message" id="firstName-error"></span>
                             </div>
                             <div class="form-group">
@@ -796,7 +846,7 @@ if (isset($database) && $database) {
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name <span style="color: red;">*</span></label>
-                                <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($formData['lastName'] ?? ''); ?>" required>
+                                <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($formData['lastName'] ?? ''); ?>" required readonly class="readonly-input">
                                 <span class="error-message" id="lastName-error"></span>
                             </div>
                             <div class="form-group">
@@ -805,7 +855,7 @@ if (isset($database) && $database) {
                             </div>
                             <div class="form-group">
                                 <label for="dob">Date of Birth <span style="color: red;">*</span></label>
-                                <input type="date" id="dob" name="dob" value="<?php echo htmlspecialchars($formData['dob'] ?? ''); ?>" required>
+                                <input type="date" id="dob" name="dob" value="<?php echo htmlspecialchars($formData['dob'] ?? ''); ?>" required readonly class="readonly-input">
                                 <span class="error-message" id="dob-error"></span>
                             </div>
                             <div class="form-group">
@@ -856,23 +906,29 @@ if (isset($database) && $database) {
                         <h3 class="section-title">Contact Information</h3>
                         <div class="form-grid">
                             <div class="form-group full-width">
+                                <label for="permanentAddress">Permanent Address <span style="color: red;">*</span></label>
+                                <textarea id="permanentAddress" name="permanentAddress" rows="3" required readonly class="readonly-input"><?php echo htmlspecialchars($formData['permanentAddress'] ?? ''); ?></textarea>
+                                <span class="error-message" id="permanentAddress-error"></span>
+                            </div>
+                            <div class="form-group full-width">
                                 <label for="presentAddress">Present Address <span style="color: red;">*</span></label>
+                                <div class="checkbox-group" style="margin-bottom: 10px; margin-top: 5px;">
+                                    <label>
+                                        <input type="checkbox" id="sameAsPermanentAddress">
+                                        Same as permanent address
+                                    </label>
+                                </div>
                                 <textarea id="presentAddress" name="presentAddress" rows="3" required><?php echo htmlspecialchars($formData['presentAddress'] ?? ''); ?></textarea>
                                 <span class="error-message" id="presentAddress-error"></span>
                             </div>
-                            <div class="form-group full-width">
-                                <label for="permanentAddress">Permanent Address <span style="color: red;">*</span></label>
-                                <textarea id="permanentAddress" name="permanentAddress" rows="3" required><?php echo htmlspecialchars($formData['permanentAddress'] ?? ''); ?></textarea>
-                                <span class="error-message" id="permanentAddress-error"></span>
-                            </div>
                             <div class="form-group">
                                 <label for="email">Email Address <span style="color: red;">*</span></label>
-                                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" required>
+                                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($formData['email'] ?? ''); ?>" required readonly class="readonly-input">
                                 <span class="error-message" id="email-error"></span>
                             </div>
                             <div class="form-group">
                                 <label for="contactNumber">Contact Number <span style="color: red;">*</span></label>
-                                <input type="text" id="contactNumber" name="contactNumber" value="<?php echo htmlspecialchars($formData['contactNumber'] ?? ''); ?>" required>
+                                <input type="text" id="contactNumber" name="contactNumber" value="<?php echo htmlspecialchars($formData['contactNumber'] ?? ''); ?>" required readonly class="readonly-input">
                                 <span class="error-message" id="contactNumber-error"></span>
                             </div>
                         </div>
@@ -971,6 +1027,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backBtns = document.querySelectorAll('.back-btn');
     const submitBtn = document.getElementById('submitBtn');
     const formTitle = document.getElementById('form-title');
+    const globalBackButtonContainer = document.getElementById('globalBackButtonContainer'); // Get the global back button container
     let currentSectionIndex = 0;
 
     const phpErrors = <?php echo json_encode($errors); ?>;
@@ -983,6 +1040,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         currentSectionIndex = index;
         updateFormTitle();
+
+        // Control visibility of the global back button
+        if (globalBackButtonContainer) {
+            if (currentSectionIndex === 0) { // Only show on the first section (index 0)
+                globalBackButtonContainer.style.display = 'block';
+            } else {
+                globalBackButtonContainer.style.display = 'none';
+            }
+        }
+
         if (Object.keys(phpErrors).length > 0 && !formSubmittedSuccessfully) {
             displayPHPErrors();
         }
@@ -990,12 +1057,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateFormTitle() {
         const titles = [
-            'Identity Registration',
+            'Identity Verification',    
             'Contact Information',
-            'Identity Verification',
+            'Proof of Identity',
             'Review & Submit'
         ];
-        formTitle.textContent = titles[currentSectionIndex] || 'Identity Registration';
+        formTitle.textContent = titles[currentSectionIndex] || 'Identity Verification';
     }
 
     function displayError(inputElement, message) {
@@ -1084,6 +1151,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            // Skip readonly inputs from direct validation here, as their values are pre-filled/controlled
+            if (input.readOnly) {
+                return;
+            }
+
             clearError(input);
 
             if (input.type === 'radio') {
@@ -1151,6 +1223,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Skip this field from summary as it's handled by middleName directly
                 continue;
             }
+            else if (key === 'sameAsPermanentAddress') {
+                // Skip this field from summary
+                continue;
+            }
             else {
                 summaryData[key] = value;
             }
@@ -1181,7 +1257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         for (const key in displayMap) {
             // Check if middleName is empty and noMiddleName is checked, then display 'N/A'
-            if (key === 'middleName' && summaryData['noMiddleName'] === 'on') {
+            if (key === 'middleName' && document.getElementById('noMiddleName')?.checked) {
                 const item = document.createElement('div');
                 item.classList.add('summary-item');
                 const label = document.createElement('strong');
@@ -1356,6 +1432,39 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set initial state based on PHP data if middleName is empty
         if (middleNameInput.value.trim() === '' && noMiddleNameCheckbox.checked) {
             middleNameInput.disabled = true;
+        }
+    }
+
+    // Handle "Same as permanent address" checkbox logic
+    const permanentAddressInput = document.getElementById('permanentAddress');
+    const presentAddressInput = document.getElementById('presentAddress');
+    const sameAsPermanentAddressCheckbox = document.getElementById('sameAsPermanentAddress');
+
+    if (permanentAddressInput && presentAddressInput && sameAsPermanentAddressCheckbox) {
+        function updatePresentAddressState() {
+            if (sameAsPermanentAddressCheckbox.checked) {
+                presentAddressInput.value = permanentAddressInput.value;
+                presentAddressInput.readOnly = true;
+                presentAddressInput.classList.add('readonly-input');
+                clearError(presentAddressInput); // Clear any existing error
+            } else {
+                // Only clear if it was previously filled by the checkbox and was read-only
+                if (presentAddressInput.value === permanentAddressInput.value && presentAddressInput.readOnly) {
+                    presentAddressInput.value = '';
+                }
+                presentAddressInput.readOnly = false;
+                presentAddressInput.classList.remove('readonly-input');
+            }
+        }
+
+        sameAsPermanentAddressCheckbox.addEventListener('change', updatePresentAddressState);
+
+        // Initial check: If presentAddress is already the same as permanentAddress on load, check the box
+        // This handles cases where the form was submitted with errors and presentAddress was pre-filled
+        // and also for initial load if the session data implies they are the same.
+        if (permanentAddressInput.value.trim() !== '' && presentAddressInput.value.trim() === permanentAddressInput.value.trim()) {
+            sameAsPermanentAddressCheckbox.checked = true;
+            updatePresentAddressState(); // Apply read-only and value
         }
     }
 

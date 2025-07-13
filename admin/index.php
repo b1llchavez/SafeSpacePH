@@ -87,7 +87,7 @@
                     <td class="menu-btn menu-icon-lawyers ">
                         <a href="lawyers.php" class="non-style-link-menu">
                             <div>
-                                <p class="menu-text">Lawyers</p>
+                                <p class="menu-text">All Lawyers</p>
                         </a>
         </div>
         </td>
@@ -96,7 +96,7 @@
             <td class="menu-btn menu-icon-schedule">
                 <a href="schedule.php" class="non-style-link-menu">
                     <div>
-                        <p class="menu-text">Schedule</p>
+                        <p class="menu-text">Schedules</p>
                     </div>
                 </a>
             </td>
@@ -105,7 +105,7 @@
             <td class="menu-btn menu-icon-appoinment">
                 <a href="appointment.php" class="non-style-link-menu">
                     <div>
-                        <p class="menu-text">Appointment</p>
+                        <p class="menu-text">Appointments</p>
                 </a>
     </div>
     </td>
@@ -114,10 +114,15 @@
         <td class="menu-btn menu-icon-client">
             <a href="client.php" class="non-style-link-menu">
                 <div>
-                    <p class="menu-text">Clients</p>
+                    <p class="menu-text">All Clients</p>
             </a></div>
         </td>
     </tr>
+    <td class="menu-btn menu-icon-client-verification">
+        <a href="client_verification.php" class="non-style-link-menu">
+            <div><p class="menu-text">Client Verification</p></div>
+        </a>
+    </td>
     </table>
     </div>
     <div class="dash-body" style="margin-top: 15px">

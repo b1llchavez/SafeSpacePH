@@ -392,6 +392,14 @@ input[type=search]:focus {
   background-size: 30px 30px;
   background-image: url('../img/icons/client.svg');
 }
+.menu-icon-client-verification{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/client_verification-icon.svg');
+}
+.menu-icon-verify{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/verify.svg');
+}
 .menu-icon-settings{
   background-size: 30px 30px;
   background-image: url('../img/icons/settings-icon.svg');
@@ -416,7 +424,16 @@ input[type=search]:focus {
   background-size: 30px 30px;
   background-image: url('../img/icons/dashboard2-hover.svg');
 }
-
+.menu-icon-client-verification:hover,.menu-icon-client-verification-active{
+  color: var(--primarycolor);
+  background-size: 30px 30px;
+  background-image: url('../img/icons/client_verification_white.svg');
+}
+.menu-icon-verify:hover,.menu-icon-verify-active{
+  color: var(--primarycolor);
+  background-size: 30px 30px;
+  background-image: url('../img/icons/verify-white.svg');
+}
 .menu-icon-lawyers:hover,.menu-icon-lawyers-active{
   color: var(--primarycolor);
   background-size: 30px 30px;

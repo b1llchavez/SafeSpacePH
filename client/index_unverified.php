@@ -1,3 +1,38 @@
+<?php
+session_start(); // session_start() must be called before any output
+
+// Set the timezone to Asia/Manila for Quezon City, Philippines
+date_default_timezone_set('Asia/Manila');
+
+// Check if the user is logged in and is of type 'u' (unverified client)
+if(isset($_SESSION["user"])){
+    if(($_SESSION["user"])=="" or $_SESSION['usertype']!='u'){
+        // If user is not logged in or is not an unverified client, redirect to login page
+        header("location: ../login.php");
+        exit(); // Always exit after a header redirect
+    }else{
+        $useremail=$_SESSION["user"]; // Set useremail if session is valid
+    }
+}else{
+    // If session is not set, redirect to login page
+    header("location: ../login.php");
+    exit(); // Always exit after a header redirect
+}
+
+// Include database connection
+include("../connection.php");
+
+// Retrieve client ID and name from session
+// Ensure these session variables are set during login for 'u' type users
+$clientid = isset($_SESSION['cid']) ? $_SESSION['cid'] : null; 
+$clientname = isset($_SESSION['cname']) ? $_SESSION['cname'] : 'Guest';
+
+// Fetch user details from the database
+$userrow = $database->query("select * from client where cemail='$useremail'");
+$userfetch=$userrow->fetch_assoc();
+$userid= $userfetch["cid"];
+$username=$userfetch["cname"];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,13 +137,15 @@
         }
 
         .verify-button {
-            background-color: #2196f3;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 100%);
+            padding: 14px 38px;
+            font-size: 16px;
+            font-weight: 600;
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(57, 16, 83, 0.2);
             transition: all 0.3s ease;
         }
 
@@ -128,33 +165,29 @@
                 transform: translateY(0);
             }
         }
+        /* Styles for the logout button, adapted to match verify button's dimensions */
+        .logout-modal-btn {
+            padding: 14px 38px; /* Same padding as verify-button */
+            font-size: 16px; /* Same font size as verify-button */
+            font-weight: 600; /* Same font weight as verify-button */
+            color: #391053; /* Dark text for contrast */
+            background-color: #f0f0f0; /* Light grey background */
+            border: 1px solid #ccc; /* Light border */
+            border-radius: 8px; /* Same border-radius as verify-button */
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: all 0.3s ease;
+            margin-top: 15px; /* Space between verify and logout buttons */
+        }
+
+        .logout-modal-btn:hover {
+            background-color: #e0e0e0; /* Darker grey on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body>
-    <?php
-    session_start();
-
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='u'){
-            header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
-        }
-    }else{
-        header("location: ../login.php");
-    }
-
-    include("../connection.php");
-
-    $clientid = $_SESSION['cid']; 
-    $clientname = $_SESSION['cname'];
-
-    $userrow = $database->query("select * from client where cemail='$useremail'");
-    $userfetch=$userrow->fetch_assoc();
-    $userid= $userfetch["cid"];
-    $username=$userfetch["cname"];
-    ?>
-
     <!-- Enhanced Verification Modal -->
     <div id="verify-modal">
         <div class="verify-content" style="box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15); border: 1px solid #e9d5ff;">
@@ -168,19 +201,12 @@
                     Your information is kept private and secure. Verification helps us keep SafeSpace PH a trusted place for all.
                 </span>
             </div>
-            <button onclick="location.href='../identity_verification.php'" class="verify-button" style="
-                background: linear-gradient(90deg, #391053 0%, #5A2675 100%);
-                padding: 14px 38px;
-                font-size: 16px;
-                font-weight: 600;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                cursor: pointer;
-                box-shadow: 0 4px 12px rgba(57, 16, 83, 0.2);
-                transition: all 0.3s ease;
-            ">
+            <button onclick="location.href='../identity_verification.php'" class="verify-button">
                 Verify Now
+            </button>
+            <!-- Logout button added here -->
+            <button type="button" onclick="window.location.href='../logout.php';" class="logout-modal-btn">
+                Log out
             </button>
         </div>
     </div>
@@ -258,7 +284,6 @@
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
-                                date_default_timezone_set('Asia/Kolkata');
                                 $today = date('Y-m-d');
                                 echo $today;
 

@@ -112,7 +112,7 @@ if($_POST){
             <tr>
                 <td colspan="2">
                     <button type="button" onclick="window.location.href='index.html';" class="back-btn btn btn-primary-soft">
-                        Back
+                        Return Home
                     </button>
                 </td>
             </tr>

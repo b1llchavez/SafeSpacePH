@@ -7,7 +7,7 @@
 session_start(); // This line must be the first thing executed.
 
 $_SESSION["user"]="";
-$_SESSION["usertype"]="";
+$_SESSION["usertype"]="u";
 
 // Set the new timezone
 date_default_timezone_set('Asia/Manila'); // Changed timezone to Asia/Manila for Philippines
@@ -67,7 +67,7 @@ if($_POST){
                 // Otherwise, just use $tele if the database only stores the 10 digits
 
                 $database->query("insert into client(cemail,cname,cpassword, caddress,cdob,ctel) values('$email','$name','$newpassword','$address','$dob','$tele');");
-                $database->query("insert into webuser values('$email','c')");
+                $database->query("insert into webuser values('$email','u')");
 
                 require 'send_email.php'; // make sure this path is correct
 
