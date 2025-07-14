@@ -148,7 +148,7 @@ body{
 
 .non-style-link:link, .non-style-link:visited, .non-style-link:hover, .non-style-link:active{
     text-decoration: none;
-    color: rgb(43, 43, 43);
+    color: #5A2675
 }
 
 

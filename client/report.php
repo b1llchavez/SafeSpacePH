@@ -11,27 +11,31 @@
     // Include database connection
     include("../connection.php");
 
-    // --- FIX START ---
     // Retrieve clientid and clientname from session
-    $clientid = $_SESSION['cid']; 
-    $clientname = $_SESSION['cname']; // Retrieve clientname from session
-    // --- FIX END ---
+    $clientid = $_SESSION['cid'];
+    $clientname = $_SESSION['cname'];
 
     // Fetch logged-in user's details
     $useremail = $_SESSION["user"];
     $userrow = $database->query("SELECT * FROM client WHERE cemail='$useremail'");
     $userfetch = $userrow->fetch_assoc();
-    $userid = $userfetch["cid"];
-    $username = $userfetch["cname"];
+    $userid = $userfetch["cid"]; // Redundant if $_SESSION['cid'] is reliable, but kept for consistency
+    $username = $userfetch["cname"]; // Redundant if $_SESSION['cname'] is reliable, but kept for consistency
 
     // Initialize form variables to retain values on re-display
     $reporter_name = isset($_POST['reporter_name']) ? htmlspecialchars($_POST['reporter_name']) : $username;
     $reporter_phone = isset($_POST['reporter_phone']) ? htmlspecialchars($_POST['reporter_phone']) : '';
     $reporter_email = isset($_POST['reporter_email']) ? htmlspecialchars($_POST['reporter_email']) : $useremail;
     $violation_type = isset($_POST['violation_type']) ? htmlspecialchars($_POST['violation_type']) : '';
-    $incident_description = isset($_POST['incident_description']) ? htmlspecialchars($_POST['incident_description']) : '';
-    $legal_consultation = isset($_POST['legal_consultation']) ? htmlspecialchars($_POST['legal_consultation']) : '';
+    $incident_date = isset($_POST['incident_date']) ? htmlspecialchars($_POST['incident_date']) : '';
+    $incident_time = isset($_POST['incident_time']) ? htmlspecialchars($_POST['incident_time']) : '';
+    $incident_location = isset($_POST['incident_location']) ? htmlspecialchars($_POST['incident_location']) : '';
+    $incident_description = isset($_POST['incident_description']) ? htmlspecialchars($_POST['incident_description']) : ''; // Renamed from description for clarity
+    $legal_consultation = isset($_POST['legal_consultation']) ? htmlspecialchars($_POST['legal_consultation']) : 'No'; // Default to No
     $supplementary_notes = isset($_POST['supplementary_notes']) ? htmlspecialchars($_POST['supplementary_notes']) : '';
+    $victim_name = isset($_POST['victim_name']) ? htmlspecialchars($_POST['victim_name']) : '';
+    $victim_contact = isset($_POST['victim_contact']) ? htmlspecialchars($_POST['victim_contact']) : '';
+    $perpetrator_name = isset($_POST['perpetrator_name']) ? htmlspecialchars($_POST['perpetrator_name']) : '';
     $consent_checked = isset($_POST['consent']) ? 'checked' : '';
 
     $message = ''; // For displaying success/error messages
@@ -47,39 +51,60 @@
         if (!isset($_POST['consent']) || $_POST['consent'] != 'on') {
             $errors[] = "You must agree to the consent statement.";
         }
+        if (empty($_POST['violation_type'])) {
+            $errors[] = "Type of Violation is required.";
+        }
+        if (empty($_POST['incident_date'])) {
+            $errors[] = "Date of Incident is required.";
+        }
+        if (empty($_POST['incident_time'])) {
+            $errors[] = "Time of Incident is required.";
+        }
+        if (empty($_POST['incident_location'])) {
+            $errors[] = "Location of Incident is required.";
+        }
+        if (empty($_POST['perpetrator_name'])) {
+            $errors[] = "Perpetrator Information is required.";
+        }
+
 
         // Collect other form data and escape them for SQL insertion
-        $reporter_name_submit = $database->real_escape_string($_POST['reporter_name']);
-        $reporter_phone_submit = $database->real_escape_string($_POST['reporter_phone']);
-        $reporter_email_submit = $database->real_escape_string($_POST['reporter_email']);
-        $report_title_submit = $database->real_escape_string($_POST['violation_type']);
-        $report_description_submit = $database->real_escape_string($_POST['incident_description']);
+        $client_id_submit = mysqli_real_escape_string($database, $clientid); // Use clientid from session
+        $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name']);
+        $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone']);
+        $reporter_email_submit = mysqli_real_escape_string($database, $_POST['reporter_email']);
+        $violation_type_submit = mysqli_real_escape_string($database, $_POST['violation_type']);
+        $incident_date_submit = mysqli_real_escape_string($database, $_POST['incident_date']);
+        $incident_time_submit = mysqli_real_escape_string($database, $_POST['incident_time']);
+        $incident_location_submit = mysqli_real_escape_string($database, $_POST['incident_location']);
+        $description_submit = mysqli_real_escape_string($database, $_POST['incident_description']); // Use the new variable name
+        $victim_name_submit = mysqli_real_escape_string($database, $_POST['victim_name']);
+        $victim_contact_submit = mysqli_real_escape_string($database, $_POST['victim_contact']);
+        $perpetrator_name_submit = mysqli_real_escape_string($database, $_POST['perpetrator_name']);
         $legal_consultation_submit = isset($_POST['legal_consultation']) ? $database->real_escape_string($_POST['legal_consultation']) : 'No';
         $supplementary_notes_submit = $database->real_escape_string($_POST['supplementary_notes']);
 
-        // File upload handling for single file (file_name, file_path)
-        $uploaded_file_name = '';
-        $uploaded_file_path = '';
+
+        // File upload handling for single file (evidence_file)
+        $evidence_file_name = ''; // This will store the unique file name saved on server
 
         if (!empty($_FILES['supporting_files']['name'][0])) {
-            $upload_dir = '../reports';
+            $upload_dir = '../uploads/reports/'; // Ensure this directory exists relative to your script
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0777, true); // Create directory if it doesn't exist
             }
 
-            // Process only the first file for 'file_name' and 'file_path' columns
             $name = $_FILES['supporting_files']['name'][0];
             $tmp_name = $_FILES['supporting_files']['tmp_name'][0];
             $error = $_FILES['supporting_files']['error'][0];
 
             if ($error == UPLOAD_ERR_OK) {
                 $file_extension = pathinfo($name, PATHINFO_EXTENSION);
-                $new_file_name = uniqid('report_') . '.' . $file_extension;
-                $destination = $upload_dir . $new_file_name;
+                $new_unique_file_name = uniqid('evidence_') . '.' . $file_extension;
+                $destination_path = $upload_dir . $new_unique_file_name; // Corrected path concatenation
 
-                if (move_uploaded_file($tmp_name, $destination)) {
-                    $uploaded_file_name = $database->real_escape_string($name); // Original file name
-                    $uploaded_file_path = $database->real_escape_string($destination); // Stored path
+                if (move_uploaded_file($tmp_name, $destination_path)) {
+                    $evidence_file_name = $database->real_escape_string($new_unique_file_name); // Store the unique generated name
                 } else {
                     $errors[] = "Failed to upload file: " . htmlspecialchars($name);
                 }
@@ -90,32 +115,18 @@
 
         // If no errors, insert into database
         if (empty($errors)) {
-            // Updated INSERT query for the 'reports' table, including new columns
+            // Updated INSERT query for the 'reports' table, including client_id and other columns
             $insert_query = "INSERT INTO reports (
-                                client_id,
-                                reporter_name,
-                                reporter_phone,
-                                reporter_email,
-                                title,
-                                description,
-                                legal_consultation_requested,
-                                supplementary_notes,
-                                file_name,
-                                file_path,
-                                uploaded_at
-                            ) VALUES (
-                                '$userid',
-                                '$reporter_name_submit',
-                                '$reporter_phone_submit',
-                                '$reporter_email_submit',
-                                '$report_title_submit',
-                                '$report_description_submit',
-                                '$legal_consultation_submit',
-                                '$supplementary_notes_submit',
-                                '$uploaded_file_name',
-                                '$uploaded_file_path',
-                                NOW()
-                            )";
+                client_id, reporter_name, reporter_phone, reporter_email, violation_type,
+                incident_date, incident_time, incident_location, description,
+                victim_name, victim_contact, perpetrator_name, evidence_file,
+                submission_date, status, admin_notes
+            ) VALUES (
+                '$client_id_submit', '$reporter_name_submit', '$reporter_phone_submit', '$reporter_email_submit', '$violation_type_submit',
+                '$incident_date_submit', '$incident_time_submit', '$incident_location_submit', '$description_submit',
+                '$victim_name_submit', '$victim_contact_submit', '$perpetrator_name_submit', '$evidence_file_name',
+                NOW(), 'pending', '$supplementary_notes_submit'
+            )";
 
             if ($database->query($insert_query)) {
                 $message = '<div id="popup1" class="overlay">
@@ -134,14 +145,20 @@
                                 </center>
                                 </div>
                             </div>';
-                // Clear form fields after successful submission
+                // Clear form fields after successful submission (except pre-filled user data)
                 $reporter_name = $username;
                 $reporter_phone = '';
                 $reporter_email = $useremail;
                 $violation_type = '';
+                $incident_date = '';
+                $incident_time = '';
+                $incident_location = '';
                 $incident_description = '';
-                $legal_consultation = '';
+                $legal_consultation = 'No';
                 $supplementary_notes = '';
+                $victim_name = '';
+                $victim_contact = '';
+                $perpetrator_name = '';
                 $consent_checked = '';
 
             } else {
@@ -190,8 +207,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/animations.css">  
-    <link rel="stylesheet" href="../css/main.css">  
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
     <title>Report Violation | SafeSpace PH</title>
@@ -299,7 +316,7 @@
             color: #555;
             line-height: 1.5;
             cursor: pointer;
-        }   
+        }
 
         .abc.scroll {
             padding: 20px;
@@ -395,7 +412,7 @@
                             Today's Date
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php 
+                            <?php
                                 date_default_timezone_set('Asia/Manila'); // Set timezone to Philippines
                                 $date = date('Y-m-d');
                                 echo $date;
@@ -437,8 +454,40 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="incident_date" class="form-label">Date of Incident:</label>
+                                        <input type="date" name="incident_date" class="input-text" value="<?php echo $incident_date; ?>" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="incident_time" class="form-label">Time of Incident:</label>
+                                        <input type="time" name="incident_time" class="input-text" value="<?php echo $incident_time; ?>" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="incident_location" class="form-label">Location of Incident:</label>
+                                        <textarea name="incident_location" class="input-text" placeholder="Exact address, landmark, or online platform" required><?php echo $incident_location; ?></textarea>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="incident_description" class="form-label">Description of the Incident (Required):</label>
                                         <textarea name="incident_description" class="input-text" placeholder="Provide a detailed description of the incident..."><?php echo $incident_description; ?></textarea>
+                                    </div>
+
+                                    <h3>Victim Information (if different from Reporter)</h3>
+                                    <div class="form-group">
+                                        <label for="victim_name" class="form-label">Victim's Full Name (Optional):</label>
+                                        <input type="text" name="victim_name" class="input-text" placeholder="Victim's Name" value="<?php echo $victim_name; ?>">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="victim_contact" class="form-label">Victim's Contact (Email/Phone - Optional):</label>
+                                        <input type="text" name="victim_contact" class="input-text" placeholder="Victim's Email or Phone" value="<?php echo $victim_contact; ?>">
+                                    </div>
+
+                                    <h3>Perpetrator Information</h3>
+                                    <div class="form-group">
+                                        <label for="perpetrator_name" class="form-label">Perpetrator's Name or Description:</label>
+                                        <input type="text" name="perpetrator_name" class="input-text" placeholder="Name, description, or 'Unknown'" value="<?php echo $perpetrator_name; ?>" required>
                                     </div>
 
                                     <div class="form-group">
@@ -457,12 +506,11 @@
                                             <input type="file" name="supporting_files[]" id="supporting_files" multiple style="display: none;">
                                         </div>
                                         <ul class="file-list" id="file-list">
-                                            <!-- Selected files will be listed here by JavaScript -->
-                                        </ul>
+                                            </ul>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="supplementary_notes" class="form-label">Supplementary Notes or Questions (Optional):</label>
+                                        <label for="supplementary_notes" class="form-label">Admin Notes (Used as Supplementary Notes from Client Side):</label>
                                         <textarea name="supplementary_notes" class="input-text" placeholder="Add any additional notes or questions..."><?php echo $supplementary_notes; ?></textarea>
                                     </div>
 
@@ -588,7 +636,7 @@
                     `;
                     fileList.appendChild(listItem);
                 }
-                
+
                 // Re-assign the DataTransfer object's files to the file input
                 // This is crucial for the form submission to include all selected files
                 fileInput.files = selectedFiles.files;
@@ -605,7 +653,7 @@
             // Function to remove a file from the list
             function removeFile(indexToRemove) {
                 // For single file, just clear the DataTransfer object
-                selectedFiles = new DataTransfer(); 
+                selectedFiles = new DataTransfer();
                 updateFileList();
             }
 

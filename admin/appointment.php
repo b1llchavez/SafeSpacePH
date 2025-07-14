@@ -66,39 +66,69 @@
                     </td>
                 
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord" >
-                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Dashboard</p></a></div></a>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-dashbord">
+                        <a href="index.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Dashboard</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">
-                        <td class="menu-btn menu-icon-lawyers ">
-                            <a href="lawyers.php" class="non-style-link-menu"><div><p class="menu-text">All Lawyers</p></a></div>
-                        </td>
+                    <td class="menu-btn menu-icon-report">
+                        <a href="admin_reports.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Violation Reports</p>
+                            </div>
+                        </a>
+                    </td>
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-schedule ">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Schedules</p></div></a>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="schedule.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Schedules</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment menu-active menu-icon-appoinment-active">
-                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text menu-text-active">Appointments</p></a></div>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-client">
-                        <a href="client.php" class="non-style-link-menu"><div><p class="menu-text"> All Clients</p></a></div>
+                        <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active">
+                            <div>
+                                <p class="menu-text menu-text-active">Appointments</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">
-    <td class="menu-btn menu-icon-client-verification">
-        <a href="client_verification.php" class="non-style-link-menu">
-            <div><p class="menu-text">Client Verification</p></div>
-        </a>
-    </td>
-</tr>
-
+                    <td class="menu-btn menu-icon-client-verification">
+                        <a href="client_verification.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Client Verification</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-lawyers">
+                        <a href="lawyers.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">All Lawyers</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-client">
+                        <a href="client.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">All Clients</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="dash-body">

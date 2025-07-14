@@ -514,39 +514,69 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                     </table>
                     </td>
                 </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord" >
-                        <a href="index.php" class="non-style-link-menu"><div><p class="menu-text">Dashboard</p></a></div></a>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-dashbord">
+                        <a href="index.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Dashboard</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-lawyers ">
-                            <a href="lawyers.php" class="non-style-link-menu"><div><p class="menu-text">All Lawyers</p></a></div>
+                    <td class="menu-btn menu-icon-report">
+                        <a href="admin_reports.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Violation Reports</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
-                <tr class="menu-row" >
+                <tr class="menu-row">
                     <td class="menu-btn menu-icon-schedule">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Schedules</p></div></a>
+                        <a href="schedule.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Schedules</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">Appointments</p></a></div>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-client  menu-active menu-icon-client-active">
-                        <a href="client.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text menu-text-active">All Clients</p></a></div>
+                        <a href="appointment.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Appointments</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-client-verification">
                         <a href="client_verification.php" class="non-style-link-menu">
-                            <div><p class="menu-text">Client Verification</p></div>
+                            <div>
+                                <p class="menu-text">Client Verification</p>
+                            </div>
                         </a>
                     </td>
                 </tr>
-
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-lawyers">
+                        <a href="lawyers.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">All Lawyers</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-client menu-active menu-icon-client-active">
+                        <a href="client.php" class="non-style-link-menu non-style-link-menu-active">
+                            <div>
+                                <p class="menu-text menu-text-active">All Clients</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="dash-body">
@@ -691,7 +721,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                             <td><span class="status-btn ' . $verified_class . '">' . $verified_text . '</span></td>
                                             <td>
                                                 <div style="display:flex;justify-content: center;">
-                                                    <a href="?action=view&id='.$cid.'" class="non-style-link btn-primary-soft btn button-icon btn-view" style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
+                                                    <a href="?action=view&id='.$cid.'" class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
                                                         <font class="tn-in-text">View</font>
                                                     </a>
                                                     &nbsp;&nbsp;&nbsp;
