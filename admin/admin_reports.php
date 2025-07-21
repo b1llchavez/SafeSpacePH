@@ -20,24 +20,18 @@
     $reports_query = "SELECT * FROM reports";
     $report_result = $database->query($reports_query);
 
-    $action = "";
-    if(isset($_GET['action'])) {
-        $action = $_GET['action'];
-    }
-
-    $id = "";
-    if(isset($_GET['id'])) {
-        $id = $_GET['id'];
-    }
+    $action = $_GET['action'] ?? null;
+    $id = $_GET['id'] ?? null;
 
     $popup_message = "";
 
     // Handle GET requests for actions like view, delete, edit notes
-    if($_GET){
-        $id = $_GET["id"];
-        $action = $_GET["action"];
+    if (!empty($action) && !empty($id)) {
+        // Sanitize ID for all GET actions to prevent SQL Injection
+        $id_safe = mysqli_real_escape_string($database, $id);
+
         if($action=='drop'){
-            $nameget = $_GET["name"];
+            $nameget = $_GET["name"] ?? 'this record';
             $popup_message = '
             <div id="popup1" class="overlay">
                     <div class="popup">
@@ -61,27 +55,27 @@
             </div>
             ';
         } elseif ($action == 'view') {
-            $sqlmain = "SELECT * FROM reports WHERE id='$id'";
+            $sqlmain = "SELECT * FROM reports WHERE id='$id_safe'";
             $result = $database->query($sqlmain);
             if ($result->num_rows > 0) {
                 $report_details = $result->fetch_assoc();
-                $report_id_details = htmlspecialchars($report_details['id']);
-                $client_id_details = htmlspecialchars($report_details['client_id']); // Fetch and display client_id
-                $reporter_name_details = htmlspecialchars($report_details['reporter_name']);
-                $reporter_phone_details = htmlspecialchars($report_details['reporter_phone']);
-                $reporter_email_details = htmlspecialchars($report_details['reporter_email']);
-                $violation_type_details = htmlspecialchars($report_details['violation_type']);
-                $incident_date_details = htmlspecialchars($report_details['incident_date']);
-                $incident_time_details = htmlspecialchars($report_details['incident_time']);
-                $incident_location_details = nl2br(htmlspecialchars($report_details['incident_location']));
-                $description_details = nl2br(htmlspecialchars($report_details['description']));
-                $victim_name_details = htmlspecialchars($report_details['victim_name']);
-                $victim_contact_details = htmlspecialchars($report_details['victim_contact']);
-                $perpetrator_name_details = htmlspecialchars($report_details['perpetrator_name']);
-                $evidence_file_details = htmlspecialchars($report_details['evidence_file']);
-                $status_details = htmlspecialchars($report_details['status']);
-                $admin_notes_details = nl2br(htmlspecialchars($report_details['admin_notes']));
-                $submission_date_details = htmlspecialchars($report_details['submission_date']);
+                $report_id_details = htmlspecialchars($report_details['id'] ?? '');
+                $client_id_details = htmlspecialchars($report_details['client_id'] ?? '');
+                $reporter_name_details = htmlspecialchars($report_details['reporter_name'] ?? '');
+                $reporter_phone_details = htmlspecialchars($report_details['reporter_phone'] ?? '');
+                $reporter_email_details = htmlspecialchars($report_details['reporter_email'] ?? '');
+                $violation_type_details = htmlspecialchars($report_details['violation_type'] ?? '');
+                $incident_date_details = htmlspecialchars($report_details['incident_date'] ?? '');
+                $incident_time_details = htmlspecialchars($report_details['incident_time'] ?? '');
+                $incident_location_details = nl2br(htmlspecialchars($report_details['incident_location'] ?? ''));
+                $description_details = nl2br(htmlspecialchars($report_details['description'] ?? ''));
+                $victim_name_details = htmlspecialchars($report_details['victim_name'] ?? '');
+                $victim_contact_details = htmlspecialchars($report_details['victim_contact'] ?? '');
+                $perpetrator_name_details = htmlspecialchars($report_details['perpetrator_name'] ?? '');
+                $evidence_file_details = htmlspecialchars($report_details['evidence_file'] ?? '');
+                $status_details = htmlspecialchars($report_details['status'] ?? '');
+                $admin_notes_details = nl2br(htmlspecialchars($report_details['admin_notes'] ?? ''));
+                $submission_date_details = htmlspecialchars($report_details['submission_date'] ?? '');
 
                 $evidence_link = "";
                 if (!empty($evidence_file_details)) {
@@ -100,7 +94,7 @@
                         <div class="popup" style="width: 80%; max-width: 800px;"> <center>
                             <h2>Report Details</h2>
                             <a class="close" href="admin_reports.php">&times;</a>
-                            <div class="content" style="max-height: 70vh; overflow-y: auto; padding: 20px;"> <table border="0" style="width: 100%; text-align: left; margin: 0 auto;">
+                            <div class="content" style="max-height: 70vh; overflow-y: auto; padding: 20px;"> <table style="width: 100%; text-align: left; margin: 0 auto;">
                                     <tr>
                                         <td class="label-td" style="width: 50%;">
                                             <label for="report_id" class="form-label">Report ID: </label>
@@ -178,12 +172,12 @@
                 </div>';
             }
         } elseif ($action == 'reject') {
-            $sqlmain = "SELECT * FROM reports WHERE id='$id'";
+            $sqlmain = "SELECT * FROM reports WHERE id='$id_safe'";
             $result = $database->query($sqlmain);
             $report_details = $result->fetch_assoc();
-            $report_id_details = htmlspecialchars($report_details['id']);
-            $reporter_name_details = htmlspecialchars($report_details['reporter_name']);
-            $admin_notes_current = htmlspecialchars($report_details['admin_notes']); // Get current notes if any
+            $report_id_details = htmlspecialchars($report_details['id'] ?? '');
+            $reporter_name_details = htmlspecialchars($report_details['reporter_name'] ?? '');
+            $admin_notes_current = htmlspecialchars($report_details['admin_notes'] ?? '');
 
             $popup_message = '
             <div id="popup1" class="overlay">
@@ -208,12 +202,12 @@
                 </div>
             </div>';
         } elseif ($action == 'submit') { // Renamed from 'accept' to 'submit' to match status
-            $sqlmain = "SELECT * FROM reports WHERE id='$id'";
+            $sqlmain = "SELECT * FROM reports WHERE id='$id_safe'";
             $result = $database->query($sqlmain);
             $report_details = $result->fetch_assoc();
-            $report_id_details = htmlspecialchars($report_details['id']);
-            $reporter_name_details = htmlspecialchars($report_details['reporter_name']);
-            $admin_notes_current = htmlspecialchars($report_details['admin_notes']); // Get current notes if any
+            $report_id_details = htmlspecialchars($report_details['id'] ?? '');
+            $reporter_name_details = htmlspecialchars($report_details['reporter_name'] ?? '');
+            $admin_notes_current = htmlspecialchars($report_details['admin_notes'] ?? '');
 
             $popup_message = '
             <div id="popup1" class="overlay">
@@ -242,12 +236,17 @@
 
     // Handle POST requests for confirming actions
     if($_POST){
-        $id = mysqli_real_escape_string($database, $_POST['id']);
-        $action_type = mysqli_real_escape_string($database, $_POST['action']);
-        $admin_notes = mysqli_real_escape_string($database, $_POST['admin_notes']);
+        $id = $_POST['id'] ?? '';
+        $action_type = $_POST['action'] ?? '';
+        $admin_notes_raw = $_POST['admin_notes'] ?? '';
+
+        // Escape variables for security
+        $id_safe = mysqli_real_escape_string($database, $id);
+        $admin_notes = mysqli_real_escape_string($database, $admin_notes_raw);
+
 
         if($action_type == 'confirm_drop'){
-            $sql_delete_report = "DELETE FROM reports WHERE id = '$id'";
+            $sql_delete_report = "DELETE FROM reports WHERE id = '$id_safe'";
             if ($database->query($sql_delete_report)) {
                 header("location: admin_reports.php?action=deleted");
                 exit();
@@ -256,7 +255,7 @@
                 exit();
             }
         } elseif($action_type == 'confirm_reject'){
-            $update_sql = "UPDATE reports SET status = 'rejected', admin_notes = '$admin_notes' WHERE id = '$id'";
+            $update_sql = "UPDATE reports SET status = 'rejected', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
             if ($database->query($update_sql)) {
                 header("location: admin_reports.php?action=rejected");
                 exit();
@@ -265,7 +264,7 @@
                 exit();
             }
         } elseif ($action_type == 'confirm_submit'){ // Renamed from 'confirm_accept' to 'confirm_submit'
-            $update_sql = "UPDATE reports SET status = 'submitted', admin_notes = '$admin_notes' WHERE id = '$id'";
+            $update_sql = "UPDATE reports SET status = 'submitted', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
             if ($database->query($update_sql)) {
                 header("location: admin_reports.php?action=submitted");
                 exit();
@@ -278,7 +277,8 @@
 
     // Display success/error messages after actions
     if(isset($_GET['action'])){
-        if($_GET['action'] == 'deleted'){
+        $action_result = $_GET['action'];
+        if($action_result == 'deleted'){
             $popup_message = '<div id="popup1" class="overlay">
                 <div class="popup">
                 <center>
@@ -286,16 +286,15 @@
                     <a class="close" href="admin_reports.php">&times;</a>
                     <div class="content">
                         The report has been deleted.
-                        
                     </div>
                     <div style="display: flex;justify-content: center;">
-                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;">OK</button></a>
                     </div>
                     <br><br>
                 </center>
                 </div>
             </div>';
-        } elseif($_GET['action'] == 'rejected'){
+        } elseif($action_result == 'rejected'){
             $popup_message = '<div id="popup1" class="overlay">
                 <div class="popup">
                 <center>
@@ -305,13 +304,13 @@
                         The report has been marked as "rejected".
                     </div>
                     <div style="display: flex;justify-content: center;">
-                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;">OK</button></a>
                     </div>
                     <br><br>
                 </center>
                 </div>
             </div>';
-        } elseif($_GET['action'] == 'submitted'){
+        } elseif($action_result == 'submitted'){
             $popup_message = '<div id="popup1" class="overlay">
                 <div class="popup">
                 <center>
@@ -321,14 +320,14 @@
                         The report has been marked as "submitted to authorities".
                     </div>
                     <div style="display: flex;justify-content: center;">
-                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;">OK</button></a>
                     </div>
                     <br><br>
                 </center>
                 </div>
             </div>';
-        } elseif($_GET['action'] == 'error'){
-            $error_message = htmlspecialchars($_GET['message']);
+        } elseif($action_result == 'error'){
+            $error_message = htmlspecialchars($_GET['message'] ?? 'An unknown error occurred.');
             $popup_message = '<div id="popup1" class="overlay">
                 <div class="popup">
                 <center>
@@ -338,7 +337,7 @@
                         '.$error_message.'
                     </div>
                     <div style="display: flex;justify-content: center;">
-                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                    <a href="admin_reports.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;">OK</button></a>
                     </div>
                     <br><br>
                 </center>
@@ -403,13 +402,13 @@
 <body>
     <div class="container">
         <div class="menu">
-            <table class="menu-container" border="0">
+            <table class="menu-container">
                 <tr>
                     <td style="padding:10px" colspan="2">
-                        <table border="0" class="profile-container">
+                        <table class="profile-container">
                             <tr>
-                                <td width="30%" style="padding-left:20px">
-                                    <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
+                                <td style="width:30%; padding-left:20px">
+                                    <img src="../img/user.png" alt="" style="width:100%; border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
                                     <p class="profile-title">Administrator</p>
@@ -492,10 +491,10 @@
             </table>
         </div>
         <div class="dash-body">
-            <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
+            <table style="width:100%; border-spacing: 0;margin:0;padding:0;margin-top:25px;">
                 <tr>
                     <td width="13%">
-                        <a href="index.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                        <a href="index.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><span class="tn-in-text">Back</span></button></a>
                     </td>
                     <td>
                         <p class="heading-main12" style="margin-left: 10px;font-size:18px;color:rgb(49, 49, 49)">Violation Reports</p>
@@ -509,7 +508,7 @@
                         </p>
                     </td>
                     <td width="10%">
-                        <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
+                        <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" style="width:100%"></button>
                     </td>
                 </tr>
                 <tr>
@@ -521,7 +520,7 @@
                     <td colspan="4">
                         <center>
                             <div class="abc scroll">
-                                <table width="93%" class="sub-table scrolldown" border="0">
+                                <table class="sub-table scrolldown" style="width: 93%;">
                                 <thead>
                                     <tr>
                                         <th class="table-headin">Report ID</th>
@@ -544,7 +543,7 @@
                                                 
                                                 <br>
                                                 <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldnt find anything related to your keywords !</p>
-                                                <a class="non-style-link" href="admin_reports.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;"><i class="fa-solid fa-arrows-rotate"></i>&nbsp; Show all Reports &nbsp;</font></button>
+                                                <a class="non-style-link" href="admin_reports.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;"><i class="fa-solid fa-arrows-rotate"></i>&nbsp; Show all Reports</button>
                                                 </a>
                                                 </center>
                                                 <br><br>
@@ -553,11 +552,11 @@
                                     } else {
                                         while($reportidrow = $report_result->fetch_assoc()){
                                             $id = $reportidrow["id"];
-                                            $client_id = $reportidrow["client_id"]; // Get client ID
-                                            $reporter_name = htmlspecialchars($reportidrow["reporter_name"]);
-                                            $violation_type = htmlspecialchars($reportidrow["violation_type"]);
-                                            $status = htmlspecialchars($reportidrow["status"]);
-                                            $submission_date = htmlspecialchars($reportidrow["submission_date"]);
+                                            $client_id = $reportidrow["client_id"] ?? ''; // Get client ID, provide default
+                                            $reporter_name = htmlspecialchars($reportidrow["reporter_name"] ?? '');
+                                            $violation_type = htmlspecialchars($reportidrow["violation_type"] ?? '');
+                                            $status = htmlspecialchars($reportidrow["status"] ?? '');
+                                            $submission_date = htmlspecialchars($reportidrow["submission_date"] ?? '');
 
                                             $status_class = '';
                                             switch($status) {
