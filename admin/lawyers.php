@@ -17,6 +17,10 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
+        /* This ensures the main content area will scroll if content overflows */
+        .dash-body{
+            overflow-y: auto;
+        }
 </style>
 </head>
 <body>
@@ -349,7 +353,6 @@
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
-            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['lawyertel'];
             echo '
             <div id="popup1" class="overlay">
@@ -399,7 +402,6 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>

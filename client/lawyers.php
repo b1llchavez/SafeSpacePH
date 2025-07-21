@@ -17,6 +17,9 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
+        .dash-body{
+            overflow-y: auto;
+        }
 </style>
 </head>
 <body>
@@ -318,7 +321,6 @@
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
-            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['lawyertel'];
             echo '
             <div id="popup1" class="overlay">
@@ -363,12 +365,10 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Valid ID: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -448,7 +448,6 @@
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
-            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['lawyertel'];
 
             $error_1=$_GET["error"];
@@ -509,12 +508,10 @@
                                     
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="lawyerbarid" class="form-label">Valid ID: </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="lawyerbarid" class="input-text" placeholder="Valid ID Number" value="'.$lawyerbarid.'" required><br>
                                         </td>
                                     </tr>
                                     <tr>

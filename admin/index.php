@@ -20,6 +20,10 @@
         .sub-table {
             animation: transitionIn-Y-bottom 0.5s;
         }
+        /* This rule allows the main content area to scroll vertically when content overflows. */
+        .dash-body {
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -412,3 +416,7 @@
                     </td>
                 </tr>
             </table>
+        </div>
+    </div>
+</body>
+</html>

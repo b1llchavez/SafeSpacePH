@@ -397,6 +397,9 @@
             padding: 0;
             word-wrap: break-word; /* Ensure long text breaks */
         }
+        .dash-body {
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>

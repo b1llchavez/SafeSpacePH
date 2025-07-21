@@ -20,6 +20,12 @@
         .sub-table,.anime{
             animation: transitionIn-Y-bottom 0.5s;
         }
+        /* --- FIX START --- */
+        /* This rule allows the main content area to scroll vertically when content overflows. */
+        .dash-body {
+            overflow-y: auto;
+        }
+        /* --- FIX END --- */
     </style>
     
     
@@ -217,8 +223,6 @@
                                     
 
 
-
-
                                     <center>
                                         <table class="filter-container" style="border: none;" border="0">
                                             <tr>
@@ -294,7 +298,6 @@
                                             </tr>
                                         </table>
                                     </center>
-
 
 
 

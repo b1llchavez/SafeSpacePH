@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `SafeSpacePH`;
-USE `SafeSpacePH`;
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -9,6 +6,10 @@ USE `SafeSpacePH`;
 -- Generation Time: Jul 13, 2025 at 05:20 PM
 -- Server version: 8.0.40
 -- PHP Version: 8.3.14
+
+-- Create and use the database
+CREATE DATABASE IF NOT EXISTS `SafeSpacePH`;
+USE `SafeSpacePH`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -388,6 +389,17 @@ ALTER TABLE `client`
 --
 ALTER TABLE `identity_verifications`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- START OF CODE TO ADD
+--
+-- AUTO_INCREMENT for table `lawyer`
+--
+ALTER TABLE `lawyer`
+  MODIFY `lawyerid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- END OF CODE TO ADD
+--
 
 --
 -- AUTO_INCREMENT for table `reports`

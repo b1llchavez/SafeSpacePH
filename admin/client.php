@@ -161,6 +161,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
     <title>Client | SafeSpace PH</title>
     <style>
+        /* This style block fixes the scrolling issue by ensuring the main content area can scroll vertically. */
+        .dash-body {
+            overflow-y: auto;
+        }
+    </style>
+    <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }

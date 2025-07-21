@@ -133,7 +133,7 @@
     </table>
     </div>
 
-    <div class="dash-body">
+    <div class="dash-body" style="overflow-y: auto; overflow-x: hidden;">
         <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
             <tr>
                 <td width="13%">

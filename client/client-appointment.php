@@ -10,6 +10,10 @@
 
     <title>My Appointments | SafeSpace PH</title>
     <style>
+        /* This rule allows the main content area to scroll if its content is too tall for the screen. */
+        .dash-body{
+            overflow-y: auto;
+        }
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }

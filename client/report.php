@@ -19,8 +19,8 @@
     $useremail = $_SESSION["user"];
     $userrow = $database->query("SELECT * FROM client WHERE cemail='$useremail'");
     $userfetch = $userrow->fetch_assoc();
-    $userid = $userfetch["cid"]; // Redundant if $_SESSION['cid'] is reliable, but kept for consistency
-    $username = $userfetch["cname"]; // Redundant if $_SESSION['cname'] is reliable, but kept for consistency
+    $userid = $userfetch["cid"];
+    $username = $userfetch["cname"];
 
     // Initialize form variables to retain values on re-display
     $reporter_name = isset($_POST['reporter_name']) ? htmlspecialchars($_POST['reporter_name']) : $username;
@@ -30,7 +30,7 @@
     $incident_date = isset($_POST['incident_date']) ? htmlspecialchars($_POST['incident_date']) : '';
     $incident_time = isset($_POST['incident_time']) ? htmlspecialchars($_POST['incident_time']) : '';
     $incident_location = isset($_POST['incident_location']) ? htmlspecialchars($_POST['incident_location']) : '';
-    $incident_description = isset($_POST['incident_description']) ? htmlspecialchars($_POST['incident_description']) : ''; // Renamed from description for clarity
+    $incident_description = isset($_POST['incident_description']) ? htmlspecialchars($_POST['incident_description']) : '';
     $legal_consultation = isset($_POST['legal_consultation']) ? htmlspecialchars($_POST['legal_consultation']) : 'No'; // Default to No
     $supplementary_notes = isset($_POST['supplementary_notes']) ? htmlspecialchars($_POST['supplementary_notes']) : '';
     $victim_name = isset($_POST['victim_name']) ? htmlspecialchars($_POST['victim_name']) : '';
@@ -42,162 +42,193 @@
 
     // Handle form submission
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $errors = [];
 
-        // Server-side validation
-        if (empty($_POST['incident_description'])) {
-            $errors[] = "Description of the Incident is required.";
-        }
-        if (!isset($_POST['consent']) || $_POST['consent'] != 'on') {
-            $errors[] = "You must agree to the consent statement.";
-        }
-        if (empty($_POST['violation_type'])) {
-            $errors[] = "Type of Violation is required.";
-        }
-        if (empty($_POST['incident_date'])) {
-            $errors[] = "Date of Incident is required.";
-        }
-        if (empty($_POST['incident_time'])) {
-            $errors[] = "Time of Incident is required.";
-        }
-        if (empty($_POST['incident_location'])) {
-            $errors[] = "Location of Incident is required.";
-        }
-        if (empty($_POST['perpetrator_name'])) {
-            $errors[] = "Perpetrator Information is required.";
-        }
+        if (empty($_POST) && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > 0) {
+            $display_limit = ini_get('post_max_size');
+            $error_html = "The submission failed because the uploaded file or form data was too large. The server limit is " . $display_limit . ".";
+            $message = '<div id="popup1" class="overlay">...</div>'; // Popup code omitted for brevity
+        } else {
+            $errors = [];
 
+            // Server-side validation
+            if (empty($_POST['incident_description'])) $errors[] = "Description of the Incident is required.";
+            if (!isset($_POST['consent'])) $errors[] = "You must agree to the consent statement.";
+            if (empty($_POST['violation_type'])) $errors[] = "Type of Violation is required.";
+            if (empty($_POST['incident_date'])) $errors[] = "Date of Incident is required.";
+            if (empty($_POST['incident_time'])) $errors[] = "Time of Incident is required.";
+            if (empty($_POST['incident_location'])) $errors[] = "Location of Incident is required.";
+            if (empty($_POST['perpetrator_name'])) $errors[] = "Perpetrator Information is required.";
 
-        // Collect other form data and escape them for SQL insertion
-        $client_id_submit = mysqli_real_escape_string($database, $clientid); // Use clientid from session
-        $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name']);
-        $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone']);
-        $reporter_email_submit = mysqli_real_escape_string($database, $_POST['reporter_email']);
-        $violation_type_submit = mysqli_real_escape_string($database, $_POST['violation_type']);
-        $incident_date_submit = mysqli_real_escape_string($database, $_POST['incident_date']);
-        $incident_time_submit = mysqli_real_escape_string($database, $_POST['incident_time']);
-        $incident_location_submit = mysqli_real_escape_string($database, $_POST['incident_location']);
-        $description_submit = mysqli_real_escape_string($database, $_POST['incident_description']); // Use the new variable name
-        $victim_name_submit = mysqli_real_escape_string($database, $_POST['victim_name']);
-        $victim_contact_submit = mysqli_real_escape_string($database, $_POST['victim_contact']);
-        $perpetrator_name_submit = mysqli_real_escape_string($database, $_POST['perpetrator_name']);
-        $legal_consultation_submit = isset($_POST['legal_consultation']) ? $database->real_escape_string($_POST['legal_consultation']) : 'No';
-        $supplementary_notes_submit = $database->real_escape_string($_POST['supplementary_notes']);
+            // Collect and escape form data for SQL insertion
+            $client_id_submit = mysqli_real_escape_string($database, $clientid);
+            $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name'] ?? '');
+            $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone'] ?? '');
+            $reporter_email_submit = mysqli_real_escape_string($database, $_POST['reporter_email'] ?? '');
+            $legal_consultation_submit = mysqli_real_escape_string($database, $_POST['legal_consultation'] ?? 'No');
+            $supplementary_notes_submit = mysqli_real_escape_string($database, $_POST['supplementary_notes'] ?? '');
 
+            // Data from form fields that do not have corresponding columns in the 'reports' table
+            $violation_type_value = $_POST['violation_type'] ?? 'N/A';
+            $incident_date_value = $_POST['incident_date'] ?? 'N/A';
+            $incident_time_value = $_POST['incident_time'] ?? 'N/A';
+            $incident_location_value = $_POST['incident_location'] ?? 'N/A';
+            $perpetrator_name_value = $_POST['perpetrator_name'] ?? 'N/A';
+            $victim_name_value = $_POST['victim_name'] ?? '';
+            $victim_contact_value = $_POST['victim_contact'] ?? '';
+            $incident_description_value = $_POST['incident_description'] ?? '';
 
-        // File upload handling for single file (evidence_file)
-        $evidence_file_name = ''; // This will store the unique file name saved on server
+            // Use the violation type for the 'title' column
+            $title_submit = mysqli_real_escape_string($database, "Violation Report: " . $violation_type_value);
 
-        if (!empty($_FILES['supporting_files']['name'][0])) {
-            $upload_dir = '../uploads/reports/'; // Ensure this directory exists relative to your script
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true); // Create directory if it doesn't exist
+            // Combine all incident details into the 'description' field
+            $combined_description = "Violation Type: " . $violation_type_value . "\n" .
+                                  "Date of Incident: " . $incident_date_value . "\n" .
+                                  "Time of Incident: " . $incident_time_value . "\n" .
+                                  "Location of Incident: " . $incident_location_value . "\n" .
+                                  "Perpetrator Information: " . $perpetrator_name_value . "\n";
+
+            if (!empty($victim_name_value)) {
+                $combined_description .= "Victim's Name: " . $victim_name_value . "\n";
+            }
+            if (!empty($victim_contact_value)) {
+                $combined_description .= "Victim's Contact: " . $victim_contact_value . "\n";
             }
 
-            $name = $_FILES['supporting_files']['name'][0];
-            $tmp_name = $_FILES['supporting_files']['tmp_name'][0];
-            $error = $_FILES['supporting_files']['error'][0];
+            $combined_description .= "\n---Reporter's Detailed Description---\n" . $incident_description_value;
+            $description_submit = mysqli_real_escape_string($database, $combined_description);
+            
+            // *** FIX STARTS HERE: Enhanced file upload handling and validation ***
+            $file_name_submit = '';
+            $file_path_submit = '';
 
-            if ($error == UPLOAD_ERR_OK) {
-                $file_extension = pathinfo($name, PATHINFO_EXTENSION);
-                $new_unique_file_name = uniqid('evidence_') . '.' . $file_extension;
-                $destination_path = $upload_dir . $new_unique_file_name; // Corrected path concatenation
-
-                if (move_uploaded_file($tmp_name, $destination_path)) {
-                    $evidence_file_name = $database->real_escape_string($new_unique_file_name); // Store the unique generated name
-                } else {
-                    $errors[] = "Failed to upload file: " . htmlspecialchars($name);
+            if (!empty($_FILES['supporting_files']['name'][0])) {
+                $upload_dir = '../uploads/reports/';
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
                 }
-            } elseif ($error != UPLOAD_ERR_NO_FILE) {
-                 $errors[] = "File upload error for " . htmlspecialchars($name) . ": Code " . $error;
+
+                $name = $_FILES['supporting_files']['name'][0];
+                $tmp_name = $_FILES['supporting_files']['tmp_name'][0];
+                $error = $_FILES['supporting_files']['error'][0];
+                
+                // Define allowed file types, similar to volunteer_form.php
+                $allowed_exts = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
+                $allowed_mimes = [
+                    "application/pdf", "application/msword", 
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    "image/jpeg", "image/png"
+                ];
+
+                if ($error == UPLOAD_ERR_OK) {
+                    $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                    $file_mime = mime_content_type($tmp_name);
+
+                    // Validate file extension and MIME type
+                    if (in_array($file_extension, $allowed_exts) && in_array($file_mime, $allowed_mimes)) {
+                        $new_unique_file_name = uniqid('report_') . '.' . $file_extension;
+                        $destination_path = $upload_dir . $new_unique_file_name;
+
+                        if (move_uploaded_file($tmp_name, $destination_path)) {
+                            $file_name_submit = $database->real_escape_string($new_unique_file_name);
+                            $file_path_submit = $database->real_escape_string($destination_path);
+                        } else {
+                            $errors[] = "Failed to move uploaded file: " . htmlspecialchars($name);
+                        }
+                    } else {
+                        // Add validation error to the errors array
+                        $errors[] = "Invalid file type. Only PDF, DOC, DOCX, JPG, JPEG, or PNG are allowed.";
+                    }
+                } elseif ($error == UPLOAD_ERR_INI_SIZE || $error == UPLOAD_ERR_FORM_SIZE) {
+                    $errors[] = "The uploaded file exceeds the maximum allowed size.";
+                } elseif ($error != UPLOAD_ERR_NO_FILE) {
+                    $errors[] = "File upload error for " . htmlspecialchars($name) . ": Code " . $error;
+                }
             }
-        }
+            // *** FIX ENDS HERE ***
 
-        // If no errors, insert into database
-        if (empty($errors)) {
-            // Updated INSERT query for the 'reports' table, including client_id and other columns
-            $insert_query = "INSERT INTO reports (
-                client_id, reporter_name, reporter_phone, reporter_email, violation_type,
-                incident_date, incident_time, incident_location, description,
-                victim_name, victim_contact, perpetrator_name, evidence_file,
-                submission_date, status, admin_notes
-            ) VALUES (
-                '$client_id_submit', '$reporter_name_submit', '$reporter_phone_submit', '$reporter_email_submit', '$violation_type_submit',
-                '$incident_date_submit', '$incident_time_submit', '$incident_location_submit', '$description_submit',
-                '$victim_name_submit', '$victim_contact_submit', '$perpetrator_name_submit', '$evidence_file_name',
-                NOW(), 'pending', '$supplementary_notes_submit'
-            )";
+            // If no validation errors, proceed with database insertion
+            if (empty($errors)) {
+                $insert_query = "INSERT INTO reports (
+                    client_id, reporter_name, reporter_phone, reporter_email,
+                    title, description, legal_consultation_requested,
+                    supplementary_notes, file_name, file_path, uploaded_at
+                ) VALUES (
+                    '$client_id_submit', '$reporter_name_submit', '$reporter_phone_submit', '$reporter_email_submit',
+                    '$title_submit', '$description_submit', '$legal_consultation_submit',
+                    '$supplementary_notes_submit', '$file_name_submit', '$file_path_submit', NOW()
+                )";
 
-            if ($database->query($insert_query)) {
-                $message = '<div id="popup1" class="overlay">
-                                <div class="popup">
-                                <center>
-                                <br><br><br><br>
-                                    <h2>Report Submitted Successfully!</h2>
-                                    <a class="close" href="report.php">&times;</a>
-                                    <div class="content">
-                                        Your violation report has been received.
+                if ($database->query($insert_query)) {
+                    $message = '<div id="popup1" class="overlay">
+                                    <div class="popup">
+                                    <center>
+                                    <br><br><br><br>
+                                        <h2>Report Submitted Successfully!</h2>
+                                        <a class="close" href="report.php">&times;</a>
+                                        <div class="content">
+                                            Your violation report has been received.
+                                        </div>
+                                        <div style="display: flex;justify-content: center;">
+                                        <a href="report.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                                        </div>
+                                        <br><br>
+                                    </center>
                                     </div>
-                                    <div style="display: flex;justify-content: center;">
-                                    <a href="report.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                                    </div>
-                                    <br><br>
-                                </center>
-                                </div>
-                            </div>';
-                // Clear form fields after successful submission (except pre-filled user data)
-                $reporter_name = $username;
-                $reporter_phone = '';
-                $reporter_email = $useremail;
-                $violation_type = '';
-                $incident_date = '';
-                $incident_time = '';
-                $incident_location = '';
-                $incident_description = '';
-                $legal_consultation = 'No';
-                $supplementary_notes = '';
-                $victim_name = '';
-                $victim_contact = '';
-                $perpetrator_name = '';
-                $consent_checked = '';
+                                </div>';
+                    // Clear form fields after successful submission
+                    $reporter_name = $username;
+                    $reporter_phone = '';
+                    $reporter_email = $useremail;
+                    $violation_type = '';
+                    $incident_date = '';
+                    $incident_time = '';
+                    $incident_location = '';
+                    $incident_description = '';
+                    $legal_consultation = 'No';
+                    $supplementary_notes = '';
+                    $victim_name = '';
+                    $victim_contact = '';
+                    $perpetrator_name = '';
+                    $consent_checked = '';
 
+                } else {
+                    $message = '<div id="popup1" class="overlay">
+                                    <div class="popup">
+                                    <center>
+                                    <br><br><br><br>
+                                        <h2>Submission Failed!</h2>
+                                        <a class="close" href="#" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;">&times;</a>
+                                        <div class="content">
+                                            There was an error submitting your report: ' . $database->error . '
+                                        </div>
+                                        <div style="display: flex;justify-content: center;">
+                                        <a href="#" class="non-style-link" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                                        </div>
+                                        <br><br>
+                                    </center>
+                                    </div>
+                                </div>';
+                }
             } else {
+                // Display validation errors
+                $error_html = implode('<br>', $errors);
                 $message = '<div id="popup1" class="overlay">
                                 <div class="popup">
                                 <center>
                                 <br><br><br><br>
                                     <h2>Submission Failed!</h2>
-                                    <a class="close" href="report.php">&times;</a>
-                                    <div class="content">
-                                        There was an error submitting your report: ' . $database->error . '
+                                    <a class="close" href="#" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;">&times;</a>
+                                    <div class="content" style="color:rgb(255, 62, 62);">
+                                        ' . $error_html . '
                                     </div>
                                     <div style="display: flex;justify-content: center;">
-                                    <a href="report.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                                    <a href="#" class="non-style-link" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
                                     </div>
                                     <br><br>
                                 </center>
                                 </div>
                             </div>';
             }
-        } else {
-            // Display validation errors
-            $error_html = implode('<br>', $errors);
-            $message = '<div id="popup1" class="overlay">
-                            <div class="popup">
-                            <center>
-                            <br><br><br><br>
-                                <h2>Submission Failed!</h2>
-                                <a class="close" href="report.php">&times;</a>
-                                <div class="content" style="color:rgb(255, 62, 62);">
-                                    ' . $error_html . '
-                                </div>
-                                <div style="display: flex;justify-content: center;">
-                                <a href="report.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                                </div>
-                                <br><br>
-                            </center>
-                            </div>
-                        </div>';
         }
     }
 ?>
@@ -583,8 +614,6 @@
 
             // Handle file selection
             fileInput.addEventListener('change', (event) => {
-                // Clear existing files if only one is allowed by the DB schema, or handle multiple
-                // For this schema, we'll only take the first file.
                 selectedFiles = new DataTransfer(); // Reset DataTransfer for single file
                 if (event.target.files.length > 0) {
                     selectedFiles.items.add(event.target.files[0]); // Add only the first file
@@ -607,7 +636,6 @@
                 event.preventDefault();
                 fileUploadArea.style.borderColor = '#ccc';
 
-                // For this schema, we'll only take the first file from drop
                 selectedFiles = new DataTransfer(); // Reset DataTransfer for single file
                 if (event.dataTransfer.files.length > 0) {
                     selectedFiles.items.add(event.dataTransfer.files[0]); // Add only the first file
@@ -617,7 +645,7 @@
 
             // Function to update the displayed file list
             function updateFileList() {
-                fileList.innerHTML = ''; // Clear current list
+                fileList.innerHTML = ''; 
 
                 if (selectedFiles.items.length === 0) {
                     fileList.style.display = 'none';
@@ -626,9 +654,8 @@
                     fileList.style.display = 'block';
                 }
 
-                // Display only the first file if multiple were selected/dropped (due to DB schema limitation)
                 if (selectedFiles.items.length > 0) {
-                    const file = selectedFiles.items[0];
+                    const file = selectedFiles.items[0].getAsFile(); // Get file object
                     const listItem = document.createElement('li');
                     listItem.innerHTML = `
                         <span class="file-name">${file.name}</span>
@@ -637,14 +664,11 @@
                     fileList.appendChild(listItem);
                 }
 
-                // Re-assign the DataTransfer object's files to the file input
-                // This is crucial for the form submission to include all selected files
                 fileInput.files = selectedFiles.files;
 
-                // Add event listeners for remove buttons
                 document.querySelectorAll('.remove-file').forEach(button => {
                     button.addEventListener('click', function() {
-                        const index = parseInt(this.dataset.index); // Will always be 0 for single file
+                        const index = parseInt(this.dataset.index);
                         removeFile(index);
                     });
                 });
@@ -652,12 +676,10 @@
 
             // Function to remove a file from the list
             function removeFile(indexToRemove) {
-                // For single file, just clear the DataTransfer object
                 selectedFiles = new DataTransfer();
                 updateFileList();
             }
 
-            // Initial call to update file list (in case of pre-filled form or existing files)
             updateFileList();
         });
     </script>

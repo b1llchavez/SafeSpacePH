@@ -280,7 +280,6 @@
             
            
             $dob=$row["cdob"];
-            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['ctel'];
             echo '
             <div id="popup1" class="overlay">
@@ -325,12 +324,10 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Valid ID No.: </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$lawyerbarid.'<br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -392,7 +389,6 @@
             
             
             $address=$row["caddress"];
-            $lawyerbarid=$row['lawyerbarid'];
             $tele=$row['ctel'];
 
             $error_1=$_GET["error"];
@@ -454,12 +450,10 @@
                                     
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <label for="lawyerbarid" class="form-label">Valid ID No.: </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="lawyerbarid" class="input-text" placeholder="Valid ID Number" value="'.$lawyerbarid.'" required><br>
                                         </td>
                                     </tr>
                                     <tr>
