@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-// Include database connection
+// Include necessary files
 include("../connection.php");
+require ("../send_email.php"); // Include the email sending script
 
 // Set timezone to Manila
 date_default_timezone_set('Asia/Manila');
@@ -17,26 +18,27 @@ if(!isset($_SESSION["user"]) || $_SESSION['usertype']!='c'){
 if(isset($_POST['submit_request'])){
 
     // Retrieve and sanitize input data
-    // REMOVED: $lawyerid = mysqli_real_escape_string($database, $_POST['lawyerid']);
     $title = mysqli_real_escape_string($database, $_POST['title']);
     $description = mysqli_real_escape_string($database, $_POST['description']);
     $preferred_date = mysqli_real_escape_string($database, $_POST['preferred_date']);
     $preferred_time = mysqli_real_escape_string($database, $_POST['preferred_time']);
-    $clientid = $_SESSION['cid']; // Get client ID from session
+    
+    // Retrieve client details from session
+    $clientid = $_SESSION['cid']; 
+    $clientEmail = $_SESSION['user']; // The user's email is stored in the 'user' session variable
+    $clientName = $_SESSION['cname']; // The client's name from the session
 
-    // Validate inputs (basic validation)
-    // REMOVED: || empty($lawyerid)
+    // Validate inputs
     if(empty($title) || empty($description) || empty($preferred_date) || empty($preferred_time) || empty($clientid)){
         header("location: client-appointment.php?action=error&message=".urlencode("Please fill all required fields."));
         exit();
     }
 
-    // Start a database transaction for atomicity
+    // Start a database transaction
     mysqli_begin_transaction($database);
 
     try {
         // 1. Insert into the 'schedule' table
-        // lawyerid is set to NULL as no lawyer is assigned at this stage
         $insert_schedule_query = "INSERT INTO schedule (lawyerid, title, scheduledate, scheduletime, nop, clientid) 
                                   VALUES (NULL, '$title', '$preferred_date', '$preferred_time', 1, '$clientid')";
         
@@ -47,14 +49,11 @@ if(isset($_POST['submit_request'])){
         // Get the last inserted scheduleid
         $scheduleid = mysqli_insert_id($database);
 
-        // 2. Generate a unique appointment number (simple timestamp-based for now)
+        // 2. Generate a unique appointment number
         $apponum = time(); 
 
         // 3. Insert into the 'appointment' table
-        // Set status to 'pending' by default
-        // The 'description' field is assumed to be added to the 'appointment' table.
         $appodate = date('Y-m-d'); 
-
         $insert_appointment_query = "INSERT INTO appointment (cid, apponum, scheduleid, appodate, status, description) 
                                      VALUES ('$clientid', '$apponum', '$scheduleid', '$appodate', 'pending', '$description')";
         
@@ -65,6 +64,16 @@ if(isset($_POST['submit_request'])){
         // Commit the transaction
         mysqli_commit($database);
 
+        // 4. Send the confirmation email
+        sendAppointmentPendingEmail(
+            $clientEmail,
+            $clientName,
+            $preferred_date,
+            $preferred_time,
+            $title,
+            $description
+        );
+
         // Redirect to client appointments page with success message
         header("location: client-appointment.php?action=session-requested&title=".urlencode($title));
         exit();
@@ -72,14 +81,13 @@ if(isset($_POST['submit_request'])){
     } catch (Exception $e) {
         // Rollback the transaction on error
         mysqli_rollback($database);
-        // Redirect to client appointments page with error message
         error_log("Session request error: " . $e->getMessage()); 
-        header("location: client-appointment.php?action=error&message=".urlencode("Failed to submit session request. Please try again. Error: " . $e->getMessage()));
+        header("location: client-appointment.php?action=error&message=".urlencode("Failed to submit session request. Please try again."));
         exit();
     }
 
 } else {
-    // If accessed directly without POST data, redirect to request session page
+    // If accessed directly, redirect
     header("location: request-session.php");
     exit();
 }
