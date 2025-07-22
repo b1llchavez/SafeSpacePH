@@ -65,14 +65,22 @@ if(isset($_POST['submit_request'])){
         mysqli_commit($database);
 
         // 4. Send the confirmation email
-        sendAppointmentPendingEmail(
-            $clientEmail,
-            $clientName,
-            $preferred_date,
-            $preferred_time,
-            $title,
-            $description
-        );
+        try {
+            sendAppointmentPendingEmail(
+                $clientEmail,
+                $clientName,
+                $preferred_date,
+                $preferred_time,
+                $title,
+                $description,
+                'To be Assigned', // Default lawyer name since this is pending
+                'Online Consultation' // Default meeting type
+            );
+        } catch (Exception $e) {
+            // Log the error but don't stop the process
+            error_log("Email sending failed: " . $e->getMessage());
+            // Continue with redirect - the appointment is still created
+        }
 
         // Redirect to client appointments page with success message
         header("location: client-appointment.php?action=session-requested&title=".urlencode($title));

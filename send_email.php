@@ -1,50 +1,35 @@
 <?php
-// send_email.php
-
-// Use a relative path to ensure the autoloader is found consistently
-require_once __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php'; // Composer autoloader
+require __DIR__ . '/phpmailer/PHPMailer.php';
+require __DIR__ . '/phpmailer/SMTP.php';
+require __DIR__ . '/phpmailer/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use Dotenv\Dotenv;
 
-// Load .env variables from the project root
-$dotenv = Dotenv::createImmutable(__DIR__);
+// Load .env variables
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-/**
- * Sends a welcome email to a new user.
- *
- * @param string $recipientEmail The recipient's email address.
- * @param string $recipientName The recipient's name.
- * @return bool True on success, false on failure.
- */
 function sendConfirmationEmail($recipientEmail, $recipientName) {
-    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+    $mail = new PHPMailer(true);
     try {
-        // Server settings
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = $_ENV['EMAIL_USER'];
         $mail->Password   = $_ENV['EMAIL_PASS'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
-        // Recipients
         $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
         $mail->addAddress($recipientEmail, $recipientName);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'Welcome to SafeSpacePH!';
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
-        
-        // Sanitize recipient name for security
-        $recipientName = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
-
-        $mail->Body = "
+        $mail->Body    = "
         <!DOCTYPE html>
         <html lang='en'>
         <head>
@@ -89,7 +74,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                         <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
                                             <tr>
                                                 <td style='text-align: center;'>
-                                                    <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                                    <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                                     <span class='header-title'>SafeSpace PH</span>
                                                 </td>
                                             </tr>
@@ -116,7 +101,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                            <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
@@ -137,46 +122,34 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
         ";
 
         $mail->send();
-        return true;
+        // Optionally, you can return true or a success message here
     } catch (Exception $e) {
-        // Log the detailed error message for debugging instead of echoing it
-        error_log("Confirmation email to {$recipientEmail} failed: {$mail->ErrorInfo}");
-        return false;
+        error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        echo "<pre>Mailer Error: {$mail->ErrorInfo}</pre>"; // Show error for debugging
     }
+
 }
 
-/**
- * Sends a verification notice to a client.
- *
- * @param string $recipientEmail The recipient's email address.
- * @param string $recipientName The recipient's name.
- * @return bool True on success, false on failure.
- */
 function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
-    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+    $mail = new PHPMailer(true);
     try {
-        // Server settings
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = $_ENV['EMAIL_USER'];
-        $mail->Password   = $_ENV['EMAIL_PASS'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
 
-        // Recipients
         $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
         $mail->addAddress($recipientEmail, $recipientName);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'Verification in Progress - SafeSpace PH Legal Services';
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        // Sanitize recipient name for security
-        $recipientName = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
-
+        $recipientName = htmlspecialchars($recipientName); // Prevent injection
         $mail->Body = "
         <!DOCTYPE html>
 <html lang='en'>
@@ -244,7 +217,7 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
                                     <a href='https://safespaceph.com/services'>Services</a>
                                     <a href='https://safespaceph.com/contact'>Contact</a>
                                 </div>
-                                <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                             </td>
                         </tr>
                     </table>
@@ -254,14 +227,12 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
     </center>
 </body>
 </html>";
+
         $mail->send();
-        return true;
     } catch (Exception $e) {
-        error_log("Verification email to {$recipientEmail} failed: {$mail->ErrorInfo}");
-        return false;
+        error_log("Verification email error: {$mail->ErrorInfo}");
     }
 }
-
 
 /**
  * Sends an email to the client to notify them that their appointment request is pending.
@@ -274,10 +245,12 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
  * @param string $caseDescription The detailed description of the case.
  * @param string $lawyerName The name of the lawyer (defaults to 'To be Assigned').
  * @param string $meetingType The type of meeting (defaults to 'Online Consultation').
- * @return bool True on success, false on failure.
  */
 function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointmentDate, $appointmentTime, $caseTitle, $caseDescription, $lawyerName = 'To be Assigned', $meetingType = 'Online Consultation') {
-    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+    // Add logging
+    error_log("Attempting to send appointment confirmation email to: $recipientEmail");
+    
+    $mail = new PHPMailer(true);
     try {
         // Server settings
         $mail->isSMTP();
@@ -285,7 +258,7 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
         $mail->SMTPAuth   = true;
         $mail->Username   = $_ENV['EMAIL_USER'];
         $mail->Password   = $_ENV['EMAIL_PASS'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
         // Recipients
@@ -295,6 +268,8 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'SafeSpace PH: Your Appointment Request is Pending';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
         // Sanitize dynamic data before inserting into the email body
         $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
@@ -316,25 +291,30 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
             <style>
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
                 .email-container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-                .header { background-color: #4A0E6D; color: white; padding: 20px 30px; text-align: center; }
-                .header-title { font-size: 28px; font-weight: bold; }
+                .header { background-color: #391053; color: white; padding: 20px 30px; text-align: center; }
+                .header-title { font-size: 28px; font-weight: bold; vertical-align: middle;}
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
-                .content h2 { font-size: 20px; color: #4A0E6D; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;}
+                .content h2 { font-size: 20px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;}
                 .details-list { list-style: none; padding: 0; margin: 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; padding: 15px; border-radius: 5px; }
                 .details-list li { margin-bottom: 10px; }
                 .details-list li strong { color: #555; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
                 .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; }
-                .footer { background-color: #f4f4f4; color: #777; padding: 20px 30px; text-align: center; font-size: 14px; }
-                .footer a { color: #8a2be2; text-decoration: none; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px;}
             </style>
         </head>
         <body>
-            <div class='email-container'>
-                <div class='header'>
-                    <div class='header-title'>SafeSpace PH</div>
-                </div>
-                <div class='content'>
+            <center>
+            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+               <tr>
+                    <td class='header'>
+                        <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; vertical-align: middle; margin-right: 15px;'>
+                        <span class='header-title'>SafeSpace PH</span>
+                    </td>
+                </tr>
+                <tr>
+                  <td class='content'>
                     <p>Dear {$recipientName_safe},</p>
                     <p>Thank you for requesting an appointment with <strong>SafeSpace PH</strong>! We've successfully received your booking request.</p>
                     <p>Your appointment is currently <strong>pending approval</strong>. Our team will review your request and connect you with an available lawyer. We appreciate your patience as we work to find the best match for your needs.</p>
@@ -352,27 +332,33 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
                     <p>You will receive another email from us once your appointment has been confirmed and a lawyer has been assigned, or if we need to propose alternative time slots. Please keep an eye on your inbox.</p>
                     
                     <div class='button-container'>
-                        <a href='#' class='button'>Check My Appointments</a>
+                        <a href='https://safespaceph.com/my-account' class='button'>Check My Appointments</a>
                     </div>
 
                     <p>Thank you for choosing SafeSpace PH. We are committed to providing you with the support you need.</p>
                     <p>Sincerely,<br>The SafeSpace PH Team</p>
-                </div>
-            </div>
-            <div class='footer'>
-                <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
-                <p><a href='#'>About Us</a> | <a href='#'>Contact Us</a></p>
-            </div>
+                  </td>
+                </tr>
+                <tr>
+                    <td class='footer'>
+                       <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; margin-bottom: 15px;'>
+                        <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
+                        <div>
+                           <a href='https://safespaceph.com/about'>About Us</a> | <a href='https://safespaceph.com/contact'>Contact Us</a>
+                        </div>
+                        <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
+                    </td>
+                </tr>
+            </table>
+            </center>
         </body>
         </html>";
 
         $mail->send();
+        error_log("Appointment confirmation email sent successfully to: $recipientEmail");
         return true;
     } catch (Exception $e) {
-        // Log error for debugging, do not show to the user
-        error_log("Appointment pending notice email for {$recipientEmail} failed: {$mail->ErrorInfo}");
-        return false;
+        error_log("Failed to send appointment confirmation email to {$recipientEmail}: {$mail->ErrorInfo}");
+        throw $e; // Re-throw to be handled by caller
     }
 }
-
-?>
