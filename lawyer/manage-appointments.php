@@ -417,6 +417,42 @@
             viewModal.style.display = "none";
         }
     }
+
+    // --- START: Added functionality for the meeting link form ---
+
+    // Get the platform dropdown and the link input field
+    const platformSelect = document.getElementById('meeting_platform');
+    const linkInput = document.getElementById('meeting_link');
+    const officeAddress = 'SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015';
+
+    // This function updates the link input based on the selected platform
+    function handlePlatformChange() {
+        if (platformSelect.value === 'SafeSpace PH Office') {
+            // If "SafeSpace PH Office" is selected, populate the address and make it read-only
+            linkInput.value = officeAddress;
+            linkInput.readOnly = true;
+        } else {
+            // For any other platform, make the input editable
+            linkInput.readOnly = false;
+            // If the input currently holds the office address, clear it for the user
+            if (linkInput.value === officeAddress) {
+                linkInput.value = '';
+            }
+        }
+    }
+
+    // Add an event listener to detect changes in the platform dropdown
+    platformSelect.addEventListener('change', handlePlatformChange);
+
+    // Also, check the initial state when the page loads.
+    // This handles the case where "SafeSpace PH Office" is already saved and the form is opened for editing.
+    // The script is at the end of the body, so the elements are guaranteed to be available.
+    if (platformSelect.value === 'SafeSpace PH Office') {
+        // The value is already populated by PHP, so we just need to ensure the field is read-only.
+        linkInput.readOnly = true;
+    }
+    
+    // --- END: Added functionality ---
 </script>
 
 </body>
