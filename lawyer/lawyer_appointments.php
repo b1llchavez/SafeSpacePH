@@ -13,9 +13,15 @@
     <style>
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
+            max-height: 85vh; /* Set a max-height for the popup */
+            overflow-y: auto; /* Allow vertical scrolling within the popup */
         }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
+        }
+        /* This allows the main content area to scroll if content overflows */
+        .dash-body{
+            overflow-y: auto;
         }
         .status-badge {
             display: inline-block;

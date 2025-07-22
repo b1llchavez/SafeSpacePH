@@ -23,6 +23,19 @@
         .sub-table {
             animation: transitionIn-Y-bottom 0.5s;
         }
+
+        /* --- Scroll Fix --- */
+        /* Make the main content area scrollable if content overflows */
+        .dash-body {
+            overflow-y: auto;
+        }
+
+        /* Make popups scrollable for long content */
+        .popup {
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        /* --- End of Scroll Fix --- */
     </style>
 
 

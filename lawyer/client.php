@@ -17,6 +17,12 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
+        /* This style rule allows the main content area to scroll vertically 
+            if its content is taller than the available space.
+        */
+        .dash-body{
+            overflow-y: auto;
+        }
 </style>
 </head>
 <body>

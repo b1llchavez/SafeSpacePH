@@ -17,6 +17,9 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
+        .dash-body{
+            overflow-y: auto;
+        }
 </style>
 </head>
 <body>
