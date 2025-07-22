@@ -60,8 +60,9 @@
         exit(); // Added exit to prevent further execution
     }
     
-    // Import database connection
+    // Import database connection and email functions
     include("../connection.php");
+    require_once '../send_email.php';
 
     // --- FIX START ---
     // Retrieve clientid and clientname from session
@@ -174,13 +175,11 @@
                                         <form action="" method="post">
                                             <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
                                         </td>
-                                    <!-- Lawyer filter is less relevant if client doesn't choose, but can remain if useful for filtering by assigned lawyer later -->
                                     <td width="5%" style="text-align: center;">Lawyer:</td>
                                     <td width="30%">
                                         <select name="lawyerid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
                                             <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>
-                                            <option value="NULL">Unassigned</option> <!-- Option for unassigned sessions -->
-                                            <?php
+                                            <option value="NULL">Unassigned</option> <?php
                                                 // Fetch all lawyers for filtering, even if client didn't choose initially
                                                 $list11 = $database->query("select * from lawyer order by lawyername asc;"); 
                                                 for ($y=0;$y<$list11->num_rows;$y++){
@@ -387,7 +386,7 @@
                             This action cannot be undone.
                         </div>
                         <div style="display: flex;justify-content: center;">
-                        <a href="delete-appointment.php?id='.$id.'&action=client_cancel" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes, Cancel&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
+                        <a href="client-appointment.php?action=confirm_cancel&id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes, Cancel&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
                         <a href="client-appointment.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
 
                         </div>
@@ -395,7 +394,64 @@
             </div>
             </div>
             '; 
-        }elseif($action=='view_details'){ // For viewing appointment details for accepted/completed
+        } elseif ($action == 'confirm_cancel') {
+            // Fetch appointment details to send in the cancellation email
+            $sql_fetch = "SELECT 
+                            c.cemail, 
+                            c.cname, 
+                            s.scheduledate, 
+                            s.scheduletime, 
+                            s.title, 
+                            a.description, 
+                            COALESCE(l.lawyername, 'Not Assigned') AS lawyername
+                          FROM appointment AS a
+                          JOIN client AS c ON a.cid = c.cid
+                          JOIN schedule AS s ON a.scheduleid = s.scheduleid
+                          LEFT JOIN lawyer AS l ON s.lawyerid = l.lawyerid
+                          WHERE a.appoid = '$id' AND a.cid = '$clientid'";
+            
+            $result_fetch = $database->query($sql_fetch);
+
+            if ($result_fetch->num_rows > 0) {
+                $details = $result_fetch->fetch_assoc();
+
+                // Send the cancellation email
+                try {
+                    sendAppointmentCanceledEmail(
+                        $details['cemail'],
+                        $details['cname'],
+                        $details['scheduledate'],
+                        $details['scheduletime'],
+                        $details['title'],
+                        $details['description'],
+                        $details['lawyername']
+                    );
+
+                    // Delete the appointment from the database
+                    $database->query("DELETE FROM appointment WHERE appoid='$id'");
+                    
+                    // Redirect to the same page to refresh the list and remove URL parameters
+                    echo "<script>alert('Your appointment has been canceled successfully.'); window.location.href='client-appointment.php';</script>";
+                    exit();
+
+                } catch (Exception $e) {
+                    // Handle email sending failure
+                    error_log("Email sending failed for cancellation of appoid $id: " . $e->getMessage());
+                    echo "<script>alert('Could not send cancellation email, but the appointment will be canceled. Please contact support if you have questions.');</script>";
+                    
+                    // Still proceed to cancel the appointment
+                    $database->query("DELETE FROM appointment WHERE appoid='$id'");
+                    echo "<script>window.location.href='client-appointment.php';</script>";
+                    exit();
+                }
+
+            } else {
+                // Handle error: appointment not found or doesn't belong to the user
+                echo "<script>alert('Error: Appointment not found or you do not have permission to cancel it.'); window.location.href='client-appointment.php';</script>";
+                exit();
+            }
+
+        } elseif($action=='view_details'){ // For viewing appointment details for accepted/completed
             // You'll need to fetch appointment, lawyer, and schedule details
             $sqlmain_view = "SELECT 
                                 appointment.appoid,

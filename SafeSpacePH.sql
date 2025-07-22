@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 13, 2025 at 05:20 PM
+-- Generation Time: Jul 22, 2025 at 10:30 AM
 -- Server version: 8.0.40
 -- PHP Version: 8.3.14
 
@@ -139,15 +139,17 @@ CREATE TABLE `lawyer` (
   `lawyerpassword` varchar(255) DEFAULT NULL,
   `lawyernic` varchar(15) DEFAULT NULL,
   `lawyertel` varchar(15) DEFAULT NULL,
-  `specialties` int DEFAULT NULL
+  `specialties` int DEFAULT NULL,
+  `meeting_link` varchar(255) DEFAULT NULL,
+  `meeting_platform` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lawyer`
 --
 
-INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyernic`, `lawyertel`, `specialties`) VALUES
-(1, 'lawyer@safespaceph.com', 'Test Lawyer', '123', '000000000', '0110000000', 1);
+INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyernic`, `lawyertel`, `specialties`, `meeting_link`, `meeting_platform`) VALUES
+(1, 'lawyer@safespaceph.com', 'Test Lawyer', '123', '000000000', '0110000000', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -391,15 +393,10 @@ ALTER TABLE `identity_verifications`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- START OF CODE TO ADD
---
 -- AUTO_INCREMENT for table `lawyer`
 --
 ALTER TABLE `lawyer`
   MODIFY `lawyerid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- END OF CODE TO ADD
---
 
 --
 -- AUTO_INCREMENT for table `reports`

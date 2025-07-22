@@ -362,3 +362,114 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
         throw $e; // Re-throw to be handled by caller
     }
 }
+
+function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointmentDate, $appointmentTime, $caseTitle, $caseDescription, $lawyerName = 'Not Assigned', $meetingType = 'Online Consultation') {
+    error_log("Attempting to send appointment cancellation email to: $recipientEmail");
+
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $_ENV['EMAIL_USER'];
+        $mail->Password   = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'SafeSpace PH: Appointment Request Canceled';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        // Sanitize
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+        $lawyerName_safe = htmlspecialchars($lawyerName, ENT_QUOTES, 'UTF-8');
+        $appointmentDate_safe = htmlspecialchars(date("F j, Y", strtotime($appointmentDate)), ENT_QUOTES, 'UTF-8');
+        $appointmentTime_safe = htmlspecialchars(date("g:i A", strtotime($appointmentTime)), ENT_QUOTES, 'UTF-8');
+        $meetingType_safe = htmlspecialchars($meetingType, ENT_QUOTES, 'UTF-8');
+        $caseTitle_safe = htmlspecialchars($caseTitle, ENT_QUOTES, 'UTF-8');
+        $caseDescription_safe = nl2br(htmlspecialchars($caseDescription, ENT_QUOTES, 'UTF-8'));
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Appointment Request Canceled</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+                .email-container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; color: white; padding: 20px 30px; text-align: center; }
+                .header-title { font-size: 28px; font-weight: bold; vertical-align: middle;}
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content h2 { font-size: 20px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;}
+                .details-list { list-style: none; padding: 0; margin: 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; padding: 15px; border-radius: 5px; }
+                .details-list li { margin-bottom: 10px; }
+                .details-list li strong { color: #555; }
+                .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+                .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px;}
+            </style>
+        </head>
+        <body>
+            <center>
+            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+               <tr>
+                    <td class='header'>
+                        <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; vertical-align: middle; margin-right: 15px;'>
+                        <span class='header-title'>SafeSpace PH</span>
+                    </td>
+                </tr>
+                <tr>
+                  <td class='content'>
+                    <p>Dear {$recipientName_safe},</p>
+                    <p>We regret to inform you that your appointment request with <strong>SafeSpace PH</strong> has been <strong>canceled</strong>.</p>
+                    
+                    <h2>Canceled Appointment Details:</h2>
+                    <ul class='details-list'>
+                        <li><strong>Lawyer:</strong> {$lawyerName_safe}</li>
+                        <li><strong>Preferred Date:</strong> {$appointmentDate_safe}</li>
+                        <li><strong>Preferred Time:</strong> {$appointmentTime_safe} (PHT)</li>
+                        <li><strong>Meeting Type:</strong> {$meetingType_safe}</li>
+                        <li><strong>Case/Concern:</strong> {$caseTitle_safe}</li>
+                        <li><strong>Description:</strong><br>{$caseDescription_safe}</li>
+                    </ul>
+
+<p>This appointment request has been canceled — either manually by you or due to other circumstances. This may have been due to scheduling conflicts, incomplete information, or other factors. If you believe this was a mistake or you would like to reschedule, we encourage you to request another appointment at your convenience.</p>                    
+                    <div class='button-container'>
+                        <a href='https://safespaceph.com/my-account' class='button'>Book Another Appointment</a>
+                    </div>
+
+                    <p>We appreciate your understanding, and we remain committed to helping you find the support you need.</p>
+                    <p>Sincerely,<br>The SafeSpace PH Team</p>
+                  </td>
+                </tr>
+                <tr>
+                    <td class='footer'>
+                       <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; margin-bottom: 15px;'>
+                        <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
+                        <div>
+                           <a href='https://safespaceph.com/about'>About Us</a> | <a href='https://safespaceph.com/contact'>Contact Us</a>
+                        </div>
+                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                    </td>
+                </tr>
+            </table>
+            </center>
+        </body>
+        </html>";
+
+        $mail->send();
+        error_log("Appointment cancellation email sent successfully to: $recipientEmail");
+        return true;
+    } catch (Exception $e) {
+        error_log("Failed to send appointment cancellation email to {$recipientEmail}: {$mail->ErrorInfo}");
+        throw $e;
+    }
+}
+?>
