@@ -285,8 +285,6 @@
                 //echo $sqlmain;
             
 
-
-                //
             } else {
                 $sqlmain = "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid  order by schedule.scheduledate desc";
 
@@ -295,7 +293,7 @@
 
             <tr>
     <td colspan="4" style="padding: 0;">
-        <div class="abc scroll" style="margin-left: 45px; height: 350px;">
+        <div class="abc scroll" style="margin-left: 45px; height: auto;">
                 <table width="93%" class="sub-table scrolldown" border="0">
                                 <thead>
         <tr>
