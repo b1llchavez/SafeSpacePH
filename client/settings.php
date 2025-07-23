@@ -119,7 +119,7 @@
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;" >
                         <tr >
                     <td>
-                        <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Settings</p>
+                        <p style="margin-left: 68px; font-size: 23px;font-weight: 600;">Settings</p>
 
                     </td>
                     
