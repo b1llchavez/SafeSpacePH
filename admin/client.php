@@ -355,10 +355,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
         /* Styles for unverify button icon */
         .button-icon.btn-unverify {
-            background-image: url('../img/icons/cross-white.svg'); /* Assuming a cross icon for unverify */
+            background-image: url('../img/icons/unverify.svg');
             background-repeat: no-repeat;
             background-position: 15px center;
-            background-size: 20px;
+            background-size: 30px 30px;
             padding-left: 45px !important; /* Adjust padding to make space for icon */
             background-color: #ffc107; /* Orange background for unverify button */
             color: white;
@@ -589,7 +589,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
                     <td width="13%">
-
                     <a href="client.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
 
                     </td>
@@ -734,7 +733,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                                     <button class="non-style-link btn-primary-soft btn button-icon btn-unverify"
                                                         onclick="event.stopPropagation(); showUnverifyConfirmModal(\''.$cid.'\', \''.$email.'\')"
                                                         style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
-                                                        <font class="tn-in-text">Unverify</font>
+    <font class="tn-in-text" style="color: #5A2675;"> Unverify</font>
                                                     </button>
                                                     &nbsp;&nbsp;&nbsp;
                                                     <button class="non-style-link btn-primary-soft btn button-icon btn-delete"
@@ -765,7 +764,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="deleteConfirmModal" class="custom-modal">
         <div class="custom-modal-content">
             <h3 id="deleteModalTitle">Confirm Deletion</h3>
@@ -777,7 +775,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         </div>
     </div>
 
-    <!-- Unverify Confirmation Modal -->
     <div id="unverifyConfirmModal" class="custom-modal">
         <div class="custom-modal-content">
             <h3 id="unverifyModalTitle">Confirm Unverification</h3>
