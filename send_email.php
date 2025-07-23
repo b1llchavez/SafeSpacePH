@@ -472,4 +472,518 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
         throw $e;
     }
 }
+
+function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $appointmentDetails) {
+    $mail = new PHPMailer(true);
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Recipients
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Your SafeSpace PH Appointment is Confirmed!';
+        // [FIXED] Use __DIR__ to ensure the correct path to images
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        // Sanitize and extract details from the $appointmentDetails array
+        $lawyerName = htmlspecialchars($appointmentDetails['lawyerName'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $appointmentDate = htmlspecialchars($appointmentDetails['appointmentDate'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $appointmentTime = htmlspecialchars($appointmentDetails['appointmentTime'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $meetingType = htmlspecialchars($appointmentDetails['meetingType'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $meetingLink = htmlspecialchars($appointmentDetails['meetingLink'] ?? '#', ENT_QUOTES, 'UTF-8');
+        $caseTitle = htmlspecialchars($appointmentDetails['caseTitle'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $caseDescription = nl2br(htmlspecialchars($appointmentDetails['caseDescription'] ?? 'N/A', ENT_QUOTES, 'UTF-8'));
+
+        $mail->Body = "
+        <!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>SafeSpace PH: Your Appointment is Confirmed!</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+        table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        td { padding: 0; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        a { text-decoration: none; color: #8a2be2; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+        .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+        .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+        .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+        .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
+        .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; border-radius: 5px; }
+        .details-list li { margin-bottom: 10px; }
+        .details-list li strong { color: #555; }
+        .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+        .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #6a0dad; }
+        .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .footer-logo { height: 50px; width: auto; }
+        .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+        .footer-links-container { margin-bottom: 10px; }
+        .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <center>
+        <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+            <tr>
+                <td align='center' style='padding: 20px 0;'>
+                    <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                        <tr>
+                            <td class='header'>
+                                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
+                                    <tr>
+                                        <td style='text-align: center;'>
+                                            <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='header-title'>SafeSpace PH</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='content'>
+                                <p>Dear {$recipientName},</p>
+                                <p>Great news! Your <strong>appointment with a lawyer</strong> at SafeSpace PH has been successfully <strong>accepted</strong>.</p>
+                                <p>We're pleased to inform you that <strong>Attorney {$lawyerName}</strong> has accepted your request and is ready to assist you.</p>
+                                <h2>Your Confirmed Appointment Details:</h2>
+                                <ul class='details-list'>
+                                    <li><strong>Lawyer:</strong> Attorney {$lawyerName}</li>
+                                    <li><strong>Date:</strong> {$appointmentDate}</li>
+                                    <li><strong>Time:</strong> {$appointmentTime} (PHT)</li>
+                                    <li><strong>Meeting Type:</strong> {$meetingType}</li>
+                                    <li><strong>Meeting Link:</strong> <a href='{$meetingLink}' style='color: #8a2be2; word-break: break-all;'>{$meetingLink}</a></li>
+                                    <li><strong>Case Title/Concern:</strong> {$caseTitle}</li>
+                                    <li><strong>Case Description:</strong><br>{$caseDescription}</li>
+                                </ul>
+                                <p>Please make sure to click the <strong>meeting link</strong> at the scheduled time to join your consultation. If you have any documents or information relevant to your case, please prepare them beforehand.</p>
+                                <p>We encourage you to review the <strong>Safe Spaces Act (RA 11313)</strong> beforehand to better understand your rights. You can find more information on our website.</p>
+                                <div class='button-container'>
+                                    <a href='https://safespaceph.com/my-appointments' class='button'>View My Appointments</a>
+                                </div>
+                                <p>If you need to reschedule or cancel your appointment, please do so at least 24 hours in advance through your SafeSpace PH account or by contacting our support team.</p>
+                                <p>We look forward to assisting you.</p>
+                                <p>Sincerely,<br>The SafeSpace PH Team</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='footer'>
+                                <div class='footer-branding'>
+                                   <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                    <span class='footer-title'>SafeSpace PH</span>
+                                </div>
+                                <div class='footer-links-container'>
+                                    <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
+                                    <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
+                                    <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                </div>
+                                <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tr>
+        </table>
+    </center>
+</body>
+</html>";
+        $mail->send();
+        error_log("Appointment accepted email sent successfully to: {$recipientEmail}");
+        return true;
+    } catch (Exception $e) {
+        error_log("Appointment accepted email error for {$recipientEmail}: {$mail->ErrorInfo}");
+        // [FIXED] Re-throw the exception so the calling script can handle the failure.
+        throw $e;
+    }
+}
+
+function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Congratulations! Your SafeSpace PH Verification is Approved';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $mail->Body = "
+        <!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>SafeSpace PH: Verification Application Approved</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+        table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        td { padding: 0; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        a { text-decoration: none; color: #8a2be2; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+        .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+        .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+        .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+        .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
+        .content ul { list-style: none; padding: 0; margin: 0; }
+        .content ul li { margin-bottom: 10px; padding-left: 25px; position: relative; }
+        .content ul li:before { content: '✔'; color: #28a745; font-size: 20px; position: absolute; left: 0; top: -2px; }
+        .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+        .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #6a0dad; }
+        .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .footer-logo { height: 50px; width: auto; }
+        .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+        .footer-links-container { margin-bottom: 10px; }
+        .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <center>
+        <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+            <tr>
+                <td align='center' style='padding: 20px 0;'>
+                    <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                        <tr>
+                            <td class='header'>
+                                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
+                                    <tr>
+                                        <td style='text-align: center;'>
+                                            <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='header-title'>SafeSpace PH</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='content'>
+                                <p>Dear {$recipientName},</p>
+                                <p>Great news! Your identity verification with SafeSpace PH has been successfully reviewed and <strong>approved</strong>.</p>
+                                <p>You are now a verified client and have full access to our platform's features, including the ability to book pro bono appointments with our volunteer lawyers.</p>
+                                <h2>What you can do next:</h2>
+                                <ul>
+                                    <li>Explore our network of legal professionals.</li>
+                                    <li>Book a consultation for your legal concerns.</li>
+                                    <li>Access resources about the Safe Spaces Act.</li>
+                                </ul>
+                                <p>We are here to support you on your journey to justice and empowerment.</p>
+                                <div class='button-container'>
+                                    <a href='https://safespaceph.com/appointment' class='button'>Book an Appointment</a>
+                                </div>
+                                <p>Thank you for your trust in us.</p>
+                                <p>Sincerely,<br>The SafeSpace PH Team</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='footer'>
+                                <div class='footer-branding'>
+                                   <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                    <span class='footer-title'>SafeSpace PH</span>
+                                </div>
+                                <div class='footer-links-container'>
+                                    <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
+                                    <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
+                                    <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                </div>
+                                <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+</html>";
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Verification approval email error for {$recipientEmail}: {$mail->ErrorInfo}");
+    }
+}
+
+
+function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName, $reasonDetails = '') {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Important: Your SafeSpace PH Verification Application Update';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+        $rejectionReasonHtml = '';
+        if (!empty($reasonDetails)) {
+            // Sanitize the custom reason and format it within a styled list item
+            $reasonDetails_safe = htmlspecialchars($reasonDetails, ENT_QUOTES, 'UTF-8');
+            $rejectionReasonHtml = "<p>Our team noted the following specific reason for this decision:</p><ul class='details-list'><li>{$reasonDetails_safe}</li></ul>";
+        }
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Verification Application Update</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
+                .content ul { list-style: none; padding: 0; margin: 0; }
+                .content ul:not(.details-list) li { margin-bottom: 10px; padding-left: 25px; position: relative; }
+                .content ul:not(.details-list) li:before { content: '•'; color: #8a2be2; font-size: 20px; position: absolute; left: 0; top: -2px; }
+                .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #fff0f0; border-left: 4px solid #d9534f; border-radius: 5px; color: #721c24; }
+                .details-list li { margin-bottom: 0; }
+                .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+                .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #6a0dad; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                        <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
+                                            <tr>
+                                                <td style='text-align: center;'>
+                                                    <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                                    <span class='header-title'>SafeSpace PH</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <p>Dear {$recipientName_safe},</p>
+                                        <p>We are writing to inform you that after a careful review, your <strong>identity verification application</strong> with SafeSpace PH could not be approved at this time.</p>
+                                        <p>Ensuring the security and integrity of our platform for all users is our highest priority, and this decision was made in accordance with our verification standards.</p>
+                                        
+                                        {$rejectionReasonHtml}
+
+                                        <h2>Common Reasons for Rejection</h2>
+                                        <p>This may have been due to one or more of the following common factors:</p>
+                                        <ul>
+                                            <li><strong>Document Clarity:</strong> Submitted documents or images were blurry, expired, or otherwise illegible.</li>
+                                            <li><strong>Information Mismatch:</strong> The name or other details provided did not fully match the submitted documents.</li>
+                                            <li><strong>Incomplete Submission:</strong> One or more required documents or pieces of information were missing.</li>
+                                        </ul>
+                                        <p>We understand this may be disappointing. If you believe there has been a mistake or if you have new documents to provide, you are welcome to submit a new application.</p>
+                                        <div class='button-container'>
+                                            <a href='https://safespaceph.com/my-account' class='button'>Submit a New Application</a>
+                                        </div>
+                                        <p>If you have any questions, please don't hesitate to contact our support team for further assistance.</p>
+                                        <p>Thank you for your understanding.</p>
+                                        <p>Sincerely,<br>The SafeSpace PH Team</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                           <img src=\"cid:logoimg_footer\" alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
+                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
+                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+        error_log("Verification rejection email sent successfully to: {$recipientEmail}");
+    } catch (Exception $e) {
+        error_log("Verification rejection email error for {$recipientEmail}: {$mail->ErrorInfo}");
+        // Re-throw the exception to allow the caller to handle the failure gracefully
+        throw $e;
+    }
+}
+
+/**
+ * Sends an email to the client to notify them that their verification has been revoked.
+ *
+ * @param string $recipientEmail The client's email address.
+ * @param string $recipientName The client's full name.
+ */
+function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Important: Your SafeSpace PH Verification Has Been Revoked';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Verification Status Update</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content h2 { font-size: 22px; color: #d9534f; margin-top: 25px; margin-bottom: 15px; }
+                .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+                .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #6a0dad; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                        <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
+                                            <tr>
+                                                <td style='text-align: center;'>
+                                                    <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                                    <span class='header-title'>SafeSpace PH</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <h2>Verification Status Revoked</h2>
+                                        <p>Dear {$recipientName_safe},</p>
+                                        <p>We are writing to inform you that your verification status on the SafeSpace PH platform has been <strong>revoked</strong> by an administrator.</p>
+                                        <p>This means your account is no longer considered verified. As a result, you will lose access to features that require identity verification, such as booking appointments with legal professionals, until your account is re-verified.</p>
+                                        <p>If you believe this was done in error or have questions regarding this action, please contact our support team immediately for clarification.</p>
+                                        <div class='button-container'>
+                                            <a href='https://safespaceph.com/contact' class='button'>Contact Support</a>
+                                        </div>
+                                        <p>Thank you for your understanding.</p>
+                                        <p>Sincerely,<br>The SafeSpace PH Team</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                           <img src=\"cid:logoimg_footer\" alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
+                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
+                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+        error_log("Unverification notice sent successfully to: {$recipientEmail}");
+    } catch (Exception $e) {
+        error_log("Unverification notice email error for {$recipientEmail}: {$mail->ErrorInfo}");
+        // Re-throw the exception to allow the caller to handle the failure gracefully
+        throw $e;
+    }
+}
 ?>

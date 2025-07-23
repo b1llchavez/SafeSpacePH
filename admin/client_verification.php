@@ -2,8 +2,9 @@
 
 session_start(); // THIS MUST BE THE VERY FIRST THING IN THE FILE
 
-// Include database connection
+// Include database connection and email functions
 include("../connection.php");
+require_once '../send_email.php'; // Corrected the path to go up one directory
 
 // Check if user is logged in and is an administrator
 if(isset($_SESSION["user"])){
@@ -20,8 +21,9 @@ if(isset($_SESSION["user"])){
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $verification_id = $_POST['verification_id'];
     $client_email = $_POST['client_email'];
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
+    // Use null coalescing operator to avoid undefined index notices
+    $first_name = $_POST['first_name'] ?? '';
+    $last_name = $_POST['last_name'] ?? '';
 
     // Start a database transaction for atomicity (all or nothing)
     $database->begin_transaction();
@@ -87,6 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 throw new Exception("Failed to prepare identity_verifications update statement: " . $database->error);
             }
 
+            // Send verification approved email
+            sendVerificationApprovedNoticeToClient($client_email, $first_name . ' ' . $last_name);
+
             // Commit the transaction if both updates are successful
             $database->commit();
             // Redirect to prevent form resubmission and display success message
@@ -94,6 +99,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             exit(); // Always exit after a header redirect
 
         } else if ($_POST['action'] == 'reject_user') {
+            
+            // Fetch client's name for the email notification before deleting
+            $stmt_get_name = $database->prepare("SELECT first_name, last_name FROM identity_verifications WHERE id = ?");
+            $client_full_name = "Valued Client"; // Fallback name
+            if ($stmt_get_name) {
+                $stmt_get_name->bind_param("i", $verification_id);
+                $stmt_get_name->execute();
+                $result_name = $stmt_get_name->get_result();
+                if ($name_row = $result_name->fetch_assoc()) {
+                    $client_full_name = $name_row['first_name'] . ' ' . $name_row['last_name'];
+                }
+                $stmt_get_name->close();
+            }
+
+            // Send rejection email to the client
+            sendVerificationRejectedNoticeToClient($client_email, $client_full_name);
+
             // Handle rejection: Delete the entry from identity_verifications table
             $stmt_delete_verification = $database->prepare("DELETE FROM identity_verifications WHERE id = ?");
             if ($stmt_delete_verification) {
@@ -146,23 +168,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
     <title>Client Verification | SafeSpace PH</title>
     <style>
-        /* Styles for popups and sub-tables, consistent with existing admin pages */
-       .popup {
-            padding: 20px;
-            background: #fff;
-            border-radius: 5px;
-            width: 50%;
-            position: relative;
-            /* transition: all 5s ease-in-out; - This is a very long transition, consider reducing if not intentional */
-            /* Added for scrollability and responsiveness */
-            max-height: 90vh; /* Max height of the popup */
-            overflow-y: auto; /* Enable vertical scrolling */
-            box-sizing: border-box; /* Include padding in width/height */
+        .popup{
+            animation: transitionIn-Y-bottom 0.5s;
         }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* Custom Modal Styles for verification confirmation */
+        /* Custom Modal Styles for verification, rejection, and view details */
         .custom-modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -182,7 +194,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
         .custom-modal-content {
             background-color: #fefefe;
-            /* Removed margin for flexbox centering */
             padding: 30px;
             border: 1px solid #888;
             width: 90%;
@@ -191,7 +202,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
             text-align: center;
             position: relative;
-            /* Added for scrollability and responsiveness */
             max-height: 90vh; /* Max height of the modal content */
             overflow-y: auto; /* Enable vertical scrolling for content */
             box-sizing: border-box; /* Include padding in width/height */
@@ -216,24 +226,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             background-color: #f44336; /* Red */
             color: white;
         }
-        /* Styles for file viewer links, matching button aesthetics */
-.file-link {
-    display: inline-block;
-    padding: 8px 15px;
-    background-color: #f0e4ff; /* Match btn-primary-soft background */
-    color: #5A2675; /* Match the primary color */
-    border-radius: 20px;
-    text-decoration: none;
-    margin: 5px;
-    font-weight: 500;
-    transition: all 0.3s; /* Add smooth transition */
-}
+        
+        /* For the general popup used for messages, ensure it's also centered */
+        .overlay:target, #messagePopup { /* Added #messagePopup to this selector */
+            visibility: visible;
+            opacity: 1;
+            display: flex; /* Ensure flexbox for centering */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+        }
 
-.file-link:hover {
-    background-color: #5A2675; /* Match the primary color */
-    color: #ffffff; /* White text on hover */
-   
-
+        .overlay .popup { /* Targeting popup within overlay to remove margin */
+            margin: auto; /* Allow flexbox to center it */
+        }
+        
         /* Styles for the View Details Modal - Refined */
         #viewDetailsModal .custom-modal-content {
             max-width: 800px; /* Wider modal */
@@ -266,29 +272,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         #viewDetailsModal .detail-section {
             margin-bottom: 20px; /* Spacing between sections */
             padding-bottom: 10px;
-            /* border-bottom: 1px solid #eee; Removed default border-bottom */
         }
         #viewDetailsModal .detail-section:last-of-type {
             border-bottom: none; /* No border for the last section */
         }
-        /* For the general popup used for messages, ensure it's also centered */
-        .overlay:target, #messagePopup { /* Added #messagePopup to this selector */
-            visibility: visible;
-            opacity: 1;
-            display: flex; /* Ensure flexbox for centering */
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center horizontally */
-        }
 
-        .overlay .popup { /* Targeting popup within overlay to remove margin */
-            margin: auto; /* Allow flexbox to center it */
-        }
         #viewDetailsModal .detail-section h4 {
             color: #5A2675; /* Section heading color */
             font-weight: bold; /* Semi-bold or bold */
             margin-top: 0;
             margin-bottom: 15px;
-            /* border-bottom: 2px solid #007bff; Removed default underline */
             display: inline-block; /* Only underline the text */
             padding-bottom: 5px;
             width: 100%; /* Ensure heading takes full width for hr */
@@ -334,6 +327,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         }
         #viewDetailsModal .close-button:hover {
             background-color: #b193d5; /* Slightly darker lavender on hover */
+        }
+        /* Styles for file viewer links, matching button aesthetics */
+        .file-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #5A2675; /* Blue, similar to primary buttons */
+            color: white;
+            border-radius: 20px; /* Rounded corners */
+            text-decoration: none;
+            margin: 5px;
+            font-weight: bold;
+        }
+        .file-link:hover {
+            background-color: #C9A8F1; /* Darker blue on hover */
         }
     </style>
 </head>
@@ -532,6 +539,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
+<<<<<<< HEAD
+=======
+                    <td width="13%">
+
+                    <a href="client_verification.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
+                        
+                    </td>
+>>>>>>> a73ab9cd3a0c527adf34e7ecfe53211152c63ab2
                     <td>
                         <form action="" method="post" class="header-search">
 
@@ -539,12 +554,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
                             <?php
                                 echo '<datalist id="client">';
-                                $list11 = $database->query("select  cname,cemail from client;");
+                                $list11 = $database->query("select first_name, last_name, email from identity_verifications where is_verified = FALSE;");
 
                                 for ($y=0;$y<$list11->num_rows;$y++){
                                     $row00=$list11->fetch_assoc();
-                                    $l=$row00["cname"];
-                                    $c=$row00["cemail"];
+                                    $l=$row00["first_name"]." ".$row00["last_name"];
+                                    $c=$row00["email"];
                                     echo "<option value='$l'><br/>";
                                     echo "<option value='$c'><br/>";
                                 };
@@ -564,7 +579,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php 
-                        date_default_timezone_set('Asia/Kolkata');
+                        date_default_timezone_set('Asia/Manila');
 
                         $date = date('Y-m-d');
                         echo $date;
@@ -581,13 +596,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                 
                 <tr>
                     <td colspan="4" style="padding-top:10px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">New Client Verification Requests</p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">New Client Verification Requests (<?php echo $list11->num_rows; ?>)</p>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4" style="padding-top:0px;width: 100%;">
                         <center>
-                            <!-- Added div with class "abc scroll" and adjusted table attributes for consistency -->
                             <div class="abc scroll">
                                 <table width="93%" class="sub-table scrolldown" style="border-spacing:0;">
                                 <thead>
@@ -603,9 +617,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                 <?php
                                     $sqlmain = "SELECT * FROM identity_verifications WHERE is_verified = FALSE ORDER BY submission_date DESC";
 
-                                    if($_POST){
+                                    if($_POST && isset($_POST['search'])){
                                         $searchkey = $_POST['search'];
-                                        $sqlmain = "SELECT * FROM identity_verifications WHERE is_verified = FALSE AND (first_name LIKE '%$searchkey%' OR last_name LIKE '%$searchkey%' OR email LIKE '%$searchkey%') ORDER BY submission_date DESC";
+                                        $sqlmain = "SELECT * FROM identity_verifications WHERE is_verified = FALSE AND (CONCAT(first_name, ' ', last_name) LIKE '%$searchkey%' OR email LIKE '%$searchkey%') ORDER BY submission_date DESC";
                                     }
                                     
                                     $result = $database->query($sqlmain);
@@ -618,54 +632,52 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                                         <img src="../img/notfound.svg" width="25%">
                                                         <br>
                                                         <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">No new verification requests found!</p>
-                                                        <a class="label-link" href="client_verification.php">Refresh Page</a>
+                                                        <a class="non-style-link" href="client_verification.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Requests &nbsp;</font></button></a>
                                                     </center>
                                                     <br><br><br><br>
                                                 </td>
                                             </tr>';
                                     } else {
-                                        for ( $x=0; $x<$result->num_rows;$x++){
-                                            $row=$result->fetch_assoc();
+                                        while($row = $result->fetch_assoc()){
                                             $id=$row["id"];
                                             $name=$row["first_name"]." ".$row["last_name"];
                                             $email=$row["email"];
                                             $contact_number=$row["contact_number"];
                                             $submission_date=$row["submission_date"];
-                                            $first_name_client = $row["first_name"]; // Added for new logic
-                                            $last_name_client = $row["last_name"];   // Added for new logic
+                                            $first_name_client = $row["first_name"];
+                                            $last_name_client = $row["last_name"];
                                             
                                       echo '<tr>
-    <td>'.substr($name,0,30).'</td>
-    <td>'.substr($email,0,30).'</td>
-    <td>'.substr($contact_number,0,20).'</td>
-    <td>'.substr($submission_date,0,10).'</td>
-    <td>
-        <div style="display:flex;justify-content: center;">
-            <a href="?action=view&id='.$row['id'].'" class="non-style-link btn-primary-soft btn button-icon btn-view" style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
-                <font class="tn-in-text">View</font>
-            </a>
-            &nbsp;&nbsp;&nbsp;
-            <button class="non-style-link btn-primary-soft btn button-icon menu-icon-verify"
-                onclick="event.stopPropagation(); showConfirmModal(\''.$row['id'].'\', \''.$row['email'].'\', \''.$first_name_client.'\', \''.$last_name_client.'\')"
-                style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
-                <font class="tn-in-text">Verify</font>
-            </button>
-            &nbsp;&nbsp;&nbsp;
-            <button class="non-style-link btn-primary-soft btn button-icon menu-icon-delete"
-                onclick="event.stopPropagation(); showRejectConfirmModal(\''.$row['id'].'\', \''.$row['email'].'\')"
-                style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px; background-color: #f44336; color: white;">
-                <font class="tn-in-text">Reject</font>
-            </button>
-        </div>
-    </td>
-</tr>';
+                                            <td>'.substr($name,0,30).'</td>
+                                            <td>'.substr($email,0,30).'</td>
+                                            <td>'.substr($contact_number,0,20).'</td>
+                                            <td>'.substr($submission_date,0,10).'</td>
+                                            <td>
+                                                <div style="display:flex;justify-content: center;">
+                                                    <a href="?action=view&id='.$id.'" class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
+                                                        <font class="tn-in-text">View</font>
+                                                    </a>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <button class="btn-primary-soft btn button-icon menu-icon-verify"
+                                                        onclick="event.stopPropagation(); showConfirmModal(\''.$id.'\', \''.$email.'\', \''.$first_name_client.'\', \''.$last_name_client.'\')"
+                                                        style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
+                                                        <font class="tn-in-text">Verify</font>
+                                                    </button>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <button class="btn-primary-soft btn button-icon menu-icon-delete"
+                                                        onclick="event.stopPropagation(); showRejectConfirmModal(\''.$id.'\', \''.$email.'\')"
+                                                        style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px; background-color: #f44336; color: white;">
+                                                        <font class="tn-in-text">Reject</font>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>';
                                         }
                                     }
                                 ?>
                                 </tbody>
                             </table>
-                            </div> <!-- Closing tag for abc scroll -->
-                        </center>
+                            </div> </center>
                     </td>
                 </tr>
             </table>
@@ -734,7 +746,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             url.searchParams.delete('action');
             url.searchParams.delete('id');
             window.history.pushState({}, '', url); // Update URL without reloading
-            document.getElementById('viewDetailsModal').style.display = 'none';
+            const viewModal = document.getElementById('viewDetailsModal');
+            if (viewModal) {
+                 viewModal.style.display = 'none';
+            }
         }
 
 
@@ -819,8 +834,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                 // setTimeout(() => { messagePopup.style.display = 'none'; }, 3000); 
             }
             // Ensure modals are hidden on page load unless specifically triggered by URL parameters
-            if (!window.location.search.includes('action=view') && !window.location.search.includes('message=')) {
-                document.getElementById('viewDetailsModal').style.display = 'none';
+            if (!window.location.search.includes('action=view')) {
+                 const viewModal = document.getElementById('viewDetailsModal');
+                if (viewModal) {
+                    viewModal.style.display = 'none';
+                }
                 document.getElementById('confirmModal').style.display = 'none';
                 document.getElementById('rejectConfirmModal').style.display = 'none';
             }

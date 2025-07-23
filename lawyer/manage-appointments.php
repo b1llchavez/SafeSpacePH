@@ -93,6 +93,96 @@
     
     // Import database connection
     include("../connection.php");
+    // Include the email functions file
+    require_once('../send_email.php');
+
+    // Handle appointment acceptance or rejection actions
+    if (isset($_GET['action']) && isset($_GET['appoid'])) {
+        $appoid = $_GET['appoid'];
+        $lawyerid = $_SESSION['lawyerid']; // Get lawyer ID from session
+
+        // Handle the 'accept' action
+        if ($_GET['action'] == 'accept' && isset($_GET['scheduleid'])) {
+            $scheduleid = $_GET['scheduleid'];
+
+            // Use a database transaction to ensure data integrity
+            $database->begin_transaction();
+            try {
+                // Step 1: Update the appointment status to 'accepted'
+                $stmt1 = $database->prepare("UPDATE appointment SET status = 'accepted' WHERE appoid = ?");
+                $stmt1->bind_param("i", $appoid);
+                $stmt1->execute();
+                $stmt1->close();
+
+                // Step 2: Assign the current lawyer to the schedule
+                $stmt2 = $database->prepare("UPDATE schedule SET lawyerid = ? WHERE scheduleid = ?");
+                $stmt2->bind_param("ii", $lawyerid, $scheduleid);
+                $stmt2->execute();
+                $stmt2->close();
+
+                // Step 3: Fetch all necessary details for the email notification
+                $sql_details = "SELECT 
+                                    c.cname, c.cemail,
+                                    s.title, s.scheduledate, s.scheduletime,
+                                    a.description AS case_description,
+                                    l.lawyername, l.meeting_link, l.meeting_platform
+                                FROM appointment a
+                                JOIN client c ON a.cid = c.cid
+                                JOIN schedule s ON a.scheduleid = s.scheduleid
+                                JOIN lawyer l ON s.lawyerid = l.lawyerid
+                                WHERE a.appoid = ?";
+                
+                $stmt_details = $database->prepare($sql_details);
+                $stmt_details->bind_param("i", $appoid);
+                $stmt_details->execute();
+                $result_details = $stmt_details->get_result();
+                $details = $result_details->fetch_assoc();
+                $stmt_details->close();
+
+                if ($details) {
+                    // Step 4: Prepare the details array and send the confirmation email
+                    $appointmentDetails = [
+                        'lawyerName' => $details['lawyername'],
+                        'appointmentDate' => date("F j, Y", strtotime($details['scheduledate'])),
+                        'appointmentTime' => date("g:i A", strtotime($details['scheduletime'])),
+                        'meetingType' => $details['meeting_platform'],
+                        'meetingLink' => $details['meeting_link'],
+                        'caseTitle' => $details['title'],
+                        'caseDescription' => $details['case_description']
+                    ];
+
+                    // Call the function to send the email to the user
+                    // This function will now throw an error if the email fails,
+                    // which will be caught by the catch block below.
+                    sendAppointmentAcceptedNoticeToUser($details['cemail'], $details['cname'], $appointmentDetails);
+                }
+
+                // If all steps are successful, commit the transaction
+                $database->commit();
+
+                // Redirect to clean the URL and show a success message
+                header("Location: manage-appointments.php?action=accept_success");
+                exit();
+
+            } catch (Exception $e) {
+                // If any step fails (including email sending), roll back all database changes
+                $database->rollback();
+                error_log("Failed to accept appointment: " . $e->getMessage());
+                header("Location: manage-appointments.php?action=accept_error");
+                exit();
+            }
+        } elseif ($_GET['action'] == 'reject') {
+            // Handle the 'reject' action
+            $stmt = $database->prepare("UPDATE appointment SET status = 'rejected' WHERE appoid = ?");
+            $stmt->bind_param("i", $appoid);
+            $stmt->execute();
+            $stmt->close();
+            
+            // Redirect to clean the URL
+            header("Location: manage-appointments.php?action=reject_success");
+            exit();
+        }
+    }
 
     $lawyerid = $_SESSION['lawyerid']; // Lawyer ID from session
     $lawyername = $_SESSION['lawyername']; // Lawyer name from session
@@ -219,6 +309,24 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="4">
+                        <center>
+                        <?php
+                            // Display feedback messages based on the action performed
+                            if(isset($_GET['action'])){
+                                if($_GET['action']=='accept_success'){
+                                    echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;'>Appointment accepted successfully and the user has been notified via email.</div>";
+                                } elseif ($_GET['action']=='accept_error'){
+                                    echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'>There was an error accepting the appointment. The user was not notified and the appointment was not confirmed. Please try again.</div>";
+                                } elseif ($_GET['action']=='reject_success'){
+                                    echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;'>Appointment has been successfully rejected.</div>";
+                                }
+                            }
+                        ?>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="4" style="padding-bottom: 30px;">
                        <center>
                         <div class="abc scroll">
@@ -305,13 +413,13 @@
                                             <td style="text-align:center;">'.htmlspecialchars($appodate).'</td>
                                             <td>
                                                 <div style="display:flex;justify-content: center;">
-                                                    <a href="process_lawyer_action.php?action=accept&appoid='.$appoid.'&scheduleid='.$scheduleid.'&lawyerid='.$lawyerid.'" class="non-style-link">
+                                                    <a href="manage-appointments.php?action=accept&appoid='.$appoid.'&scheduleid='.$scheduleid.'" class="non-style-link">
                                                         <button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 20px;padding-right: 20px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
                                                             <font class="tn-in-text">Accept</font>
                                                         </button>
                                                     </a>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <a href="process_lawyer_action.php?action=reject&appoid='.$appoid.'" class="non-style-link">
+                                                    <a href="manage-appointments.php?action=reject&appoid='.$appoid.'" class="non-style-link" onclick="return confirm(\'Are you sure you want to reject this appointment?\');">
                                                         <button class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 20px;padding-right: 20px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
                                                             <font class="tn-in-text">Reject</font>
                                                         </button>
@@ -328,6 +436,9 @@
                         </center>
                    </td> 
                 </tr>
+            </table>
+        </div>
+    </div>
 
     <div id="viewLinkModal" class="modal">
         <div class="modal-content">

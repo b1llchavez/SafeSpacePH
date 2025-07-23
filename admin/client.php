@@ -12,8 +12,9 @@ if(isset($_SESSION["user"])){
     exit(); // Always exit after a header redirect
 }
 
-// Import database connection
+// Import database connection and email functions
 include("../connection.php");
+require_once '../send_email.php'; // Corrected the file path
 
 // Handle delete action when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'delete_client') {
@@ -84,6 +85,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             throw new Exception("Failed to prepare usertype check statement: " . $database->error);
         }
 
+        // Fetch client's name for the email
+        $stmt_get_name = $database->prepare("SELECT cname FROM client WHERE cemail = ?");
+        $client_name = 'Client'; // Default name
+        if ($stmt_get_name) {
+            $stmt_get_name->bind_param("s", $client_email);
+            $stmt_get_name->execute();
+            $result_name = $stmt_get_name->get_result();
+            if ($client_data = $result_name->fetch_assoc()) {
+                $client_name = $client_data['cname'];
+            }
+            $stmt_get_name->close();
+        }
+
         // 1. Update usertype in webuser table to 'u' (unverified)
         $stmt_webuser_update = $database->prepare("UPDATE webuser SET usertype = 'u' WHERE email = ?");
         if ($stmt_webuser_update) {
@@ -105,6 +119,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         }
 
         $database->commit();
+
+        // Send the unverification email notice
+        try {
+            sendUnverificationNoticeEmail($client_email, $client_name);
+        } catch (Exception $e) {
+            // Log email error but don't block the success message
+            error_log("Failed to send unverification email to {$client_email}: " . $e->getMessage());
+        }
+
         header("Location: client.php?message=unverified_success");
         exit();
 
@@ -870,7 +893,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             }
             // Ensure modals are hidden on page load unless specifically triggered by URL parameters
             if (!window.location.search.includes('action=view') && !window.location.search.includes('message=')) {
-                document.getElementById('viewDetailsModal').style.display = 'none';
+                const viewModal = document.getElementById('viewDetailsModal');
+                if (viewModal) {
+                    viewModal.style.display = 'none';
+                }
                 document.getElementById('deleteConfirmModal').style.display = 'none';
                 document.getElementById('unverifyConfirmModal').style.display = 'none'; // Hide unverify modal too
             }
