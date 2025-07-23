@@ -349,7 +349,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         .file-link {
             display: inline-block;
             padding: 8px 15px;
-            background-color: #007bff; /* Blue, similar to primary buttons */
+            background-color: #5A2675; /* Blue, similar to primary buttons */
             color: white;
             border-radius: 20px; /* Rounded corners */
             text-decoration: none;
@@ -357,7 +357,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             font-weight: bold;
         }
         .file-link:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #C9A8F1; /* Darker blue on hover */
         }
     </style>
 </head>

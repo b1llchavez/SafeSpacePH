@@ -217,19 +217,22 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             color: white;
         }
         /* Styles for file viewer links, matching button aesthetics */
-        .file-link {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #007bff; /* Blue, similar to primary buttons */
-            color: white;
-            border-radius: 20px; /* Rounded corners */
-            text-decoration: none;
-            margin: 5px;
-            font-weight: bold;
-        }
-        .file-link:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-        }
+.file-link {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #f0e4ff; /* Match btn-primary-soft background */
+    color: #5A2675; /* Match the primary color */
+    border-radius: 20px;
+    text-decoration: none;
+    margin: 5px;
+    font-weight: 500;
+    transition: all 0.3s; /* Add smooth transition */
+}
+
+.file-link:hover {
+    background-color: #5A2675; /* Match the primary color */
+    color: #ffffff; /* White text on hover */
+   
 
         /* Styles for the View Details Modal - Refined */
         #viewDetailsModal .custom-modal-content {
