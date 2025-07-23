@@ -167,6 +167,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         }
     </style>
     <style>
+        /* START: Added styles for unverify button icon */
+        .btn-unverify {
+            background-repeat: no-repeat;
+            background-position: left 5px center;
+        }
+        /* END: Added styles for unverify button icon */
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }
@@ -337,34 +343,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         }
         #viewDetailsModal .close-button:hover {
             background-color: #b193d5; /* Slightly darker lavender on hover */
-        }
-
-        /* Styles for delete button icon */
-        .button-icon.btn-delete {
-            background-image: url('../img/icons/delete-white.svg'); /* Path to your delete icon */
-            background-repeat: no-repeat;
-            background-position: 15px center;
-            background-size: 20px;
-            padding-left: 45px !important; /* Adjust padding to make space for icon */
-            background-color: #f44336; /* Red background for delete button */
-            color: white;
-        }
-        .button-icon.btn-delete:hover {
-            background-color: #d32f2f; /* Darker red on hover */
-        }
-
-        /* Styles for unverify button icon */
-        .button-icon.btn-unverify {
-            background-image: url('../img/icons/unverify.svg');
-            background-repeat: no-repeat;
-            background-position: 15px center;
-            background-size: 30px 30px;
-            padding-left: 45px !important; /* Adjust padding to make space for icon */
-            background-color: #ffc107; /* Orange background for unverify button */
-            color: white;
-        }
-        .button-icon.btn-unverify:hover {
-            background-color: #e0a800; /* Darker orange on hover */
         }
 
         /* Styles for file viewer links, matching button aesthetics */
@@ -730,13 +708,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                                         <font class="tn-in-text">View</font>
                                                     </a>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <button class="non-style-link btn-primary-soft btn button-icon btn-unverify"
+                                                    <button class="btn-primary-soft btn button-icon btn-unverify"
+                                                        onmouseover="this.classList.add(\'btn-unverify-hover\')"
+                                                        onmouseout="this.classList.remove(\'btn-unverify-hover\')"
                                                         onclick="event.stopPropagation(); showUnverifyConfirmModal(\''.$cid.'\', \''.$email.'\')"
                                                         style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
-    <font class="tn-in-text" style="color: #5A2675;"> Unverify</font>
+                                                        <font class="tn-in-text">Unverify</font>
                                                     </button>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <button class="non-style-link btn-primary-soft btn button-icon btn-delete"
+                                                    <button class="btn-primary-soft btn button-icon btn-delete"
                                                         onclick="event.stopPropagation(); showDeleteConfirmModal(\''.$cid.'\', \''.$email.'\')"
                                                         style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
                                                         <font class="tn-in-text">Delete</font>

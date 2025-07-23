@@ -526,6 +526,17 @@ input[type=search]:focus {
   background-image: url('../img/icons/view-icon-hover.svg');
 }
 
+.btn-unverify{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/unverify.svg');
+}
+
+.btn-unverify-hover{
+  background-size: 30px 30px;
+  background-image: url('../img/icons/unverify-white.svg');
+}
+
+
 .btn-delete{
   background-size: 30px 30px;
   background-image: url('../img/icons/delete-icon.svg');
