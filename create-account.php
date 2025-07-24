@@ -1,22 +1,15 @@
 <?php
-// This PHP block MUST be at the very top of the file, before any HTML or whitespace.
 
-//learn from w3schools.com
-//Unset all the server side variables
-
-session_start(); // This line must be the first thing executed.
+session_start(); 
 
 $_SESSION["user"]="";
 $_SESSION["usertype"]="u";
 
-// Set the new timezone
-date_default_timezone_set('Asia/Manila'); // Changed timezone to Asia/Manila for Philippines
-$date = date('Y-m-d');
+date_default_timezone_set('Asia/Manila'); 
 
 $_SESSION["date"]=$date;
 
 
-//import database
 include("connection.php");
 
 
@@ -32,11 +25,11 @@ if($_POST){
     $address=$_SESSION['personal']['address'];
     $dob=$_SESSION['personal']['dob'];
     $email=$_POST['newemail'];
-    $tele=$_POST['tele']; // This will now only contain the 10 digits
+    $tele=$_POST['tele']; 
     $newpassword=$_POST['newpassword'];
     $cpassword=$_POST['cpassword'];
     
-    // Server-side validation for password
+    
     $password_valid = true;
     if (strlen($newpassword) < 8) {
         $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Password must be at least 8 characters long.</label>';
@@ -61,17 +54,14 @@ if($_POST){
             if($result->num_rows==1){
                 $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Already have an account for this Email address.</label>';
             }else{
-                // Prepend +63 to the phone number before saving to the database if needed
-                // If your database stores the full number with +63, uncomment the line below
-                // $full_tele = "+63" . $tele; 
-                // Otherwise, just use $tele if the database only stores the 10 digits
+               
 
                 $database->query("insert into client(cemail,cname,cpassword, caddress,cdob,ctel) values('$email','$name','$newpassword','$address','$dob','$tele');");
                 $database->query("insert into webuser values('$email','u')");
 
-                require 'send_email.php'; // make sure this path is correct
+                require 'send_email.php'; 
 
-                // Call the function with appropriate parameters
+        
                 sendConfirmationEmail($email, $name);
 
                 header('Location: client/index.php');
@@ -85,7 +75,7 @@ if($_POST){
 
     
 }else{
-    //header('location: signup.php');
+  
     $error='<label for="promter" class="form-label"></label>';
 }
 
@@ -106,73 +96,62 @@ if($_POST){
         .container{
             animation: transitionIn-X 0.5s;
         }
-        /* Custom styling for the phone number input to match the design */
         .phone-input-container {
             display: flex;
             align-items: center;
-            /* The .input-text class will provide the base styling for border, background, etc. */
-            padding: 0; /* Remove padding from the container as children will manage it */
-            overflow: hidden; /* Ensures border-radius is applied correctly to children */
+            padding: 0; 
+            overflow: hidden; 
         }
-        /* Apply the base input-text styles to the container */
-        /* This ensures the phone input container looks exactly like other input fields */
+       
         .phone-input-container.input-text {
-            /* The styles from .input-text (defined in main.css/signup.css) will apply here */
-            /* This includes border, border-radius, background-color, width, height, font-size, color */
-            /* We only override padding to manage internal spacing with prefix and field */
+          
             padding: 0; 
         }
 
         .phone-input-prefix {
-            /* Inherit font size and color from the parent .phone-input-container.input-text */
             font-size: inherit; 
             color: inherit;
             
-            /* Add the separator line */
-            border-right: 1px solid var(--primarycolor); /* Use a variable or specific color for the separator */
+            border-right: 1px solid var(--primarycolor); 
             
-            /* Adjust padding to align text vertically and create space for the separator */
-            padding: 10px; /* Adjust as needed to match vertical padding of other inputs */
-            white-space: nowrap; /* Prevent +63 from wrapping */
-            display: flex; /* Use flex to vertically center the text within the prefix */
+            padding: 10px; 
+            white-space: nowrap;
+            display: flex;
             align-items: center;
-            height: 100%; /* Make prefix take full height of container */
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            height: 100%;
+            box-sizing: border-box; 
         }
         .phone-input-field {
-            border: none; /* Remove individual input border */
-            flex-grow: 1; /* Allow input to take remaining space */
-            /* Inherit font size and color from the parent .phone-input-container.input-text */
+            border: none; 
+            flex-grow: 1;
             font-size: inherit; 
             color: inherit;
             
-            /* Adjust padding to align text vertically */
-            padding: 10px; /* Adjust as needed to match vertical padding of other inputs */
-            background-color: transparent; /* Transparent background */
-            outline: none; /* Remove outline on focus */
+            padding: 10px; 
+            background-color: transparent; 
+            outline: none; 
         }
-        /* Ensure the phone input container also gets the focus style if .input-text has it */
         .phone-input-container.input-text:focus-within {
-            border-color: var(--activecolor); /* Assuming --activecolor for focus state */
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25); /* Example shadow for focus */
+            border-color: var(--activecolor);
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
         }
         .password-requirements {
             font-size: 12px;
-            color: #777; /* Default color for requirements */
+            color: #777; 
             text-align: left;
             margin-top: 5px;
             margin-bottom: 15px;
         }
         .password-requirements li {
-            list-style: none; /* Remove bullet points */
+            list-style: none; 
             margin-left: 0;
             padding-left: 0;
         }
         .password-requirements .error-red {
-            color: rgb(255, 62, 62); /* Red for unmet requirements */
+            color: rgb(255, 62, 62); 
         }
         .password-requirements .success-green {
-            color: green; /* Green for met requirements */
+            color: green; 
         }
         .validation-feedback {
             font-size: 12px;
@@ -310,7 +289,6 @@ if($_POST){
 
         var allConditionsMet = true;
 
-        // Helper function to update class
         function updateRequirementStatus(element, condition) {
             if (condition) {
                 element.classList.add("success-green");
@@ -318,30 +296,25 @@ if($_POST){
             } else {
                 element.classList.add("error-red");
                 element.classList.remove("success-green");
-                allConditionsMet = false; // Only set to false if condition is NOT met
+                allConditionsMet = false; 
             }
         }
 
-        // Length check
         updateRequirementStatus(lenReq, password.length >= 8);
 
-        // Uppercase check
         updateRequirementStatus(upperReq, /[A-Z]/.test(password));
 
-        // Lowercase check
         updateRequirementStatus(lowerReq, /[a-z]/.test(password));
 
-        // Number check
         updateRequirementStatus(numReq, /[0-9]/.test(password));
 
-        // Special character check
         updateRequirementStatus(specialReq, /[^A-Za-z0-9]/.test(password));
 
-        if (allConditionsMet && password.length > 0) { // Add password.length > 0 to prevent "Strong" for empty
+        if (allConditionsMet && password.length > 0) { 
             feedback.className = "validation-feedback success";
             feedback.innerHTML = "Password strength: Strong";
         } else if (password.length === 0) {
-            feedback.innerHTML = ""; // Clear feedback if password is empty
+            feedback.innerHTML = ""; 
             feedback.className = "validation-feedback";
         }
         else {
@@ -349,7 +322,7 @@ if($_POST){
             feedback.innerHTML = "Please meet all password requirements.";
         }
         
-        validatePasswordMatch(); // Also check if passwords match when new password changes
+        validatePasswordMatch(); 
     }
 
     function validatePasswordMatch() {
@@ -358,7 +331,7 @@ if($_POST){
         var feedback = document.getElementById("cpassword-feedback");
 
         if (confirmPassword === "") {
-            feedback.innerHTML = ""; // Clear feedback if confirm password is empty
+            feedback.innerHTML = ""; 
             feedback.className = "validation-feedback";
         } else if (password !== confirmPassword) {
             feedback.className = "validation-feedback error";
@@ -376,10 +349,8 @@ if($_POST){
         var feedback = document.getElementById("password-feedback");
         var cfeedback = document.getElementById("cpassword-feedback");
 
-        // Perform password strength check
         checkPasswordStrength();
-        // The checkPasswordStrength function now updates `allConditionsMet`
-        // We need to re-evaluate it based on the current state of the list items
+       
         var lenMet = document.getElementById("len_req").classList.contains("success-green");
         var upperMet = document.getElementById("upper_req").classList.contains("success-green");
         var lowerMet = document.getElementById("lower_req").classList.contains("success-green");
@@ -390,7 +361,6 @@ if($_POST){
             isValid = false;
         }
 
-        // Perform password match check
         validatePasswordMatch();
         if (cfeedback.classList.contains("error")) {
             isValid = false;
@@ -399,9 +369,6 @@ if($_POST){
         return isValid;
     }
 
-    // Call checkPasswordStrength on page load to set initial state if needed
-    // (e.g., if there's a pre-filled password, though typically not for new accounts)
-    // window.onload = checkPasswordStrength; // Uncomment if you want immediate validation on load
 </script>
 </body>
 </html>
