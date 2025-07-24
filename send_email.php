@@ -1339,6 +1339,9 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                                         <p>We've received your request to delete your SafeSpace PH account. We are sorry to see you go.</p>
                                         <p>Your account has been deactivated and is now scheduled for permanent deletion in <strong>48 hours</strong>. During this time, your profile will not be visible on the platform.</p>
                                         <p>If you've made a mistake or wish to restore your account, please <strong>contact the SafeSpace PH support team</strong> by replying to this email within the next 48 hours.</p>
+                                           <div class='button-container'>
+                                            <a href='https://safespaceph.com/contact' class='button'>Contact Support</a>
+                                        </div>
                                         <p>If we do not hear from you, your account and all associated data will be permanently deleted. This action cannot be undone.</p>
                                         <p>Thank you for being a part of our community.</p>
                                         <p>Sincerely,<br>The SafeSpace PH Team</p>

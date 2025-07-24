@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 24, 2025 at 09:15 AM
+-- Generation Time: Jul 24, 2025 at 01:31 PM
 -- Server version: 8.0.40
 -- PHP Version: 8.3.14
 
@@ -20,10 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `SafeSpacePH`
 --
-
--- Create and select database
-CREATE DATABASE IF NOT EXISTS SafeSpacePH;
-USE SafeSpacePH;
 
 -- --------------------------------------------------------
 
@@ -91,7 +87,6 @@ CREATE TABLE `client` (
 INSERT INTO `client` (`cid`, `cemail`, `cname`, `cpassword`, `caddress`, `cdob`, `ctel`) VALUES
 (1, 'client@safespaceph.com', 'Client User', '123', '', NULL, ''),
 (14, 'sihareg730@simerm.com', 'SafeSpace PH S', 'Testing123!', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '2005-01-10', '9917912370'),
-(9, 'unverifieduser@safespace.com', 'Unverified Client', '123', NULL, NULL, NULL),
 (13, 'mamornobillc@gmail.com', 'Bill Mamorno', 'Testing123!', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '2006-03-18', '9917912370');
 
 -- --------------------------------------------------------
@@ -133,7 +128,7 @@ CREATE TABLE `identity_verifications` (
 --
 
 INSERT INTO `identity_verifications` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `dob`, `sex`, `civil_status`, `citizenship`, `birth_place`, `present_address`, `permanent_address`, `email`, `contact_number`, `emergency_contact_name`, `emergency_contact_number`, `emergency_contact_relationship`, `id_type`, `id_number`, `id_photo_front_path`, `id_photo_back_path`, `profile_photo_path`, `agree_terms`, `submission_date`, `is_verified`) VALUES
-(3, 'Bill', 'Chavez', 'Mamorno', '', '2006-03-18', 'Male', 'Single', 'Filipino', 'Manila', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', 'mamornobillc@gmail.com', '09917912370', 'Edmuna Mamorno', '09396035648', 'Mother', 'Driver&#039;s License', '11001212154548', 'uploads/id_front/front_6873c9f225cc6_id 1.jpg', 'uploads/id_back/back_6873c9f225fd7_id 2.png', 'uploads/profile_photo_client/profile_6873c9f226122_profile photo sample.jpg', 1, '2025-07-13 15:00:02', 1);
+(3, 'Bill', 'Chavez', 'Mamorno', '', '2006-03-18', 'Male', 'Single', 'Filipino', 'Manila', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', 'mamornobillc@gmail.com', '09917912370', 'Edmuna Mamorno', '09396035648', 'Mother', 'Driver&#039;s License', '11001212154548', 'uploads/id_front/front_6873c9f225cc6_id 1.jpg', 'uploads/id_back/back_6873c9f225fd7_id 2.png', 'uploads/profile_photo_client/profile_6873c9f226122_profile photo sample.jpg', 1, '2025-07-13 15:00:02', 0);
 
 -- --------------------------------------------------------
 
@@ -178,15 +173,17 @@ CREATE TABLE `reports` (
   `supplementary_notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `uploaded_at` datetime DEFAULT CURRENT_TIMESTAMP
+  `uploaded_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `report_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'pending',
+  `admin_notes` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reports`
 --
 
-INSERT INTO `reports` (`id`, `client_id`, `reporter_name`, `reporter_phone`, `reporter_email`, `title`, `description`, `legal_consultation_requested`, `supplementary_notes`, `file_name`, `file_path`, `uploaded_at`) VALUES
-(5, 1, 'Client User', '09169558346', 'client@safespaceph.com', '', 'Helloo', 'Yes', 'fwdwdwwdw', 'Untitled.png', '../reportsreport_6870eddc9215e.png', '2025-07-11 18:56:28');
+INSERT INTO `reports` (`id`, `client_id`, `reporter_name`, `reporter_phone`, `reporter_email`, `title`, `description`, `legal_consultation_requested`, `supplementary_notes`, `file_name`, `file_path`, `uploaded_at`, `report_status`, `admin_notes`) VALUES
+(6, 13, 'Bill Mamorno', '09917912370', 'mamornobillc@gmail.com', 'Violation Report: Public Harassment', 'Violation Type: Public Harassment\nDate of Incident: 2005-11-11\nTime of Incident: 11:11\nLocation of Incident: working\nPerpetrator Information: white haired\nVictim\'s Name: Bill ERIC Mamorno\nVictim\'s Contact: mamornobillc@gmail.com\n\n---Reporter\'s Detailed Description---\nworking 2', 'Yes', 'sdsdsds', 'report_68821a0c41eea.jpg', '../uploads/reports/report_68821a0c41eea.jpg', '2025-07-24 19:33:32', 'rejected', 'sasa');
 
 -- --------------------------------------------------------
 
@@ -306,9 +303,9 @@ INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('admin@safespaceph.com', 'a'),
 ('lawyer@safespaceph.com', 'l'),
 ('client@safespaceph.com', 'u'),
-('mamornobillc@gmail.com', 'c'),
+('mamornobillc@gmail.com', 'u'),
 ('sihareg730@simerm.com', 'u'),
-('unverifieduser@safespace.com', 'u');
+('jarix90822@mvpmedix.com', 'l');
 
 --
 -- Indexes for dumped tables
@@ -406,13 +403,13 @@ ALTER TABLE `identity_verifications`
 -- AUTO_INCREMENT for table `lawyer`
 --
 ALTER TABLE `lawyer`
-  MODIFY `lawyerid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `lawyerid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `schedule`

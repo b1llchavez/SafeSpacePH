@@ -965,11 +965,11 @@ if (isset($database) && $database) {
                                 <select id="idType" name="idType" required onchange="document.getElementById('customIdNameGroup').style.display = this.value === 'Other Valid ID' ? 'block' : 'none';">
                                     <option value="">Select ID Type</option>
                                     <option value="Passport" <?php echo (isset($formData['idType']) && $formData['idType'] == 'Passport') ? 'selected' : ''; ?>>Passport</option>
-                                    <option value="Driver's License" <?php echo (isset($formData['idType']) && $formData['idType'] == "Driver's License") ? 'selected' : ''; ?>>Driver's License</option>
+                                    <option value="Driver License" <?php echo (isset($formData['idType']) && $formData['idType'] == "Driver's License") ? 'selected' : ''; ?>>Driver's License</option>
                                     <option value="UMID" <?php echo (isset($formData['idType']) && $formData['idType'] == 'UMID') ? 'selected' : ''; ?>>UMID</option>
                                     <option value="PhilHealth ID" <?php echo (isset($formData['idType']) && $formData['idType'] == 'PhilHealth ID') ? 'selected' : ''; ?>>PhilHealth ID</option>
                                     <option value="Postal ID" <?php echo (isset($formData['idType']) && $formData['idType'] == 'Postal ID') ? 'selected' : ''; ?>>Postal ID</option>
-                                    <option value="Voter's ID" <?php echo (isset($formData['idType']) && $formData['idType'] == "Voter's ID") ? 'selected' : ''; ?>>Voter's ID</option>
+                                    <option value="Voter ID" <?php echo (isset($formData['idType']) && $formData['idType'] == "Voter's ID") ? 'selected' : ''; ?>>Voter's ID</option>
                                     <option value="PRC ID" <?php echo (isset($formData['idType']) && $formData['idType'] == 'PRC ID') ? 'selected' : ''; ?>>PRC ID</option>
                                     <option value="TIN ID" <?php echo (isset($formData['idType']) && $formData['idType'] == 'TIN ID') ? 'selected' : ''; ?>>TIN ID</option>
                                     <option value="Other Valid ID" <?php echo (isset($formData['idType']) && $formData['idType'] == 'Other Valid ID') ? 'selected' : ''; ?>>Other Valid ID</option>

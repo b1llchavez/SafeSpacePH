@@ -64,43 +64,19 @@
             $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name'] ?? '');
             $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone'] ?? '');
             $reporter_email_submit = mysqli_real_escape_string($database, $_POST['reporter_email'] ?? '');
+            $violation_type_submit = mysqli_real_escape_string($database, $_POST['violation_type'] ?? '');
+            $incident_date_submit = mysqli_real_escape_string($database, $_POST['incident_date'] ?? '');
+            $incident_time_submit = mysqli_real_escape_string($database, $_POST['incident_time'] ?? '');
+            $incident_location_submit = mysqli_real_escape_string($database, $_POST['incident_location'] ?? '');
+            $description_submit = mysqli_real_escape_string($database, $_POST['incident_description'] ?? '');
+            $victim_name_submit = mysqli_real_escape_string($database, $_POST['victim_name'] ?? '');
+            $victim_contact_submit = mysqli_real_escape_string($database, $_POST['victim_contact'] ?? '');
+            $perpetrator_name_submit = mysqli_real_escape_string($database, $_POST['perpetrator_name'] ?? '');
             $legal_consultation_submit = mysqli_real_escape_string($database, $_POST['legal_consultation'] ?? 'No');
             $supplementary_notes_submit = mysqli_real_escape_string($database, $_POST['supplementary_notes'] ?? '');
-
-            // Data from form fields that do not have corresponding columns in the 'reports' table
-            $violation_type_value = $_POST['violation_type'] ?? 'N/A';
-            $incident_date_value = $_POST['incident_date'] ?? 'N/A';
-            $incident_time_value = $_POST['incident_time'] ?? 'N/A';
-            $incident_location_value = $_POST['incident_location'] ?? 'N/A';
-            $perpetrator_name_value = $_POST['perpetrator_name'] ?? 'N/A';
-            $victim_name_value = $_POST['victim_name'] ?? '';
-            $victim_contact_value = $_POST['victim_contact'] ?? '';
-            $incident_description_value = $_POST['incident_description'] ?? '';
-
-            // Use the violation type for the 'title' column
-            $title_submit = mysqli_real_escape_string($database, "Violation Report: " . $violation_type_value);
-
-            // Combine all incident details into the 'description' field
-            $combined_description = "Violation Type: " . $violation_type_value . "\n" .
-                                  "Date of Incident: " . $incident_date_value . "\n" .
-                                  "Time of Incident: " . $incident_time_value . "\n" .
-                                  "Location of Incident: " . $incident_location_value . "\n" .
-                                  "Perpetrator Information: " . $perpetrator_name_value . "\n";
-
-            if (!empty($victim_name_value)) {
-                $combined_description .= "Victim's Name: " . $victim_name_value . "\n";
-            }
-            if (!empty($victim_contact_value)) {
-                $combined_description .= "Victim's Contact: " . $victim_contact_value . "\n";
-            }
-
-            $combined_description .= "\n---Reporter's Detailed Description---\n" . $incident_description_value;
-            $description_submit = mysqli_real_escape_string($database, $combined_description);
             
-            // *** FIX STARTS HERE: Enhanced file upload handling and validation ***
-            $file_name_submit = '';
-            $file_path_submit = '';
-
+            // File upload handling
+            $evidence_file_submit = '';
             if (!empty($_FILES['supporting_files']['name'][0])) {
                 $upload_dir = '../uploads/reports/';
                 if (!is_dir($upload_dir)) {
@@ -111,7 +87,6 @@
                 $tmp_name = $_FILES['supporting_files']['tmp_name'][0];
                 $error = $_FILES['supporting_files']['error'][0];
                 
-                // Define allowed file types, similar to volunteer_form.php
                 $allowed_exts = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
                 $allowed_mimes = [
                     "application/pdf", "application/msword", 
@@ -123,19 +98,16 @@
                     $file_extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
                     $file_mime = mime_content_type($tmp_name);
 
-                    // Validate file extension and MIME type
                     if (in_array($file_extension, $allowed_exts) && in_array($file_mime, $allowed_mimes)) {
                         $new_unique_file_name = uniqid('report_') . '.' . $file_extension;
                         $destination_path = $upload_dir . $new_unique_file_name;
 
                         if (move_uploaded_file($tmp_name, $destination_path)) {
-                            $file_name_submit = $database->real_escape_string($new_unique_file_name);
-                            $file_path_submit = $database->real_escape_string($destination_path);
+                            $evidence_file_submit = $database->real_escape_string($new_unique_file_name);
                         } else {
                             $errors[] = "Failed to move uploaded file: " . htmlspecialchars($name);
                         }
                     } else {
-                        // Add validation error to the errors array
                         $errors[] = "Invalid file type. Only PDF, DOC, DOCX, JPG, JPEG, or PNG are allowed.";
                     }
                 } elseif ($error == UPLOAD_ERR_INI_SIZE || $error == UPLOAD_ERR_FORM_SIZE) {
@@ -144,18 +116,21 @@
                     $errors[] = "File upload error for " . htmlspecialchars($name) . ": Code " . $error;
                 }
             }
-            // *** FIX ENDS HERE ***
 
             // If no validation errors, proceed with database insertion
             if (empty($errors)) {
                 $insert_query = "INSERT INTO reports (
                     client_id, reporter_name, reporter_phone, reporter_email,
-                    title, description, legal_consultation_requested,
-                    supplementary_notes, file_name, file_path, uploaded_at
+                    violation_type, incident_date, incident_time, incident_location,
+                    description, victim_name, victim_contact, perpetrator_name,
+                    legal_consultation_requested, supplementary_notes, evidence_file,
+                    status, submission_date
                 ) VALUES (
                     '$client_id_submit', '$reporter_name_submit', '$reporter_phone_submit', '$reporter_email_submit',
-                    '$title_submit', '$description_submit', '$legal_consultation_submit',
-                    '$supplementary_notes_submit', '$file_name_submit', '$file_path_submit', NOW()
+                    '$violation_type_submit', '$incident_date_submit', '$incident_time_submit', '$incident_location_submit',
+                    '$description_submit', '$victim_name_submit', '$victim_contact_submit', '$perpetrator_name_submit',
+                    '$legal_consultation_submit', '$supplementary_notes_submit', '$evidence_file_submit',
+                    'pending', NOW()
                 )";
 
                 if ($database->query($insert_query)) {
@@ -538,7 +513,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="supplementary_notes" class="form-label">Admin Notes (Used as Supplementary Notes from Client Side):</label>
+                                        <label for="supplementary_notes" class="form-label">Supplementary Notes (Optional):</label>
                                         <textarea name="supplementary_notes" class="input-text" placeholder="Add any additional notes or questions..."><?php echo $supplementary_notes; ?></textarea>
                                     </div>
 
