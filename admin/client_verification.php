@@ -661,9 +661,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                                         <font class="tn-in-text">Verify</font>
                                                     </button>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <button class="btn-primary-soft btn button-icon menu-icon-delete"
+                                                    <button class="btn-primary-soft btn button-icon btn-delete"
                                                         onclick="event.stopPropagation(); showRejectConfirmModal(\''.$id.'\', \''.$email.'\')"
-                                                        style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px; background-color: #f44336; color: white;">
+                                                        style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
                                                         <font class="tn-in-text">Reject</font>
                                                     </button>
                                                 </div>

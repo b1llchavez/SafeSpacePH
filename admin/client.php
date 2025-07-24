@@ -191,6 +191,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             background-repeat: no-repeat;
             background-position: left 5px center;
         }
+        .btn-unverify:hover {
+            background-repeat: no-repeat;
+            background-position: left 5px center;
+        }
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }
