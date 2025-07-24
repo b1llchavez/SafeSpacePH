@@ -1,20 +1,20 @@
 <?php
 
-session_start(); // THIS MUST BE THE VERY FIRST THING IN THE FILE
+session_start(); 
 
 if(isset($_SESSION["user"])){
     if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
         header("location: ../login.php");
-        exit(); // Always exit after a header redirect
+        exit(); 
     }
 }else{
     header("location: ../login.php");
-    exit(); // Always exit after a header redirect
+    exit(); 
 }
 
 
 include("../connection.php");
-require_once '../send_email.php'; // Corrected the file path
+require_once '../send_email.php'; 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'delete_client') {
@@ -49,14 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $database->commit();
 
         header("Location: client.php?message=deleted_success");
-        exit(); // Always exit after a header redirect
+        exit(); 
 
     } catch (Exception $e) {
 
         $database->rollback();
-        error_log("Client deletion failed: " . $e->getMessage()); // Log error for debugging
+        error_log("Client deletion failed: " . $e->getMessage()); 
         header("Location: client.php?message=deleted_error&details=" . urlencode($e->getMessage()));
-        exit(); // Always exit after a header redirect
+        exit(); 
     }
 }
 
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
 
         $stmt_get_name = $database->prepare("SELECT cname FROM client WHERE cemail = ?");
-        $client_name = 'Client'; // Default name
+        $client_name = 'Client'; 
         if ($stmt_get_name) {
             $stmt_get_name->bind_param("s", $client_email);
             $stmt_get_name->execute();
@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
 
 
-$client_details = null; // Initialize to null
+$client_details = null; 
 if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     $view_id = $_GET['id'];
 

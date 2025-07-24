@@ -1,20 +1,20 @@
 <?php
 
-session_start(); // THIS MUST BE THE VERY FIRST THING IN THE FILE
+session_start(); 
 
 
 include("../connection.php");
-require_once '../send_email.php'; // Corrected the path to go up one directory
+require_once '../send_email.php'; 
 
 
 if(isset($_SESSION["user"])){
     if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
         header("location: ../login.php");
-        exit(); // Always exit after a header redirect
+        exit(); 
     }
 }else{
     header("location: ../login.php");
-    exit(); // Always exit after a header redirect
+    exit(); 
 }
 
 
@@ -96,13 +96,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $database->commit();
 
             header("Location: client_verification.php?message=success");
-            exit(); // Always exit after a header redirect
+            exit(); 
 
         } else if ($_POST['action'] == 'reject_user') {
             
 
             $stmt_get_name = $database->prepare("SELECT first_name, last_name FROM identity_verifications WHERE id = ?");
-            $client_full_name = "Valued Client"; // Fallback name
+            $client_full_name = "Valued Client"; 
             if ($stmt_get_name) {
                 $stmt_get_name->bind_param("i", $verification_id);
                 $stmt_get_name->execute();
@@ -129,20 +129,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
             $database->commit();
             header("Location: client_verification.php?message=rejected");
-            exit(); // Always exit after a header redirect
+            exit(); 
         }
 
     } catch (Exception $e) {
 
         $database->rollback();
-        error_log("Action failed: " . $e->getMessage()); // Log error for debugging
+        error_log("Action failed: " . $e->getMessage()); 
         header("Location: client_verification.php?message=error&details=" . urlencode($e->getMessage()));
-        exit(); // Always exit after a header redirect
+        exit(); 
     }
 }
 
 
-$verification_details = null; // Initialize to null
+$verification_details = null; 
 if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     $view_id = $_GET['id'];
     $stmt_view = $database->prepare("SELECT * FROM identity_verifications WHERE id = ?");
@@ -437,7 +437,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         } else if ($_GET['message'] == 'error') {
             echo '<h3>Error!</h3><p>Action failed. Please try again.</p>';
             if (isset($_GET['details'])) {
-                echo '<p>Details: ' . htmlspecialchars($_GET['details']) . '</p>'; // Display error details if available
+                echo '<p>Details: ' . htmlspecialchars($_GET['details']) . '</p>'; 
             }
         }
         echo '      </div>
@@ -707,15 +707,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     <script>
         let currentVerificationId = null;
         let currentClientEmail = null;
-        let currentClientFirstName = null; // Added for new logic
-        let currentClientLastName = null;  // Added for new logic
+        let currentClientFirstName = null; 
+        let currentClientLastName = null;  
 
         function showConfirmModal(verificationId, clientEmail, firstName, lastName) {
             currentVerificationId = verificationId;
             currentClientEmail = clientEmail;
-            currentClientFirstName = firstName; // Store first name
-            currentClientLastName = lastName;   // Store last name
-            document.getElementById('confirmModal').style.display = 'flex'; // Changed to 'flex' for centering
+            currentClientFirstName = firstName; 
+            currentClientLastName = lastName;   
+            document.getElementById('confirmModal').style.display = 'flex'; 
         }
 
         function hideConfirmModal() {
@@ -742,7 +742,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             const url = new URL(window.location.href);
             url.searchParams.delete('action');
             url.searchParams.delete('id');
-            window.history.pushState({}, '', url); // Update URL without reloading
+            window.history.pushState({}, '', url); 
             const viewModal = document.getElementById('viewDetailsModal');
             if (viewModal) {
                  viewModal.style.display = 'none';
@@ -755,7 +755,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = 'client_verification.php'; // Submit to this page for processing
+                form.action = 'client_verification.php'; 
 
                 const actionInput = document.createElement('input');
                 actionInput.type = 'hidden';
@@ -787,10 +787,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                 lastNameInput.value = currentClientLastName;
                 form.appendChild(lastNameInput);
 
-                document.body.appendChild(form); // Append form to body
-                form.submit(); // Submit the form
+                document.body.appendChild(form); 
+                form.submit(); 
             }
-            hideConfirmModal(); // Hide modal after submission
+            hideConfirmModal(); 
         });
 
         document.getElementById('confirmRejectBtn').addEventListener('click', function() {
