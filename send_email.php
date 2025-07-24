@@ -1272,4 +1272,102 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
         throw $e;
     }
 }
+
+function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Your SafeSpace PH Account is Scheduled for Deletion';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Account Deletion Request</title>
+            <style>
+                 /* Styles remain the same as the previously provided email template */
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content p { margin: 0 0 15px; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                       <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                       <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <p>Dear {$recipientName},</p>
+                                        <p>We've received your request to delete your SafeSpace PH account. We are sorry to see you go.</p>
+                                        <p>Your account has been deactivated and is now scheduled for permanent deletion in <strong>48 hours</strong>. During this time, your profile will not be visible on the platform.</p>
+                                        <p>If you've made a mistake or wish to restore your account, please <strong>contact the SafeSpace PH support team</strong> by replying to this email within the next 48 hours.</p>
+                                        <p>If we do not hear from you, your account and all associated data will be permanently deleted. This action cannot be undone.</p>
+                                        <p>Thank you for being a part of our community.</p>
+                                        <p>Sincerely,<br>The SafeSpace PH Team</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                           <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
+                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
+                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Account deletion goodbye email error for {$recipientEmail}: {$mail->ErrorInfo}");
+    }
+}
 ?>

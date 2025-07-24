@@ -21,6 +21,10 @@ SET time_zone = "+00:00";
 -- Database: `SafeSpacePH`
 --
 
+-- Create and select database
+CREATE DATABASE IF NOT EXISTS SafeSpacePH;
+USE SafeSpacePH;
+
 -- --------------------------------------------------------
 
 --
