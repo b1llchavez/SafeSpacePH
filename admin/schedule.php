@@ -20,7 +20,7 @@
             animation: transitionIn-Y-bottom 0.5s;
         }
 
-        /* --- MODAL STYLES FOR FIX --- */
+         
         .overlay {
             position: fixed;
             top: 0;
@@ -49,8 +49,8 @@
             width: 95%;
             position: relative;
             animation: fadeIn 0.3s;
-            max-height: 90vh; /* Responsive height */
-            overflow-y: auto; /* Scrollbar appears only when needed */
+            max-height: 90vh;  
+            overflow-y: auto;  
         }
         .modal-header {
             text-align: center;
@@ -113,14 +113,14 @@
         }
         .detail-item span, .detail-full span { color: #555; }
         .detail-full { grid-column: 1 / -1; }
-        /* --- END MODAL STYLES --- */
+         
     </style>
 </head>
 
 <body>
     <?php
 
-    //learn from w3schools.com
+
     
     session_start();
 
@@ -133,7 +133,7 @@
         header("location: ../login.php");
     }
 
-    //import database
+
     include("../connection.php");
 
     ?>
@@ -320,7 +320,7 @@
 
             <?php
             if ($_POST) {
-                //print_r($_POST);
+
                 $sqlpt1 = "";
                 if (!empty($_POST["sheduledate"])) {
                     $sheduledate = $_POST["sheduledate"];
@@ -333,8 +333,8 @@
                     $lawyerid = $_POST["lawyerid"];
                     $sqlpt2 = " lawyer.lawyerid=$lawyerid ";
                 }
-                //echo $sqlpt2;
-                //echo $sqlpt1;
+
+
                 $sqlmain = "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid ";
                 $sqllist = array($sqlpt1, $sqlpt2);
                 $sqlkeywords = array(" where ", " and ");

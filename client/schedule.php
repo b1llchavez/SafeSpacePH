@@ -22,7 +22,7 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+
 
     session_start();
 
@@ -38,7 +38,7 @@
     }
     
 
-    //import database
+
     include("../connection.php");
     $userrow = $database->query("select * from client where cemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
@@ -46,15 +46,15 @@
     $username=$userfetch["cname"];
 
 
-    //echo $userid;
-    //echo $username;
+
+
     
     date_default_timezone_set('Asia/Kolkata');
 
     $today = date('Y-m-d');
 
 
- //echo $userid;
+
  ?>
  <div class="container">
      <div class="menu">
@@ -120,13 +120,13 @@
                 $q='';
                 $searchtype="All";
                         if($_POST){
-                        //print_r($_POST);
+
                         
                         if(!empty($_POST["search"])){
                             
                             $keyword=$_POST["search"];
                             $sqlmain= "select * from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid where schedule.scheduledate>='$today' and (lawyer.lawyername='$keyword' or lawyer.lawyername like '$keyword%' or lawyer.lawyername like '%$keyword' or lawyer.lawyername like '%$keyword%' or schedule.title='$keyword' or schedule.title like '$keyword%' or schedule.title like '%$keyword' or schedule.title like '%$keyword%' or schedule.scheduledate like '$keyword%' or schedule.scheduledate like '%$keyword' or schedule.scheduledate like '%$keyword%' or schedule.scheduledate='$keyword' )  order by schedule.scheduledate asc";
-                            //echo $sqlmain;
+
                             $insertkey=$keyword;
                             $searchtype="Search Result : ";
                             $q='"';
@@ -247,7 +247,7 @@
                                     
                                 }
                                 else{
-                                    //echo $result->num_rows;
+
                                 for ( $x=0; $x<($result->num_rows);$x++){
                                     echo "<tr>";
                                     for($q=0;$q<3;$q++){
@@ -290,27 +290,27 @@
                                     echo "</tr>";
                                     
                                     
-                                    // echo '<tr>
-                                    //     <td> &nbsp;'.
-                                    //     substr($title,0,30)
-                                    //     .'</td>
-                                        
-                                    //     <td style="text-align:center;">
-                                    //         '.substr($scheduledate,0,10).' '.substr($scheduletime,0,5).'
-                                    //     </td>
-                                    //     <td style="text-align:center;">
-                                    //         '.$nop.'
-                                    //     </td>
 
-                                    //     <td>
-                                    //     <div style="display:flex;justify-content: center;">
+
+
+
                                         
-                                    //     <a href="?action=view&id='.$scheduleid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
-                                    //    &nbsp;&nbsp;&nbsp;
-                                    //    <a href="?action=drop&id='.$scheduleid.'&name='.$title.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancel Session</font></button></a>
-                                    //     </div>
-                                    //     </td>
-                                    // </tr>';
+
+
+
+
+
+
+
+
+
+                                        
+
+
+
+
+
+
                                     
                                 }
                             }

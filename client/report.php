@@ -2,27 +2,27 @@
 
     session_start();
 
-    // Check if user is logged in and is a client
+
     if(!isset($_SESSION["user"]) || $_SESSION["user"] == "" || $_SESSION['usertype'] != 'c'){
         header("location: ../login.php");
         exit(); // Always exit after a header redirect
     }
 
-    // Include database connection
+
     include("../connection.php");
 
-    // Retrieve clientid and clientname from session
+
     $clientid = $_SESSION['cid'];
     $clientname = $_SESSION['cname'];
 
-    // Fetch logged-in user's details
+
     $useremail = $_SESSION["user"];
     $userrow = $database->query("SELECT * FROM client WHERE cemail='$useremail'");
     $userfetch = $userrow->fetch_assoc();
     $userid = $userfetch["cid"];
     $username = $userfetch["cname"];
 
-    // Initialize form variables to retain values on re-display
+
     $reporter_name = isset($_POST['reporter_name']) ? htmlspecialchars($_POST['reporter_name']) : $username;
     $reporter_phone = isset($_POST['reporter_phone']) ? htmlspecialchars($_POST['reporter_phone']) : '';
     $reporter_email = isset($_POST['reporter_email']) ? htmlspecialchars($_POST['reporter_email']) : $useremail;
@@ -40,7 +40,7 @@
 
     $message = ''; // For displaying success/error messages
 
-    // Handle form submission
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($_POST) && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > 0) {
@@ -50,7 +50,7 @@
         } else {
             $errors = [];
 
-            // Server-side validation
+
             if (empty($_POST['incident_description'])) $errors[] = "Description of the Incident is required.";
             if (!isset($_POST['consent'])) $errors[] = "You must agree to the consent statement.";
             if (empty($_POST['violation_type'])) $errors[] = "Type of Violation is required.";
@@ -59,7 +59,7 @@
             if (empty($_POST['incident_location'])) $errors[] = "Location of Incident is required.";
             if (empty($_POST['perpetrator_name'])) $errors[] = "Perpetrator Information is required.";
 
-            // Collect and escape form data for SQL insertion
+
             $client_id_submit = mysqli_real_escape_string($database, $clientid);
             $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name'] ?? '');
             $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone'] ?? '');
@@ -75,7 +75,7 @@
             $legal_consultation_submit = mysqli_real_escape_string($database, $_POST['legal_consultation'] ?? 'No');
             $supplementary_notes_submit = mysqli_real_escape_string($database, $_POST['supplementary_notes'] ?? '');
             
-            // File upload handling
+
             $evidence_file_submit = '';
             if (!empty($_FILES['supporting_files']['name'][0])) {
                 $upload_dir = '../uploads/reports/';
@@ -117,7 +117,7 @@
                 }
             }
 
-            // If no validation errors, proceed with database insertion
+
             if (empty($errors)) {
                 $insert_query = "INSERT INTO reports (
                     client_id, reporter_name, reporter_phone, reporter_email,
@@ -150,7 +150,7 @@
                                     </center>
                                     </div>
                                 </div>';
-                    // Clear form fields after successful submission
+
                     $reporter_name = $username;
                     $reporter_phone = '';
                     $reporter_email = $useremail;
@@ -185,7 +185,7 @@
                                 </div>';
                 }
             } else {
-                // Display validation errors
+
                 $error_html = implode('<br>', $errors);
                 $message = '<div id="popup1" class="overlay">
                                 <div class="popup">
@@ -246,7 +246,7 @@
             padding: 10px 15px;
             border-radius: 5px;
             border: 1px solid var(--primarycolor);
-            background-color: #f0e4ff; /* soft primary */
+            background-color: #f0e4ff;  
             color: var(--primarycolor);
             cursor: pointer;
             transition: all 0.3s ease;
@@ -314,7 +314,7 @@
         .consent-checkbox-group input[type="checkbox"] {
             margin-top: 5px;
             margin-right: 10px;
-            min-width: 18px; /* Ensure checkbox is visible */
+            min-width: 18px;  
             min-height: 18px;
         }
         .consent-checkbox-group label {
@@ -326,18 +326,18 @@
 
         .abc.scroll {
             padding: 20px;
-            max-width: 800px; /* Set a max-width */
-            margin: 0 auto; /* Center the container */
-            width: 90%; /* Use percentage width for responsiveness */
+            max-width: 800px;  
+            margin: 0 auto;  
+            width: 90%;  
         }
 
         .add-new-form {
             width: 100%;
-            max-width: 500px; /* Set max-width for the form */
-            margin: 0 auto; /* Center the form */
+            max-width: 500px;  
+            margin: 0 auto;  
         }
 
-        /* Adjust container padding for better spacing */
+         
         .dash-body {
             padding: 20px;
         }
@@ -539,12 +539,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Function to handle button group selection
+
             function setupButtonGroup(groupId, hiddenInputId) {
                 const buttons = document.querySelectorAll(`#${groupId} .btn`);
                 const hiddenInput = document.getElementById(hiddenInputId);
 
-                // Set initial active state if a value is present in the hidden input
+
                 if (hiddenInput.value) {
                     buttons.forEach(button => {
                         if (button.dataset.value === hiddenInput.value) {
@@ -555,36 +555,36 @@
 
                 buttons.forEach(button => {
                     button.addEventListener('click', function() {
-                        // Remove active class from all buttons in the group
+
                         buttons.forEach(btn => btn.classList.remove('active'));
-                        // Add active class to the clicked button
+
                         this.classList.add('active');
-                        // Update the hidden input value
+
                         hiddenInput.value = this.dataset.value;
                     });
                 });
             }
 
-            // Setup for Violation Type buttons
+
             setupButtonGroup('violation-type-buttons', 'violation_type');
 
-            // Setup for Legal Consultation buttons
+
             setupButtonGroup('legal-consultation-buttons', 'legal_consultation');
 
 
-            // File Upload Mechanism
+
             const fileUploadArea = document.getElementById('file-upload-area');
             const fileInput = document.getElementById('supporting_files');
             const fileList = document.getElementById('file-list');
 
             let selectedFiles = new DataTransfer(); // Use DataTransfer to manage files dynamically
 
-            // Trigger file input click when upload area is clicked
+
             fileUploadArea.addEventListener('click', () => {
                 fileInput.click();
             });
 
-            // Handle file selection
+
             fileInput.addEventListener('change', (event) => {
                 selectedFiles = new DataTransfer(); // Reset DataTransfer for single file
                 if (event.target.files.length > 0) {
@@ -593,7 +593,7 @@
                 updateFileList();
             });
 
-            // Handle drag and drop
+
             fileUploadArea.addEventListener('dragover', (event) => {
                 event.preventDefault();
                 fileUploadArea.style.borderColor = 'var(--primarycolor)';
@@ -615,7 +615,7 @@
                 updateFileList();
             });
 
-            // Function to update the displayed file list
+
             function updateFileList() {
                 fileList.innerHTML = ''; 
 
@@ -646,7 +646,7 @@
                 });
             }
 
-            // Function to remove a file from the list
+
             function removeFile(indexToRemove) {
                 selectedFiles = new DataTransfer();
                 updateFileList();

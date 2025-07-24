@@ -10,7 +10,7 @@
 
     <title>My Appointments | SafeSpace PH</title>
     <style>
-        /* This rule allows the main content area to scroll if its content is too tall for the screen. */
+         
         .dash-body{
             overflow-y: auto;
         }
@@ -28,19 +28,19 @@
             color: #fff;
         }
         .status-pending {
-            background-color: #ffc107; /* Orange */
+            background-color: #ffc107;  
         }
         .status-accepted {
-            background-color: #28a745; /* Green */
+            background-color: #28a745;  
         }
         .status-rejected {
-            background-color: #dc3545; /* Red */
+            background-color: #dc3545;  
         }
         .status-completed {
-            background-color: #007bff; /* Blue */
+            background-color: #007bff;  
         }
         .status-unassigned {
-            background-color: #6c757d; /* Grey */
+            background-color: #6c757d;  
         }
     </style>
 </head>
@@ -49,7 +49,7 @@
 
     session_start();
 
-    // Authentication: Changed to check for 'c' (client) usertype
+
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='c'){
             header("location: ../login.php");
@@ -60,15 +60,15 @@
         exit(); // Added exit to prevent further execution
     }
     
-    // Import database connection and email functions
+
     include("../connection.php");
     require_once '../send_email.php';
 
-    // --- FIX START ---
-    // Retrieve clientid and clientname from session
+
+
     $clientid = $_SESSION['cid']; 
     $clientname = $_SESSION['cname']; // Retrieve clientname from session
-    // --- FIX END ---
+
     ?>
     <div class="container">
         <div class="menu">
@@ -132,7 +132,7 @@
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
-                <!-- ======================== HEADER ROW UPDATED ======================== -->
+                
                 <tr>
                     <td width="50%">
                         <p style="margin-left: 45px; font-size: 23px;font-weight: 600">My Appointments</p>
@@ -148,7 +148,7 @@
                                     date_default_timezone_set('Asia/Manila');
                                     $today = date('Y-m-d');
                                     echo $today;
-                                    // Fetch total appointments for the logged-in client
+
                                     $list110 = $database->query("select * from appointment where cid = '$clientid';");
                                     ?>
                                 </p>
@@ -157,9 +157,9 @@
                         </div>
                     </td>
                 </tr>
-                <!-- ======================== END OF UPDATED HEADER ROW ======================== -->
+                
                
-                <!-- ======================== FILTER SECTION ======================== -->
+                
                 <tr>
                     <td width="50%" style="padding-top:10px;">
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All My Appointments (<?php echo $list110->num_rows; ?>)</p>
@@ -167,10 +167,10 @@
                     <td colspan="2" style="padding-top:10px; text-align: right; padding-right: 45px;">
                         <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
                             
-                            <!-- Date Filter -->
+                            
                             <input type="date" name="sheduledate" id="date" class="input-text" style="width: auto; padding: 8px 10px;" value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
                             
-                            <!-- Lawyer Filter -->
+                            
                             <select name="lawyerid" id="lawyerid" class="input-text" style="width: auto; padding: 8px 10px; height: 37px; margin: 0;">
                                 <option value="" disabled <?php if (!isset($_POST['lawyerid']) || $_POST['lawyerid'] == '') echo 'selected'; ?>>Choose a Lawyer</option>
                                 <option value="NULL" <?php if (isset($_POST['lawyerid']) && $_POST['lawyerid'] == 'NULL') echo 'selected'; ?>>Unassigned</option>
@@ -185,13 +185,13 @@
                                 ?>
                             </select>
 
-                            <!-- Filter Button -->
+                            
                             <button type="submit" name="filter" class="btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                                 Filter
                             </button>
 
-                            <!-- Reset Button -->
+                            
                             <a href="client-appointment.php" class="non-style-link btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                                 Reset
@@ -199,7 +199,7 @@
                         </form>
                     </td>
                 </tr>
-                <!-- ======================== END OF FILTER SECTION ======================== -->
+                
                 
                 <?php
                     $sqlmain_filter_parts = [];
@@ -226,7 +226,7 @@
                         $sql_where_clause = ' WHERE ' . implode(' AND ', $sqlmain_filter_parts);
                     }
 
-                    // Main query to fetch appointments for the logged-in client
+
                     $sqlmain= "SELECT 
                                 appointment.appoid,
                                 schedule.scheduleid,
@@ -330,7 +330,7 @@
                                         <td>
                                         <div style="display:flex;justify-content: center;">';
                                         
-                                        // Conditional actions based on status
+
                                         if ($status == 'pending') {
                                             echo '<a href="?action=cancel&id='.$appoid.'&session='.$title.'&apponum='.$apponum.'" class="non-style-link">
                                                     <button class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
@@ -365,7 +365,7 @@
         </div>
     </div>
     <?php
-    // Popup Actions: Adapted for client-side cancellation and view
+
     if($_GET){
         $id=$_GET["id"];
         $action=$_GET["action"];
@@ -395,7 +395,7 @@
             </div>
             '; 
         } elseif ($action == 'confirm_cancel') {
-            // Fetch appointment details to send in the cancellation email
+
             $sql_fetch = "SELECT 
                             c.cemail, 
                             c.cname, 
@@ -415,7 +415,7 @@
             if ($result_fetch->num_rows > 0) {
                 $details = $result_fetch->fetch_assoc();
 
-                // Send the cancellation email
+
                 try {
                     sendAppointmentCanceledEmail(
                         $details['cemail'],
@@ -427,32 +427,32 @@
                         $details['lawyername']
                     );
 
-                    // Delete the appointment from the database
+
                     $database->query("DELETE FROM appointment WHERE appoid='$id'");
                     
-                    // Redirect to the same page to refresh the list and remove URL parameters
+
                     echo "<script>alert('Your appointment has been canceled successfully.'); window.location.href='client-appointment.php';</script>";
                     exit();
 
                 } catch (Exception $e) {
-                    // Handle email sending failure
+
                     error_log("Email sending failed for cancellation of appoid $id: " . $e->getMessage());
                     echo "<script>alert('Could not send cancellation email, but the appointment will be canceled. Please contact support if you have questions.');</script>";
                     
-                    // Still proceed to cancel the appointment
+
                     $database->query("DELETE FROM appointment WHERE appoid='$id'");
                     echo "<script>window.location.href='client-appointment.php';</script>";
                     exit();
                 }
 
             } else {
-                // Handle error: appointment not found or doesn't belong to the user
+
                 echo "<script>alert('Error: Appointment not found or you do not have permission to cancel it.'); window.location.href='client-appointment.php';</script>";
                 exit();
             }
 
         } elseif($action=='view_details'){ // For viewing appointment details for accepted/completed
-            // You'll need to fetch appointment, lawyer, and schedule details
+
             $sqlmain_view = "SELECT 
                                 appointment.appoid,
                                 schedule.scheduleid,
@@ -513,7 +513,7 @@
                                             <p>'.htmlspecialchars($lawyer_name).'</p><br>
                                         </td>
                                     </tr>';
-                                    // Only show lawyer contact details if a lawyer is assigned
+
                                     if ($lawyer_name !== 'Unassigned') {
                                         echo '<tr>
                                             <td class="label-td" colspan="2">

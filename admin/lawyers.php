@@ -17,7 +17,7 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* This ensures the main content area will scroll if content overflows */
+         
         .dash-body{
             overflow-y: auto;
         }
@@ -26,7 +26,7 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+
 
     session_start();
 
@@ -41,7 +41,7 @@
     
     
 
-    //import database
+
     include("../connection.php");
 
     

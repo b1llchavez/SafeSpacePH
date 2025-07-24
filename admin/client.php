@@ -12,20 +12,20 @@ if(isset($_SESSION["user"])){
     exit(); // Always exit after a header redirect
 }
 
-// Import database connection and email functions
+
 include("../connection.php");
 require_once '../send_email.php'; // Corrected the file path
 
-// Handle delete action when form is submitted
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'delete_client') {
     $client_id = $_POST['client_id'];
     $client_email = $_POST['client_email'];
 
-    // Start a database transaction for atomicity (all or nothing)
+
     $database->begin_transaction();
 
     try {
-        // 1. Delete from client table
+
         $stmt_client = $database->prepare("DELETE FROM client WHERE cid = ?");
         if ($stmt_client) {
             $stmt_client->bind_param("i", $client_id);
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             throw new Exception("Failed to prepare client delete statement: " . $database->error);
         }
 
-        // 2. Delete from webuser table
+
         $stmt_webuser = $database->prepare("DELETE FROM webuser WHERE email = ?");
         if ($stmt_webuser) {
             $stmt_webuser->bind_param("s", $client_email);
@@ -45,14 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             throw new Exception("Failed to prepare webuser delete statement: " . $database->error);
         }
 
-        // Commit the transaction if both deletions are successful
+
         $database->commit();
-        // Redirect to prevent form resubmission and display success message
+
         header("Location: client.php?message=deleted_success");
         exit(); // Always exit after a header redirect
 
     } catch (Exception $e) {
-        // Rollback the transaction if any error occurs
+
         $database->rollback();
         error_log("Client deletion failed: " . $e->getMessage()); // Log error for debugging
         header("Location: client.php?message=deleted_error&details=" . urlencode($e->getMessage()));
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     }
 }
 
-// Handle unverify action when form is submitted
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'unverify_client') {
     $client_id = $_POST['client_id'];
     $client_email = $_POST['client_email'];
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $database->begin_transaction();
 
     try {
-        // First, check if the user is already unverified (usertype 'u')
+
         $stmt_check_usertype = $database->prepare("SELECT usertype FROM webuser WHERE email = ?");
         if ($stmt_check_usertype) {
             $stmt_check_usertype->bind_param("s", $client_email);
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $user_data = $result_check_usertype->fetch_assoc();
             $stmt_check_usertype->close();
 
-            // If user_data exists and usertype is 'u', throw a specific exception
+
             if ($user_data && $user_data['usertype'] == 'u') {
                 throw new Exception("unverified_already");
             }
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             throw new Exception("Failed to prepare usertype check statement: " . $database->error);
         }
 
-        // Fetch client's name for the email
+
         $stmt_get_name = $database->prepare("SELECT cname FROM client WHERE cemail = ?");
         $client_name = 'Client'; // Default name
         if ($stmt_get_name) {
@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $stmt_get_name->close();
         }
 
-        // 1. Update usertype in webuser table to 'u' (unverified)
+
         $stmt_webuser_update = $database->prepare("UPDATE webuser SET usertype = 'u' WHERE email = ?");
         if ($stmt_webuser_update) {
             $stmt_webuser_update->bind_param("s", $client_email);
@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             throw new Exception("Failed to prepare webuser update statement: " . $database->error);
         }
 
-        // 2. Update is_verified to 0 in identity_verifications table
+
         $stmt_identity_update = $database->prepare("UPDATE identity_verifications SET is_verified = 0 WHERE email = ?");
         if ($stmt_identity_update) {
             $stmt_identity_update->bind_param("s", $client_email);
@@ -120,11 +120,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
         $database->commit();
 
-        // Send the unverification email notice
+
         try {
             sendUnverificationNoticeEmail($client_email, $client_name);
         } catch (Exception $e) {
-            // Log email error but don't block the success message
+
             error_log("Failed to send unverification email to {$client_email}: " . $e->getMessage());
         }
 
@@ -144,11 +144,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 }
 
 
-// Handle view action to fetch and display client details
+
 $client_details = null; // Initialize to null
 if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     $view_id = $_GET['id'];
-    // Fetch all necessary details by joining client, webuser, and identity_verifications tables
+
     $stmt_view = $database->prepare("
         SELECT
             c.*,
@@ -237,7 +237,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             right: 0;
             background: rgba(0, 0, 0, 0.7);
             transition: opacity 500ms;
-            display: none; /* Controlled by JS */
+            display: none;  
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -246,7 +246,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         .overlay.view-modal-overlay {
             padding: 30px 15px;
             align-items: flex-start;
-            overflow-y: auto; /* MODIFIED: Restored scroll effect for the overlay */
+            overflow-y: auto;  
         }
 
         .modal-content {

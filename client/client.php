@@ -22,7 +22,7 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+
 
     session_start();
 
@@ -38,7 +38,7 @@
     }
     
 
-    //import database
+
     include("../connection.php");
     $userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
@@ -46,8 +46,8 @@
     $username=$userfetch["lawyername"];
 
 
-    //echo $userid;
-    //echo $username;
+
+
     ?>
     <div class="container">
     <div class="menu">
@@ -150,7 +150,7 @@
                             <?php
                                 echo '<datalist id="client">';
                                 $list11 = $database->query($sqlmain);
-                               //$list12= $database->query("select * from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=1;");
+
 
                                 for ($y=0;$y<$list11->num_rows;$y++){
                                     $row00=$list11->fetch_assoc();
@@ -273,7 +273,7 @@
 
                                 
                                 $result= $database->query($sqlmain);
-                                //echo $sqlmain;
+
                                 if($result->num_rows==0){
                                     echo '<tr>
                                     <td colspan="4">

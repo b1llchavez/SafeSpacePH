@@ -3,13 +3,13 @@
     
     
 
-    //import database
+
     include("../connection.php");
 
 
 
     if($_POST){
-        //print_r($_POST);
+
         $result= $database->query("select * from webuser");
         $name=$_POST['name'];
         $lawyerbarid=$_POST['lawyerbarid'];
@@ -24,7 +24,7 @@
         if ($password==$cpassword){
             $error='3';
             $result= $database->query("select lawyer.lawyerid from lawyer inner join webuser on lawyer.lawyeremail=webuser.email where webuser.email='$email';");
-            //$resultqq= $database->query("select * from lawyer where lawyerid='$id';");
+
             if($result->num_rows==1){
                 $id2=$result->fetch_assoc()["lawyerid"];
             }else{
@@ -34,20 +34,20 @@
             echo $id2."jdfjdfdh";
             if($id2!=$id){
                 $error='1';
-                //$resultqq1= $database->query("select * from lawyer where lawyeremail='$email';");
-                //$did= $resultqq1->fetch_assoc()["lawyerid"];
-                //if($resultqq1->num_rows==1){
+
+
+
                     
             }else{
 
-                //$sql1="insert into lawyer(lawyeremail,lawyername,docpassword,lawyerbarid,lawyertel,specialties) values('$email','$name','$password','$lawyerbarid','$tele',$spec);";
+
                 $sql1="update lawyer set lawyeremail='$email',lawyername='$name',lawyerpassword='$password',lawyerbarid='$lawyerbarid',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
                 $database->query($sql1);
                 
                 $sql1="update webuser set email='$email' where email='$oldemail' ;";
                 $database->query($sql1);
-                //echo $sql1;
-                //echo $sql2;
+
+
                 $error= '4';
                 
             }
@@ -60,7 +60,7 @@
         
         
     }else{
-        //header('location: signup.php');
+
         $error='3';
     }
 

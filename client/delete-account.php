@@ -14,7 +14,7 @@
     }
     
 
-    //import database
+
     include("../connection.php");
     $userrow = $database->query("select * from client where cemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
@@ -23,14 +23,14 @@
 
     
     if($_GET){
-        //import database
+
         include("../connection.php");
         $id=$_GET["id"];
         $result001= $database->query("select * from client where cid=$id;");
         $email=($result001->fetch_assoc())["cemail"];
         $sql= $database->query("delete from webuser where email='$email';");
         $sql= $database->query("delete from client where cemail='$email';");
-        //print_r($email);
+
         header("location: ../logout.php");
     }
 

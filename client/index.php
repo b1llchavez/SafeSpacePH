@@ -20,12 +20,12 @@
         .sub-table,.anime{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* --- FIX START --- */
-        /* This rule allows the main content area to scroll vertically when content overflows. */
+         
+         
         .dash-body {
             overflow-y: auto;
         }
-        /* --- FIX END --- */
+         
     </style>
     
     
@@ -33,7 +33,7 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+
 
     session_start();
 
@@ -49,21 +49,21 @@
     }
     
 
-    //import database
+
     include("../connection.php");
-    // --- FIX START ---
-    // Retrieve clientid and clientname from session
+
+
     $clientid = $_SESSION['cid']; 
     $clientname = $_SESSION['cname']; // Retrieve clientname from session
-    // --- FIX END ---
+
     $userrow = $database->query("select * from client where cemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
     $userid= $userfetch["cid"];
     $username=$userfetch["cname"];
 
 
-    //echo $userid;
-    //echo $username;
+
+
     
     ?>
     <div class="container">
@@ -231,7 +231,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <!-- All Lawyers -->
+                                                
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -246,7 +246,7 @@
             </div>
         </td>
 
-        <!-- All clients -->
+        
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -263,7 +263,7 @@
     </tr>
 
     <tr>
-        <!-- New Bookings -->
+        
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -279,7 +279,7 @@
             </div>
         </td>
 
-            <!-- Today Sessions -->
+            
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -346,7 +346,7 @@
                                             <?php
                                             $nextweek=date("Y-m-d",strtotime("+1 week"));
                                                 $sqlmain= "select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  where  client.cid=$userid  and schedule.scheduledate>='$today' order by schedule.scheduledate asc";
-                                                //echo $sqlmain;
+
                                                 $result= $database->query($sqlmain);
                 
                                                 if($result->num_rows==0){

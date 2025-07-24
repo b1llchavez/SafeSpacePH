@@ -13,14 +13,14 @@
     
     
     if($_GET){
-        //import database
+
         include("../connection.php");
         $id=$_GET["id"];
         $result001= $database->query("select * from lawyer where lawyerid=$id;");
         $email=($result001->fetch_assoc())["lawyeremail"];
         $sql= $database->query("delete from webuser where email='$email';");
         $sql= $database->query("delete from lawyer where lawyeremail='$email';");
-        //print_r($email);
+
         header("location: lawyers.php");
     }
 

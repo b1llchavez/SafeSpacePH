@@ -1,33 +1,33 @@
 <?php
 session_start(); // session_start() must be called before any output
 
-// Set the timezone to Asia/Manila for Quezon City, Philippines
+
 date_default_timezone_set('Asia/Manila');
 
-// Check if the user is logged in and is of type 'u' (unverified client)
+
 if(isset($_SESSION["user"])){
     if(($_SESSION["user"])=="" or $_SESSION['usertype']!='u'){
-        // If user is not logged in or is not an unverified client, redirect to login page
+
         header("location: ../login.php");
         exit(); // Always exit after a header redirect
     }else{
         $useremail=$_SESSION["user"]; // Set useremail if session is valid
     }
 }else{
-    // If session is not set, redirect to login page
+
     header("location: ../login.php");
     exit(); // Always exit after a header redirect
 }
 
-// Include database connection
+
 include("../connection.php");
 
-// Retrieve client ID and name from session
-// Ensure these session variables are set during login for 'u' type users
+
+
 $clientid = isset($_SESSION['cid']) ? $_SESSION['cid'] : null; 
 $clientname = isset($_SESSION['cname']) ? $_SESSION['cname'] : 'Guest';
 
-// Fetch user details from the database
+
 $userrow = $database->query("select * from client where cemail='$useremail'");
 $userfetch=$userrow->fetch_assoc();
 $userid= $userfetch["cid"];
@@ -54,7 +54,7 @@ $username=$userfetch["cname"];
         .sub-table,.anime{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* Styles for the verification modal */
+         
         .modal-overlay {
             display: none;
             position: fixed;
@@ -62,8 +62,8 @@ $username=$userfetch["cname"];
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            z-index: 1000; /* Ensure it's on top */
+            background-color: rgba(0, 0, 0, 0.5);  
+            z-index: 1000;  
             justify-content: center;
             align-items: center;
         }
@@ -98,7 +98,7 @@ $username=$userfetch["cname"];
             cursor: pointer;
         }
 
-        /* Verification Modal Styles */
+         
         #verify-modal {
             display: none;
             position: fixed;
@@ -165,30 +165,30 @@ $username=$userfetch["cname"];
                 transform: translateY(0);
             }
         }
-        /* Styles for the logout button, adapted to match verify button's dimensions */
+         
         .logout-modal-btn {
-            padding: 14px 38px; /* Same padding as verify-button */
-            font-size: 16px; /* Same font size as verify-button */
-            font-weight: 600; /* Same font weight as verify-button */
-            color: #391053; /* Dark text for contrast */
-            background-color: #f0f0f0; /* Light grey background */
-            border: 1px solid #ccc; /* Light border */
-            border-radius: 8px; /* Same border-radius as verify-button */
+            padding: 14px 38px;  
+            font-size: 16px;  
+            font-weight: 600;  
+            color: #391053;  
+            background-color: #f0f0f0;  
+            border: 1px solid #ccc;  
+            border-radius: 8px;  
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  
             transition: all 0.3s ease;
-            margin-top: 15px; /* Space between verify and logout buttons */
+            margin-top: 15px;  
         }
 
         .logout-modal-btn:hover {
-            background-color: #e0e0e0; /* Darker grey on hover */
+            background-color: #e0e0e0;  
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 <body>
-    <!-- Enhanced Verification Modal -->
+    
     <div id="verify-modal">
         <div class="verify-content" style="box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15); border: 1px solid #e9d5ff;">
             <img src="../img/logo.png" alt="SafeSpacePH Logo" style="width:70px; margin-bottom:20px; border-radius:50%; box-shadow:0 2px 8px rgba(57, 16, 83, 0.12);">
@@ -204,7 +204,7 @@ $username=$userfetch["cname"];
             <button onclick="location.href='../identity_verification.php'" class="verify-button">
                 Verify Now
             </button>
-            <!-- Logout button added here -->
+            
             <button type="button" onclick="window.location.href='../logout.php';" class="logout-modal-btn">
                 Log out
             </button>
@@ -465,12 +465,12 @@ $username=$userfetch["cname"];
         </div>
     </div>
 
-    <!-- Add this script at the bottom of the body -->
+    
     <script>
-        // Simulate verification status (replace with actual logic later)
+
         const isVerified = false;
 
-        // Show verification modal if user is not verified
+
         window.onload = function() {
             if (!isVerified) {
                 document.getElementById('verify-modal').style.display = 'flex';

@@ -22,7 +22,7 @@
 <body>
     <?php
 
-    //learn from w3schools.com
+
 
     session_start();
 
@@ -38,7 +38,7 @@
     }
     
 
-    //import database
+
     include("../connection.php");
     $userrow = $database->query("select * from client where cemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
@@ -46,8 +46,8 @@
     $username=$userfetch["cname"];
 
 
-    //echo $userid;
-    //echo $username;
+
+
     
 
 
@@ -56,7 +56,7 @@
     $today = date('Y-m-d');
 
 
- //echo $userid;
+
  ?>
  <div class="container">
      <div class="menu">
@@ -179,7 +179,7 @@
                 
                 <tr>
                     <td colspan="4" style="padding-top:10px;width: 100%;" >
-                        <!-- <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49);font-weight:400;">Scheduled Sessions / Booking / <b>Review Booking</b></p> -->
+                        
                         
                     </td>
                     
@@ -207,7 +207,7 @@
 
                                     $sqlmain= "select * from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid where schedule.scheduleid=$id  order by schedule.scheduledate desc";
 
-                                    //echo $sqlmain;
+
                                     $result= $database->query($sqlmain);
                                     $row=$result->fetch_assoc();
                                     $scheduleid=$row["scheduleid"];
@@ -217,7 +217,7 @@
                                     $scheduledate=$row["scheduledate"];
                                     $scheduletime=$row["scheduletime"];
                                     $sql2="select * from appointment where scheduleid=$id";
-                                    //echo $sql2;
+
                                      $result12= $database->query($sql2);
                                      $apponum=($result12->num_rows)+1;
                                     

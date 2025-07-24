@@ -1,6 +1,6 @@
 <?php
 
-    //learn from w3schools.com
+
 
     session_start();
 
@@ -16,7 +16,7 @@
     }
     
 
-    //import database
+
     include("../connection.php");
     $userrow = $database->query("select * from client where cemail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
@@ -32,7 +32,7 @@
             $scheduleid=$_POST["scheduleid"];
             $sql2="insert into appointment(cid,apponum,scheduleid,appodate) values ($userid,$apponum,$scheduleid,'$date')";
             $result= $database->query($sql2);
-            //echo $apponom;
+
             header("location: appointment.php?action=booking-added&id=".$apponum."&titleget=none");
 
         }

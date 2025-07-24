@@ -25,9 +25,9 @@
 
     $popup_message = "";
 
-    // Handle GET requests for actions like view, delete, edit notes
+
     if (!empty($action) && !empty($id)) {
-        // Sanitize ID for all GET actions to prevent SQL Injection
+
         $id_safe = mysqli_real_escape_string($database, $id);
 
         if($action=='drop'){
@@ -61,7 +61,7 @@
             if ($result->num_rows > 0) {
                 $report_details = $result->fetch_assoc();
                 
-                // --- Helper function to parse details from the description string ---
+
                 function extract_detail($pattern, $description) {
                     if (preg_match($pattern, $description, $matches)) {
                         return trim($matches[1]);
@@ -69,20 +69,20 @@
                     return ''; // Return empty string if not found
                 }
 
-                // --- Main Details ---
+
                 $report_id_details = htmlspecialchars($report_details['id'] ?? '');
                 $client_id_details = htmlspecialchars($report_details['client_id'] ?? 'N/A');
                 $submission_date_details = htmlspecialchars($report_details['uploaded_at'] ?? '');
-                // FIX: Assumes the status column is named 'report_status'.
+
                 $status_details = htmlspecialchars($report_details['report_status'] ?? 'pending');
                 $violation_type_details = htmlspecialchars(str_replace("Violation Report: ", "", $report_details['title'] ?? 'N/A'));
                 
-                // --- Reporter Details ---
+
                 $reporter_name_details = htmlspecialchars($report_details['reporter_name'] ?? 'N/A');
                 $reporter_phone_details = htmlspecialchars($report_details['reporter_phone'] ?? 'N/A');
                 $reporter_email_details = htmlspecialchars($report_details['reporter_email'] ?? 'N/A');
 
-                // --- Parse the description field ---
+
                 $full_description = $report_details['description'] ?? '';
                 $incident_date_details = htmlspecialchars(extract_detail('/Date of Incident: (.*?)\n/s', $full_description));
                 $incident_time_details = htmlspecialchars(extract_detail('/Time of Incident: (.*?)\n/s', $full_description));
@@ -94,7 +94,7 @@
                 $description_parts = explode("---Reporter's Detailed Description---", $full_description);
                 $description_details = isset($description_parts[1]) ? nl2br(htmlspecialchars(trim($description_parts[1]))) : 'N/A';
 
-                // --- Client Requests & Evidence ---
+
                 $legal_consultation_details = htmlspecialchars($report_details['legal_consultation_requested'] ?? 'N/A');
                 $supplementary_notes_details = nl2br(htmlspecialchars($report_details['supplementary_notes'] ?? ''));
                 $evidence_file_details = htmlspecialchars($report_details['file_name'] ?? '');
@@ -239,10 +239,10 @@
         }
     }
 
-    // FIX: Added a comment to explain the potential issue with the 'status' column.
-    // The 'status' column was changed to 'report_status' to resolve a potential 'Unknown column' SQL error.
-    // This assumes the correct column name in your database is 'report_status'. 
-    // If the error persists, you may need to verify the actual column name in your 'reports' table structure.
+
+
+
+
     if($_POST){
         $id = $_POST['id'] ?? '';
         $action_type = $_POST['action'] ?? '';
@@ -262,7 +262,7 @@
                 exit();
             }
         } elseif($action_type == 'confirm_reject'){
-            // FIX: Changed 'status' to 'report_status' in the UPDATE query.
+
             $update_sql = "UPDATE reports SET report_status = 'rejected', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
             if ($database->query($update_sql)) {
                 header("location: admin_reports.php?action=rejected");
@@ -272,7 +272,7 @@
                 exit();
             }
         } elseif ($action_type == 'confirm_submit'){
-            // FIX: Changed 'status' to 'report_status' in the UPDATE query.
+
             $update_sql = "UPDATE reports SET report_status = 'submitted', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
             if ($database->query($update_sql)) {
                 header("location: admin_reports.php?action=submitted");
@@ -284,7 +284,7 @@
         }
     }
 
-    // Display success/error messages after actions
+
     if(isset($_GET['action'])){
         $action_result = $_GET['action'];
         $popup_title = '';
@@ -315,7 +315,7 @@
             $header_color = $is_error ? '#dc3545' : '#28a745';
             $button_class = $is_error ? 'modal-btn-secondary' : 'modal-btn-primary';
 
-            // FIX: Removed the redundant 'x' close button from the modal header.
+
             $popup_message = '
             <div id="popup1" class="overlay">
                 <div class="modal-content" style="max-width: 450px;">
@@ -351,20 +351,20 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* -- Style adjustments for table spacing -- */
+         
         .sub-table th, .sub-table td {
-            padding: 16px 12px; /* Increased padding for a cleaner look */
+            padding: 16px 12px;  
             text-align: left;
             vertical-align: middle;
         }
         .sub-table th:last-child, .sub-table td:last-child {
-            text-align: center; /* Center the 'Actions' column content */
+            text-align: center;  
         }
         .sub-table tbody td {
-            border-bottom: 1px solid #f0f0f0; /* Add subtle row separators */
+            border-bottom: 1px solid #f0f0f0;  
         }
         .sub-table tbody tr:last-child td {
-            border-bottom: none; /* Remove border from the last row */
+            border-bottom: none;  
         }
 
         .status-badge {
@@ -377,7 +377,7 @@
         }
 
            .modal-body .status-badge {
-            color: #fff !important; /* Using !important to ensure it overrides any other styles */
+            color: #fff !important;  
         }
         .status-pending { background-color: #ffc107; }
         .status-rejected { background-color: #dc3545; }
@@ -387,7 +387,7 @@
             overflow-y: auto;
         }
 
-        /* --- MODAL STYLES --- */
+         
         .overlay {
             position: fixed;
             top: 0;
@@ -405,7 +405,7 @@
             padding: 15px;
         }
         
-        /* Specific overlay style for the large view modal */
+         
         .overlay.view-modal-overlay {
             display: block;
             overflow-y: auto;
@@ -527,7 +527,7 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* Styles for details view sections */
+         
         .detail-section {
             margin-bottom: 20px;
             padding-bottom: 10px;
@@ -554,7 +554,7 @@
             font-size: 15px;
         }
         .detail-item strong {
-            flex: 0 0 200px; /* Fixed width for labels */
+            flex: 0 0 200px;  
             margin-right: 10px;
             color: #333;
             font-weight: 600;
@@ -728,7 +728,7 @@
                                             $id = $reportidrow["id"];
                                             $reporter_name = htmlspecialchars($reportidrow["reporter_name"] ?? 'N/A');
                                             $violation_type = htmlspecialchars($reportidrow["title"] ?? 'N/A');
-                                            // FIX: Changed 'status' to 'report_status' to read from the potentially correct column.
+
                                             $status = htmlspecialchars($reportidrow["report_status"] ?? 'pending');
                                             $submission_date = htmlspecialchars($reportidrow["uploaded_at"] ?? '');
 

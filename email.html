@@ -17,7 +17,7 @@ function sendAppointmentPendingNoticeToUser($recipientEmail, $recipientName, $ap
         $mail->addEmbeddedImage('img/logo.png', 'logoimg');
         $mail->addEmbeddedImage('img/logo.png', 'logoimg_footer');
 
-        // Extracting details from the $appointmentDetails array
+
         $lawyerName = $appointmentDetails['lawyerName'] ?? 'a lawyer';
         $appointmentDate = $appointmentDetails['appointmentDate'] ?? 'N/A';
         $appointmentTime = $appointmentDetails['appointmentTime'] ?? 'N/A';
@@ -149,7 +149,7 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
         $mail->addEmbeddedImage('img/logo.png', 'logoimg');
         $mail->addEmbeddedImage('img/logo.png', 'logoimg_footer');
 
-        // Extracting details from the $appointmentDetails array
+
         $lawyerName = $appointmentDetails['lawyerName'] ?? 'N/A';
         $appointmentDate = $appointmentDetails['appointmentDate'] ?? 'N/A';
         $appointmentTime = $appointmentDetails['appointmentTime'] ?? 'N/A';
@@ -284,7 +284,7 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
         $mail->addEmbeddedImage('img/logo.png', 'logoimg');
         $mail->addEmbeddedImage('img/logo.png', 'logoimg_footer');
 
-        // Extracting details from the $appointmentDetails array
+
         $lawyerName = $appointmentDetails['lawyerName'] ?? 'N/A';
         $appointmentDate = $appointmentDetails['appointmentDate'] ?? 'N/A';
         $appointmentTime = $appointmentDetails['appointmentTime'] ?? 'N/A';
@@ -1156,7 +1156,7 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
         $mail->addEmbeddedImage('img/logo.png', 'logoimg');
         $mail->addEmbeddedImage('img/logo.png', 'logoimg_footer');
 
-        // Extracting details from the $appointmentDetails array
+
         $lawyerName = $appointmentDetails['lawyerName'] ?? 'N/A';
         $appointmentDate = $appointmentDetails['appointmentDate'] ?? 'N/A';
         $appointmentTime = $appointmentDetails['appointmentTime'] ?? 'N/A';

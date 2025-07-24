@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/animations.css">  
     <link rel="stylesheet" href="../css/main.css">  
-    <link rel="stylesheet" href="../css/admin.css"> <!-- You might want to create a client-specific CSS like client.css -->
+    <link rel="stylesheet" href="../css/admin.css"> 
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
     <title>Request New Session | SafeSpace PH</title>
     <style>
@@ -16,13 +16,13 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* Additional styling for date/time input if needed */
+         
         input[type="date"], input[type="time"] {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 100%; /* Adjust as necessary */
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            width: 100%;  
+            box-sizing: border-box;  
         }
     </style>
 </head>
@@ -30,7 +30,7 @@
     <?php
     session_start();
 
-    // Authentication: Changed to check for 'c' (client) usertype
+
     if(!isset($_SESSION["user"]) || $_SESSION['usertype']!='c'){
         header("location: ../login.php");
         exit();
@@ -135,23 +135,8 @@
                                     <tr>
                                         <td class="label-td" colspan="2">
                                             <form action="process_session_request.php" method="POST" class="add-new-form">
-                                                <!-- REMOVED: Lawyer Selection Dropdown -->
-                                                <!--
-                                                <label for="lawyerid" class="form-label">Select Lawyer: </label>
-                                                <select name="lawyerid" id="lawyerid" class="box" required>
-                                                    <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>
-                                                    <?php
-                                                        // Fetch lawyers from the database
-                                                        // $list11 = $database->query("SELECT lawyerid, lawyername FROM lawyer ORDER BY lawyername ASC;");
-                                                        // for ($y=0;$y<$list11->num_rows;$y++){
-                                                        //     $row00=$list11->fetch_assoc();
-                                                        //     $lawyer_name=$row00["lawyername"];
-                                                        //     $lawyer_id=$row00["lawyerid"];
-                                                        //     echo "<option value='".htmlspecialchars($lawyer_id)."'>".htmlspecialchars($lawyer_name)."</option><br/>";
-                                                        // };
-                                                    ?>
-                                                </select><br><br>
-                                                -->
+                                                
+                                                
                                             </td>
                                         </tr>
                                         <tr>

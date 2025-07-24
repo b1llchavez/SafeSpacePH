@@ -2,11 +2,11 @@
 
 session_start(); // THIS MUST BE THE VERY FIRST THING IN THE FILE
 
-// Include database connection and email functions
+
 include("../connection.php");
 require_once '../send_email.php'; // Corrected the path to go up one directory
 
-// Check if user is logged in and is an administrator
+
 if(isset($_SESSION["user"])){
     if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
         header("location: ../login.php");
@@ -17,20 +17,20 @@ if(isset($_SESSION["user"])){
     exit(); // Always exit after a header redirect
 }
 
-// Handle verification action when form is submitted
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $verification_id = $_POST['verification_id'];
     $client_email = $_POST['client_email'];
-    // Use null coalescing operator to avoid undefined index notices
+
     $first_name = $_POST['first_name'] ?? '';
     $last_name = $_POST['last_name'] ?? '';
 
-    // Start a database transaction for atomicity (all or nothing)
+
     $database->begin_transaction();
 
     try {
         if ($_POST['action'] == 'verify_user') {
-            // 1. Check if a user with the same First Name, Last Name, and Email already exists in webuser table
+
             $stmt_check_webuser = $database->prepare("SELECT email FROM webuser WHERE email = ?");
             if ($stmt_check_webuser) {
                 $stmt_check_webuser->bind_param("s", $client_email);
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $stmt_check_webuser->close();
 
                 if ($result_check_webuser->num_rows > 0) {
-                    // User exists, update usertype to 'c'
+
                     $stmt_update_webuser = $database->prepare("UPDATE webuser SET usertype = 'c' WHERE email = ?");
                     if ($stmt_update_webuser) {
                         $stmt_update_webuser->bind_param("s", $client_email);
@@ -49,8 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                         throw new Exception("Failed to prepare webuser update statement: " . $database->error);
                     }
                 } else {
-                    // User does not exist, insert new user with usertype 'c'
-                    // Fetch other necessary details from identity_verifications to create a new webuser entry
+
+
                     $stmt_fetch_details = $database->prepare("SELECT * FROM identity_verifications WHERE id = ?");
                     if ($stmt_fetch_details) {
                         $stmt_fetch_details->bind_param("i", $verification_id);
@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 throw new Exception("Failed to prepare webuser check statement: " . $database->error);
             }
 
-            // 2. Update is_verified status in identity_verifications table to TRUE
+
             $stmt_identity = $database->prepare("UPDATE identity_verifications SET is_verified = TRUE WHERE id = ?");
             if ($stmt_identity) {
                 $stmt_identity->bind_param("i", $verification_id);
@@ -89,18 +89,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 throw new Exception("Failed to prepare identity_verifications update statement: " . $database->error);
             }
 
-            // Send verification approved email
+
             sendVerificationApprovedNoticeToClient($client_email, $first_name . ' ' . $last_name);
 
-            // Commit the transaction if both updates are successful
+
             $database->commit();
-            // Redirect to prevent form resubmission and display success message
+
             header("Location: client_verification.php?message=success");
             exit(); // Always exit after a header redirect
 
         } else if ($_POST['action'] == 'reject_user') {
             
-            // Fetch client's name for the email notification before deleting
+
             $stmt_get_name = $database->prepare("SELECT first_name, last_name FROM identity_verifications WHERE id = ?");
             $client_full_name = "Valued Client"; // Fallback name
             if ($stmt_get_name) {
@@ -113,10 +113,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $stmt_get_name->close();
             }
 
-            // Send rejection email to the client
+
             sendVerificationRejectedNoticeToClient($client_email, $client_full_name);
 
-            // Handle rejection: Delete the entry from identity_verifications table
+
             $stmt_delete_verification = $database->prepare("DELETE FROM identity_verifications WHERE id = ?");
             if ($stmt_delete_verification) {
                 $stmt_delete_verification->bind_param("i", $verification_id);
@@ -126,14 +126,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 throw new Exception("Failed to prepare delete verification statement: " . $database->error);
             }
 
-            // Commit the transaction
+
             $database->commit();
             header("Location: client_verification.php?message=rejected");
             exit(); // Always exit after a header redirect
         }
 
     } catch (Exception $e) {
-        // Rollback the transaction if any error occurs
+
         $database->rollback();
         error_log("Action failed: " . $e->getMessage()); // Log error for debugging
         header("Location: client_verification.php?message=error&details=" . urlencode($e->getMessage()));
@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     }
 }
 
-// Handle view action to fetch and display verification details
+
 $verification_details = null; // Initialize to null
 if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     $view_id = $_GET['id'];
@@ -174,22 +174,22 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* Custom Modal Styles for verification, rejection, and view details */
+         
         .custom-modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
+            display: none;  
+            position: fixed;  
+            z-index: 1000;  
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            /* Ensure flexbox for centering when displayed */
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center horizontally */
-            padding: 20px; /* Overall modal padding for responsiveness */
-            box-sizing: border-box; /* Include padding in width/height */
+            width: 100%;  
+            height: 100%;  
+            overflow: auto;  
+            background-color: rgba(0,0,0,0.4);  
+             
+            align-items: center;  
+            justify-content: center;  
+            padding: 20px;  
+            box-sizing: border-box;  
         }
 
         .custom-modal-content {
@@ -202,9 +202,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
             text-align: center;
             position: relative;
-            max-height: 90vh; /* Max height of the modal content */
-            overflow-y: auto; /* Enable vertical scrolling for content */
-            box-sizing: border-box; /* Include padding in width/height */
+            max-height: 90vh;  
+            overflow-y: auto;  
+            box-sizing: border-box;  
         }
         .custom-modal-content h3 {
             margin-top: 0;
@@ -219,38 +219,38 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             font-weight: bold;
         }
         .custom-modal-content .modal-buttons .confirm-btn {
-            background-color: #4CAF50; /* Green */
+            background-color: #4CAF50;  
             color: white;
         }
         .custom-modal-content .modal-buttons .cancel-btn {
-            background-color: #f44336; /* Red */
+            background-color: #f44336;  
             color: white;
         }
         
-        /* For the general popup used for messages, ensure it's also centered */
-        .overlay:target, #messagePopup { /* Added #messagePopup to this selector */
+         
+        .overlay:target, #messagePopup {  
             visibility: visible;
             opacity: 1;
-            display: flex; /* Ensure flexbox for centering */
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center horizontally */
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
         }
 
-        .overlay .popup { /* Targeting popup within overlay to remove margin */
-            margin: auto; /* Allow flexbox to center it */
+        .overlay .popup {  
+            margin: auto;  
         }
         
-        /* Styles for the View Details Modal - Refined */
+         
         #viewDetailsModal .custom-modal-content {
-            max-width: 800px; /* Wider modal */
-            text-align: left; /* Align content to left */
-            padding: 30px; /* Ensure consistent padding */
-            max-height: 90vh; /* Ensure it doesn't exceed viewport height */
-            overflow-y: auto; /* Enable scrolling for content within this modal */
+            max-width: 800px;  
+            text-align: left;  
+            padding: 30px;  
+            max-height: 90vh;  
+            overflow-y: auto;  
         }
         #viewDetailsModal .custom-modal-content h3 {
-            text-align: center; /* Center the modal title */
-            margin-bottom: 25px; /* More space below title */
+            text-align: center;  
+            margin-bottom: 25px;  
         }
         #viewDetailsModal .close-x-button {
             position: absolute;
@@ -270,86 +270,86 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         }
 
         #viewDetailsModal .detail-section {
-            margin-bottom: 20px; /* Spacing between sections */
+            margin-bottom: 20px;  
             padding-bottom: 10px;
         }
         #viewDetailsModal .detail-section:last-of-type {
-            border-bottom: none; /* No border for the last section */
+            border-bottom: none;  
         }
 
         #viewDetailsModal .detail-section h4 {
-            color: #5A2675; /* Section heading color */
-            font-weight: bold; /* Semi-bold or bold */
+            color: #5A2675;  
+            font-weight: bold;  
             margin-top: 0;
             margin-bottom: 15px;
-            display: inline-block; /* Only underline the text */
+            display: inline-block;  
             padding-bottom: 5px;
-            width: 100%; /* Ensure heading takes full width for hr */
-            text-align: left; /* Align heading text to left */
+            width: 100%;  
+            text-align: left;  
         }
-        #viewDetailsModal .detail-section hr { /* Divider line for sections */
+        #viewDetailsModal .detail-section hr {  
             border: none;
-            border-top: 1px solid #5A2675; /* Thin and elegant line with specified color */
-            margin-top: -10px; /* Move divider closer to heading */
+            border-top: 1px solid #5A2675;  
+            margin-top: -10px;  
             margin-bottom: 15px;
         }
         #viewDetailsModal .detail-item {
-            margin-bottom: 8px; /* Spacing between items */
-            display: flex; /* Use flexbox for label-value alignment */
-            align-items: baseline; /* Align text baselines */
+            margin-bottom: 8px;  
+            display: flex;  
+            align-items: baseline;  
         }
-        /* Ensure the labels are bold and values are normal font weight */
-        #viewDetailsModal .detail-item strong { /* Targeting the strong tag for labels */
-            flex: 0 0 180px; /* Fixed width for labels, adjust as needed */
-            margin-right: 10px; /* Space between label and value */
+         
+        #viewDetailsModal .detail-item strong {  
+            flex: 0 0 180px;  
+            margin-right: 10px;  
             color: #555;
-            font-weight: bold; /* Keep labels bold */
+            font-weight: bold;  
         }
-        #viewDetailsModal .detail-item span { /* Targeting the span tag for values */
-            flex-grow: 1; /* Allow value to take remaining space */
+        #viewDetailsModal .detail-item span {  
+            flex-grow: 1;  
             color: #333;
-            word-wrap: break-word; /* Ensure long text wraps */
-            font-weight: normal; /* Set values to normal font weight */
+            word-wrap: break-word;  
+            font-weight: normal;  
         }
         #viewDetailsModal .close-button {
-            background-color: #C9A8F1; /* Lavender-like shade */
+            background-color: #C9A8F1;  
             color: white;
-            padding: 10px 20px; /* Match existing button padding */
-            border-radius: 20px; /* Match existing button border-radius */
-            border: none; /* Ensure no default border */
+            padding: 10px 20px;  
+            border-radius: 20px;  
+            border: none;  
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            margin-top: 25px; /* More space from content */
-            display: block; /* Make it a block element to center with auto margins */
+            margin-top: 25px;  
+            display: block;  
             margin-left: auto;
             margin-right: auto;
         }
         #viewDetailsModal .close-button:hover {
-            background-color: #b193d5; /* Slightly darker lavender on hover */
+            background-color: #b193d5;  
         }
-        /* Styles for file viewer links, matching button aesthetics */
+         
         .file-link {
             display: inline-block;
             padding: 8px 15px;
-            background-color: #5A2675; /* Blue, similar to primary buttons */
+            background-color: #5A2675;  
             color: white;
-            border-radius: 20px; /* Rounded corners */
+            border-radius: 20px;  
             text-decoration: none;
             margin: 5px;
             font-weight: bold;
         }
         .file-link:hover {
-            background-color: #C9A8F1; /* Darker blue on hover */
+            background-color: #C9A8F1;  
         }
     </style>
 </head>
 <body>
     <?php
-    // The PHP code that handles displaying the view details modal needs to be here,
-    // as it outputs HTML directly.
+
+
     if ($verification_details) {
-        // Changed display:block to display:flex for proper centering
+
         echo '<div id="viewDetailsModal" class="custom-modal" style="display:flex;">
                 <div class="custom-modal-content">
                     <a href="javascript:void(0)" class="close-x-button" onclick="closeViewDetailsModal()">&times;</a>
@@ -409,8 +409,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                 </div>
               </div>';
     } else if (isset($_GET['action']) && $_GET['action'] == 'view' && !isset($_GET['id'])) {
-        // Only show error if action=view is present but id is missing
-        // Changed display:block to display:flex for proper centering
+
+
         echo '<div id="viewDetailsModal" class="custom-modal" style="display:flex;">
                 <div class="custom-modal-content">
                     <a href="javascript:void(0)" class="close-x-button" onclick="closeViewDetailsModal()">&times;</a>
@@ -422,9 +422,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     }
 
 
-    // Display success or error messages in a popup after a verification attempt
+
     if (isset($_GET['message'])) {
-        // The overlay class already handles display:flex when targeted or shown
+
         echo '<div id="messagePopup" class="overlay" style="display:flex;">
                 <div class="popup">
                     <center>
@@ -752,7 +752,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
         document.getElementById('confirmVerificationBtn').addEventListener('click', function() {
             if (currentVerificationId && currentClientEmail && currentClientFirstName && currentClientLastName) {
-                // Create a form dynamically to submit POST request
+
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'client_verification.php'; // Submit to this page for processing
@@ -823,14 +823,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             hideRejectConfirmModal();
         });
 
-        // Close the message popup if it's shown on page load
+
         window.onload = function() {
             const messagePopup = document.getElementById('messagePopup');
             if (messagePopup) {
-                // You can add a timeout here if you want the message to disappear automatically
-                // setTimeout(() => { messagePopup.style.display = 'none'; }, 3000); 
+
+
             }
-            // Ensure modals are hidden on page load unless specifically triggered by URL parameters
+
             if (!window.location.search.includes('action=view')) {
                  const viewModal = document.getElementById('viewDetailsModal');
                 if (viewModal) {
