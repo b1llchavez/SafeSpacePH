@@ -3,21 +3,21 @@ html {
     margin: 0;
     padding-top: 100px;
     box-sizing: border-box;
-    /* Important for consistent box model */
+
 }
 
-/* General body styles */
+
 body {
     font-family: 'Inter', sans-serif;
-    /* Apply Inter font */
+
     margin: 0;
-    /* Remove default body margin */
+
     padding: 0;
-    /* Remove default body padding */
+
     background-color: #ffffff;
-    /* Light gray background color */
+
     line-height: 1.6;
-    /* Improve readability */
+
 }
 
 .header-bg {
@@ -28,9 +28,9 @@ body {
     position: relative;
 
     height: 600px;
-    /* Increase this for more vertical space */
+
     width: 100%;
-    /* Full width */
+
     color: white;
     display: flex;
     align-items: center;
@@ -49,101 +49,101 @@ body {
 
 .logo-container {
     display: flex;
-    /* Use flexbox for easy alignment */
+
     align-items: center;
-    /* Vertically center items */
+
     padding-left: 20px;
-    /* Add space from the left edge of the td */
+
     box-sizing: border-box;
-    /* Include padding in width calculation */
+
 }
 
 .logo-img {
     height: 60px;
-    /* Increased height for larger logo */
+
     width: auto;
-    /* Maintain aspect ratio */
+
     margin-right: 10px;
-    /* Increased space between logo and text */
+
     vertical-align: middle;
-    /* Ensures alignment with text */
+
 }
 
 .safespaceph-logo-sub {
-    /* Ensure the font class styles are defined in main.css or here */
+
     font-size: 32px;
-    /* Example: Adjust font size to match logo better */
+
     font-weight: 1000;
-    /* Example */
+
     color: #391053;
-    /* Example: A color that goes well with purple */
+
     white-space: nowrap;
-    /* Prevent text from wrapping */
+
     text-shadow: 2px 2px 10px #3910534b;
 }
 
 .nav-button {
     display: block;
-    /* Ensures padding and margin work correctly */
+
     color: #770888;
-    /* text-gray-700 */
+
     font-weight: 500;
-    /* font-medium */
+
     padding-top: 0.5rem;
-    /* py-2 */
+
     padding-bottom: 0.5rem;
-    /* py-2 */
+
     padding-left: 1rem;
-    /* px-4 */
+
     padding-right: 1rem;
-    /* px-4 */
+
     border-radius: 0.5rem;
-    /* rounded-lg */
+
     text-decoration: none;
-    /* non-style-link */
+
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size;
-    /* transition */
+
     transition-duration: 200ms;
-    /* duration-200 */
+
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    /* ease-in-out */
+
 }
 
-/* Hover styles for both nav links */
+
 .nav-button:hover {
     font-size: 1.1rem;
-    /* hover:text-lg */
+
     color: #851abf;
-    /* hover:text-blue-600 */
+
 }
 
-/* Active link highlight styles */
+
 .nav-button.active-nav-link {
     color: #851abf;
-    /* Same as hover color, or a distinct active color */
+
     background-color: #f0e4ff;
-    /* A light background highlight */
-    /* You could also add a border or thicker underline */
-    /* border-bottom: 2px solid #851abf; */
-    /* font-weight: 700; /* Make it bolder */
+
+
+
+
 }
 
-/* Optional: Adjust hover for active link */
-/* This ensures the active state is always dominant, even on hover */
+
+
 .nav-button.active-nav-link:hover {
     font-size: 1.1rem;
-    /* Maintain hover effect */
+
     color: #851abf;
-    /* Keep color consistent or darken slightly */
+
     background-color: #cba6f6;
-    /* Slightly darker background on hover for active link */
+
 }
 
 .container {
     max-width: 1200px;
-    /* Use the exact max-width from your homepage */
+
     margin: 0 auto;
-    /* Remove or adjust any conflicting width: 100%; or padding properties */
+
 }
 
 .header-bg::before {
@@ -154,7 +154,7 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.2);
-    /* 80% opacity for the image (100%-80%=20% black overlay) */
+
     z-index: 1;
     pointer-events: none;
 }
@@ -181,15 +181,15 @@ body {
 
 .header-content h1 {
     margin-bottom: 10px;
-    /* Increase or decrease this value as needed */
+
 }
 
 .header-content h2 {
     margin-top: 0;
-    /* Usually not needed if h1 has margin-bottom */
+
 }
 
-/* Responsive header text sizes */
+
 @media (min-width: 640px) {
     .header-content h1 {
         font-size: 73px;
@@ -206,15 +206,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Center horizontally */
+
     gap: 24px;
-    /* Space between logo and text */
+
 }
 
 
 .LOGO-AboutUs {
     height: 271.24px;
-    /* Adjust as needed */
+
     width: auto;
     max-width: 400px;
 }
@@ -222,42 +222,42 @@ body {
 .safespace-text {
     color: #391053;
     font-size: 128px;
-    /* Adjust as needed */
+
     font-style: normal;
     font-weight: 900;
     margin-left: 12;
-    /* gap handles spacing */
+
     text-align: center;
 }
 
-/* Logo Section Styles */
+
 .logo-section {
     background-color: white;
     padding-top: 2rem;
-    /* py-8 */
+
     padding-bottom: 2rem;
-    /* py-8 */
+
     display: flex;
-    /* Flexbox for centering */
+
     justify-content: center;
-    /* Center horizontally */
+
 }
 
 .logo-section img {
     height: 4rem;
-    /* h-16 */
+
     max-width: 100%;
-    /* max-w-full */
+
     object-fit: contain;
-    /* object-contain */
+
 }
 
 @media (min-width: 640px) {
 
-    /* sm breakpoint */
+
     .logo-section img {
         height: 5rem;
-        /* sm:h-20 */
+
     }
 }
 
@@ -265,29 +265,29 @@ body {
     width: 100%;
     margin-left: 350px;
     text-align: center;
-    /* text-align: center; Removed this to allow specific text alignment within sections */
+
 }
 
-/* Header styling */
-.header-wrapper { /* New class for the div containing title and button */
+
+.header-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px; /* Equivalent to mb-6 */
-    padding-bottom: 16px; /* Equivalent to pb-4 */
-    border-bottom: 1px solid #e5e7eb; /* Equivalent to border-gray-200 */
-    max-width: 800px; /* Match content width for alignment */
-    margin-left: 400px; /* Center the wrapper */
-    margin-right: auto; /* Center the wrapper */
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+    max-width: 800px;
+    margin-left: 400px;
+    margin-right: auto;
 }
 
 .header-title {
     margin-top: 0;
     font-size: 2.5rem;
     font-weight: 800;
-    color: #391053; /* Dark purple */
+    color: #391053;
     text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.2);
-    text-align: left; /* Explicitly left-align the title */
+    text-align: left;
 }
 
 
@@ -296,13 +296,13 @@ body {
     color: #666;
     margin-top: 10px;
     margin-bottom: 40px;
-    max-width: 800px; /* Match content width */
-    margin-left: 400px; /* Center the wrapper */
-    margin-right: auto; /* Center the paragraph */
-    text-align: left; /* Ensure it's left-aligned */
+    max-width: 800px;
+    margin-left: 400px;
+    margin-right: auto;
+    text-align: left;
 }
 
-/* Section styling */
+
 section {
     margin-bottom: 40px;
 }
@@ -310,13 +310,13 @@ section {
 .section-heading {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #5A2675; /* Purple */
+    color: #5A2675;
     margin-bottom: 15px;
     text-align: left;
     margin-left: 400px;
 }
 
-/* Paragraph styling */
+
 p {
     font-size: 1rem;
     line-height: 1.6;
@@ -325,7 +325,7 @@ p {
     margin-left: 400px;
 }
 
-/* List styling */
+
 ul {
     list-style-type: disc;
     padding-left: 2.5rem;
@@ -341,18 +341,18 @@ li {
     margin-left: 400px;
 }
 
-/* Specific contact info styling */
+
 .contact-info p {
     margin-bottom: 5px;
 }
 
-/* Acceptance statement styling */
+
 .acceptance-statement {
     font-weight: 600;
     color: #000
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
     .header-title {
         font-size: 2rem;
@@ -362,42 +362,44 @@ li {
         font-size: 1.3rem;
     }
 
-    p, ul {
+    p,
+    ul {
         font-size: 0.95rem;
     }
 }
 
-/* This inline style is kept from your original code for the table animation */
+
 table {
     animation: transitionIn-Y-bottom 0.5s;
 }
 
-/* Define the animation if not already defined in external CSS */
+
 @keyframes transitionIn-Y-bottom {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Footer Styles */
+
 .container {
     width: 100%;
-    /* Ensures the container takes the full width available */
+
     max-width: none;
-    /* Removes any maximum width constraint that might be centering the content */
+
     margin-left: 0;
-    /* Eliminates left margin */
+
     margin-right: 0;
-    /* Eliminates right margin */
+
     padding-left: 0;
-    /* Eliminates left padding */
+
     padding-right: 0;
-    /* Eliminates right padding */
+
 }
 
 .footer {
@@ -430,13 +432,13 @@ table {
 
 .footer-branding h2 {
     font-size: 32px;
-    /* Example: Adjust font size to match logo better */
+
     font-weight: 1000;
-    /* Example */
+
     color: #ffffff;
-    /* Example: A color that goes well with purple */
+
     white-space: nowrap;
-    /* Prevent text from wrapping */
+
     text-shadow: 2px 2px 10px #3910534b;
 }
 

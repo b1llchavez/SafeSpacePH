@@ -1,4 +1,4 @@
-body{
+body {
     padding-top: 20px;
     background-image: url(../img/bg01.png);
     background-repeat: no-repeat;
@@ -7,11 +7,12 @@ body{
     height: 100%;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
-  }
-  
+}
+
 .full-height {
     background: rgba(93, 75, 75, 0.676);
     background-attachment: fixed;
@@ -19,12 +20,13 @@ html, body {
     height: 100vh;
 }
 
-table{
+table {
     width: 100%;
     padding-top: 10px;
-    
+
 }
-.heading-text{
+
+.heading-text {
     color: white;
     font-size: 42px;
     font-weight: 700;
@@ -34,7 +36,7 @@ table{
     margin-bottom: 0;
 }
 
-.sub-text2{
+.sub-text2 {
     color: rgba(255, 255, 255, 0.717);
     font-size: 17px;
     line-height: 27px;
@@ -45,50 +47,50 @@ table{
 }
 
 .nav-button {
-    display: block; /* Ensures padding and margin work correctly */
-    color: #770888; /* text-gray-700 */
-    font-weight: 500; /* font-medium */
-    padding-top: 0.5rem; /* py-2 */
-    padding-bottom: 0.5rem; /* py-2 */
-    padding-left: 1rem; /* px-4 */
-    padding-right: 1rem; /* px-4 */
-    border-radius: 0.5rem; /* rounded-lg */
-    text-decoration: none; /* non-style-link */
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size; /* transition */
-    transition-duration: 200ms; /* duration-200 */
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+    display: block;
+    color: #770888;
+    font-weight: 500;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover styles for both nav links */
+
 .nav-button:hover {
-    font-size: 1.1rem; /* hover:text-lg */
-    color: #851abf; /* hover:text-blue-600 */
+    font-size: 1.1rem;
+    color: #851abf;
 }
 
-/* Active link highlight styles */
+
 .nav-button.active-nav-link {
-    color: #851abf; /* Same as hover color, or a distinct active color */
-    background-color: #f0e4ff; /* A light background highlight */
-    /* You could also add a border or thicker underline */
-    /* border-bottom: 2px solid #851abf; */
-    /* font-weight: 700; /* Make it bolder */
+    color: #851abf;
+    background-color: #f0e4ff;
+
+
+
 }
 
-/* Optional: Adjust hover for active link */
-/* This ensures the active state is always dominant, even on hover */
+
+
 .nav-button.active-nav-link:hover {
-    font-size: 1.1rem; /* Maintain hover effect */
-    color: #851abf; /* Keep color consistent or darken slightly */
-    background-color: #cba6f6; /* Slightly darker background on hover for active link */
+    font-size: 1.1rem;
+    color: #851abf;
+    background-color: #cba6f6;
 }
 
-.register-btn{
+.register-btn {
     background-color: rgba(240, 248, 255, 0.589);
     color: #345cc4;
 }
 
 
-.safespaceph-logo{
+.safespaceph-logo {
     color: white;
     font-weight: bolder;
     font-size: 20px;
@@ -97,29 +99,29 @@ table{
 }
 
 .logo-container {
-            display: flex; /* Use flexbox for easy alignment */
-            align-items: center; /* Vertically center items */
-            padding-left: 20px; /* Add space from the left edge of the td */
-            box-sizing: border-box; /* Include padding in width calculation */
-        }
-
-.logo-img {
-            height: 60px; /* Increased height for larger logo */
-            width: auto; /* Maintain aspect ratio */
-            margin-right: 10px; /* Increased space between logo and text */
-            vertical-align: middle; /* Ensures alignment with text */
-        }
-
-.safespaceph-logo-sub {
-            /* Ensure the font class styles are defined in main.css or here */
-            font-size: 32px; /* Example: Adjust font size to match logo better */
-            font-weight: 1000; /* Example */
-            color: #391053; /* Example: A color that goes well with purple */
-            white-space: nowrap; /* Prevent text from wrapping */
-            text-shadow: 2px 2px 10px #3910534b;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
-.nav-item{
+.logo-img {
+    height: 60px;
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.safespaceph-logo-sub {
+
+    font-size: 32px;
+    font-weight: 1000;
+    color: #391053;
+    white-space: nowrap;
+    text-shadow: 2px 2px 10px #3910534b;
+}
+
+.nav-item {
     color: rgba(255, 255, 255, 0.671);
     text-align: center;
     font-size: 15px;
@@ -127,12 +129,12 @@ table{
     animation: transitionIn-Y-over 0.5s;
 }
 
-.nav-item:hover{
+.nav-item:hover {
     color: #f0f0f0;
 
 }
 
-.footer-hashen{
+.footer-hashen {
     position: absolute;
     bottom: 0;
     left: 45%;
@@ -140,140 +142,140 @@ table{
     animation: transitionIn-Y-over 0.5s;
 }
 
- /*Volunteer Lawyers Section Styles */
- .volunteers-section {
-     text-align: center;
-     width: 100%;
-     padding: 50px 20px;
-     background-color: #ffffff;
- }
 
- .section-title {
-     font-size: 3.5em;
-     /* Example: Adjust font size to match logo better */
-     font-weight: 1000;
-     /* Example */
-     color: #391053;
-     /* Example: A color that goes well with purple */
-     white-space: nowrap;
-     /* Prevent text from wrapping */
-     text-shadow: 2px 2px 10px #3910534b;
- }
+.volunteers-section {
+    text-align: center;
+    width: 100%;
+    padding: 50px 20px;
+    background-color: #ffffff;
+}
 
- .section-subtitle {
-     font-size: 1.5em;
-     color: #666;
-     margin-bottom: 40px;
- }
+.section-title {
+    font-size: 3.5em;
 
- .volunteer-cards-container {
-     display: flex;
-     justify-content: center;
-     /* Center cards initially */
-     gap: 20px;
-     /* Space between cards */
-     padding-bottom: 20px;
-     /* Add padding for scrollbar if it appears */
-     overflow-x: auto;
-     /* Enable horizontal scrolling */
-     -webkit-overflow-scrolling: touch;
-     /* Smooth scrolling on iOS */
-     scrollbar-width: thin;
-     /* Firefox */
-     scrollbar-color: #888 #f1f1f1;
-     /* Firefox */
- }
+    font-weight: 1000;
 
- /* Custom scrollbar for Webkit browsers (Chrome, Safari) */
- .volunteer-cards-container::-webkit-scrollbar {
-     height: 8px;
- }
+    color: #391053;
 
- .volunteer-cards-container::-webkit-scrollbar-track {
-     background: #f1f1f1;
-     border-radius: 10px;
- }
+    white-space: nowrap;
 
- .volunteer-cards-container::-webkit-scrollbar-thumb {
-     background: #888;
-     border-radius: 10px;
- }
+    text-shadow: 2px 2px 10px #3910534b;
+}
 
- .volunteer-cards-container::-webkit-scrollbar-thumb:hover {
-     background: #555;
- }
+.section-subtitle {
+    font-size: 1.5em;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.volunteer-cards-container {
+    display: flex;
+    justify-content: center;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #888 #f1f1f1;
+
+}
 
 
- .volunteer-card {
-     background-color: #fbf5ff;
-     /* Light purple background */
-     border-radius: 15px;
-     padding: 20px;
-     width: 350px;
-     /* Fixed width for cards */
-     flex-shrink: 0;
-     /* Prevent cards from shrinking */
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     text-align: center;
-     min-height: 380px;
-     /* Ensure consistent height for cards */
- }
+.volunteer-cards-container::-webkit-scrollbar {
+    height: 8px;
+}
 
- .volunteer-card img {
-     width: 150px;
-     /* Adjust as needed */
-     height: 150px;
-     /* Adjust as needed */
-     border-radius: 50%;
-     object-fit: cover;
-     margin-bottom: 15px;
-     border: 4px solid #e0caff;
-     /* Light purple border */
- }
+.volunteer-cards-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
 
- .volunteer-card h3 {
-     font-size: 1.4em;
-     color: #5d00a0;
-     /* Dark purple for name */
-     margin-bottom: 5px;
- }
+.volunteer-cards-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
 
- .volunteer-card .specialty {
-     font-size: 0.95em;
-     color: #8a2be2;
-     /* Medium purple for specialty */
-     font-weight: bold;
-     margin-bottom: 10px;
- }
+.volunteer-cards-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
- .volunteer-card .description {
-     font-size: 0.9em;
-     color: #555;
-     line-height: 1.5;
- }
 
- .be-a-volunteer-button {
-     background-color: #8a2be2;
-     /* Purple button */
-     color: white;
-     padding: 12px 25px;
-     border: none;
-     border-radius: 25px;
-     font-size: 1.1em;
-     cursor: pointer;
-     margin-top: 40px;
-     transition: background-color 0.3s ease;
- }
+.volunteer-card {
+    background-color: #fbf5ff;
 
- .be-a-volunteer-button:hover {
-     background-color: #6a0dad;
-     /* Darker purple on hover */
- }
+    border-radius: 15px;
+    padding: 20px;
+    width: 350px;
 
- /* FAQ Section Styles */
+    flex-shrink: 0;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 380px;
+
+}
+
+.volunteer-card img {
+    width: 150px;
+
+    height: 150px;
+
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 4px solid #e0caff;
+
+}
+
+.volunteer-card h3 {
+    font-size: 1.4em;
+    color: #5d00a0;
+
+    margin-bottom: 5px;
+}
+
+.volunteer-card .specialty {
+    font-size: 0.95em;
+    color: #8a2be2;
+
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.volunteer-card .description {
+    font-size: 0.9em;
+    color: #555;
+    line-height: 1.5;
+}
+
+.be-a-volunteer-button {
+    background-color: #8a2be2;
+
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.be-a-volunteer-button:hover {
+    background-color: #6a0dad;
+
+}
+
+
 .faq-container {
     padding-top: 50px;
     padding-bottom: 100px;
@@ -283,25 +285,25 @@ table{
 }
 
 .faq-left {
-    flex: 2; /* Takes up 2/3 of the space */
+    flex: 2;
     padding: 40px;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between FAQ items */
+    gap: 20px;
 }
 
 .faq-right {
-    flex: 1; /* Takes up 1/3 of the space */
-    background-color: #fff; /* Match background for seamless look */
+    flex: 1;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px;
-    box-sizing: border-box; /* Include padding in the width */
+    box-sizing: border-box;
 }
 
 .faq-right h1 {
-    text-align: right; /* Aligns text to the right as in the image */
+    text-align: right;
     line-height: 1.1;
     font-size: 3.5em;
     font-weight: 1000;
@@ -310,13 +312,13 @@ table{
 }
 
 .faq-item {
-    border-bottom: 1px solid #eee; /* Separator line */
+    border-bottom: 1px solid #eee;
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
 
 .faq-item:last-child {
-    border-bottom: none; /* No border for the last item */
+    border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -338,15 +340,15 @@ table{
 }
 
 .faq-question:hover {
-    color: #5A2675; /* Example hover color */
+    color: #5A2675;
 }
 
 .toggle-icon {
     font-size: 2em;
     font-weight: normal;
     transition: transform 0.3s ease;
-    line-height: 1; /* Ensures icon doesn't add extra height */
-    margin-left: 10px; /* Space between text and icon */
+    line-height: 1;
+    margin-left: 10px;
 }
 
 .faq-answer {
@@ -360,26 +362,26 @@ table{
     font-size: 1.1em;
     color: #555;
     line-height: 1.6;
-    margin-top: 10px; /* Space between question and answer text */
+    margin-top: 10px;
     margin-bottom: 0;
-    padding-right: 20px; /* Keep some space from the right edge */
+    padding-right: 20px;
 }
 
-/* Styles for active/open FAQ item */
+
 .faq-item.active .faq-question {
-    color: #5A2675; /* Color when active */
+    color: #5A2675;
 }
 
 .faq-item.active .toggle-icon {
-    transform: rotate(180deg); /* Rotate icon when active */
+    transform: rotate(180deg);
 }
 
 .faq-item.active .faq-answer {
-    max-height: 200px; /* Adjust based on expected content height */
+    max-height: 200px;
     padding-top: 15px;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 992px) {
     .faq-container {
         flex-direction: column;
@@ -387,7 +389,7 @@ table{
 
     .faq-left,
     .faq-right {
-        flex: none; /* Remove flex grow properties */
+        flex: none;
         width: 100%;
     }
 
@@ -395,12 +397,12 @@ table{
         text-align: center;
         padding-top: 20px;
         padding-bottom: 20px;
-        background-color: #f0f2f5; /* Change background for distinction */
-        order: -1; /* Puts the "Frequently Asked Questions" title on top */
+        background-color: #f0f2f5;
+        order: -1;
     }
 
     .faq-right h1 {
-        text-align: center; /* Center the title */
+        text-align: center;
         font-size: 2.8em;
     }
 
@@ -450,176 +452,176 @@ table{
 }
 
 
-/* Footer Styles */
+
 .container {
-    width: 100%;          /* Ensures the container takes the full width available */
-    max-width: none;      /* Removes any maximum width constraint that might be centering the content */
-    margin-left: 0;       /* Eliminates left margin */
-    margin-right: 0;      /* Eliminates right margin */
-    padding-left: 0;      /* Eliminates left padding */
-    padding-right: 0;     /* Eliminates right padding */
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .footer {
-  background-color: #391053;
-  color: white;
-  padding: 30px;
+    background-color: #391053;
+    color: white;
+    padding: 30px;
 }
 
 
 
 .footer-top {
-  display: flex;
-  justify-content: center;   
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-  gap: 50px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    gap: 50px;
 }
 
 .footer-branding {
-  display: flex;
-  font-size: 28px;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    font-size: 28px;
+    align-items: center;
+    gap: 20px;
 }
 
 .footer-logo {
-  height: 100px;
+    height: 100px;
 }
 
 .footer-branding h2 {
-    font-size: 32px; /* Example: Adjust font size to match logo better */
-    font-weight: 1000; /* Example */
-    color: #ffffff; /* Example: A color that goes well with purple */
-    white-space: nowrap; /* Prevent text from wrapping */
+    font-size: 32px;
+    font-weight: 1000;
+    color: #ffffff;
+    white-space: nowrap;
     text-shadow: 2px 2px 10px #3910534b;
 }
 
 .footer-nav {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  flex: 1 1 0;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1 1 0;
+    justify-content: center;
 }
 
 .footer-nav a {
-  color: white;
-  text-decoration: none;
-  font-size: 23px;
-  margin: 0 42px;
-  font-weight: bold;
-  
+    color: white;
+    text-decoration: none;
+    font-size: 23px;
+    margin: 0 42px;
+    font-weight: bold;
+
 }
 
 .divider {
-  height: 53px;
-  width: 2.625px;
-  background-color: white;
+    height: 53px;
+    width: 2.625px;
+    background-color: white;
 }
 
 .footer-bottom {
-  text-align: center;
+    text-align: center;
 }
 
 .footer-bottom-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    font-size: 16px;
 }
 
 .footer-bottom-row p {
-  margin: 0;
-  white-space: nowrap;
+    margin: 0;
+    white-space: nowrap;
 }
 
 .footer-links {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .footer-links a {
-  color: white;
-  font-size: 16px;
-  text-decoration: none;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .register-section {
-     text-align: left;
-     width: 100%;
-     padding: 50px 20px;
-     background-color: #ffffff;
- }
+    text-align: left;
+    width: 100%;
+    padding: 50px 20px;
+    background-color: #ffffff;
+}
 
- .register-title {
-     font-size: 3.5em;
-     /* Example: Adjust font size to match logo better */
-     font-weight: 1000;
-     /* Example */
-     color: #391053;
-     /* Example: A color that goes well with purple */
-     white-space: nowrap;
-     /* Prevent text from wrapping */
-     text-shadow: 2px 2px 10px #3910534b;
-     text-align: center;
- }
+.register-title {
+    font-size: 3.5em;
 
- 
+    font-weight: 1000;
+
+    color: #391053;
+
+    white-space: nowrap;
+
+    text-shadow: 2px 2px 10px #3910534b;
+    text-align: center;
+}
+
+
 .flex-container {
-            display: flex;
-            flex-direction: column; /* flex-col */
-            gap: 2rem; /* gap-8 */
-        }
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
 
-  .left-column {
-            width: 100%; /* Default for mobile */
-        }
-        
+.left-column {
+    width: 100%;
+}
 
-        .left-column > div:not(:last-child) {
-            margin-bottom: 5px;
-        }
 
-        .step-container {
-            border-radius: 0.375rem; /* rounded-md */
-            padding: 5px; /* p-2 */
-            margin-bottom: -15px;
-        }
+.left-column>div:not(:last-child) {
+    margin-bottom: 5px;
+}
 
-        .step-heading {
-            font-size: 1.25rem; /* text-xl */
-            font-weight: 700; /* font-bold */
-            color: #391053; /* text-gray-800 */
-            margin-bottom: 3px; /* mb-1 */
-            text-align: left; /* Center the heading */
-            margin-left: 80px; /* Add left margin for alignment */
-            margin-top: 4px;
-        }
+.step-container {
+    border-radius: 0.375rem;
+    padding: 5px;
+    margin-bottom: -15px;
+}
 
-        .step-paragraph {
-            color: #000000; /* text-gray-700 */
-            margin-left: 90px; /* Add left margin for alignment */
-              text-align: left;
-        }
+.step-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #391053;
+    margin-bottom: 3px;
+    text-align: left;
+    margin-left: 80px;
+    margin-top: 4px;
+}
 
-        .right-column {
-            width: 100%; /* Default for mobile */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.step-paragraph {
+    color: #000000;
+    margin-left: 90px;
+    text-align: left;
+}
 
-        .video-placeholder {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+.right-column {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-placeholder {
+    background-color: rgba(0, 0, 0, 0.5);
     position: relative;
     display: flex;
     justify-content: center;
@@ -628,19 +630,19 @@ table{
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    border-radius: 0.5rem; /* rounded-lg */
-    overflow: hidden; /* Ensure content stays within rounded corners */
-    width: 100%; /* w-full */
-    height: 16rem; /* h-64 */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-    margin-right: 30px; /* Add space between video and text */
-    margin-top: 30px; /* Add top margin for spacing */
+    border-radius: 0.5rem;
+    overflow: hidden;
+    width: 100%;
+    height: 16rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-right: 30px;
+    margin-top: 30px;
 }
 
 .video-content {
-    width: 100%; /* Make video fill container */
-    height: 100%; /* Make video fill container */
-    object-fit: cover; /* Ensure video fills container and maintains aspect ratio */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .video-placeholder .play-button {
@@ -673,10 +675,10 @@ table{
 
     .left-column,
     .right-column {
-        width: 50%; /* For medium screens and up */
+        width: 50%;
     }
 
     .video-placeholder {
-        height: 24rem; /* For larger screens */
+        height: 24rem;
     }
 }

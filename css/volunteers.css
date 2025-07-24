@@ -1,4 +1,4 @@
-body{
+body {
     padding-top: 20px;
     background-image: url(../img/1.png);
     background-repeat: no-repeat;
@@ -7,11 +7,12 @@ body{
     height: 100%;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
-  }
-  
+}
+
 .full-height {
     background: rgba(93, 75, 75, 0.676);
     background-attachment: fixed;
@@ -20,12 +21,14 @@ html, body {
 
 
 }
-table{
+
+table {
     width: 100%;
     padding-top: 10px;
-    
+
 }
-.heading-text{
+
+.heading-text {
     color: white;
     font-size: 42px;
     font-weight: 700;
@@ -35,7 +38,7 @@ table{
     margin-bottom: 0;
 }
 
-.sub-text2{
+.sub-text2 {
     color: rgba(255, 255, 255, 0.717);
     font-size: 17px;
     line-height: 27px;
@@ -46,50 +49,50 @@ table{
 }
 
 .nav-button {
-    display: block; /* Ensures padding and margin work correctly */
-    color: #770888; /* text-gray-700 */
-    font-weight: 500; /* font-medium */
-    padding-top: 0.5rem; /* py-2 */
-    padding-bottom: 0.5rem; /* py-2 */
-    padding-left: 1rem; /* px-4 */
-    padding-right: 1rem; /* px-4 */
-    border-radius: 0.5rem; /* rounded-lg */
-    text-decoration: none; /* non-style-link */
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size; /* transition */
-    transition-duration: 200ms; /* duration-200 */
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+    display: block;
+    color: #770888;
+    font-weight: 500;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, font-size;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover styles for both nav links */
+
 .nav-button:hover {
-    font-size: 1.1rem; /* hover:text-lg */
-    color: #851abf; /* hover:text-blue-600 */
+    font-size: 1.1rem;
+    color: #851abf;
 }
 
-/* Active link highlight styles */
+
 .nav-button.active-nav-link {
-    color: #851abf; /* Same as hover color, or a distinct active color */
-    background-color: #f0e4ff; /* A light background highlight */
-    /* You could also add a border or thicker underline */
-    /* border-bottom: 2px solid #851abf; */
-    /* font-weight: 700; /* Make it bolder */
+    color: #851abf;
+    background-color: #f0e4ff;
+
+
+
 }
 
-/* Optional: Adjust hover for active link */
-/* This ensures the active state is always dominant, even on hover */
+
+
 .nav-button.active-nav-link:hover {
-    font-size: 1.1rem; /* Maintain hover effect */
-    color: #851abf; /* Keep color consistent or darken slightly */
-    background-color: #cba6f6; /* Slightly darker background on hover for active link */
+    font-size: 1.1rem;
+    color: #851abf;
+    background-color: #cba6f6;
 }
 
-.register-btn{
+.register-btn {
     background-color: rgba(240, 248, 255, 0.589);
     color: #345cc4;
 }
 
 
-.safespaceph-logo{
+.safespaceph-logo {
     color: white;
     font-weight: bolder;
     font-size: 20px;
@@ -98,29 +101,29 @@ table{
 }
 
 .logo-container {
-            display: flex; /* Use flexbox for easy alignment */
-            align-items: center; /* Vertically center items */
-            padding-left: 20px; /* Add space from the left edge of the td */
-            box-sizing: border-box; /* Include padding in width calculation */
-        }
-
-.logo-img {
-            height: 60px; /* Increased height for larger logo */
-            width: auto; /* Maintain aspect ratio */
-            margin-right: 10px; /* Increased space between logo and text */
-            vertical-align: middle; /* Ensures alignment with text */
-        }
-
-.safespaceph-logo-sub {
-            /* Ensure the font class styles are defined in main.css or here */
-            font-size: 32px; /* Example: Adjust font size to match logo better */
-            font-weight: 1000; /* Example */
-            color: #391053; /* Example: A color that goes well with purple */
-            white-space: nowrap; /* Prevent text from wrapping */
-            text-shadow: 2px 2px 10px #3910534b;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
-.nav-item{
+.logo-img {
+    height: 60px;
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.safespaceph-logo-sub {
+
+    font-size: 32px;
+    font-weight: 1000;
+    color: #391053;
+    white-space: nowrap;
+    text-shadow: 2px 2px 10px #3910534b;
+}
+
+.nav-item {
     color: rgba(255, 255, 255, 0.671);
     text-align: center;
     font-size: 15px;
@@ -128,12 +131,12 @@ table{
     animation: transitionIn-Y-over 0.5s;
 }
 
-.nav-item:hover{
+.nav-item:hover {
     color: #f0f0f0;
 
 }
 
-.footer-hashen{
+.footer-hashen {
     position: absolute;
     bottom: 0;
     left: 45%;
@@ -141,141 +144,141 @@ table{
     animation: transitionIn-Y-over 0.5s;
 }
 
- /*Volunteer Lawyers Section Styles */
- .volunteers-section {
-     text-align: center;
-     width: 100%;
-     padding: 50px 20px;
-     background-color: #ffffff;
- }
 
- .section-title {
-     font-size: 3.5em;
-     /* Example: Adjust font size to match logo better */
-     font-weight: 1000;
-     /* Example */
-     color: #391053;
-     /* Example: A color that goes well with purple */
-     white-space: nowrap;
-     /* Prevent text from wrapping */
-     text-shadow: 2px 2px 10px #3910534b;
- }
+.volunteers-section {
+    text-align: center;
+    width: 100%;
+    padding: 50px 20px;
+    background-color: #ffffff;
+}
 
- .section-subtitle {
-     font-size: 1.1em;
-     color: #666;
-     margin-bottom: 40px;
- }
+.section-title {
+    font-size: 3.5em;
 
- .volunteer-cards-container {
-     display: flex;
-     justify-content: center;
-     /* Center cards initially */
-     gap: 20px;
-     /* Space between cards */
-     padding-bottom: 20px;
-     /* Add padding for scrollbar if it appears */
-     overflow-x: auto;
-     /* Enable horizontal scrolling */
-     -webkit-overflow-scrolling: touch;
-     /* Smooth scrolling on iOS */
-     scrollbar-width: thin;
-     /* Firefox */
-     scrollbar-color: #888 #f1f1f1;
-     /* Firefox */
- }
+    font-weight: 1000;
 
- /* Custom scrollbar for Webkit browsers (Chrome, Safari) */
- .volunteer-cards-container::-webkit-scrollbar {
-     height: 8px;
- }
+    color: #391053;
 
- .volunteer-cards-container::-webkit-scrollbar-track {
-     background: #f1f1f1;
-     border-radius: 10px;
- }
+    white-space: nowrap;
 
- .volunteer-cards-container::-webkit-scrollbar-thumb {
-     background: #888;
-     border-radius: 10px;
- }
+    text-shadow: 2px 2px 10px #3910534b;
+}
 
- .volunteer-cards-container::-webkit-scrollbar-thumb:hover {
-     background: #555;
- }
+.section-subtitle {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.volunteer-cards-container {
+    display: flex;
+    justify-content: center;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #888 #f1f1f1;
+
+}
 
 
- .volunteer-card {
-     background-color: #fbf5ff;
-     /* Light purple background */
-     border-radius: 15px;
-     padding: 20px;
-     width: 350px;
-     /* Fixed width for cards */
-     flex-shrink: 0;
-     /* Prevent cards from shrinking */
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     text-align: center;
-     min-height: 380px;
-     /* Ensure consistent height for cards */
- }
+.volunteer-cards-container::-webkit-scrollbar {
+    height: 8px;
+}
 
- .volunteer-card img {
-     width: 150px;
-     /* Adjust as needed */
-     height: 150px;
-     /* Adjust as needed */
-     border-radius: 50%;
-     object-fit: cover;
-     margin-bottom: 15px;
-     border: 4px solid #e0caff;
-     /* Light purple border */
- }
+.volunteer-cards-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
 
- .volunteer-card h3 {
-     font-size: 1.4em;
-     color: #5d00a0;
-     /* Dark purple for name */
-     margin-bottom: 5px;
- }
+.volunteer-cards-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
 
- .volunteer-card .specialty {
-     font-size: 0.95em;
-     color: #8a2be2;
-     /* Medium purple for specialty */
-     font-weight: bold;
-     margin-bottom: 10px;
- }
+.volunteer-cards-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
- .volunteer-card .description {
-     font-size: 0.9em;
-     color: #555;
-     line-height: 1.5;
- }
 
- .be-a-volunteer-button {
-     background-color: #8a2be2;
-     /* Purple button */
-     color: white;
-     padding: 12px 25px;
-     border: none;
-     border-radius: 25px;
-     font-size: 1.1em;
-     cursor: pointer;
-     margin-top: 40px;
-     transition: background-color 0.3s ease;
- }
+.volunteer-card {
+    background-color: #fbf5ff;
 
- .be-a-volunteer-button:hover {
-     background-color: #6a0dad;
-     /* Darker purple on hover */
- }
+    border-radius: 15px;
+    padding: 20px;
+    width: 350px;
 
- 
- .why-volunteer-section {
+    flex-shrink: 0;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 380px;
+
+}
+
+.volunteer-card img {
+    width: 150px;
+
+    height: 150px;
+
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 4px solid #e0caff;
+
+}
+
+.volunteer-card h3 {
+    font-size: 1.4em;
+    color: #5d00a0;
+
+    margin-bottom: 5px;
+}
+
+.volunteer-card .specialty {
+    font-size: 0.95em;
+    color: #8a2be2;
+
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.volunteer-card .description {
+    font-size: 0.9em;
+    color: #555;
+    line-height: 1.5;
+}
+
+.be-a-volunteer-button {
+    background-color: #8a2be2;
+
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.be-a-volunteer-button:hover {
+    background-color: #6a0dad;
+
+}
+
+
+.why-volunteer-section {
     background-color: #fff;
     padding: 50px 20px;
     display: flex;
@@ -346,7 +349,7 @@ table{
     transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), box-shadow 0.3s;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .why-volunteer-content-wrapper {
         flex-direction: column;
@@ -391,7 +394,7 @@ table{
 
 
 .get-involved-section {
-    background-color: #fff; /* Changed from #f9f4ff to pure white */
+    background-color: #fff;
     padding: 80px 90px;
     text-align: center;
 }
@@ -411,7 +414,7 @@ table{
     border-radius: 10px;
     width: 300px;
     text-align: left;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
 }
 

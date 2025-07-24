@@ -1,6 +1,7 @@
-html, body {
-    overflow-x: hidden;   /* Hide horizontal scrollbar */
-    overflow-y: auto;     /* Allow vertical scrolling */
+html,
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .header-bg::before {
@@ -43,7 +44,7 @@ html, body {
     margin-top: 0;
 }
 
-/* Responsive header text sizes */
+
 @media (min-width: 640px) {
     .header-content h1 {
         font-size: 73px;
@@ -54,71 +55,71 @@ html, body {
     }
 }
 
-/* Adjusted Branding section */
+
 .branding {
-    margin: 40px auto; /* Increased vertical margin, centered horizontally */
+    margin: 40px auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px; /* Adjusted gap */
-    max-width: fit-content; /* Ensure it doesn't stretch unnecessarily */
+    gap: 20px;
+    max-width: fit-content;
     margin-top: 125px;
 }
 
 .LOGO-AboutUs {
-    height: 80px; /* Adjusted height for better balance with text */
+    height: 80px;
     width: auto;
-    max-width: 120px; /* Adjusted max-width */
+    max-width: 120px;
 }
 
 .safespace-text {
     color: #391053;
-    font-size: 48px; /* Adjusted font size for prominence */
+    font-size: 48px;
     font-style: normal;
     font-weight: 900;
     text-align: center;
-    white-space: nowrap; /* Prevents text from wrapping if not enough space */
+    white-space: nowrap;
 }
 
-/* WHO WE ARE Section Styles */
+
 .who-we-are-section {
-    padding: 0; /* Consistent vertical padding */
+    padding: 0;
     width: 100%;
-    max-width: 900px; /* Set max-width for the entire section */
-    margin: 0 auto; /* Center the section */
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .who-we-are-section h2 {
     color: #000000;
-    font-size: 38px; /* Slightly larger heading */
+    font-size: 38px;
     font-weight: 900;
     text-align: left;
     line-height: normal;
-    margin-bottom: 20px; /* Space below heading */
-    padding-left: 20px; /* Align with content padding */
+    margin-bottom: 20px;
+    padding-left: 20px;
 }
 
 .who-we-are-content {
     font-family: 'Inter', sans-serif;
-    padding: 0 20px; /* Consistent horizontal padding */
+    padding: 0 20px;
     color: #000000;
     font-size: 18px;
     line-height: 1.75;
 }
 
 .who-we-are-content p {
-    margin-bottom: 15px; /* Space between paragraphs */
+    margin-bottom: 15px;
 }
 
 .mission-vision-container {
-    margin-top: 40px; /* Increased margin from content above */
-    max-width: 900px; /* Keep consistent max-width */
+    margin-top: 40px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 30px; /* Increased gap between columns */
-    padding: 0 20px; /* Consistent horizontal padding */
+    gap: 30px;
+    padding: 0 20px;
 }
 
 @media (min-width: 768px) {
@@ -128,42 +129,42 @@ html, body {
 }
 
 .mission-vision-container div {
-    background-color: #e0d1f7; /* Light background for visibility */
-    padding: 30px; /* Increased padding within each card */
-    border-radius: 10px; /* Slightly rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    display: flex; /* Use flexbox for content alignment */
+    background-color: #e0d1f7;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align text to the top */
-    align-items: flex-start; /* Align text to the left */
-    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition: all 0.3s ease-in-out;
 }
 
 .mission-vision-container div:hover {
-    transform: translateY(-5px); /* Lift card slightly on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .mission-vision-container h3 {
-    font-size: 28px; /* Adjusted font size for headings */
+    font-size: 28px;
     font-weight: 900;
-    color: #391053; /* Darker color for headings */
-    margin-bottom: 15px; /* Space below heading */
+    color: #391053;
+    margin-bottom: 15px;
 }
 
 .mission-vision-container p {
-    font-size: 17px; /* Adjusted font size for body text */
+    font-size: 17px;
     line-height: 1.6;
-    color: #333333; /* Darker color for body text */
+    color: #333333;
 }
 
-/* WHAT WE DO Section Styles */
+
 .what-we-do-section {
     width: 100%;
     background-color: #ffffff;
-    padding: 40px 0; /* Consistent vertical padding */
-    max-width: 900px; /* Set max-width for the entire section */
-    margin: 0 auto; /* Center the section */
+    padding: 40px 0;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .what-we-do-inner {
@@ -173,12 +174,12 @@ html, body {
 }
 
 .what-we-do-cards-container {
-    max-width: 1000px; /* Consistent max-width */
-    margin: 0 auto; /* Center the container */
+    max-width: 1000px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px; /* Consistent gap */
-    padding: 0 20px; /* Consistent horizontal padding */
+    gap: 20px;
+    padding: 0 20px;
 }
 
 @media (min-width: 640px) {
@@ -189,42 +190,42 @@ html, body {
 
 @media (min-width: 1024px) {
     .what-we-do-cards-container {
-        grid-template-columns: repeat(2, 1fr); /* Still 2 columns on larger screens */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 .what-we-do-card {
     background-color: #C9A8F1;
-    padding: 30px; /* Increased padding within each card */
+    padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
-    display: flex; /* Use flexbox for content alignment */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align text to the top */
-    align-items: flex-start; /* Align text to the left */
-    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition: all 0.3s ease-in-out;
 }
 
 .what-we-do-card:hover {
-    transform: translateY(-5px); /* Lift card slightly on hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); /* Enhance shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
 .what-we-do-card h3 {
-    font-size: 24px; /* Adjusted font size for headings */
+    font-size: 24px;
     font-weight: 700;
-    color: #2e0e55; /* Darker color for headings */
-    margin-bottom: 10px; /* Space below heading */
+    color: #2e0e55;
+    margin-bottom: 10px;
 }
 
 .what-we-do-card p {
-    color: #333333; /* Darker color for body text */
+    color: #333333;
     font-size: 16px;
     line-height: 1.6;
 }
 
 .section-header {
-    width: 100vw; /* Force full screen width */
+    width: 100vw;
     position: relative;
     left: 50%;
     right: 50%;
@@ -241,8 +242,8 @@ html, body {
     font-size: 38px;
     font-weight: 900;
     line-height: normal;
-    max-width: 900px;       /* Match the content width of the sections */
-    margin: 0 auto;         /* Center the heading inside the full-width bar */
-    padding: 0 20px;        /* Align with horizontal padding of content */
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
     text-align: left;
 }

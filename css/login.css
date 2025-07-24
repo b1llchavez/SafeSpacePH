@@ -1,12 +1,11 @@
-
-body{
+body {
     margin: 7%;
     background-color: #F6F7FA;
 }
 
 
 
-.container{
+.container {
     width: 45%;
     background-color: white;
     border: 1px solid rgb(235, 235, 235);
@@ -17,11 +16,13 @@ body{
     animation: transitionIn-Y-over 0.5s;
 
 }
-td{
+
+td {
     text-align: center;
 
 }
-.header-text{
+
+.header-text {
     font-weight: 600;
     font-size: 30px;
     letter-spacing: 1px;
@@ -29,33 +30,36 @@ td{
 
 }
 
-.sub-text{
+.sub-text {
     font-size: 15px;
     color: rgb(138, 138, 138);
 }
 
-.form-label{
+.form-label {
     color: rgb(44, 44, 44);
     text-align: left;
     font-size: 14px;
 }
-.label-td{
+
+.label-td {
     text-align: left;
     padding-top: 10px;
 }
 
-.hover-link1{
+.hover-link1 {
     font-weight: bold;
 }
 
 
-.hover-link1:hover{
+.hover-link1:hover {
     opacity: 0.8;
     transition: 0.5s;
 
 
-}.login-btn{
-    /*margin-top: 15px;*/
+}
+
+.login-btn {
+
     margin-bottom: 15px;
     width: 100%;
 }
