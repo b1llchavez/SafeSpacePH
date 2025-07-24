@@ -1,5 +1,4 @@
 <?php
-    // START OF PHP LOGIC
     session_start();
 
     if (isset($_SESSION["user"])) {
@@ -14,13 +13,11 @@
         exit();
     }
 
-    // Import database connection
     include("../connection.php");
     $userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
     $userfetch = $userrow->fetch_assoc();
     $userid = $userfetch["lawyerid"];
     $username = $userfetch["lawyername"];
-    // END OF PHP LOGIC
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,13 +64,13 @@
             background: #fff;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
-            padding: 25px 40px; /* Adjusted padding */
+            padding: 25px 40px;
             max-width: 650px;
             width: 95%;
             position: relative;
             animation: fadeIn 0.3s;
             max-height: 90vh;
-            overflow-y: auto; /* Ensures scrollbar appears only when needed */
+            overflow-y: auto; 
         }
         .modal-header {
             text-align: center;
@@ -90,7 +87,7 @@
             background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
             border: none;
             border-radius: 2px;
-            margin: 15px 0 20px 0; /* Adjusted margin */
+            margin: 15px 0 20px 0;
         }
         .modal-body {
             text-align: left;
@@ -166,7 +163,7 @@
         @media (min-width: 576px) {
             .form-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 16px 25px; /* Adjusted gap */
+                gap: 16px 25px; 
             }
             .form-group.full-width {
                 grid-column: 1 / -1;
@@ -180,7 +177,7 @@
             font-size: 15px;
             font-weight: 600;
             color: #452a5a;
-            margin-bottom: 6px; /* Adjusted margin */
+            margin-bottom: 6px;
             text-align: left;
         }
         .input-text, .box {
@@ -193,22 +190,21 @@
             background-color: #fdfdff;
         }
         .box {
-            height: 43px; /* Adjust height for select element to prevent text cutoff */
+            height: 43px;
         }
         .input-text:focus, .box:focus {
             outline: none;
             border-color: #5A2675;
             box-shadow: 0 0 0 3px rgba(90, 38, 117, 0.15);
         }
-        /* Style for readonly inputs */
         .input-text[readonly] {
-            background-color: #f3f4f6; /* Light gray background */
-            color: #555; /* Darker text for readability */
-            cursor: not-allowed; /* Indicate non-interactive field */
+            background-color: #f3f4f6;
+            color: #555;
+            cursor: not-allowed; 
             border-color: #e5e7eb;
         }
         .input-text[readonly]:focus {
-            box-shadow: none; /* Remove focus ring on readonly fields */
+            box-shadow: none; 
             border-color: #e5e7eb;
         }
         .close-btn { 

@@ -1,11 +1,8 @@
 <?php
-// Ensure all files are included correctly at the top.
 session_start();
 
-// Import database connection and email functions
 include("../connection.php");
 
-// Authentication: Check if the user is logged in and is a 'lawyer'
 if(isset($_SESSION["user"])){
     if(($_SESSION["user"])=="" or $_SESSION['usertype']!='l'){
         header("location: ../login.php");
@@ -18,7 +15,6 @@ if(isset($_SESSION["user"])){
     exit();
 }
 
-// Get Lawyer Info from session
 $lawyerid = $_SESSION['lawyerid'];
 $lawyername = $_SESSION['lawyername'];
 
@@ -53,7 +49,7 @@ $today = date('Y-m-d');
             font-size: 12px;
         }
          .modal-body .status-badge {
-            color: #fff !important; /* Using !important to ensure it overrides any other styles */
+            color: #fff !important;
         }
         .status-pending { background-color: #ffc107; }
         .status-accepted { background-color: #28a745; }
@@ -61,7 +57,6 @@ $today = date('Y-m-d');
         .status-completed { background-color: #007bff; }
         .status-cancelled { background-color: #6c757d; }
 
-        /* Consistent Modal Styling */
         .overlay {
             position: fixed;
             top: 0;
@@ -85,13 +80,13 @@ $today = date('Y-m-d');
             background: #fff;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
-            padding: 30px 50px; /* Adjusted vertical padding */
+            padding: 30px 50px;
             max-width: 650px;
             width: 95%;
             position: relative;
             animation: fadeIn 0.3s;
-            max-height: 90vh; /* Responsive height */
-            overflow-y: auto; /* Scrollbar appears only when needed */
+            max-height: 90vh; 
+            overflow-y: auto;
         }
         .modal-header {
             text-align: center;
@@ -114,7 +109,7 @@ $today = date('Y-m-d');
             display: flex;
             justify-content: flex-end;
             gap: 12px;
-            margin-top: 25px; /* Adjusted top margin */
+            margin-top: 25px;
         }
         .modal-btn {
             border: none;
@@ -133,18 +128,16 @@ $today = date('Y-m-d');
             background: #e2d8fa;
         }
         
-        /* Aesthetic Improvements */
    
         
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-        /* Styles for details view */
         .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px 30px; /* Adjusted row gap */
+            gap: 12px 30px; 
             text-align: left;
         }
         .detail-item {
@@ -330,7 +323,6 @@ $today = date('Y-m-d');
     </div>
 
     <?php
-    // View details modal logic
     if(isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])){
         $id = $_GET["id"];
         $sql_view_details = "SELECT 
@@ -384,10 +376,8 @@ $today = date('Y-m-d');
     <script>
         const viewModal = document.getElementById('viewModal');
 
-        // Close modal if clicked outside of the content area
         window.onclick = function(event) {
             if (event.target == viewModal) {
-                // Redirect to close the view modal by removing GET params
                 window.location.href = 'lawyer_appointments.php';
             }
         }

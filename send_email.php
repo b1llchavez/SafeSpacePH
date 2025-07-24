@@ -1255,7 +1255,6 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <title>SafeSpace PH: Account Deletion Request</title>
             <style>
-                 /* Styles remain the same as the previously provided email template */
                 body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }

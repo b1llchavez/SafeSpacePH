@@ -16,7 +16,6 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* This ensures the main content area will scroll if its content is taller than the screen. */
         .dash-body{
             height: 100vh;
             overflow-y: auto;
@@ -29,18 +28,18 @@
             color: #fff;
         }
         .status-pending {
-            background-color: #ffc107; /* Orange */
+            background-color: #ffc107; 
         }
         .status-accepted {
-            background-color: #28a745; /* Green */
+            background-color: #28a745; 
         }
         .status-rejected {
-            background-color: #dc3545; /* Red */
+            background-color: #dc3545; 
         }
         .status-completed {
-            background-color: #007bff; /* Blue */
+            background-color: #007bff; 
         }
-        /* Modal Styles */
+      
         .modal {
             display: none; 
             position: fixed; 
@@ -63,7 +62,6 @@
             animation: transitionIn-Y-bottom 0.5s;
             position: relative;
         }
-        /* Replace the existing close-btn style block with this: */
 .close-btn {
     position: absolute;
     top: 15px;
@@ -90,7 +88,6 @@
     background-color: #f0e9f7;
     color: #5A2675;
 }
-        /* Styles for the rejection reason modal */
         .rejection-reason {
             margin-bottom: 10px;
             display: flex;
@@ -108,7 +105,6 @@
     <?php
     session_start();
 
-    // Authentication: Check if the user is logged in and is a 'lawyer'
     if(isset($_SESSION["user"])){
         if(($_SESSION["user"])=="" or $_SESSION['usertype']!='l'){
             header("location: ../login.php");
@@ -119,71 +115,57 @@
         exit();
     }
     
-    // Import database connection
     include("../connection.php");
-    // Include the email functions file
     require_once('../send_email.php');
 
-    // Handle form submission for rejection from modal
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'reject') {
         if (isset($_POST['appoid']) && !empty($_POST['appoid']) && isset($_POST['rejection_reason'])) {
             $appoid = $_POST['appoid'];
             $reason = $_POST['rejection_reason'];
             if ($reason === 'Other') {
-                // Ensure the 'other' text is provided if 'Other' is selected
                 if (isset($_POST['other_reason_text']) && !empty(trim($_POST['other_reason_text']))) {
                     $reason = 'Other: ' . htmlspecialchars(trim($_POST['other_reason_text']));
                 } else {
-                    // This should be caught by frontend JS, but as a fallback:
                     header("Location: manage-appointments.php?action=reject_error&reason=other_empty");
                     exit();
                 }
             }
             $description = isset($_POST['rejection_description']) ? htmlspecialchars(trim($_POST['rejection_description'])) : '';
     
-            // Here you could also notify the user and log the reason/description.
-            // For now, we just update the status as per the original logic.
+        
     
             $stmt = $database->prepare("UPDATE appointment SET status = 'rejected' WHERE appoid = ?");
             $stmt->bind_param("i", $appoid);
             $stmt->execute();
             $stmt->close();
             
-            // Redirect to clean the URL
             header("Location: manage-appointments.php?action=reject_success");
             exit();
         } else {
-            // Handle error - missing data
              header("Location: manage-appointments.php?action=reject_error&reason=missing_data");
              exit();
         }
     }
 
-    // Handle appointment acceptance or rejection actions
     if (isset($_GET['action']) && isset($_GET['appoid'])) {
         $appoid = $_GET['appoid'];
-        $lawyerid = $_SESSION['lawyerid']; // Get lawyer ID from session
+        $lawyerid = $_SESSION['lawyerid']; 
 
-        // Handle the 'accept' action
         if ($_GET['action'] == 'accept' && isset($_GET['scheduleid'])) {
             $scheduleid = $_GET['scheduleid'];
 
-            // Use a database transaction to ensure data integrity
             $database->begin_transaction();
             try {
-                // Step 1: Update the appointment status to 'accepted'
                 $stmt1 = $database->prepare("UPDATE appointment SET status = 'accepted' WHERE appoid = ?");
                 $stmt1->bind_param("i", $appoid);
                 $stmt1->execute();
                 $stmt1->close();
 
-                // Step 2: Assign the current lawyer to the schedule
                 $stmt2 = $database->prepare("UPDATE schedule SET lawyerid = ? WHERE scheduleid = ?");
                 $stmt2->bind_param("ii", $lawyerid, $scheduleid);
                 $stmt2->execute();
                 $stmt2->close();
 
-                // Step 3: Fetch all necessary details for the email notification
                 $sql_details = "SELECT 
                                     c.cname, c.cemail,
                                     s.title, s.scheduledate, s.scheduletime,
@@ -203,7 +185,6 @@
                 $stmt_details->close();
 
                 if ($details) {
-                    // Step 4: Prepare the details array and send the confirmation email
                     $appointmentDetails = [
                         'lawyerName' => $details['lawyername'],
                         'appointmentDate' => date("F j, Y", strtotime($details['scheduledate'])),
@@ -214,34 +195,28 @@
                         'caseDescription' => $details['case_description']
                     ];
 
-                    // Call the function to send the email to the user
                     sendAppointmentAcceptedNoticeToUser($details['cemail'], $details['cname'], $appointmentDetails);
                 }
 
-                // If all steps are successful, commit the transaction
                 $database->commit();
 
-                // Redirect to clean the URL and show a success message
                 header("Location: manage-appointments.php?action=accept_success");
                 exit();
 
             } catch (Exception $e) {
-                // If any step fails (including email sending), roll back all database changes
                 $database->rollback();
                 error_log("Failed to accept appointment: " . $e->getMessage());
                 header("Location: manage-appointments.php?action=accept_error");
                 exit();
             }
         } 
-        // Note: The GET-based 'reject' action is now handled by the POST form from the modal.
-        // The old code block for it is no longer needed here.
+       
     }
 
-    $lawyerid = $_SESSION['lawyerid']; // Lawyer ID from session
-    $lawyername = $_SESSION['lawyername']; // Lawyer name from session
-    $lawyeremail = $_SESSION['user']; // Lawyer email from session
+    $lawyerid = $_SESSION['lawyerid']; 
+    $lawyername = $_SESSION['lawyername']; 
+    $lawyeremail = $_SESSION['user']; 
     
-    // Fetch lawyer's current meeting link details to use as the 'old link' if an update occurs
     $link_query = $database->prepare("SELECT meeting_link, meeting_platform FROM lawyer WHERE lawyerid = ?");
     $link_query->bind_param("i", $lawyerid);
     $link_query->execute();
@@ -251,16 +226,13 @@
     $meeting_platform = $lawyer_link_data['meeting_platform'] ?? '';
     $link_query->close();
 
-    // Handle Meeting Link Form Submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_link'])) {
         $new_link = $_POST['meeting_link'];
         $new_platform = $_POST['meeting_platform'];
-        $old_meeting_link = $meeting_link; // Store the old link before updating
+        $old_meeting_link = $meeting_link; 
 
-        // Use a transaction to ensure that the link is only updated if all notifications can be sent.
         $database->begin_transaction();
         try {
-            // Step 1: Fetch all clients with upcoming, accepted appointments with this lawyer
             $sql_clients = $database->prepare("
                 SELECT
                     c.cname, c.cemail,
@@ -282,13 +254,11 @@
             }
             $sql_clients->close();
 
-            // Step 2: Update the lawyer's meeting link in the database
             $stmt_update = $database->prepare("UPDATE lawyer SET meeting_link = ?, meeting_platform = ? WHERE lawyerid = ?");
             $stmt_update->bind_param("ssi", $new_link, $new_platform, $lawyerid);
             $stmt_update->execute();
             $stmt_update->close();
 
-            // Step 3: Send email notifications to the fetched clients
             foreach ($clients_to_notify as $client) {
                 $appointmentDetails = [
                     'lawyerName'      => $lawyername,
@@ -302,26 +272,22 @@
                 sendMeetingLinkUpdateNoticeToUser($client['cemail'], $client['cname'], $appointmentDetails);
             }
 
-            // If all operations succeed, commit the transaction
             $database->commit();
 
-            // Redirect to avoid form resubmission and show success message
             header("Location: manage-appointments.php?action=link_updated");
             exit();
 
         } catch (Exception $e) {
-            // If any step fails (DB update or email sending), roll back the transaction
             $database->rollback();
             error_log("Failed to update meeting link and notify clients: " . $e->getMessage());
 
-            // Redirect with an error message
             header("Location: manage-appointments.php?action=link_update_error");
             exit();
         }
     }
 
 
-    date_default_timezone_set('Asia/Manila'); // Set timezone to Manila
+    date_default_timezone_set('Asia/Manila'); 
     $today = date('Y-m-d');
     ?>
     <div class="container">
@@ -416,7 +382,6 @@
                     <td colspan="4">
                         <center>
                         <?php
-                            // Display feedback messages based on the action performed
                             if(isset($_GET['action'])){
                                 if($_GET['action']=='accept_success'){
                                     echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;'>Appointment accepted successfully and the user has been notified via email.</div>";
@@ -464,7 +429,6 @@
                         <tbody>
                         
                             <?php
-                                // Fetch new session requests (lawyerid is NULL and status is 'pending')
                                 $sql_new_requests = "SELECT 
                                     appointment.appoid,
                                     appointment.apponum,
@@ -548,7 +512,6 @@
         </div>
     </div>
 
-    <!-- View Meeting Link Modal -->
     <div id="viewLinkModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -570,7 +533,6 @@
         </div>
     </div>
 
-    <!-- Edit/Add Meeting Link Modal -->
     <div id="meetingLinkModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -602,7 +564,6 @@
         </div>
     </div>
 
-    <!-- Rejection Confirmation Modal -->
     <div id="rejectionModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -647,20 +608,16 @@
     </div>
 
 <script>
-    // Get the modals
     var meetingModal = document.getElementById("meetingLinkModal");
     var viewModal = document.getElementById("viewLinkModal");
     var rejectionModal = document.getElementById("rejectionModal");
 
-    // Get the buttons that open the modals
     var openMeetingBtn = document.getElementById("meetingLinkBtn");
     var showLinkBtn = document.getElementById("showMyLinkBtn");
     var rejectBtns = document.getElementsByClassName("reject-btn");
 
-    // Get all <span> elements that close the modals
     var closeBtns = document.getElementsByClassName("close-btn");
 
-    // When the user clicks the button, open the corresponding modal
     openMeetingBtn.onclick = function() {
         meetingModal.style.display = "block";
     }
@@ -668,37 +625,30 @@
         viewModal.style.display = "block";
     }
 
-    // When a user clicks a reject button, open the rejection modal
     for (let i = 0; i < rejectBtns.length; i++) {
         rejectBtns[i].onclick = function(event) {
-            event.preventDefault(); // Stop the link from navigating
+            event.preventDefault(); 
             
-            // Get appoid from the href attribute
             const href = this.getAttribute('href');
             const urlParams = new URLSearchParams(href.substring(href.indexOf('?')));
             const appoId = urlParams.get('appoid');
 
-            // Set the appoid in the hidden form field
             document.getElementById('rejectAppoId').value = appoId;
             
-            // Show the modal
             rejectionModal.style.display = "block";
         }
     }
 
-    // When the user clicks on <span> (x) in any modal, close it
     for (let i = 0; i < closeBtns.length; i++) {
         closeBtns[i].onclick = function() {
             this.closest('.modal').style.display = "none";
         }
     }
 
-    // When the user clicks the cancel button in the rejection modal, close it
     document.getElementById('cancelRejectionBtn').onclick = function() {
         rejectionModal.style.display = "none";
     }
 
-    // When the user clicks anywhere outside of a modal, close it
     window.onclick = function(event) {
         if (event.target == meetingModal) {
             meetingModal.style.display = "none";
@@ -711,7 +661,6 @@
         }
     }
 
-    // --- START: Rejection Modal Form Logic ---
     const rejectionForm = document.getElementById('rejectionForm');
     const reasonRadios = rejectionForm.querySelectorAll('input[name="rejection_reason"]');
     const otherReasonText = document.getElementById('other_reason_text');
@@ -732,26 +681,22 @@
     rejectionForm.addEventListener('submit', function(event) {
         const otherRadio = document.getElementById('reason_other');
         const selectedReason = rejectionForm.querySelector('input[name="rejection_reason"]:checked');
-        rejectionError.style.display = 'none'; // Hide previous errors
+        rejectionError.style.display = 'none'; 
 
-        // Check if any reason is selected
         if (!selectedReason) {
             rejectionError.textContent = 'Please select a reason for rejection.';
             rejectionError.style.display = 'block';
-            event.preventDefault(); // Stop form submission
+            event.preventDefault(); 
             return;
         }
 
-        // Check if 'Other' is selected but the text field is empty
         if (otherRadio.checked && otherReasonText.value.trim() === '') {
             rejectionError.textContent = 'Please specify the reason for selecting "Other".';
             rejectionError.style.display = 'block';
-            event.preventDefault(); // Stop form submission
+            event.preventDefault();
         }
     });
 
-    // Use a MutationObserver to reset the form whenever the modal is hidden.
-    // This ensures the form is clean every time it's opened.
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.attributeName === "style" && rejectionModal.style.display === 'none') {
@@ -763,10 +708,8 @@
         });
     });
     observer.observe(rejectionModal, { attributes: true });
-    // --- END: Rejection Modal Form Logic ---
 
 
-    // --- START: Added functionality for the meeting link form ---
     const platformSelect = document.getElementById('meeting_platform');
     const linkInput = document.getElementById('meeting_link');
     const officeAddress = 'SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015';
@@ -788,7 +731,6 @@
     if (platformSelect.value === 'SafeSpace PH Office') {
         linkInput.readOnly = true;
     }
-    // --- END: Added functionality ---
 </script>
 
 </body>
