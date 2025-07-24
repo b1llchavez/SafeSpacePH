@@ -132,71 +132,74 @@
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
+                <!-- ======================== HEADER ROW UPDATED ======================== -->
                 <tr>
-                    <td>
-                        <p style="margin-left: 45px; font-size: 30px; font-size: 23px;font-weight: 600">My Appointments</p>
+                    <td width="50%">
+                        <p style="margin-left: 45px; font-size: 23px;font-weight: 600">My Appointments</p>
                     </td>
-                    <td width="15%">
-                        <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                            Today's Date
-                        </p>
-                        <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php 
-                            date_default_timezone_set('Asia/Manila'); // Changed timezone to Asia/Manila (Quezon City)
-                            $today = date('Y-m-d');
-                            echo $today;
-
-                            // Fetch total appointments for the logged-in client
-                            $list110 = $database->query("select  * from  appointment where cid = '$clientid';");
-                            ?>
-                        </p>
-                    </td>
-                    <td width="10%">
+                    <td colspan="2" style="text-align: right; padding-right: 45px; vertical-align: middle;">
+                        <div style="display: inline-flex; align-items: center; gap: 15px;">
+                            <div>
+                                <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
+                                    Today's Date
+                                </p>
+                                <p class="heading-sub12" style="padding: 0;margin: 0;text-align: right;">
+                                    <?php 
+                                    date_default_timezone_set('Asia/Manila');
+                                    $today = date('Y-m-d');
+                                    echo $today;
+                                    // Fetch total appointments for the logged-in client
+                                    $list110 = $database->query("select * from appointment where cid = '$clientid';");
+                                    ?>
+                                </p>
+                            </div>
                         <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
+                        </div>
                     </td>
                 </tr>
+                <!-- ======================== END OF UPDATED HEADER ROW ======================== -->
                
+                <!-- ======================== FILTER SECTION ======================== -->
                 <tr>
-                    <td colspan="4" style="padding-top:10px;width: 100%;" >
+                    <td width="50%" style="padding-top:10px;">
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All My Appointments (<?php echo $list110->num_rows; ?>)</p>
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="padding-top:0px;width: 100%;" >
-                        <center>
-                            <table class="filter-container" border="0" >
-                                <tr>
-                                    <td width="10%"></td> 
-                                    <td width="5%" style="text-align: center;">Date:</td>
-                                    <td width="30%">
-                                        <form action="" method="post">
-                                            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
-                                        </td>
-                                    <td width="5%" style="text-align: center;">Lawyer:</td>
-                                    <td width="30%">
-                                        <select name="lawyerid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
-                                            <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>
-                                            <option value="NULL">Unassigned</option> <?php
-                                                // Fetch all lawyers for filtering, even if client didn't choose initially
-                                                $list11 = $database->query("select * from lawyer order by lawyername asc;"); 
-                                                for ($y=0;$y<$list11->num_rows;$y++){
-                                                    $row00=$list11->fetch_assoc();
-                                                    $sn=$row00["lawyername"];
-                                                    $id00=$row00["lawyerid"];
-                                                    echo "<option value=".$id00.">$sn</option><br/>";
-                                                };
-                                            ?>
-                                        </select>
-                                    </td>
-                                    <td width="12%">
-                                        <input type="submit"  name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
+                    <td colspan="2" style="padding-top:10px; text-align: right; padding-right: 45px;">
+                        <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
+                            
+                            <!-- Date Filter -->
+                            <input type="date" name="sheduledate" id="date" class="input-text" style="width: auto; padding: 8px 10px;" value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
+                            
+                            <!-- Lawyer Filter -->
+                            <select name="lawyerid" id="lawyerid" class="input-text" style="width: auto; padding: 8px 10px; height: 37px; margin: 0;">
+                                <option value="" disabled <?php if (!isset($_POST['lawyerid']) || $_POST['lawyerid'] == '') echo 'selected'; ?>>Choose a Lawyer</option>
+                                <option value="NULL" <?php if (isset($_POST['lawyerid']) && $_POST['lawyerid'] == 'NULL') echo 'selected'; ?>>Unassigned</option>
+                                <?php
+                                    $list11 = $database->query("select * from lawyer order by lawyername asc;");
+                                    while ($row00 = $list11->fetch_assoc()) {
+                                        $sn = $row00["lawyername"];
+                                        $id00 = $row00["lawyerid"];
+                                        $selected = (isset($_POST['lawyerid']) && $_POST['lawyerid'] == $id00) ? 'selected' : '';
+                                        echo "<option value='".$id00."' ".$selected.">".htmlspecialchars($sn)."</option>";
+                                    }
+                                ?>
+                            </select>
+
+                            <!-- Filter Button -->
+                            <button type="submit" name="filter" class="btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                                Filter
+                            </button>
+
+                            <!-- Reset Button -->
+                            <a href="client-appointment.php" class="non-style-link btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                Reset
+                            </a>
+                        </form>
                     </td>
                 </tr>
+                <!-- ======================== END OF FILTER SECTION ======================== -->
                 
                 <?php
                     $sqlmain_filter_parts = [];
@@ -278,13 +281,13 @@
 
                                 if($result->num_rows==0){
                                     echo '<tr>
-                                    <td colspan="6"> <br><br><br><br>
+                                    <td colspan="7"> <br><br><br><br>
                                     <center>
                                     <img src="../img/notfound.svg" width="25%">
                                     
                                     <br>
-                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">You don\'t have any appointments yet!</p>
-                                    <a class="non-style-link" href="request-session.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Request a New Session &nbsp;</font></button>
+                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldn\'t find anything related to your keywords!</p>
+                                    <a class="non-style-link" href="client-appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Appointments &nbsp;</font></button>
                                     </a>
                                     </center>
                                     <br><br><br><br>

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/vendor/autoload.php'; // Composer autoloader
+require __DIR__ . '/vendor/autoload.php'; 
 require __DIR__ . '/phpmailer/PHPMailer.php';
 require __DIR__ . '/phpmailer/SMTP.php';
 require __DIR__ . '/phpmailer/Exception.php';
@@ -7,7 +7,7 @@ require __DIR__ . '/phpmailer/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Load .env variables
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
@@ -122,10 +122,9 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
         ";
 
         $mail->send();
-        // Optionally, you can return true or a success message here
     } catch (Exception $e) {
         error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-        echo "<pre>Mailer Error: {$mail->ErrorInfo}</pre>"; // Show error for debugging
+        echo "<pre>Mailer Error: {$mail->ErrorInfo}</pre>"; 
     }
 
 }
@@ -149,7 +148,7 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        $recipientName = htmlspecialchars($recipientName); // Prevent injection
+        $recipientName = htmlspecialchars($recipientName); 
         $mail->Body = "
         <!DOCTYPE html>
 <html lang='en'>
@@ -234,25 +233,12 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
     }
 }
 
-/**
- * Sends an email to the client to notify them that their appointment request is pending.
- *
- * @param string $recipientEmail The client's email address.
- * @param string $recipientName The client's full name.
- * @param string $appointmentDate The preferred date for the appointment.
- * @param string $appointmentTime The preferred time for the appointment.
- * @param string $caseTitle The title or subject of the legal concern.
- * @param string $caseDescription The detailed description of the case.
- * @param string $lawyerName The name of the lawyer (defaults to 'To be Assigned').
- * @param string $meetingType The type of meeting (defaults to 'Online Consultation').
- */
+ 
 function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointmentDate, $appointmentTime, $caseTitle, $caseDescription, $lawyerName = 'To be Assigned', $meetingType = 'Online Consultation') {
-    // Add logging
     error_log("Attempting to send appointment confirmation email to: $recipientEmail");
     
     $mail = new PHPMailer(true);
     try {
-        // Server settings
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
@@ -261,17 +247,14 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
-        // Recipients
         $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
         $mail->addAddress($recipientEmail, $recipientName);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'SafeSpace PH: Your Appointment Request is Pending';
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        // Sanitize dynamic data before inserting into the email body
         $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
         $lawyerName_safe = htmlspecialchars($lawyerName, ENT_QUOTES, 'UTF-8');
         $appointmentDate_safe = htmlspecialchars(date("F j, Y", strtotime($appointmentDate)), ENT_QUOTES, 'UTF-8');
@@ -280,7 +263,6 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
         $caseTitle_safe = htmlspecialchars($caseTitle, ENT_QUOTES, 'UTF-8');
         $caseDescription_safe = nl2br(htmlspecialchars($caseDescription, ENT_QUOTES, 'UTF-8'));
 
-        // HTML Email Body
         $mail->Body = "
         <!DOCTYPE html>
         <html lang='en'>
@@ -359,7 +341,7 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
         return true;
     } catch (Exception $e) {
         error_log("Failed to send appointment confirmation email to {$recipientEmail}: {$mail->ErrorInfo}");
-        throw $e; // Re-throw to be handled by caller
+        throw $e;
     }
 }
 
@@ -384,7 +366,6 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        // Sanitize
         $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
         $lawyerName_safe = htmlspecialchars($lawyerName, ENT_QUOTES, 'UTF-8');
         $appointmentDate_safe = htmlspecialchars(date("F j, Y", strtotime($appointmentDate)), ENT_QUOTES, 'UTF-8');
@@ -473,21 +454,12 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
     }
 }
 
-/**
- * Sends a detailed appointment cancellation email to the user, including the reason.
- *
- * @param string $recipientEmail The client's email address.
- * @param string $recipientName The client's full name.
- * @param array $appointmentDetails Associative array with appointment info.
- * @param string $cancellationReason The reason for cancellation.
- * @param string $cancellationExplanation Additional details from the lawyer.
- */
+
 function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $appointmentDetails, $cancellationReason, $cancellationExplanation) {
     error_log("Attempting to send detailed appointment cancellation email to: $recipientEmail");
     
     $mail = new PHPMailer(true);
     try {
-        // Server settings
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
@@ -496,17 +468,14 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
-        // Recipients
         $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
         $mail->addAddress($recipientEmail, $recipientName);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'Important: Your SafeSpace PH Appointment Has Been Canceled';
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        // Sanitize data
         $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
         $lawyerName_safe = htmlspecialchars($appointmentDetails['lawyerName'] ?? 'The assigned lawyer', ENT_QUOTES, 'UTF-8');
         $appointmentDate_safe = htmlspecialchars(date("F j, Y", strtotime($appointmentDetails['appointmentDate'])), ENT_QUOTES, 'UTF-8');
@@ -624,7 +593,6 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
 function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $appointmentDetails) {
     $mail = new PHPMailer(true);
     try {
-        // Server settings
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
@@ -633,18 +601,15 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
-        // Recipients
         $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
         $mail->addAddress($recipientEmail, $recipientName);
 
-        // Content
+        
         $mail->isHTML(true);
         $mail->Subject = 'Your SafeSpace PH Appointment is Confirmed!';
-        // [FIXED] Use __DIR__ to ensure the correct path to images
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        // Sanitize and extract details from the $appointmentDetails array
         $lawyerName = htmlspecialchars($appointmentDetails['lawyerName'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
         $appointmentDate = htmlspecialchars($appointmentDetails['appointmentDate'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
         $appointmentTime = htmlspecialchars($appointmentDetails['appointmentTime'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
@@ -757,7 +722,6 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
         return true;
     } catch (Exception $e) {
         error_log("Appointment accepted email error for {$recipientEmail}: {$mail->ErrorInfo}");
-        // [FIXED] Re-throw the exception so the calling script can handle the failure.
         throw $e;
     }
 }
@@ -902,7 +866,6 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
         $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
         $rejectionReasonHtml = '';
         if (!empty($reasonDetails)) {
-            // Sanitize the custom reason and format it within a styled list item
             $reasonDetails_safe = htmlspecialchars($reasonDetails, ENT_QUOTES, 'UTF-8');
             $rejectionReasonHtml = "<p>Our team noted the following specific reason for this decision:</p><ul class='details-list'><li>{$reasonDetails_safe}</li></ul>";
         }
@@ -1010,17 +973,12 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
         error_log("Verification rejection email sent successfully to: {$recipientEmail}");
     } catch (Exception $e) {
         error_log("Verification rejection email error for {$recipientEmail}: {$mail->ErrorInfo}");
-        // Re-throw the exception to allow the caller to handle the failure gracefully
         throw $e;
     }
 }
 
-/**
- * Sends an email to the client to notify them that their verification has been revoked.
- *
- * @param string $recipientEmail The client's email address.
- * @param string $recipientName The client's full name.
- */
+
+
 function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
     $mail = new PHPMailer(true);
     try {
@@ -1130,7 +1088,6 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
         error_log("Unverification notice sent successfully to: {$recipientEmail}");
     } catch (Exception $e) {
         error_log("Unverification notice email error for {$recipientEmail}: {$mail->ErrorInfo}");
-        // Re-throw the exception to allow the caller to handle the failure gracefully
         throw $e;
     }
 }
@@ -1154,7 +1111,6 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
 
-        // Extracting and sanitizing details from the $appointmentDetails array
         $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
         $lawyerName_safe = htmlspecialchars($appointmentDetails['lawyerName'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
         $appointmentDate_safe = htmlspecialchars($appointmentDetails['appointmentDate'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
@@ -1268,7 +1224,6 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
         return true;
     } catch (Exception $e) {
         error_log("Meeting link update email error for {$recipientEmail}: {$mail->ErrorInfo}");
-        // Re-throw the exception to allow the calling script to handle the failure (e.g., rollback a transaction)
         throw $e;
     }
 }

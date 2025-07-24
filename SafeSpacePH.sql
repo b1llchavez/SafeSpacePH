@@ -1,49 +1,18 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: localhost:8889
--- Generation Time: Jul 24, 2025 at 01:31 PM
--- Server version: 8.0.40
--- PHP Version: 8.3.14
-
+CREATE DATABASE IF NOT EXISTS `SafeSpacePH`;
+USE `SafeSpacePH`;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `SafeSpacePH`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin`
---
 
 CREATE TABLE `admin` (
   `aemail` varchar(255) NOT NULL,
   `apassword` varchar(255) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `admin`
---
 
 INSERT INTO `admin` (`aemail`, `apassword`) VALUES
 ('admin@safespaceph.com', '123');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `appointment`
---
 
 CREATE TABLE `appointment` (
   `appoid` int NOT NULL,
@@ -57,18 +26,11 @@ CREATE TABLE `appointment` (
   `cancellation_explanation` text
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `appointment`
---
 
 INSERT INTO `appointment` (`appoid`, `cid`, `apponum`, `scheduleid`, `appodate`, `status`, `description`, `cancellation_reason`, `cancellation_explanation`) VALUES
 (17, 13, 1753340073, 27, '2025-07-24', 'cancelled', 'HAHAUHDAUIGDAHISBDANSK D', 'Personal emergency', 'testing ulit');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `client`
---
 
 CREATE TABLE `client` (
   `cid` int NOT NULL,
@@ -80,20 +42,14 @@ CREATE TABLE `client` (
   `ctel` varchar(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `client`
---
+
 
 INSERT INTO `client` (`cid`, `cemail`, `cname`, `cpassword`, `caddress`, `cdob`, `ctel`) VALUES
 (1, 'client@safespaceph.com', 'Client User', '123', '', NULL, ''),
 (14, 'sihareg730@simerm.com', 'SafeSpace PH S', 'Testing123!', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '2005-01-10', '9917912370'),
 (13, 'mamornobillc@gmail.com', 'Bill Mamorno', 'Testing123!', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '2006-03-18', '9917912370');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `identity_verifications`
---
 
 CREATE TABLE `identity_verifications` (
   `id` int NOT NULL,
@@ -123,18 +79,11 @@ CREATE TABLE `identity_verifications` (
   `is_verified` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `identity_verifications`
---
+
 
 INSERT INTO `identity_verifications` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `dob`, `sex`, `civil_status`, `citizenship`, `birth_place`, `present_address`, `permanent_address`, `email`, `contact_number`, `emergency_contact_name`, `emergency_contact_number`, `emergency_contact_relationship`, `id_type`, `id_number`, `id_photo_front_path`, `id_photo_back_path`, `profile_photo_path`, `agree_terms`, `submission_date`, `is_verified`) VALUES
 (3, 'Bill', 'Chavez', 'Mamorno', '', '2006-03-18', 'Male', 'Single', 'Filipino', 'Manila', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', 'mamornobillc@gmail.com', '09917912370', 'Edmuna Mamorno', '09396035648', 'Mother', 'Driver&#039;s License', '11001212154548', 'uploads/id_front/front_6873c9f225cc6_id 1.jpg', 'uploads/id_back/back_6873c9f225fd7_id 2.png', 'uploads/profile_photo_client/profile_6873c9f226122_profile photo sample.jpg', 1, '2025-07-13 15:00:02', 0);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `lawyer`
---
 
 CREATE TABLE `lawyer` (
   `lawyerid` int NOT NULL,
@@ -148,18 +97,11 @@ CREATE TABLE `lawyer` (
   `meeting_platform` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `lawyer`
---
 
 INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyerrollid`, `lawyertel`, `specialties`, `meeting_link`, `meeting_platform`) VALUES
 (1, 'lawyer@safespaceph.com', 'Test Lawyer', '123', '202411951', '09917912370', 18, 'SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015', 'SafeSpace PH Office');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `reports`
---
 
 CREATE TABLE `reports` (
   `id` int NOT NULL,
@@ -178,18 +120,11 @@ CREATE TABLE `reports` (
   `admin_notes` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `reports`
---
 
 INSERT INTO `reports` (`id`, `client_id`, `reporter_name`, `reporter_phone`, `reporter_email`, `title`, `description`, `legal_consultation_requested`, `supplementary_notes`, `file_name`, `file_path`, `uploaded_at`, `report_status`, `admin_notes`) VALUES
 (6, 13, 'Bill Mamorno', '09917912370', 'mamornobillc@gmail.com', 'Violation Report: Public Harassment', 'Violation Type: Public Harassment\nDate of Incident: 2005-11-11\nTime of Incident: 11:11\nLocation of Incident: working\nPerpetrator Information: white haired\nVictim\'s Name: Bill ERIC Mamorno\nVictim\'s Contact: mamornobillc@gmail.com\n\n---Reporter\'s Detailed Description---\nworking 2', 'Yes', 'sdsdsds', 'report_68821a0c41eea.jpg', '../uploads/reports/report_68821a0c41eea.jpg', '2025-07-24 19:33:32', 'rejected', 'sasa');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `schedule`
---
 
 CREATE TABLE `schedule` (
   `scheduleid` int NOT NULL,
@@ -201,28 +136,19 @@ CREATE TABLE `schedule` (
   `clientid` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `schedule`
---
+
 
 INSERT INTO `schedule` (`scheduleid`, `lawyerid`, `title`, `scheduledate`, `scheduletime`, `nop`, `clientid`) VALUES
 (26, NULL, 'DDD', '2026-02-11', '15:33:00', 1, 1),
 (27, '1', 'TETSING TESTING', '2027-11-11', '11:11:00', 1, 13);
 
--- --------------------------------------------------------
 
---
--- Table structure for table `specialties`
---
 
 CREATE TABLE `specialties` (
   `id` int NOT NULL,
   `sname` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `specialties`
---
 
 INSERT INTO `specialties` (`id`, `sname`) VALUES
 (1, 'Family Law'),
@@ -252,11 +178,6 @@ INSERT INTO `specialties` (`id`, `sname`) VALUES
 (25, 'Criminal Law'),
 (26, 'Mediation and Counseling');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `volunteer_lawyer`
---
 
 CREATE TABLE `volunteer_lawyer` (
   `id` int NOT NULL,
@@ -284,20 +205,13 @@ CREATE TABLE `volunteer_lawyer` (
   `reference_contact` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `webuser`
---
 
 CREATE TABLE `webuser` (
   `email` varchar(255) NOT NULL,
   `usertype` char(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `webuser`
---
+
 
 INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('admin@safespaceph.com', 'a'),
@@ -307,123 +221,80 @@ INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('sihareg730@simerm.com', 'u'),
 ('jarix90822@mvpmedix.com', 'l');
 
---
--- Indexes for dumped tables
---
 
---
--- Indexes for table `admin`
---
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`aemail`);
 
---
--- Indexes for table `appointment`
---
+
 ALTER TABLE `appointment`
   ADD PRIMARY KEY (`appoid`),
   ADD KEY `cid` (`cid`),
   ADD KEY `scheduleid` (`scheduleid`);
 
---
--- Indexes for table `client`
---
+
 ALTER TABLE `client`
   ADD PRIMARY KEY (`cid`);
 
---
--- Indexes for table `identity_verifications`
---
+
 ALTER TABLE `identity_verifications`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email_unique` (`email`);
 
---
--- Indexes for table `lawyer`
---
+
 ALTER TABLE `lawyer`
   ADD PRIMARY KEY (`lawyerid`),
   ADD KEY `specialties` (`specialties`);
 
---
--- Indexes for table `reports`
---
+
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `schedule`
---
+
 ALTER TABLE `schedule`
   ADD PRIMARY KEY (`scheduleid`),
   ADD KEY `lawyerid` (`lawyerid`),
   ADD KEY `fk_client_schedule` (`clientid`);
 
---
--- Indexes for table `specialties`
---
+
 ALTER TABLE `specialties`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `volunteer_lawyer`
---
+
 ALTER TABLE `volunteer_lawyer`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `webuser`
---
+
 ALTER TABLE `webuser`
   ADD PRIMARY KEY (`email`);
 
---
--- AUTO_INCREMENT for dumped tables
---
 
---
--- AUTO_INCREMENT for table `appointment`
---
+
+
 ALTER TABLE `appointment`
   MODIFY `appoid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
---
--- AUTO_INCREMENT for table `client`
---
+
 ALTER TABLE `client`
   MODIFY `cid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
---
--- AUTO_INCREMENT for table `identity_verifications`
---
+
 ALTER TABLE `identity_verifications`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- AUTO_INCREMENT for table `lawyer`
---
+
 ALTER TABLE `lawyer`
   MODIFY `lawyerid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
---
--- AUTO_INCREMENT for table `reports`
---
+
 ALTER TABLE `reports`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
---
--- AUTO_INCREMENT for table `schedule`
---
+
 ALTER TABLE `schedule`
   MODIFY `scheduleid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
---
--- AUTO_INCREMENT for table `volunteer_lawyer`
---
+
+
 ALTER TABLE `volunteer_lawyer`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -25,12 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $consent_check = isset($_POST["consent_check"]) ? 1 : 0;
     $agree_terms = isset($_POST["agree_terms"]) ? 1 : 0;
 
-    // Set upload directories
     $license_dir = "uploads/license/";
     $photo_dir = "uploads/profile_photo_lawyer/";
     $resume_dir = "uploads/resume/";
 
-    // Ensure directories exist
     if (!is_dir($license_dir)) mkdir($license_dir, 0777, true);
     if (!is_dir($photo_dir)) mkdir($photo_dir, 0777, true);
     if (!is_dir($resume_dir)) mkdir($resume_dir, 0777, true);
@@ -42,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $allowed_exts = ["pdf", "jpg", "jpeg", "png"];
     $allowed_mimes = ["application/pdf", "image/jpeg", "image/png"];
 
-    // Handle license upload (Image or PDF)
     if (isset($_FILES["license_file"]) && $_FILES["license_file"]["error"] === 0) {
         $license_tmp = $_FILES["license_file"]["tmp_name"];
         $license_ext = strtolower(pathinfo($_FILES["license_file"]["name"], PATHINFO_EXTENSION));
@@ -58,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Handle profile photo (Image or PDF)
     if (isset($_FILES["profile_photo_lawyer"]) && $_FILES["profile_photo_lawyer"]["error"] === 0) {
         $photo_tmp = $_FILES["profile_photo_lawyer"]["tmp_name"];
         $photo_ext = strtolower(pathinfo($_FILES["profile_photo_lawyer"]["name"], PATHINFO_EXTENSION));
@@ -74,7 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Resume upload (optional)
     $allowed_resume_exts = ["pdf", "doc", "docx"];
     $allowed_resume_mimes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
     if (isset($_FILES["resume_file"]) && $_FILES["resume_file"]["error"] === 0) {
@@ -94,12 +89,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Handle preferred areas and "Others" text
     $preferred_areas_arr = $_POST["preferred_areas"] ?? [];
     $preferred_areas_other_text = trim($_POST["preferred_areas_other_text"] ?? '');
 
     if (in_array("Others", $preferred_areas_arr) && $preferred_areas_other_text !== '') {
-        // Replace "Others" with the actual text
         foreach ($preferred_areas_arr as $k => $v) {
             if ($v === "Others") {
                 $preferred_areas_arr[$k] = "Others: " . $preferred_areas_other_text;
@@ -108,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $preferred_areas = implode(",", $preferred_areas_arr);
 
-    // Prepare insert query (add new fields)
     $sql = "INSERT INTO volunteer_lawyer 
         (last_name, first_name, email, contact_number, home_address, years_experience, roll_number, license_file, profile_photo_lawyer, motivation, consent_background_check, agree_terms, info_certified,
         availability_hours, urgent_consult, commitment_months, preferred_areas, bar_region, resume_file, affiliation, reference_contact) 
@@ -117,33 +109,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $database->prepare($sql);
 
     if ($stmt) {
-    // Change this line (around line 120):
 $stmt->bind_param(
-    "sssssissssiiiisssssss",  // Removed spaces and corrected count
-    $last_name,             // s
-    $first_name,            // s
-    $email,                 // s
-    $contact_number,        // s
-    $home_address,          // s
-    $years_experience,      // i
-    $roll_number,           // s
-    $license_path,          // s
-    $photo_path,            // s
-    $motivation,            // s
-    $consent_check,         // i
-    $agree_terms,           // i
-    $info_certified,        // i
-    $availability_hours,    // i
-    $urgent_consult,        // s
-    $commitment_months,     // i
-    $preferred_areas,       // s
-    $bar_region,            // s
-    $resume_path,           // s
-    $affiliation,           // s
-    $reference              // s
+    "sssssissssiiiisssssss",  
+    $last_name,             
+    $first_name,            
+    $email,                 
+    $contact_number,        
+    $home_address,          
+    $years_experience,      
+    $roll_number,          
+    $license_path,         
+    $photo_path,            
+    $motivation,          
+    $consent_check,         
+    $agree_terms,           
+    $info_certified,       
+    $availability_hours,    
+    $urgent_consult,        
+    $commitment_months,   
+    $preferred_areas,       
+    $bar_region,            
+    $resume_path,         
+    $affiliation,           
+    $reference              
 );
         if ($stmt->execute()) {
-            // Show styled confirmation popup and stop further output
             ?>
             <!DOCTYPE html>
             <html lang="en">
@@ -277,7 +267,7 @@ $stmt->bind_param(
               <div class="modal">
                 <div class="confirmation-box">
                   <div class="confirmation-check">
-                    <!-- Big purple check icon SVG -->
+                 
                     <svg viewBox="0 0 80 80" fill="none">
                       <circle cx="40" cy="40" r="38" fill="#f7f4fd" stroke="#391053" stroke-width="4"/>
                       <path d="M25 43.5L37.5 56L56 28" stroke="#391053" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -641,7 +631,7 @@ input[type="checkbox"]:checked {
         <h2 class="form-title">Volunteer Lawyer Application</h2>
         <div class="form-divider"></div>
         <form method="POST" enctype="multipart/form-data">
-            <!-- Personal Information Section -->
+         
             <h3 class="section-title">Personal Information</h3>
             <div class="form-grid">
                 <div class="form-group">
@@ -669,7 +659,7 @@ input[type="checkbox"]:checked {
                     <input type="text" name="home_address" id="home_address" required>
                 </div>
             </div>
-            <!-- Professional Information Section -->
+         
             <h3 class="section-title">Professional Information</h3>
             <div class="form-grid">
                 <div class="form-group">
@@ -693,7 +683,6 @@ input[type="checkbox"]:checked {
                     <input type="text" name="reference" id="reference">
                 </div>
             </div>
-            <!-- Commitment & Availability Section -->
             <h3 class="section-title">Commitment & Availability</h3>
             <div class="form-grid">
                 <div class="form-group">
@@ -714,7 +703,6 @@ input[type="checkbox"]:checked {
                     <input type="number" name="commitment_months" id="commitment_months" min="1" required>
                 </div>
             </div>
-            <!-- Legal Work Preferences Section -->
             <h3 class="section-title">Preferred Areas of Legal Work</h3>
          <div class="form-group full-width">
     <label style="color:#555;display:block;margin-bottom:10px; font-family: 'Inter', Arial, sans-serif; font-size:13px;">
@@ -740,7 +728,6 @@ input[type="checkbox"]:checked {
                     </label>
                 </div>
             </div>
-            <!-- Supporting Documents Section -->
             <h3 class="section-title">Supporting Documents</h3>
             <div class="form-grid">
                 <div class="form-group full-width">
@@ -759,7 +746,6 @@ input[type="checkbox"]:checked {
                     <input type="file" name="resume_file" id="resume_file" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
                 </div>
             </div>
-            <!-- Motivation Section -->
             <h3 class="section-title">Reason for Volunteering</h3>
             <div class="form-group full-width">
                 <label for="motivation">What Inspires You to Join SafeSpace PH?</label>
@@ -775,7 +761,6 @@ We’d love to know what drives you to offer your time and expertise. Please sha
                 </small>
             </div>
             <div class="form-divider"></div>
-            <!-- Agreements Section -->
             <div class="checkbox-group">
                 <label><input type="checkbox" name="info_certified" required> By checking this box, I certify that all the information I have provided is true, accurate, and complete to the best of my knowledge. I understand that providing false or misleading information may affect the assistance I receive through SafeSpace PH.</label>
             </div>

@@ -16,39 +16,29 @@
 
     session_start();
 
-    // REMOVED: $_SESSION["user"]="";
-    // REMOVED: $_SESSION["usertype"]="";
-    // Reason: These lines were unsetting session variables immediately after starting the session,
-    // which would prevent successful logins from persisting.
-
-    // Set the new timezone (already present, just ensured it's here)
-    date_default_timezone_set('Asia/Manila'); // Changed from Asia/Kolkata to Asia/Manila for Quezon City, Philippines location.
+  
+    date_default_timezone_set('Asia/Manila'); 
     $date = date('Y-m-d');
 
-    $_SESSION["date"]=$date; // This stores the current date in session
+    $_SESSION["date"]=$date; 
 
-    //import database
     include("connection.php");
 
-    // Check if the form was submitted via POST
     if($_POST){
         $email = $_POST['useremail']; 
         $password = $_POST['userpassword']; 
         
-        // Sanitize inputs
         $email = mysqli_real_escape_string($database, $email);
         $password = mysqli_real_escape_string($database, $password); 
 
-        $error = ""; // Initialize error message
+        $error = ""; 
 
-        // First, check the webuser table to determine the usertype
         $webuser_query = $database->query("SELECT * FROM webuser WHERE email='$email'");
 
         if ($webuser_query->num_rows == 1) {
             $webuser_data = $webuser_query->fetch_assoc();
             $usertype = $webuser_data['usertype'];
 
-            // Authenticate based on usertype
             if ($usertype == 'a') {
                 $auth_query = $database->query("SELECT * FROM admin WHERE aemail='$email' AND apassword='$password'");
                 if ($auth_query->num_rows == 1) {
@@ -67,7 +57,7 @@
                     $_SESSION['usertype'] = 'c';
                     $_SESSION['cid'] = $client_data['cid']; 
                     $_SESSION['cname'] = $client_data['cname']; 
-                    header('location: client/index.php'); // Changed to client_dashboard.php
+                    header('location: client/index.php');
                     exit();
                 } else {
                     $error = 'Wrong credentials: Invalid email or password';
@@ -80,7 +70,7 @@
                     $_SESSION['usertype'] = 'l';
                     $_SESSION['lawyerid'] = $lawyer_data['lawyerid']; 
                     $_SESSION['lawyername'] = $lawyer_data['lawyername']; 
-                    header('location: lawyer/index.php'); // Changed to lawyer_dashboard.php
+                    header('location: lawyer/index.php'); 
                     exit();
                 } else {
                    $error = 'Wrong credentials: Invalid email or password';
@@ -90,10 +80,10 @@
                 if ($auth_query->num_rows == 1) {
                     $client_data = $auth_query->fetch_assoc();
                     $_SESSION['user'] = $email;
-                    $_SESSION['usertype'] = 'u'; // Set usertype to 'cu'
-                    $_SESSION['cid'] = $client_data['cid']; // Still store client ID
-                    $_SESSION['cname'] = $client_data['cname']; // Still store client name
-                    header('location: client/index_unverified.php'); // Redirect to unverified client page
+                    $_SESSION['usertype'] = 'u'; 
+                    $_SESSION['cid'] = $client_data['cid']; 
+                    $_SESSION['cname'] = $client_data['cname']; 
+                    header('location: client/index_unverified.php'); 
                     exit();
                 } else {
                     $error = 'Wrong credentials: Invalid email or password';
@@ -103,7 +93,6 @@
             $error = 'Wrong credentials: Invalid email or password';
         }
 
-        // Set the error message in session if redirection hasn't happened
         if (!empty($error)) {
             $_SESSION['login_error'] = $error;
             header('location: login.php?error=' . urlencode($error)); 
@@ -111,19 +100,18 @@
         }
 
     } else {
-        // If someone tries to access login.php directly without POST request,
-        // and they are already logged in, redirect them to their respective dashboard.
+     
         if(isset($_SESSION['usertype'])) {
             if($_SESSION['usertype'] == 'a') {
                 header('location: admin/index.php');
                 exit();
             } elseif($_SESSION['usertype'] == 'c') {
-                header('location: client/index.php'); // Changed to client/index.php
+                header('location: client/index.php');
                 exit();
             } elseif($_SESSION['usertype'] == 'l') {
-                header('location: lawyer/index.php'); // Changed to lawyer/index.php
+                header('location: lawyer/index.php'); 
                 exit();
-            } elseif($_SESSION['usertype'] == 'u') { // Redirect for unverified client
+            } elseif($_SESSION['usertype'] == 'u') {
                 header('location: client/index_unverified.php');
                 exit();
             }
@@ -169,7 +157,6 @@
                     <tr>
                         <td><br/>
                         <?php 
-                                // Display error message from URL parameter
                                 if(isset($_GET["error"])){
                                      echo '<div class="error-message"><label>' . htmlspecialchars(urldecode($_GET["error"])) . '</label></div>';
                                 }

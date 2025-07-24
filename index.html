@@ -5,29 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | SafeSpace PH</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Your existing CSS files -->
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
     <style>
-        /* This inline style is kept from your original code for the table animation */
         table{
             animation: transitionIn-Y-bottom 0.5s;
         }
     </style>
 </head>
 <body>
-    <!-- Fixed Header -->
-    <!-- This header will stay at the top of the viewport as the user scrolls.
-         It uses Tailwind CSS classes for styling and responsiveness. -->
+ 
     <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-6 rounded-b-lg">
         <div class="container mx-auto flex items-center justify-between">
-            <!-- Logo and Site Name Container -->
             <div class="flex items-center space-x-3">
-                <!-- Using a placeholder image for demonstration. Replace with your actual img/logo.png -->
                 <img src="img\logo.png" alt="SafeSpacePH Logo" class="logo-img h-12 w-12 rounded-full shadow-sm">
                 <span class="safespaceph-logo-sub">SafeSpacePH</span>   
             </div>  
@@ -38,7 +31,6 @@
                 <a href="aboutus.html" class="nav-button">ABOUT US</a>
             </nav>
 
-            <!-- Navigation Links -->
             <nav class="flex items-center space-x-4">
                 <a href="login.php" class="btn btn-primary-soft">LOGIN</a>
                 <a href="signup.php" class="btn btn-primary-soft">REGISTER</a>
@@ -46,13 +38,10 @@
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <!-- The rest of your page content will go here.
-         The 'body' tag has padding-top in style.css to prevent content from being hidden by the fixed header. -->
+  
     <div class="full-height">
         <center>
             <table border="0">
-                <!-- The original header row is now removed as it's replaced by the fixed <header> above -->
 
                 <tr>
                     <td colspan="3">
@@ -77,10 +66,8 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <!-- Empty cell from original code -->
                     </td>
                 </tr>
-                <!-- Add more content here to test scrolling -->
             </table>
         </center>
     </div>
@@ -89,55 +76,45 @@
         <h2 class="section-title">How to Report a Violation with SafeSpace PH</h2>
 
         <div class="flex-container">
-        <!-- Left Column: Steps -->
         <div class="left-column">
-            <!-- Step 1 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 1 Identify the Violation</h2>
                 <p class="step-paragraph">Determine if the behavior you've experienced is a violation of the Safe Space Act.</p>
             </div>
 
-            <!-- Step 2 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 2 Document Evidence</h2>
                 <p class="step-paragraph">Take screenshots, save messages or gather any proof that supports your report.</p>
             </div>
 
-            <!-- Step 3 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 3 Create an Account or Log In</h2>
                 <p class="step-paragraph">Sign up for a new account or log in to your existing one.</p>
             </div>
 
-            <!-- Step 4 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 4 Fill Out the Report Form</h2>
                 <p class="step-paragraph">Provide details about the incident and upload any evidence.</p>
             </div>
 
-            <!-- Step 5 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 5 Book an Appointment (Optional)</h2>
                 <p class="step-paragraph">You may choose to book a free consultation with a volunteer lawyer.</p>
             </div>
 
-            <!-- Step 6 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 6 Wait for Confirmation</h2>
                 <p class="step-paragraph">We'll notify you once your appointment is approved or if further action is needed.</p>
             </div>
 
-            <!-- Step 7 -->
             <div class="step-container">
                 <h2 class="step-heading">Step 7 Coordinate with Your Lawyer</h2>
                 <p class="step-paragraph">Communicate directly with your assigned lawyer for guidance and support.</p>
             </div>
         </div>
 
-        <!-- Right Column: Video Placeholder -->
         <div class="right-column">
             <div class="video-placeholder">
-                <!-- Actual video element for autoplay -->
                 <video class="video-content" autoplay muted loop playsinline>
                     <source src="img/SafeSpace PH.mp4" type="video/mp4">
                     Your browser does not support the video tag.
@@ -267,7 +244,6 @@
             const faqItem = question.closest('.faq-item');
             const faqAnswer = faqItem.querySelector('.faq-answer');
 
-            // Close all other open answers
             document.querySelectorAll('.faq-item.active').forEach(item => {
                 if (item !== faqItem) {
                     item.classList.remove('active');
@@ -276,17 +252,14 @@
                 }
             });
 
-            // Toggle the clicked answer
             if (faqItem.classList.contains('active')) {
                 faqItem.classList.remove('active');
                 faqAnswer.style.maxHeight = 0;
                 faqAnswer.style.paddingTop = 0;
             } else {
                 faqItem.classList.add('active');
-                // Set max-height to the scrollHeight to allow smooth transition to full height
-                // A fixed max-height can be problematic if content varies greatly.
-                // A better approach for dynamic content is to set it to scrollHeight + some buffer.
-                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 30 + 'px'; // +30px for padding/buffer
+              
+                faqAnswer.style.maxHeight = faqAnswer.scrollHeight + 30 + 'px'; 
                 faqAnswer.style.paddingTop = '15px';
               }
           });

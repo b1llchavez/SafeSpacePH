@@ -1,24 +1,21 @@
 <?php
-session_start(); // Start the session at the very beginning
+session_start(); 
 
-include 'connection.php'; // Ensure this file contains a valid database connection
-include 'send_email.php'; // Include the file containing the email function
+include 'connection.php';
+include 'send_email.php'; 
 
-// Initialize variables to store form data and errors
 $errors = [];
 $formData = [];
 $formSubmittedSuccessfully = false;
 
-// Retrieve session-based personal details for pre-filling
-// Assuming 'personal' array exists in $_SESSION with 'fname', 'lname', 'address', 'dob', 'email', 'tele'
+
 $fname_session = $_SESSION['personal']['fname'] ?? '';
 $lname_session = $_SESSION['personal']['lname'] ?? '';
 $address_session = $_SESSION['personal']['address'] ?? '';
 $dob_session = $_SESSION['personal']['dob'] ?? '';
-$email_session = $_SESSION['personal']['email'] ?? ''; // Using session for email as requested for pre-fill
-$tele_session = $_SESSION['personal']['tele'] ?? '';   // Using session for contact number as requested for pre-fill
+$email_session = $_SESSION['personal']['email'] ?? ''; 
+$tele_session = $_SESSION['personal']['tele'] ?? '';  
 
-// Function to sanitize input data
 function sanitize_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -26,24 +23,21 @@ function sanitize_input($data) {
     return $data;
 }
 
-// Function to validate file upload
-function validate_file($file, $allowedTypes, $maxSize = 5242880) { // 5MB
-    // Check for upload errors
+function validate_file($file, $allowedTypes, $maxSize = 5242880) { 
     if ($file['error'] === UPLOAD_ERR_NO_FILE) {
-        return "No file uploaded."; // Specific error for no file
+        return "No file uploaded."; 
     }
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        return "File upload error: " . $file['error']; // More descriptive error
+        return "File upload error: " . $file['error']; 
     }
 
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowedTypes)) return "Invalid file type. Only JPG, JPEG, PNG, PDF are allowed."; // Adjusted for ID files
+    if (!in_array($ext, $allowedTypes)) return "Invalid file type. Only JPG, JPEG, PNG, PDF are allowed.";
     if ($file['size'] > $maxSize) return "File size exceeds 5MB.";
-    return null; // No error
+    return null; 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Collect and sanitize form data from POST
     $formData['firstName'] = sanitize_input($_POST['firstName'] ?? '');
     $formData['middleName'] = sanitize_input($_POST['middleName'] ?? '');
     $formData['lastName'] = sanitize_input($_POST['lastName'] ?? '');
@@ -64,16 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formData['idNumber'] = sanitize_input($_POST['idNumber'] ?? '');
     $formData['agreeTerms'] = isset($_POST['agreeTerms']) ? 1 : 0;
     
-    // Middle name handling from checkbox
     if (isset($_POST['noMiddleName']) && $_POST['noMiddleName'] === 'on') {
-        $formData['middleName'] = ''; // Explicitly set to empty if checkbox is checked
+        $formData['middleName'] = ''; 
     }
 
-    // Validate required fields
     if (empty($formData['firstName'])) $errors['firstName'] = "First name is required.";
     if (empty($formData['lastName'])) $errors['lastName'] = "Last name is required.";
     if (empty($formData['dob'])) $errors['dob'] = "Date of birth is required.";
-    // Validate age (example: at least 18 years old)
     if (!empty($formData['dob'])) {
         $birthDate = new DateTime($formData['dob']);
         $today = new DateTime();
@@ -102,12 +93,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($formData['agreeTerms'] == 0) $errors['agreeTerms'] = "You must agree to the terms and conditions.";
 
 
-    // Validate file uploads
     $allowIdTypes = ['jpg', 'jpeg', 'png', 'pdf'];
     $idPhotoFrontError = validate_file($_FILES['idPhotoFront'], $allowIdTypes);
     $idPhotoBackError = validate_file($_FILES['idPhotoBack'], $allowIdTypes);
     
-    // New: Validate profile photo
     $allowProfilePhotoTypes = ['jpg', 'jpeg', 'png'];
     $profilePhotoError = validate_file($_FILES['profilePhoto'], $allowProfilePhotoTypes);
 
@@ -118,42 +107,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($idPhotoBackError) {
         $errors['idPhotoBack'] = $idPhotoBackError;
     }
-    // New: Add profile photo error
     if ($profilePhotoError) {
         $errors['profilePhoto'] = $profilePhotoError;
     }
 
 
-    // Check if both files are selected and are the same (added server-side check)
     if (empty($errors['idPhotoFront']) && empty($errors['idPhotoBack']) &&
         isset($_FILES["idPhotoFront"]) && $_FILES["idPhotoFront"]["error"] == 0 &&
         isset($_FILES["idPhotoBack"]) && $_FILES["idPhotoBack"]["error"] == 0) {
         if ($_FILES["idPhotoFront"]["name"] === $_FILES["idPhotoBack"]["name"] &&
             $_FILES["idPhotoFront"]["size"] === $_FILES["idPhotoBack"]["size"] &&
-            $_FILES["idPhotoFront"]["tmp_name"] === $_FILES["idPhotoFront"]["tmp_name"]) { // Compare temporary file paths
+            $_FILES["idPhotoFront"]["tmp_name"] === $_FILES["idPhotoFront"]["tmp_name"]) { 
             $errors['idPhotoFront'] = 'Front and back ID images must be different files.';
             $errors['idPhotoBack'] = 'Front and back ID images must be different files.';
         }
     }
 
 
-    // Handle file uploads
     $idPhotoFrontPath = null;
     $idPhotoBackPath = null;
-    $profilePhotoPath = null; // New: Profile photo path
+    $profilePhotoPath = null; 
     
     $id_front_dir = "uploads/id_front/";
     $id_back_dir = "uploads/id_back/";
-    $profile_photo_dir = "uploads/profile_photo_client/"; // New: Profile photo directory
+    $profile_photo_dir = "uploads/profile_photo_client/"; 
 
-    // Create directories if they don't exist
     if (!is_dir($id_front_dir) && !mkdir($id_front_dir, 0777, true)) {
         $errors['idPhotoFront'] = "Failed to create upload directory for front ID.";
     }
     if (!is_dir($id_back_dir) && !mkdir($id_back_dir, 0777, true)) {
         $errors['idPhotoBack'] = "Failed to create upload directory for back ID.";
     }
-    // New: Create directory for profile photos
     if (!is_dir($profile_photo_dir) && !mkdir($profile_photo_dir, 0777, true)) {
         $errors['profilePhoto'] = "Failed to create upload directory for profile photo.";
     }
@@ -179,7 +163,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // New: Handle profile photo upload
     if (empty($errors['profilePhoto']) && isset($_FILES["profilePhoto"]) && $_FILES["profilePhoto"]["error"] == 0) {
         $fileName = basename($_FILES["profilePhoto"]["name"]);
         $targetFilePath = $profile_photo_dir . uniqid('profile_') . "_" . $fileName;
@@ -191,11 +174,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-    // If no errors, insert data into the database
     if (empty($errors)) {
-        // Check if $database is set and is a valid mysqli object
         if (isset($database) && $database instanceof mysqli) {
-            // New: Added profile_photo_path to the insert query
             $stmt = $database->prepare("INSERT INTO identity_verifications (
                 first_name, middle_name, last_name, suffix, dob, sex, civil_status, citizenship, birth_place,
                 present_address, permanent_address, email, contact_number, emergency_contact_name,
@@ -204,23 +184,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             if ($stmt) {
-                // New: Added 's' for profile_photo_path (string)
                 $stmt->bind_param("sssssssssssssssssssssi",
                     $formData['firstName'], $formData['middleName'], $formData['lastName'], $formData['suffix'], $formData['dob'],
                     $formData['sex'], $formData['civilStatus'], $formData['citizenship'], $formData['birthPlace'],
                     $formData['presentAddress'], $formData['permanentAddress'], $formData['email'], $formData['contactNumber'],
                     $formData['emergencyContactName'], $formData['emergencyContactNumber'], $formData['emergencyContactRelationship'],
-                    $formData['idType'], $formData['idNumber'], $idPhotoFrontPath, $idPhotoBackPath, $profilePhotoPath, $formData['agreeTerms'] // Pass profilePhotoPath
+                    $formData['idType'], $formData['idNumber'], $idPhotoFrontPath, $idPhotoBackPath, $profilePhotoPath, $formData['agreeTerms']
                 );
 
                 if ($stmt->execute()) {
                     $formSubmittedSuccessfully = true;
-                    // Send welcome email
                     $recipientEmail = $formData['email'];
                     $recipientName = $formData['firstName'] . ' ' . $formData['lastName'];
-                    // Send verification notice email
                     sendVerificationNoticeToClient($recipientEmail, $recipientName);
-                    // $formData = []; // Optionally clear form data after successful submission
                 } else {
                     $errors['db'] = "Database error: " . $stmt->error;
                 }
@@ -233,7 +209,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 } else {
-    // If not a POST request, pre-fill formData with session data
     $formData['firstName'] = $fname_session;
     $formData['lastName'] = $lname_session;
     $formData['permanentAddress'] = $address_session;
@@ -241,14 +216,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formData['email'] = $email_session;
     $formData['contactNumber'] = $tele_session;
 
-    // For other fields, initialize them as empty if not already set by a previous POST with errors
     $formData['middleName'] = $formData['middleName'] ?? '';
     $formData['suffix'] = $formData['suffix'] ?? '';
     $formData['sex'] = $formData['sex'] ?? '';
     $formData['civilStatus'] = $formData['civilStatus'] ?? '';
     $formData['citizenship'] = $formData['citizenship'] ?? '';
     $formData['birthPlace'] = $formData['birthPlace'] ?? '';
-    $formData['presentAddress'] = $formData['presentAddress'] ?? ''; // This will be handled by JS for "same as permanent"
+    $formData['presentAddress'] = $formData['presentAddress'] ?? ''; 
     $formData['emergencyContactName'] = $formData['emergencyContactName'] ?? '';
     $formData['emergencyContactNumber'] = $formData['emergencyContactNumber'] ?? '';
     $formData['emergencyContactRelationship'] = $formData['emergencyContactRelationship'] ?? '';
@@ -257,7 +231,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formData['agreeTerms'] = $formData['agreeTerms'] ?? 0;
 }
 
-// Close the database connection if it's open
 if (isset($database) && $database) {
     $database->close();
 }
@@ -273,7 +246,7 @@ if (isset($database) && $database) {
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
     <style>
-        /* General Body and Modal Styling - Matches volunteer_form.php */
+      
         body {
             background: rgba(0, 0, 0, 0.15);
             min-height: 100vh;
@@ -289,7 +262,7 @@ if (isset($database) && $database) {
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            width: 100vw; /* Ensure modal takes full width on small screens */
+            width: 100vw;
         }
 
         .modal-content {
@@ -298,10 +271,10 @@ if (isset($database) && $database) {
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             padding: 40px 64px;
             max-width: 800px;
-            width: 100%; /* Make it fluid */
+            width: 100%;
             position: relative;
             animation: fadeIn 0.3s;
-            box-sizing: border-box; /* Include padding in width */
+            box-sizing: border-box; 
         }
 
         .form-title {
@@ -386,7 +359,7 @@ if (isset($database) && $database) {
             box-sizing: border-box;
         }
 
-        /* File input styling */
+        
         input[type="file"] {
             font-size: 1rem;
             color: #2d1f44;
@@ -445,7 +418,7 @@ if (isset($database) && $database) {
             flex-shrink: 0;
         }
 
-        /* Focus styles for inputs and selects */
+      
         input[type="text"]:focus,
         input[type="email"]:focus,
         input[type="number"]:focus,
@@ -453,25 +426,25 @@ if (isset($database) && $database) {
         textarea:focus,
         select:focus {
             border-color: #5A2675 !important;
-            box-shadow: 0 0 0 3px rgba(90, 38, 117, 0.2); /* Added subtle shadow on focus */
+            box-shadow: 0 0 0 3px rgba(90, 38, 117, 0.2); 
             outline: none;
         }
 
-        /* Select dropdown styling */
+      
         select {
-            /* Custom arrow for select */
+         
             background: #5A2675 url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 16px center/18px 18px;
             color: #fff;
             border: none;
             border-radius: 5px;
-            padding: 10px 38px 10px 12px; /* Adjusted padding for better text alignment */
+            padding: 10px 38px 10px 12px;
             font-size: 15px;
             font-weight: 500;
             outline: none;
             transition: background 0.2s;
-            appearance: none; /* Hide default arrow */
-            -webkit-appearance: none; /* Hide default arrow for webkit browsers */
-            -moz-appearance: none; /* Hide default arrow for mozilla browsers */
+            appearance: none; 
+            -webkit-appearance: none; 
+            -moz-appearance: none; 
             cursor: pointer;
             box-shadow: none;
         }
@@ -481,7 +454,7 @@ if (isset($database) && $database) {
             color: #fff;
         }
 
-        /* Checkbox styling */
+      
         input[type="checkbox"] {
             accent-color: #5A2675;
             width: 18px;
@@ -497,10 +470,10 @@ if (isset($database) && $database) {
             border-color: #5A2675;
         }
 
-        /* Navigation buttons */
+      
         .form-navigation {
             display: flex;
-            justify-content: flex-end; /* Align buttons to the right */
+            justify-content: flex-end;
             margin-top: 30px;
             gap: 12px;
         }
@@ -529,14 +502,13 @@ if (isset($database) && $database) {
         }
 
         .form-navigation .back-btn {
-            background: #b48be3; /* Lighter purple for back button */
+            background: #b48be3; 
         }
 
         .form-navigation .back-btn:hover {
-            background: #9d72b3; /* Darker shade on hover */
+            background: #9d72b3; 
         }
 
-        /* Confirmation message styling */
         .confirmation-box {
             padding: 40px 64px;
             max-width: 800px;
@@ -599,16 +571,16 @@ if (isset($database) && $database) {
         }
 
         .go-back-button {
-            display: inline-flex; /* Use flex to align icon and text */
+            display: inline-flex;
             align-items: center;
-            background: #b48be3; /* Lighter purple for back button */
+            background: #b48be3;
             color: #fff;
             padding: 10px 20px;
             border-radius: 7px;
             text-decoration: none;
             font-size: 1rem;
             font-weight: 600;
-            margin-top: 0; /* Remove top margin as it's at the very top */
+            margin-top: 0; 
             transition: background 0.2s, box-shadow 0.2s;
             border: none;
             cursor: pointer;
@@ -617,11 +589,11 @@ if (isset($database) && $database) {
         }
 
         .go-back-button:hover {
-            background: #9d72b3; /* Darker shade on hover */
+            background: #9d72b3;
             box-shadow: 0 4px 16px rgba(157, 114, 179, 0.18);
         }
 
-        /* Responsive adjustments */
+       
         @media (max-width: 800px) {
             .modal-content,
             .confirmation-box {
@@ -656,38 +628,37 @@ if (isset($database) && $database) {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hide sections */
+      
         .form-section {
             display: none;
-            padding-bottom: 32px; /* Add vertical space at bottom of each section */
-            margin-bottom: 24px;  /* Add space between sections */
+            padding-bottom: 32px; 
+            margin-bottom: 24px;  
         }
         .form-section.active {
             display: block;
         }
 
         .form-group {
-            margin-bottom: 22px; /* More vertical space between fields */
+            margin-bottom: 22px;
         }
 
         .form-navigation {
-            margin-top: 36px; /* More space above navigation buttons */
-            margin-bottom: 8px; /* Space below navigation buttons */
+            margin-top: 36px;
+            margin-bottom: 8px;
         }
 
         .form-navigation button {
-            margin-right: 10px; /* Space between buttons */
+            margin-right: 10px;
         }
         .form-navigation button:last-child {
             margin-right: 0;
         }
 
-        /* Summary section specific styles */
         .summary-item {
             margin-bottom: 10px;
             padding: 8px 0;
             border-bottom: 1px dashed #eee;
-            display: flex; /* Use flexbox for better alignment of key-value pairs */
+            display: flex; 
             align-items: flex-start;
         }
         .summary-item:last-child {
@@ -696,14 +667,13 @@ if (isset($database) && $database) {
         .summary-item strong {
             color: #391053;
             display: inline-block;
-            min-width: 160px; /* Align labels, slightly increased for more space */
-            flex-shrink: 0; /* Prevent shrinking */
-            margin-right: 10px; /* Space between label and value */
+            min-width: 160px; 
+            margin-right: 10px; 
         }
         .summary-item span {
             color: #2d1f44;
-            flex-grow: 1; /* Allow value to take remaining space */
-            word-break: break-word; /* Ensure long text wraps */
+            flex-grow: 1;
+            word-break: break-word; 
         }
         .summary-item ul {
             list-style: none;
@@ -719,17 +689,17 @@ if (isset($database) && $database) {
             margin-bottom: 0;
         }
         .summary-file-preview {
-            max-width: 120px; /* Slightly larger preview */
+            max-width: 120px;
             max-height: 120px;
             margin-top: 5px;
             display: block;
-            object-fit: contain; /* Ensure image fits without distortion */
-            border: 1px solid #e2d8fa; /* Softer border */
+            object-fit: contain;
+            border: 1px solid #e2d8fa; 
             border-radius: 5px;
             padding: 5px;
-            background-color: #fcfbff; /* Light background for preview */
+            background-color: #fcfbff;
         }
-        /* Error message styling */
+       
         .error-message {
             color: #d9534f;
             font-size: 0.93rem;
@@ -743,22 +713,21 @@ if (isset($database) && $database) {
             overflow: visible;
             text-overflow: unset;
         }
-        /* Input invalid state */
+    
         input.input-invalid, select.input-invalid, textarea.input-invalid {
-            border-color: #d9534f !important; /* Red border for invalid inputs */
-            box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.2); /* Red shadow for invalid inputs */
+            border-color: #d9534f !important; 
+            box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.2);
         }
-        /* Radio button/checkbox alignment fix */
         .radio-group-container {
             display: flex;
             gap: 20px;
             margin-top: 8px;
-            flex-wrap: wrap; /* Allow wrapping on small screens */
-            align-items: center; /* Vertically align items in the flex container */
+            flex-wrap: wrap; 
+            align-items: center; 
         }
         .radio-group-container label {
             display: flex;
-            align-items: center; /* Align checkbox/radio with text */
+            align-items: center;
             font-weight: normal;
             margin-bottom: 0;
             cursor: pointer;
@@ -767,14 +736,14 @@ if (isset($database) && $database) {
             width: auto;
             margin-right: 8px;
             accent-color: #5A2675;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0; 
         }
 
-        /* New styles for read-only inputs */
+      
         input[readonly], textarea[readonly], select[readonly] {
-            background-color: #e9ecef; /* Light gray background */
-            cursor: not-allowed; /* Indicate not editable */
-            opacity: 0.8; /* Slightly dim it */
+            background-color: #e9ecef; 
+            cursor: not-allowed; 
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -1027,7 +996,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backBtns = document.querySelectorAll('.back-btn');
     const submitBtn = document.getElementById('submitBtn');
     const formTitle = document.getElementById('form-title');
-    const globalBackButtonContainer = document.getElementById('globalBackButtonContainer'); // Get the global back button container
+    const globalBackButtonContainer = document.getElementById('globalBackButtonContainer'); 
     let currentSectionIndex = 0;
 
     const phpErrors = <?php echo json_encode($errors); ?>;
@@ -1041,9 +1010,8 @@ document.addEventListener('DOMContentLoaded', function() {
         currentSectionIndex = index;
         updateFormTitle();
 
-        // Control visibility of the global back button
         if (globalBackButtonContainer) {
-            if (currentSectionIndex === 0) { // Only show on the first section (index 0)
+            if (currentSectionIndex === 0) { 
                 globalBackButtonContainer.style.display = 'block';
             } else {
                 globalBackButtonContainer.style.display = 'none';
@@ -1090,7 +1058,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentSection = sections[sectionIndex];
         const requiredInputs = currentSection.querySelectorAll('input[required], select[required], textarea[required]');
 
-        // Special: Middle name logic for section 0
         if (sectionIndex === 0) {
             const middleNameInput = document.getElementById('middleName');
             const noMiddleNameCheckbox = document.getElementById('noMiddleName');
@@ -1099,7 +1066,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayError(middleNameInput, 'Please enter your middle name or check the box if you have none.');
                 isValid = false;
             }
-            // New: Profile photo validation
             const profilePhotoInput = document.getElementById('profilePhoto');
             clearError(profilePhotoInput);
             if (profilePhotoInput && profilePhotoInput.files.length === 0) {
@@ -1108,7 +1074,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (profilePhotoInput && profilePhotoInput.files.length > 0) {
                 const file = profilePhotoInput.files[0];
                 const allowedTypes = ['image/jpeg', 'image/png'];
-                const maxSize = 5 * 1024 * 1024; // 5MB
+                const maxSize = 5 * 1024 * 1024;
 
                 if (!allowedTypes.includes(file.type)) {
                     displayError(profilePhotoInput, 'Invalid file type. Only JPG and PNG are allowed for profile photo.');
@@ -1121,14 +1087,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Special: Front and back ID images must be different files
         if (sectionIndex === 2) {
             const idPhotoFront = document.getElementById('idPhotoFront');
             const idPhotoBack = document.getElementById('idPhotoBack');
             clearError(idPhotoFront);
             clearError(idPhotoBack);
 
-            // Check if both files are selected and are the same
             if (
                 idPhotoFront.files.length > 0 &&
                 idPhotoBack.files.length > 0 &&
@@ -1144,14 +1108,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Validate all required fields in the section
         requiredInputs.forEach(input => {
-            // Skip profilePhoto as it's handled in special section logic
             if (input.id === 'profilePhoto') {
                 return;
             }
 
-            // Skip readonly inputs from direct validation here, as their values are pre-filled/controlled
             if (input.readOnly) {
                 return;
             }
@@ -1159,7 +1120,6 @@ document.addEventListener('DOMContentLoaded', function() {
             clearError(input);
 
             if (input.type === 'radio') {
-                // Only validate the first radio in the group
                 if (!input.checked) {
                     const group = currentSection.querySelectorAll(`input[name="${input.name}"]`);
                     const isAnyChecked = Array.from(group).some(radio => radio.checked);
@@ -1179,7 +1139,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     isValid = false;
                 }
             } else if (input.id === 'middleName') {
-                // Already handled above
             } else if (input.value.trim() === '') {
                 displayError(input, 'This field is required.');
                 isValid = false;
@@ -1194,7 +1153,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function validateAllSections() {
         let allValid = true;
-        for (let i = 0; i < sections.length - 1; i++) { // skip summary
+        for (let i = 0; i < sections.length - 1; i++) { 
             if (!validateSection(i)) {
                 allValid = false;
                 showSection(i);
@@ -1220,11 +1179,9 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (key === 'agreeTerms') {
                 summaryData[key] = 'Yes';
             } else if (key === 'noMiddleName') {
-                // Skip this field from summary as it's handled by middleName directly
                 continue;
             }
             else if (key === 'sameAsPermanentAddress') {
-                // Skip this field from summary
                 continue;
             }
             else {
@@ -1241,7 +1198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             civilStatus: 'Civil Status',
             citizenship: 'Citizenship',
             birthPlace: 'Place of Birth',
-            profilePhoto: 'Profile Photo', // New: Added to display map
+            profilePhoto: 'Profile Photo',
             presentAddress: 'Present Address',
             permanentAddress: 'Permanent Address',
             email: 'Email Address',
@@ -1256,7 +1213,6 @@ document.addEventListener('DOMContentLoaded', function() {
             agreeTerms: 'Agreed to Terms'
         };
         for (const key in displayMap) {
-            // Check if middleName is empty and noMiddleName is checked, then display 'N/A'
             if (key === 'middleName' && document.getElementById('noMiddleName')?.checked) {
                 const item = document.createElement('div');
                 item.classList.add('summary-item');
@@ -1281,7 +1237,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 valueContainer.style.flexDirection = 'column';
                 valueContainer.style.alignItems = 'flex-start';
 
-                if (key === 'idPhotoFront' || key === 'idPhotoBack' || key === 'profilePhoto') { // New: Include profilePhoto
+                if (key === 'idPhotoFront' || key === 'idPhotoBack' || key === 'profilePhoto') {
                     const fileInfo = summaryData[key];
                     const fileNameSpan = document.createElement('span');
                     fileNameSpan.textContent = fileInfo.name;
@@ -1356,7 +1312,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Navigation logic
     nextBtns.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1382,20 +1337,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Validate all sections before submit
     if (submitBtn) {
         submitBtn.addEventListener('click', function(e) {
             if (!validateAllSections()) {
                 e.preventDefault();
             } else {
-                // If validation passes, the form will naturally submit
-                // The PHP will then handle the database insertion and redirect to the success message
-                // The JS confirmation message should only show if PHP explicitly signals success
+              
             }
         });
     }
 
-    // Clear errors on input
     const inputsToClearErrors = document.querySelectorAll('input, select, textarea');
     inputsToClearErrors.forEach(input => {
         if (['text', 'number', 'date', 'email'].includes(input.type) || input.tagName === 'TEXTAREA') {
@@ -1406,7 +1357,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Special case for radio buttons: clear error when any radio in the group is selected
     document.querySelectorAll('input[name="sex"]').forEach(radio => {
         radio.addEventListener('change', () => {
             const group = document.querySelectorAll('input[name="sex"]');
@@ -1414,7 +1364,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle middle name checkbox logic
     const middleNameInput = document.getElementById('middleName');
     const noMiddleNameCheckbox = document.getElementById('noMiddleName');
 
@@ -1429,13 +1378,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Set initial state based on PHP data if middleName is empty
         if (middleNameInput.value.trim() === '' && noMiddleNameCheckbox.checked) {
             middleNameInput.disabled = true;
         }
     }
 
-    // Handle "Same as permanent address" checkbox logic
     const permanentAddressInput = document.getElementById('permanentAddress');
     const presentAddressInput = document.getElementById('presentAddress');
     const sameAsPermanentAddressCheckbox = document.getElementById('sameAsPermanentAddress');
@@ -1446,9 +1393,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 presentAddressInput.value = permanentAddressInput.value;
                 presentAddressInput.readOnly = true;
                 presentAddressInput.classList.add('readonly-input');
-                clearError(presentAddressInput); // Clear any existing error
+                clearError(presentAddressInput); 
             } else {
-                // Only clear if it was previously filled by the checkbox and was read-only
                 if (presentAddressInput.value === permanentAddressInput.value && presentAddressInput.readOnly) {
                     presentAddressInput.value = '';
                 }
@@ -1459,17 +1405,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         sameAsPermanentAddressCheckbox.addEventListener('change', updatePresentAddressState);
 
-        // Initial check: If presentAddress is already the same as permanentAddress on load, check the box
-        // This handles cases where the form was submitted with errors and presentAddress was pre-filled
-        // and also for initial load if the session data implies they are the same.
+    
         if (permanentAddressInput.value.trim() !== '' && presentAddressInput.value.trim() === permanentAddressInput.value.trim()) {
             sameAsPermanentAddressCheckbox.checked = true;
-            updatePresentAddressState(); // Apply read-only and value
+            updatePresentAddressState();
         }
     }
 
 
-    // Initial display
     showSection(currentSectionIndex);
 
     if (Object.keys(phpErrors).length > 0 && !formSubmittedSuccessfully) {
