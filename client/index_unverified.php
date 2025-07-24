@@ -383,9 +383,7 @@ $username=$userfetch["cname"];
                                                             <div class="h3-dashboard" >
                                                                 NewBooking &nbsp;&nbsp;
                                                             </div>
-                                                        </div>
-                                                        <div class="btn-icon-back dashboard-icons" style="margin-left: 0px;background-image: url('../img/icons/book-hover.svg');"></div>
-                                                    </div>
+                                                        </div>                                                    </div>
                                                 </td>
                                                 <td style="width: 25%;">
                                                     <div  class="dashboard-items"  style="padding:20px;margin:auto;width:95%;display: flex;padding-top:21px;padding-bottom:21px;">
