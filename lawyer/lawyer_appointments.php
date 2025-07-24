@@ -358,7 +358,7 @@ $today = date('Y-m-d');
                             <div class="detail-item"><strong>Client Name:</strong> <span>'.htmlspecialchars($row["cname"]).'</span></div>
                             <div class="detail-item"><strong>Client Email:</strong> <span>'.htmlspecialchars($row["cemail"]).'</span></div>
                             <div class="detail-item"><strong>Client Phone:</strong> <span>'.htmlspecialchars($row["ctel"]).'</span></div>
-                            <div class="detail-item"><strong>Client DOB:</strong> <span>'.date("F j, Y", strtotime($row["cdob"])).'</span></div>
+                            <div class="detail-item"><strong>Client Date of Birth:</strong> <span>'.date("F j, Y", strtotime($row["cdob"])).'</span></div>
                             <div class="detail-full"><strong>Client Address:</strong> <span>'.htmlspecialchars($row["caddress"]).'</span></div>
                             <div class="detail-divider" style="grid-column: 1 / -1; height: 1px; background-color: #e0e0e0; margin: 10px 0;"></div>
                             <div class="detail-item"><strong>Session Title:</strong> <span>'.htmlspecialchars($row["title"]).'</span></div>

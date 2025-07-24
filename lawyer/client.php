@@ -162,8 +162,8 @@ $username=$userfetch["lawyername"];
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
-                                    <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
+                                    <p class="profile-title"><?php echo substr($username ?? '',0,13)  ?>..</p>
+                                    <p class="profile-subtitle"><?php echo substr($useremail ?? '',0,22)  ?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -207,29 +207,15 @@ $username=$userfetch["lawyername"];
             </table>
         </div>
         <?php       
-            $selecttype="My";
-            $current="My clients Only";
-            if($_POST){
-                if(isset($_POST["search"])){
-                    $keyword=$_POST["search12"];
-                    $sqlmain= "select * from client where cemail='$keyword' or cname='$keyword' or cname like '$keyword%' or cname like '%$keyword' or cname like '%$keyword%' ";
-                    $selecttype="my";
-                }
-                
-                if(isset($_POST["filter"])){
-                    if($_POST["showonly"]=='all'){
-                        $sqlmain= "select * from client";
-                        $selecttype="All";
-                        $current="All Clients";
-                    }else{
-                        $sqlmain= "select DISTINCT client.* from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
-                        $selecttype="My";
-                        $current="My Clients Only";
-                    }
-                }
-            }else{
-                $sqlmain= "select DISTINCT client.* from appointment inner join client on client.cid=appointment.cid inner join schedule on schedule.scheduleid=appointment.scheduleid where schedule.lawyerid=$userid;";
-                $selecttype="My";
+            // FIX: Default view is always "My Clients" for lawyers. Filter section removed.
+            $selecttype = "My";
+            $sqlmain = "SELECT DISTINCT client.* FROM appointment INNER JOIN client ON client.cid=appointment.cid INNER JOIN schedule ON schedule.scheduleid=appointment.scheduleid WHERE schedule.lawyerid=$userid";
+
+            // If a search is performed, it searches within the lawyer's clients.
+            if (!empty($_POST["search"])) {
+                $keyword = $database->real_escape_string($_POST["search12"]);
+                $sqlmain .= " AND (client.cname LIKE '%$keyword%' OR client.cemail LIKE '%$keyword%')";
+                $selecttype = "Search Results for";
             }
         ?>
         <div class="dash-body">
@@ -237,11 +223,13 @@ $username=$userfetch["lawyername"];
                 <tr >
                     <td>
                         <form action="" method="post" class="header-search">
-                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Search Client name or Email" list="client">&nbsp;&nbsp;
+                            <input type="search" name="search12" class="input-text header-searchbar" placeholder="Search Client name or Email" list="client" value="<?php echo isset($_POST['search12']) ? htmlspecialchars($_POST['search12']) : '' ?>">&nbsp;&nbsp;
                             
                             <?php
+                                // FIX: Datalist now only shows the lawyer's clients.
+                                $list11_query = "SELECT DISTINCT client.* FROM appointment INNER JOIN client ON client.cid=appointment.cid INNER JOIN schedule ON schedule.scheduleid=appointment.scheduleid WHERE schedule.lawyerid=$userid;";
                                 echo '<datalist id="client">';
-                                $list11 = $database->query($sqlmain);
+                                $list11 = $database->query($list11_query);
                                 for ($y=0;$y<$list11->num_rows;$y++){
                                     $row00=$list11->fetch_assoc();
                                     $d=$row00["cname"];
@@ -272,33 +260,14 @@ $username=$userfetch["lawyername"];
                 </tr>
                 <tr>
                     <td colspan="4" style="padding-top:10px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)"><?php echo $selecttype." Clients (".$list11->num_rows.")"; ?></p>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)"><?php 
+                            $result_count = $database->query($sqlmain);
+                            $heading_text = ($selecttype == "Search Results for") ? $selecttype . " '" . htmlspecialchars($_POST['search12']) . "'" : "My";
+                            echo $heading_text." Clients (".$result_count->num_rows.")"; 
+                        ?></p>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="4" style="padding-top:0px;width: 100%;" >
-                        <center>
-                        <table class="filter-container" border="0" >
-                        <form action="" method="post">
-                        <td  style="text-align: right;">
-                        Show Details About : &nbsp;
-                        </td>
-                        <td width="30%">
-                        <select name="showonly" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
-                                    <option value="" disabled selected hidden><?php echo $current   ?></option><br/>
-                                    <option value="my">My Clients Only</option><br/>
-                                    <option value="all">All Clients</option><br/>
-                        </select>
-                    </td>
-                    <td width="12%">
-                        <input type="submit"  name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
-                        </form>
-                    </td>
-                    </tr>
-                            </table>
-                        </center>
-                    </td>
-                </tr>
+                <!-- FIX: Filter section removed -->
                 <tr>
                    <td colspan="4">
                        <center>
@@ -324,7 +293,7 @@ $username=$userfetch["lawyername"];
                                     <img src="../img/notfound.svg" width="25%">
                                     <br>
                                     <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldn\'t find anything related to your keywords!</p>
-                                    <a class="non-style-link" href="client.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Clients &nbsp;</button>
+                                    <a class="non-style-link" href="client.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all My Clients &nbsp;</button>
                                     </a>
                                     </center>
                                     <br><br><br><br>
@@ -340,11 +309,12 @@ $username=$userfetch["lawyername"];
                                     $dob=$row["cdob"];
                                     $tel=$row["ctel"];
                                     
+                                    // FIX: Removed filter state from the view link.
                                     echo '<tr>
-                                        <td> &nbsp;'.htmlspecialchars(substr($name,0,35)).'</td>
-                                        <td>'.htmlspecialchars(substr($tel,0,10)).'</td>
-                                        <td>'.htmlspecialchars(substr($email,0,20)).'</td>
-                                        <td>'.htmlspecialchars(substr($dob,0,10)).'</td>
+                                        <td> &nbsp;'.htmlspecialchars(substr($name ?? '',0,35)).'</td>
+                                        <td>'.htmlspecialchars(substr($tel ?? '',0,10)).'</td>
+                                        <td>'.htmlspecialchars(substr($email ?? '',0,20)).'</td>
+                                        <td>'.htmlspecialchars(substr($dob ?? '',0,10)).'</td>
                                         <td>
                                         <div style="display:flex;justify-content: center;">
                                             <a href="?action=view&id='.$cid.'" class="non-style-link">
@@ -405,14 +375,17 @@ $username=$userfetch["lawyername"];
     ?>
 
     <script>
+        // FIX: This script now only runs when the modal is active and redirects without filter state.
+        <?php if(isset($_GET['action']) && $_GET['action'] == 'view'): ?>
         const viewModal = document.getElementById('viewModal');
         // Close modal if clicked outside of the content area
         window.onclick = function(event) {
             if (event.target == viewModal) {
-                // Redirect to close the view modal by removing GET params
+                // Redirect to close the view modal.
                 window.location.href = 'client.php';
             }
         }
+        <?php endif; ?>
     </script>
 </body>
 </html>

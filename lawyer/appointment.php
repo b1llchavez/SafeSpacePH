@@ -330,28 +330,23 @@ $username = $userfetch["lawyername"];
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="padding-top:10px;width: 100%;">
+                    <td width="50%" style="padding-top:10px;">
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Appointments (<?php echo $list110->num_rows; ?>)</p>
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="padding-top:0px;width: 100%;">
-                        <center>
-                            <table class="filter-container" border="0">
-                                <tr>
-                                    <td width="10%"></td>
-                                    <td width="5%" style="text-align: center;">Date:</td>
-                                    <td width="30%">
-                                        <form action="" method="post">
-                                            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
-                                    </td>
-                                    <td width="12%">
-                                        <input type="submit" name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter" style="padding: 15px; margin :0;width:100%">
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
+                    <td style="padding-top:10px; text-align: right; padding-right: 45px;">
+                        <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
+                             <input type="date" name="sheduledate" id="date" class="input-text" style="width: auto; padding: 8px 10px;" value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
+                             
+                             <button type="submit" name="filter" class="btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                                Filter
+                             </button>
+
+                             <a href="appointment.php" class="non-style-link btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                Reset
+                             </a>
+                        </form>
                     </td>
                 </tr>
                 <?php
@@ -365,7 +360,7 @@ $username = $userfetch["lawyername"];
                 }
                 ?>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="4" style="padding-top:20px;">
                         <center>
                             <div class="abc scroll">
                                 <table width="93%" class="sub-table scrolldown" border="0">

@@ -162,8 +162,11 @@
                         <td >
                             <h3>Welcome!</h3>
                             <h1><?php echo $username  ?>.</h1>
-                            <p>Thanks for joinnig with us. We are always trying to get you a complete service<br>
-                            You can view your dailly schedule, Reach Clients Appointment at home!<br><br>
+                            <p>Thank you for joining Safe Space PH.<br>
+                          This dashboard allows you to manage your schedule, track appointments, and stay connected<br>
+                           with your clients efficiently. We're here to support you in delivering legal services.<br>
+                          <br>
+
                             </p>
                             <a href="appointment.php" class="non-style-link"><button class="btn-primary btn" style="width:30%">View My Appointments</button></a>
                             <br>
