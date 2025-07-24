@@ -429,8 +429,8 @@ input[type=search]:focus {
   background-size: 30px 30px;
   background-image: url('../img/icons/client_verification_white.svg');
 }
-.menu-icon-verify:hover,.menu-icon-verify-active{
-  color: var(--primarycolor);
+.menu-icon-verify:hover, .menu-icon-verify-active{
+  color: #fff;
   background-size: 30px 30px;
   background-image: url('../img/icons/verify-white.svg');
 }
@@ -531,7 +531,7 @@ input[type=search]:focus {
   background-image: url('../img/icons/unverify.svg');
 }
 
-.btn-unverify-hover{
+.btn-unverify:hover{
   background-size: 30px 30px;
   background-image: url('../img/icons/unverify-white.svg');
 }
