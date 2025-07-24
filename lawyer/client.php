@@ -1,11 +1,8 @@
 <?php
-// Ensure all files are included correctly at the top.
 session_start();
 
-// Import database connection
 include("../connection.php");
 
-// Authentication: Check if the user is logged in and is a 'lawyer'
 if(isset($_SESSION["user"])){
     if(($_SESSION["user"])=="" or $_SESSION['usertype']!='l'){
         header("location: ../login.php");
@@ -18,7 +15,6 @@ if(isset($_SESSION["user"])){
     exit();
 }
 
-// Get Lawyer Info
 $userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
 $userfetch=$userrow->fetch_assoc();
 $userid= $userfetch["lawyerid"];
@@ -48,7 +44,6 @@ $username=$userfetch["lawyername"];
             overflow-y: auto;
         }
         
-        /* Consistent Modal Styling from lawyer_appointments.php */
         .overlay {
             position: fixed;
             top: 0;
@@ -207,11 +202,9 @@ $username=$userfetch["lawyername"];
             </table>
         </div>
         <?php       
-            // FIX: Default view is always "My Clients" for lawyers. Filter section removed.
             $selecttype = "My";
             $sqlmain = "SELECT DISTINCT client.* FROM appointment INNER JOIN client ON client.cid=appointment.cid INNER JOIN schedule ON schedule.scheduleid=appointment.scheduleid WHERE schedule.lawyerid=$userid";
 
-            // If a search is performed, it searches within the lawyer's clients.
             if (!empty($_POST["search"])) {
                 $keyword = $database->real_escape_string($_POST["search12"]);
                 $sqlmain .= " AND (client.cname LIKE '%$keyword%' OR client.cemail LIKE '%$keyword%')";
@@ -226,7 +219,6 @@ $username=$userfetch["lawyername"];
                             <input type="search" name="search12" class="input-text header-searchbar" placeholder="Search Client name or Email" list="client" value="<?php echo isset($_POST['search12']) ? htmlspecialchars($_POST['search12']) : '' ?>">&nbsp;&nbsp;
                             
                             <?php
-                                // FIX: Datalist now only shows the lawyer's clients.
                                 $list11_query = "SELECT DISTINCT client.* FROM appointment INNER JOIN client ON client.cid=appointment.cid INNER JOIN schedule ON schedule.scheduleid=appointment.scheduleid WHERE schedule.lawyerid=$userid;";
                                 echo '<datalist id="client">';
                                 $list11 = $database->query($list11_query);
@@ -267,7 +259,6 @@ $username=$userfetch["lawyername"];
                         ?></p>
                     </td>
                 </tr>
-                <!-- FIX: Filter section removed -->
                 <tr>
                    <td colspan="4">
                        <center>
@@ -309,7 +300,6 @@ $username=$userfetch["lawyername"];
                                     $dob=$row["cdob"];
                                     $tel=$row["ctel"];
                                     
-                                    // FIX: Removed filter state from the view link.
                                     echo '<tr>
                                         <td> &nbsp;'.htmlspecialchars(substr($name ?? '',0,35)).'</td>
                                         <td>'.htmlspecialchars(substr($tel ?? '',0,10)).'</td>
@@ -375,13 +365,10 @@ $username=$userfetch["lawyername"];
     ?>
 
     <script>
-        // FIX: This script now only runs when the modal is active and redirects without filter state.
         <?php if(isset($_GET['action']) && $_GET['action'] == 'view'): ?>
         const viewModal = document.getElementById('viewModal');
-        // Close modal if clicked outside of the content area
         window.onclick = function(event) {
             if (event.target == viewModal) {
-                // Redirect to close the view modal.
                 window.location.href = 'client.php';
             }
         }

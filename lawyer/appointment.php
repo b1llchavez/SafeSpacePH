@@ -1,10 +1,8 @@
 <?php
-// Ensure all files are included correctly at the top.
 session_start();
 
-// Import database connection and email functions
 include("../connection.php");
-require_once('../send_email.php'); // Make sure the path is correct
+require_once('../send_email.php'); 
 
 if (isset($_SESSION["user"])) {
     if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'l') {
@@ -16,7 +14,6 @@ if (isset($_SESSION["user"])) {
     header("location: ../login.php");
 }
 
-// Handle the cancellation form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_submit'])) {
     $appoid = $_POST['appoid'];
     $reason = $_POST['reason'];
@@ -29,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_submit'])) {
         $cancellation_reason_text = $reason;
     }
 
-    // 1. Fetch appointment and client details for the email notification
     $stmt_details = $database->prepare("
         SELECT
             c.cname,
@@ -51,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_submit'])) {
     $stmt_details->close();
 
     if ($details) {
-        // 2. Send the detailed cancellation email to the client
         $recipientEmail = $details['cemail'];
         $recipientName = $details['cname'];
         $appointmentDetails = [
@@ -61,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_submit'])) {
             'caseTitle' => $details['title']
         ];
         
-        // Call the email function from send_email.php
         sendDetailedAppointmentCanceledEmail(
             $recipientEmail,
             $recipientName,
@@ -70,18 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_submit'])) {
             $explanation
         );
 
-        // 3. Update the appointment status in the database
         $status = 'cancelled';
         $stmt_update = $database->prepare("UPDATE appointment SET status=?, cancellation_reason=?, cancellation_explanation=? WHERE appoid=?");
         $stmt_update->bind_param("sssi", $status, $cancellation_reason_text, $explanation, $appoid);
         $stmt_update->execute();
         $stmt_update->close();
 
-        // 4. Redirect to prevent form resubmission
         header("Location: appointment.php?action=cancelled");
         exit;
     } else {
-        // Handle case where appointment details are not found
         header("Location: appointment.php?action=error");
         exit;
     }
@@ -116,7 +107,6 @@ $username = $userfetch["lawyername"];
             overflow-y: auto;
         }
         
-        /* Consistent Modal Styling from volunteer_form.php */
         .overlay {
             position: fixed;
             top: 0;
@@ -434,7 +424,6 @@ $username = $userfetch["lawyername"];
         </div>
     </div>
 
-    <!-- The Cancellation Modal -->
     <div id="cancelModal" class="overlay">
         <div class="modal-content">
             <h2 class="modal-header">Cancel Appointment Confirmation</h2>
@@ -526,7 +515,6 @@ $username = $userfetch["lawyername"];
             return true;
         }
 
-        // Close modal if clicked outside of the content area
         window.onclick = function(event) {
             if (event.target == cancelModal) {
                 closeCancelModal();

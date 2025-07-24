@@ -31,7 +31,6 @@
 <body>
     <?php
 
-    //learn from w3schools.com
 
     session_start();
 
@@ -47,7 +46,6 @@
     }
     
 
-    //import database
     include("../connection.php");
     $userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
@@ -55,8 +53,7 @@
     $username=$userfetch["lawyername"];
 
 
-    //echo $userid;
-    //echo $username;
+    
     
     ?>
     <div class="container">
@@ -196,7 +193,7 @@
     </tr>
 
  <tr>
-        <!-- All Lawyers -->
+      
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -211,7 +208,7 @@
             </div>
         </td>
 
-        <!-- All clients -->
+       
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -228,7 +225,7 @@
     </tr>
 
     <tr>
-        <!-- New Bookings -->
+       
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
@@ -244,7 +241,7 @@
             </div>
         </td>
 
-            <!-- Today Sessions -->
+          
         <td style="width: 25%;">
             <div class="dashboard-items" style="padding: 21px 20px; margin: auto; width: 95%; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
