@@ -1,59 +1,261 @@
+<?php
+// Ensure all files are included correctly at the top.
+session_start();
+
+// Import database connection and email functions
+include("../connection.php");
+require_once('../send_email.php'); // Make sure the path is correct
+
+if (isset($_SESSION["user"])) {
+    if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'l') {
+        header("location: ../login.php");
+    } else {
+        $useremail = $_SESSION["user"];
+    }
+} else {
+    header("location: ../login.php");
+}
+
+// Handle the cancellation form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_submit'])) {
+    $appoid = $_POST['appoid'];
+    $reason = $_POST['reason'];
+    $explanation = trim($_POST['explanation']);
+    $cancellation_reason_text = '';
+
+    if ($reason === 'Other') {
+        $cancellation_reason_text = trim($_POST['other_reason']);
+    } else {
+        $cancellation_reason_text = $reason;
+    }
+
+    // 1. Fetch appointment and client details for the email notification
+    $stmt_details = $database->prepare("
+        SELECT
+            c.cname,
+            c.cemail,
+            s.scheduledate,
+            s.scheduletime,
+            s.title,
+            l.lawyername
+        FROM appointment a
+        JOIN client c ON a.cid = c.cid
+        JOIN schedule s ON a.scheduleid = s.scheduleid
+        JOIN lawyer l ON s.lawyerid = l.lawyerid
+        WHERE a.appoid = ?
+    ");
+    $stmt_details->bind_param("i", $appoid);
+    $stmt_details->execute();
+    $result_details = $stmt_details->get_result();
+    $details = $result_details->fetch_assoc();
+    $stmt_details->close();
+
+    if ($details) {
+        // 2. Send the detailed cancellation email to the client
+        $recipientEmail = $details['cemail'];
+        $recipientName = $details['cname'];
+        $appointmentDetails = [
+            'lawyerName' => $details['lawyername'],
+            'appointmentDate' => $details['scheduledate'],
+            'appointmentTime' => $details['scheduletime'],
+            'caseTitle' => $details['title']
+        ];
+        
+        // Call the email function from send_email.php
+        sendDetailedAppointmentCanceledEmail(
+            $recipientEmail,
+            $recipientName,
+            $appointmentDetails,
+            $cancellation_reason_text,
+            $explanation
+        );
+
+        // 3. Update the appointment status in the database
+        $status = 'cancelled';
+        $stmt_update = $database->prepare("UPDATE appointment SET status=?, cancellation_reason=?, cancellation_explanation=? WHERE appoid=?");
+        $stmt_update->bind_param("sssi", $status, $cancellation_reason_text, $explanation, $appoid);
+        $stmt_update->execute();
+        $stmt_update->close();
+
+        // 4. Redirect to prevent form resubmission
+        header("Location: appointment.php?action=cancelled");
+        exit;
+    } else {
+        // Handle case where appointment details are not found
+        header("Location: appointment.php?action=error");
+        exit;
+    }
+}
+
+$userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
+$userfetch = $userrow->fetch_assoc();
+$userid = $userfetch["lawyerid"];
+$username = $userfetch["lawyername"];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/animations.css">  
-    <link rel="stylesheet" href="../css/main.css">  
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
 
     <title>Appointments | SafeSpace PH</title>
     <style>
-        .popup{
+        .popup {
             animation: transitionIn-Y-bottom 0.5s;
         }
-        .sub-table{
+        .sub-table {
             animation: transitionIn-Y-bottom 0.5s;
         }
-        .dash-body{
+        .dash-body {
             overflow-y: auto;
         }
-</style>
+        
+        /* Consistent Modal Styling from volunteer_form.php */
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
+            padding: 40px 50px;
+            max-width: 600px;
+            width: 95%;
+            position: relative;
+            animation: fadeIn 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            text-align: center;
+            color: #391053;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+        .modal-divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+            border: none;
+            border-radius: 2px;
+            margin: 18px 0 28px 0;
+        }
+        .modal-body .form-group {
+            margin-bottom: 20px;
+        }
+        .modal-body .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #391053;
+            font-size: 1.05rem;
+        }
+        .modal-body .radio-group label {
+            font-weight: 500;
+            font-size: 1rem;
+            color: #3a2c5c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .modal-body input[type="radio"] {
+            accent-color: #5A2675;
+            width: 18px;
+            height: 18px;
+        }
+        .modal-body .input-text, .modal-body textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        .modal-body .input-text:focus, .modal-body textarea:focus {
+            border-color: #5A2675;
+            box-shadow: 0 0 0 2px rgba(157, 114, 179, 0.2);
+            outline: none;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .modal-btn {
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .modal-btn-primary {
+            background: #5A2675;
+            color: #fff;
+        }
+        .modal-btn-primary:hover {
+            background: #391053;
+            box-shadow: 0 2px 8px rgba(90, 38, 117, 0.18);
+        }
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
+        }
+        #other_reason_input {
+            display: none;
+            margin-top: 10px;
+            padding-left: 26px;
+        }
+        #cancel-error {
+            color: #d9534f;
+            text-align: center;
+            display: none;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
-    <?php
-
-    //learn from w3schools.com
-
-    session_start();
-
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='l'){
-            header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
-        }
-
-    }else{
-        header("location: ../login.php");
-    }
-    
-    
-
-       //import database
-       include("../connection.php");
-       $userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
-       $userfetch=$userrow->fetch_assoc();
-       $userid= $userfetch["lawyerid"];
-       $username=$userfetch["lawyername"];
-    //echo $userid;
-    ?>
     <div class="container">
         <div class="menu">
-        <table class="menu-container" border="0">
-                <tr>
+            <table class="menu-container" border="0">
+                 <tr>
                     <td style="padding:10px" colspan="2">
                         <table border="0" class="profile-container">
                             <tr>
@@ -107,504 +309,234 @@
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
-                <tr >
-            
+                <tr>
                     <td>
                         <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Manage Appointments</p>
-                                           
                     </td>
                     <td width="15%">
                         <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
                             Today's Date
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php 
-
-                        date_default_timezone_set('Asia/Kolkata');
-
-                        $today = date('Y-m-d');
-                        echo $today;
-
-                        $list110 = $database->query("select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  where  lawyer.lawyerid=$userid ");
-
-                        ?>
+                            <?php
+                            date_default_timezone_set('Asia/Manila');
+                            echo date('Y-m-d');
+                            $list110 = $database->query("select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  where  lawyer.lawyerid=$userid ");
+                            ?>
                         </p>
                     </td>
                     <td width="10%">
-                        <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
+                        <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
-
-
-                </tr>
-               
-                <!-- <tr>
-                    <td colspan="4" >
-                        <div style="display: flex;margin-top: 40px;">
-                        <div class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49);margin-top: 5px;">Schedule a Session</div>
-                        <a href="?action=add-session&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="margin-left:25px;background-image: url('../img/icons/add.svg');">Add a Session</font></button>
-                        </a>
-                        </div>
-                    </td>
-                </tr> -->
-                <tr>
-                    <td colspan="4" style="padding-top:10px;width: 100%;" >
-                    
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">My Appointments (<?php echo $list110->num_rows; ?>)</p>
-                    </td>
-                    
                 </tr>
                 <tr>
-                    <td colspan="4" style="padding-top:0px;width: 100%;" >
+                    <td colspan="4" style="padding-top:10px;width: 100%;">
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Appointments (<?php echo $list110->num_rows; ?>)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="padding-top:0px;width: 100%;">
                         <center>
-                        <table class="filter-container" border="0" >
-                        <tr>
-                           <td width="10%">
-
-                           </td> 
-                        <td width="5%" style="text-align: center;">
-                        Date:
-                        </td>
-                        <td width="30%">
-                        <form action="" method="post">
-                            
-                            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
-
-                        </td>
-                        
-                    <td width="12%">
-                        <input type="submit"  name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
-                        </form>
-                    </td>
-
-                    </tr>
-                            </table>
-
-                        </center>
-                    </td>
-                    
-                </tr>
-                
-                <?php
-
-
-                    $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,client.cname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  where  lawyer.lawyerid=$userid ";
-
-                    if($_POST){
-                        //print_r($_POST);
-                        
-
-
-                        
-                        if(!empty($_POST["sheduledate"])){
-                            $sheduledate=$_POST["sheduledate"];
-                            $sqlmain.=" and schedule.scheduledate='$sheduledate' ";
-                        };
-
-                        
-
-                        //echo $sqlmain;
-
-                    }
-
-
-                ?>
-                  
-                <tr>
-                   <td colspan="4">
-                       <center>
-                        <div class="abc scroll">
-                        <table width="93%" class="sub-table scrolldown" border="0">
-                        <thead>
-                        <tr>
-                                <th class="table-headin">
-                                    Client name
-                                </th>
-                                <th class="table-headin">
-                                    
-                                    Appointment number
-                                    
-                                </th>
-                               
-                                <th class="table-headin">
-                                    
-                                
-                                    Session Title
-                                    
-                                    </th>
-                                
-                                <th class="table-headin" >
-                                    
-                                    Session Date & Time
-                                    
-                                </th>
-                                
-                                <th class="table-headin">
-                                    
-                                    Appointment Date
-                                    
-                                </th>
-                                
-                                <th class="table-headin">
-                                    
-                                    Events
-                                    
-                                </tr>
-                        </thead>
-                        <tbody>
-                        
-                            <?php
-
-                                
-                                $result= $database->query($sqlmain);
-
-                                if($result->num_rows==0){
-                                    echo '<tr>
-                                    <td colspan="7">
-                                    <br><br><br><br>
-                                    <center>
-                                    <img src="../img/notfound.svg" width="25%">
-                                    
-                                    <br>
-                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We  couldnt find anything related to your keywords !</p>
-                                    <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Appointments &nbsp;</font></button>
-                                    </a>
-                                    </center>
-                                    <br><br><br><br>
+                            <table class="filter-container" border="0">
+                                <tr>
+                                    <td width="10%"></td>
+                                    <td width="5%" style="text-align: center;">Date:</td>
+                                    <td width="30%">
+                                        <form action="" method="post">
+                                            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
                                     </td>
-                                    </tr>';
-                                    
-                                }
-                                else{
-                                for ( $x=0; $x<$result->num_rows;$x++){
-                                    $row=$result->fetch_assoc();
-                                    $appoid=$row["appoid"];
-                                    $scheduleid=$row["scheduleid"];
-                                    $title=$row["title"];
-                                    $lawyername=$row["lawyername"];
-                                    $scheduledate=$row["scheduledate"];
-                                    $scheduletime=$row["scheduletime"];
-                                    $cname=$row["cname"];
-                                    $apponum=$row["apponum"];
-                                    $appodate=$row["appodate"];
-                                    echo '<tr >
-                                        <td style="font-weight:600;"> &nbsp;'.
-                                        
-                                        substr($cname,0,25)
-                                        .'</td >
-                                        <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">
-                                        '.$apponum.'
-                                        
-                                        </td>
-                                        <td>
-                                        '.substr($title,0,15).'
-                                        </td>
-                                        <td style="text-align:center;;">
-                                            '.substr($scheduledate,0,10).' @'.substr($scheduletime,0,5).'
-                                        </td>
-                                        
-                                        <td style="text-align:center;">
-                                            '.$appodate.'
-                                        </td>
-
-                                        <td>
-                                        <div style="display:flex;justify-content: center;">
-                                        
-                                        <!--<a href="?action=view&id='.$appoid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;-->
-                                       <a href="?action=drop&id='.$appoid.'&name='.$cname.'&session='.$title.'&apponum='.$apponum.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancel</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;</div>
-                                        </td>
-                                    </tr>';
-                                    
-                                }
-                            }
-                                 
-                            ?>
- 
-                            </tbody>
-
-                        </table>
-                        </div>
+                                    <td width="12%">
+                                        <input type="submit" name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter" style="padding: 15px; margin :0;width:100%">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
                         </center>
-                   </td> 
+                    </td>
                 </tr>
-                       
-                        
-                        
+                <?php
+                $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,client.cname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate,appointment.status from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  where  lawyer.lawyerid=$userid ";
+
+                if ($_POST) {
+                    if (!empty($_POST["sheduledate"])) {
+                        $sheduledate = $_POST["sheduledate"];
+                        $sqlmain .= " and schedule.scheduledate='$sheduledate' ";
+                    }
+                }
+                ?>
+                <tr>
+                    <td colspan="4">
+                        <center>
+                            <div class="abc scroll">
+                                <table width="93%" class="sub-table scrolldown" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="table-headin">Client Name</th>
+                                            <th class="table-headin">Appointment Number</th>
+                                            <th class="table-headin">Session Title</th>
+                                            <th class="table-headin">Session Date & Time</th>
+                                            <th class="table-headin">Appointment Date</th>
+                                            <th class="table-headin">Status</th>
+                                            <th class="table-headin">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $result = $database->query($sqlmain);
+                                        if ($result->num_rows == 0) {
+                                            echo '<tr>
+                                            <td colspan="7">
+                                            <br><br><br><br>
+                                            <center>
+                                            <img src="../img/notfound.svg" width="25%">
+                                            <br>
+                                            <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldn\'t find anything related to your keywords!</p>
+                                            <a class="non-style-link" href="appointment.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Appointments &nbsp;</button></a>
+                                            </center>
+                                            <br><br><br><br>
+                                            </td>
+                                            </tr>';
+                                        } else {
+                                            for ($x = 0; $x < $result->num_rows; $x++) {
+                                                $row = $result->fetch_assoc();
+                                                $appoid = $row["appoid"];
+                                                $cname = $row["cname"];
+                                                $apponum = $row["apponum"];
+                                                $title = $row["title"];
+                                                $scheduledate = $row["scheduledate"];
+                                                $scheduletime = $row["scheduletime"];
+                                                $appodate = $row["appodate"];
+                                                $status = $row["status"];
+                                                echo '<tr>
+                                                    <td style="font-weight:600;"> &nbsp;' . substr($cname, 0, 25) . '</td>
+                                                    <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);">' . $apponum . '</td>
+                                                    <td>' . substr($title, 0, 25) . '</td>
+                                                    <td style="text-align:center;">' . substr($scheduledate, 0, 10) . ' @' . substr($scheduletime, 0, 5) . '</td>
+                                                    <td style="text-align:center;">' . $appodate . '</td>
+                                                    <td style="text-align:center;">' . ucfirst($status) . '</td>
+                                                    <td>
+                                                    <div style="display:flex;justify-content: center;">';
+                                                
+                                                if ($status == 'cancelled') {
+                                                    echo '<button class="btn-primary-soft btn" style="padding:10px 15px; border-color: #999; color: #999; cursor:not-allowed;" disabled>Cancelled</button>';
+                                                } else {
+                                                    echo '<button class="btn-primary-soft btn button-icon btn-delete" onclick="openCancelModal(' . $appoid . ')" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Cancel</font></button>';
+                                                }
+                                                
+                                                echo '</div>
+                                                    </td>
+                                                </tr>';
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </center>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
-    <?php
-    
-    if($_GET){
-        $id=$_GET["id"];
-        $action=$_GET["action"];
-        if($action=='add-session'){
 
-            echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
+    <!-- The Cancellation Modal -->
+    <div id="cancelModal" class="overlay">
+        <div class="modal-content">
+            <h2 class="modal-header">Cancel Appointment Confirmation</h2>
+            <div class="modal-divider"></div>
+            <div class="modal-body">
+                <form id="cancelForm" action="appointment.php" method="POST" onsubmit="return validateCancelForm()">
+                    <input type="hidden" name="appoid" id="modal_appoid">
+                    <input type="hidden" name="cancel_submit" value="1">
                     
-                    
-                        <a class="close" href="schedule.php">&times;</a> 
-                        <div style="display: flex;justify-content: center;">
-                        <div class="abc">
-                        <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
-                        <tr>
-                                <td class="label-td" colspan="2">'.
-                                   ""
-                                
-                                .'</td>
-                            </tr>
+                    <p id="cancel-error"></p>
 
-                            <tr>
-                                <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Add New Session.</p><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                <form action="add-session.php" method="POST" class="add-new-form">
-                                    <label for="title" class="form-label">Session Title : </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="text" name="title" class="input-text" placeholder="Name of this Session" required><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                
-                                <td class="label-td" colspan="2">
-                                    <label for="lawyerid" class="form-label">Select Lawyer: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <select name="lawyerid" id="" class="box" >
-                                    <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>';
-                                        
-        
-                                        $list11 = $database->query("select  * from  lawyer;");
-        
-                                        for ($y=0;$y<$list11->num_rows;$y++){
-                                            $row00=$list11->fetch_assoc();
-                                            $sn=$row00["lawyername"];
-                                            $id00=$row00["lawyerid"];
-                                            echo "<option value=".$id00.">$sn</option><br/>";
-                                        };
-        
-        
-        
-                                        
-                        echo     '       </select><br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="nop" class="form-label">Number of Clients/Appointment Numbers : </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="number" name="nop" class="input-text" min="0"  placeholder="The final appointment number for this session depends on this number" required><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="date" class="form-label">Session Date: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="date" name="date" class="input-text" min="'.date('Y-m-d').'" required><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="time" class="form-label">Schedule Time: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="time" name="time" class="input-text" placeholder="Time" required><br>
-                                </td>
-                            </tr>
-                           
-                            <tr>
-                                <td colspan="2">
-                                    <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                
-                                    <input type="submit" value="Place this Session" class="login-btn btn-primary btn" name="shedulesubmit">
-                                </td>
-                
-                            </tr>
-                           
-                            </form>
-                            </tr>
-                        </table>
+                    <div class="form-group">
+                        <label>Please select a reason for cancellation:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="reason" value="Change of time" onclick="toggleOtherReason()"> Change of time</label>
+                            <label><input type="radio" name="reason" value="Personal emergency" onclick="toggleOtherReason()"> Personal emergency</label>
+                            <label><input type="radio" name="reason" value="Incomplete details" onclick="toggleOtherReason()"> Incomplete details from client</label>
+                            <label><input type="radio" id="reason_other" name="reason" value="Other" onclick="toggleOtherReason()"> Other</label>
                         </div>
+                        <div id="other_reason_input">
+                            <input type="text" id="other_reason_text" name="other_reason" class="input-text" placeholder="Please specify...">
                         </div>
-                    </center>
-                    <br><br>
-            </div>
-            </div>
-            ';
-        }elseif($action=='session-added'){
-            $titleget=$_GET["title"];
-            echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                    <br><br>
-                        <h2>Session Placed.</h2>
-                        <a class="close" href="schedule.php">&times;</a>
-                        <div class="content">
-                        '.substr($titleget,0,40).' was scheduled.<br><br>
-                            
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        
-                        <a href="schedule.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                        <br><br><br><br>
-                        </div>
-                    </center>
-            </div>
-            </div>
-            ';
-        }elseif($action=='drop'){
-            $nameget=$_GET["name"];
-            $session=$_GET["session"];
-            $apponum=$_GET["apponum"];
-            echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                        <h2>Are you sure?</h2>
-                        <a class="close" href="appointment.php">&times;</a>
-                        <div class="content">
-                            You want to delete this record<br><br>
-                            Client Name: &nbsp;<b>'.substr($nameget,0,40).'</b><br>
-                            Appointment number &nbsp; : <b>'.substr($apponum,0,40).'</b><br><br>
-                            
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        <a href="delete-appointment.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
-                        <a href="appointment.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
+                    </div>
 
-                        </div>
-                    </center>
-            </div>
-            </div>
-            '; 
-        }elseif($action=='view'){
-            $sqlmain= "select * from lawyer where lawyerid='$id'";
-            $result= $database->query($sqlmain);
-            $row=$result->fetch_assoc();
-            $name=$row["lawyername"];
-            $email=$row["lawyeremail"];
-            $spe=$row["specialties"];
-            
-            $spcil_res= $database->query("select sname from specialties where id='$spe'");
-            $spcil_array= $spcil_res->fetch_assoc();
-            $spcil_name=$spcil_array["sname"];
-            $lawyerbarid=$row['lawyerbarid'];
-            $tele=$row['lawyertel'];
-            echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                        <h2></h2>
-                        <a class="close" href="lawyers.php">&times;</a>
-                        <div class="content">
-                            eLawyer Web App<br>
-                            
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
-                        
-                            <tr>
-                                <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                
-                                <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Name: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    '.$name.'<br><br>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Email" class="form-label">Email: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Valid ID No.: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$lawyerbarid.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">Telephone: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Specialties: </label>
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                            <td class="label-td" colspan="2">
-                            '.$spcil_name.'<br><br>
-                            </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="lawyers.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                                
-                                    
-                                </td>
-                
-                            </tr>
-                           
+                    <div class="form-group">
+                        <label for="explanation">Optional Description/Explanation:</label>
+                        <textarea name="explanation" class="input-text" style="height: 100px; resize: vertical;" placeholder="Provide more details for the client..."></textarea>
+                    </div>
 
-                        </table>
-                        </div>
-                    </center>
-                    <br><br>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-btn modal-btn-soft" onclick="closeCancelModal()">Back</button>
+                        <button type="submit" class="modal-btn modal-btn-primary">Confirm Cancellation</button>
+                    </div>
+                </form>
             </div>
-            </div>
-            ';  
-    }
-}
-
-    ?>
+        </div>
     </div>
 
+    <script>
+        const cancelModal = document.getElementById('cancelModal');
+
+        function openCancelModal(appoid) {
+            document.getElementById('modal_appoid').value = appoid;
+            cancelModal.classList.add('active');
+        }
+
+        function closeCancelModal() {
+            cancelModal.classList.remove('active');
+            document.getElementById('cancelForm').reset();
+            document.getElementById('cancel-error').style.display = 'none';
+            document.getElementById('other_reason_input').style.display = 'none';
+        }
+
+        function toggleOtherReason() {
+            if (document.getElementById('reason_other').checked) {
+                document.getElementById('other_reason_input').style.display = 'block';
+            } else {
+                document.getElementById('other_reason_input').style.display = 'none';
+            }
+        }
+
+        function validateCancelForm() {
+            const errorP = document.getElementById('cancel-error');
+            errorP.style.display = 'none';
+            
+            const reasons = document.getElementsByName('reason');
+            let reason_checked = false;
+            for (let i = 0; i < reasons.length; i++) {
+                if (reasons[i].checked) {
+                    reason_checked = true;
+                    break;
+                }
+            }
+
+            if (!reason_checked) {
+                errorP.innerText = 'Please select a reason for cancellation.';
+                errorP.style.display = 'block';
+                return false;
+            }
+
+            if (document.getElementById('reason_other').checked) {
+                if (document.getElementById('other_reason_text').value.trim() === '') {
+                    errorP.innerText = 'Please specify the "Other" reason.';
+                    errorP.style.display = 'block';
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Close modal if clicked outside of the content area
+        window.onclick = function(event) {
+            if (event.target == cancelModal) {
+                closeCancelModal();
+            }
+        }
+    </script>
 </body>
 </html>

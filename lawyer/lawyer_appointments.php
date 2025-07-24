@@ -1,3 +1,30 @@
+<?php
+// Ensure all files are included correctly at the top.
+session_start();
+
+// Import database connection and email functions
+include("../connection.php");
+
+// Authentication: Check if the user is logged in and is a 'lawyer'
+if(isset($_SESSION["user"])){
+    if(($_SESSION["user"])=="" or $_SESSION['usertype']!='l'){
+        header("location: ../login.php");
+        exit();
+    } else {
+        $useremail = $_SESSION["user"];
+    }
+}else{
+    header("location: ../login.php");
+    exit();
+}
+
+// Get Lawyer Info from session
+$lawyerid = $_SESSION['lawyerid'];
+$lawyername = $_SESSION['lawyername'];
+
+date_default_timezone_set('Asia/Manila');
+$today = date('Y-m-d');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,15 +38,9 @@
 
     <title>My Appointments | SafeSpace PH</title>
     <style>
-        .popup{
-            animation: transitionIn-Y-bottom 0.5s;
-            max-height: 85vh; /* Set a max-height for the popup */
-            overflow-y: auto; /* Allow vertical scrolling within the popup */
-        }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        /* This allows the main content area to scroll if content overflows */
         .dash-body{
             overflow-y: auto;
         }
@@ -29,46 +50,121 @@
             border-radius: 5px;
             font-weight: bold;
             color: #fff;
+            font-size: 12px;
         }
-        .status-pending {
-            background-color: #ffc107; /* Orange */
+         .modal-body .status-badge {
+            color: #fff !important; /* Using !important to ensure it overrides any other styles */
         }
-        .status-accepted {
-            background-color: #28a745; /* Green */
+        .status-pending { background-color: #ffc107; }
+        .status-accepted { background-color: #28a745; }
+        .status-rejected { background-color: #dc3545; }
+        .status-completed { background-color: #007bff; }
+        .status-cancelled { background-color: #6c757d; }
+
+        /* Consistent Modal Styling */
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .status-rejected {
-            background-color: #dc3545; /* Red */
+        .overlay.active {
+            visibility: visible;
+            opacity: 1;
         }
-        .status-completed {
-            background-color: #007bff; /* Blue */
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
+            padding: 30px 50px; /* Adjusted vertical padding */
+            max-width: 650px;
+            width: 95%;
+            position: relative;
+            animation: fadeIn 0.3s;
+            max-height: 90vh; /* Responsive height */
+            overflow-y: auto; /* Scrollbar appears only when needed */
+        }
+        .modal-header {
+            text-align: center;
+            color: #391053;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+        .modal-divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+            border: none;
+            border-radius: 2px;
+            margin: 18px 0 28px 0;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px; /* Adjusted top margin */
+        }
+        .modal-btn {
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
+        }
+        
+        /* Aesthetic Improvements */
+   
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        /* Styles for details view */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 30px; /* Adjusted row gap */
+            text-align: left;
+        }
+        .detail-item {
+            font-size: 15px;
+        }
+        .detail-item strong {
+            color: #391053;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .detail-item span {
+            color: #555;
+        }
+        .detail-full {
+            grid-column: 1 / -1;
         }
     </style>
 </head>
 <body>
-    <?php
-    session_start();
-
-    // Authentication: Check if the user is logged in and is a 'lawyer'
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='l'){
-            header("location: ../login.php");
-            exit();
-        }
-    }else{
-        header("location: ../login.php");
-        exit();
-    }
-    
-    // Import database connection
-    include("../connection.php");
-
-    $lawyerid = $_SESSION['lawyerid']; // Lawyer ID from session
-    $lawyername = $_SESSION['lawyername']; // Lawyer name from session
-    $lawyeremail = $_SESSION['user']; // Lawyer email from session
-
-    date_default_timezone_set('Asia/Manila'); // Set timezone to Manila
-    $today = date('Y-m-d');
-    ?>
     <div class="container">
         <div class="menu">
             <table class="menu-container" border="0">
@@ -81,7 +177,7 @@
                                 </td>
                                 <td style="padding:0px;margin:0px;">
                                     <p class="profile-title"><?php echo htmlspecialchars($lawyername); ?></p>
-                                    <p class="profile-subtitle"><?php echo htmlspecialchars($lawyeremail); ?></p>
+                                    <p class="profile-subtitle"><?php echo htmlspecialchars($useremail); ?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -122,12 +218,11 @@
                         <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
                     </td>
                 </tr>
-                </table>
+            </table>
         </div>
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr>
-        
                     <td>
                         <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">My Appointments</p>
                     </td>
@@ -155,47 +250,27 @@
                         <table width="93%" class="sub-table scrolldown" border="0">
                         <thead>
                         <tr>
-                                <th class="table-headin">
-                                    Appointment Number
-                                </th>
-                                <th class="table-headin">
-                                    Client Name
-                                </th>
-                                <th class="table-headin">
-                                    Session Title
-                                </th>
-                                <th class="table-headin" style="font-size:10px">
-                                    Scheduled Date & Time
-                                </th>
-                                <th class="table-headin">
-                                    Appointment Date
-                                </th>
-                                <th class="table-headin">
-                                    Status
-                                </th>
-                                <th class="table-headin">
-                                    Events
-                                </th>
+                                <th class="table-headin">Appt. No</th>
+                                <th class="table-headin">Client Name</th>
+                                <th class="table-headin">Session Title</th>
+                                <th class="table-headin">Scheduled Date & Time</th>
+                                <th class="table-headin">Booked On</th>
+                                <th class="table-headin">Status</th>
+                                <th class="table-headin">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                         
                             <?php
-                                // Fetch all appointments associated with the logged-in lawyer, regardless of status
                                 $sql_appointments = "SELECT
                                     appointment.appoid,
                                     appointment.apponum,
                                     appointment.appodate,
                                     appointment.status,
-                                    schedule.scheduleid,
                                     schedule.title,
                                     schedule.scheduledate,
                                     schedule.scheduletime,
-                                    client.cname,
-                                    client.cemail,
-                                    client.ctel,
-                                    client.caddress,
-                                    client.cdob
+                                    client.cname
                                 FROM appointment 
                                 INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
                                 INNER JOIN client ON appointment.cid = client.cid
@@ -209,38 +284,27 @@
                                     <td colspan="7"> <br><br><br><br>
                                     <center>
                                     <img src="../img/notfound.svg" width="25%">
-                                    
                                     <br>
                                     <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">No appointments found!</p>
-                                    <a class="non-style-link" href="manage-appointments.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Back to Dashboard &nbsp;</font></button>
-                                    </a>
                                     </center>
                                     <br><br><br><br>
                                     </td>
                                     </tr>';
-                                    
                                 } else {
-                                    for ( $x=0; $x<$result_appointments->num_rows;$x++){
-                                        $row_appointment = $result_appointments->fetch_assoc();
+                                    while($row_appointment = $result_appointments->fetch_assoc()){
                                         $appoid = $row_appointment["appoid"];
-                                        $apponum = $row_appointment["apponum"];
-                                        $appodate_made = $row_appointment["appodate"];
                                         $status = $row_appointment["status"];
-                                        $title = $row_appointment["title"];
-                                        $scheduledate = $row_appointment["scheduledate"];
-                                        $scheduletime = $row_appointment["scheduletime"];
-                                        $clientname = $row_appointment["cname"];
 
                                         echo '<tr>
-                                            <td style="text-align:center;">'.$apponum.'</td>
-                                            <td>'.htmlspecialchars($clientname).'</td>
-                                            <td>'.substr(htmlspecialchars($title),0,15).'</td>
+                                            <td style="text-align:center; font-weight:600; color: #391053;">'.$row_appointment["apponum"].'</td>
+                                            <td>'.htmlspecialchars($row_appointment["cname"]).'</td>
+                                            <td>'.substr(htmlspecialchars($row_appointment["title"]),0,25).'</td>
                                             <td style="text-align:center;">
-                                                '.htmlspecialchars($scheduledate).'<br>at '.substr(htmlspecialchars($scheduletime),0,5).'
+                                                '.date("M d, Y", strtotime($row_appointment["scheduledate"])).'<br>'.date("h:i A", strtotime($row_appointment["scheduletime"])).'
                                             </td>
-                                            <td style="text-align:center;">'.htmlspecialchars($appodate_made).'</td>
-                                            <td>
-                                                <span class="status-badge status-'.strtolower($status).'">'.$status.'</span> 
+                                            <td style="text-align:center;">'.date("M d, Y", strtotime($row_appointment["appodate"])).'</td>
+                                            <td style="text-align:center;">
+                                                <span class="status-badge status-'.strtolower($status).'">'.ucfirst($status).'</span> 
                                             </td>
                                             <td>
                                                 <div style="display:flex;justify-content: center;">
@@ -261,187 +325,72 @@
                         </center>
                    </td> 
                 </tr>
-                       
             </table>
         </div>
     </div>
 
     <?php
-    // View details popup
-    if($_GET){
-        $id=$_GET["id"];
-        $action=$_GET["action"];
-        if($action=='view'){
-            $sql_view_details = "SELECT 
-                appointment.appoid,
-                appointment.apponum,
-                appointment.appodate,
-                appointment.status,
-                appointment.description AS case_description,
-                schedule.scheduleid,
-                schedule.title,
-                schedule.scheduledate,
-                schedule.scheduletime,
-                client.cname,
-                client.cemail,
-                client.ctel,
-                client.caddress,
-                client.cdob
-            FROM appointment 
-            INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
-            INNER JOIN client ON appointment.cid = client.cid
-            WHERE appointment.appoid = '$id' AND schedule.lawyerid = '$lawyerid'"; // Ensure lawyer can only view their own appointments
+    // View details modal logic
+    if(isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])){
+        $id = $_GET["id"];
+        $sql_view_details = "SELECT 
+            appointment.*,
+            schedule.title, schedule.scheduledate, schedule.scheduletime,
+            client.cname, client.cemail, client.ctel, client.caddress, client.cdob
+        FROM appointment 
+        INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
+        INNER JOIN client ON appointment.cid = client.cid
+        WHERE appointment.appoid = '$id' AND schedule.lawyerid = '$lawyerid'";
 
-            $result_view_details = $database->query($sql_view_details);
+        $result_view_details = $database->query($sql_view_details);
 
-            if($result_view_details->num_rows == 0){
-                echo '<div id="popup1" class="overlay">
-                    <div class="popup">
-                        <center>
-                            <h2>Error!</h2>
-                            <a class="close" href="lawyer_appointments.php">&times;</a>
-                            <div class="content">
-                                Appointment details not found or you do not have permission to view this appointment.
+        if($result_view_details->num_rows > 0){
+            $row = $result_view_details->fetch_assoc();
+            echo '
+            <div id="viewModal" class="overlay active">
+                <div class="modal-content">
+                    <h2 class="modal-header">Appointment Details</h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body">
+                        <div class="detail-grid">
+                            <div class="detail-item"><strong>Appointment No:</strong> <span>'.htmlspecialchars($row["apponum"]).'</span></div>
+                            <div class="detail-item"><strong>Status:</strong> <span><span class="status-badge status-'.strtolower($row["status"]).'">'.ucfirst($row["status"]).'</span></span></div>
+                            <div class="detail-item"><strong>Client Name:</strong> <span>'.htmlspecialchars($row["cname"]).'</span></div>
+                            <div class="detail-item"><strong>Client Email:</strong> <span>'.htmlspecialchars($row["cemail"]).'</span></div>
+                            <div class="detail-item"><strong>Client Phone:</strong> <span>'.htmlspecialchars($row["ctel"]).'</span></div>
+                            <div class="detail-item"><strong>Client DOB:</strong> <span>'.date("F j, Y", strtotime($row["cdob"])).'</span></div>
+                            <div class="detail-full"><strong>Client Address:</strong> <span>'.htmlspecialchars($row["caddress"]).'</span></div>
+                            <div class="detail-divider" style="grid-column: 1 / -1; height: 1px; background-color: #e0e0e0; margin: 10px 0;"></div>
+                            <div class="detail-item"><strong>Session Title:</strong> <span>'.htmlspecialchars($row["title"]).'</span></div>
+                            <div class="detail-item"><strong>Appointment Booked:</strong> <span>'.date("F j, Y", strtotime($row["appodate"])).'</span></div>
+                            <div class="detail-item"><strong>Scheduled Date:</strong> <span>'.date("l, F j, Y", strtotime($row["scheduledate"])).'</span></div>
+                            <div class="detail-item"><strong>Scheduled Time:</strong> <span>'.date("h:i A", strtotime($row["scheduletime"])).'</span></div>
+                            <div class="detail-full"><strong>Case Description:</strong>
+                                <div style="background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 5px; padding: 10px; margin-top: 5px;">
+                                    '.nl2br(htmlspecialchars($row["description"])).'
+                                </div>
                             </div>
-                            <div style="display: flex;justify-content: center;">
-                                <a href="lawyer_appointments.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                            </div>
-                        </center>
+                        </div>
                     </div>
-                </div>';
-            } else {
-                $row_details = $result_view_details->fetch_assoc();
-                $appoid_details = $row_details["appoid"];
-                $apponum_details = $row_details["apponum"];
-                $appodate_made_details = $row_details["appodate"];
-                $status_details = $row_details["status"];
-                $title_details = $row_details["title"];
-                $scheduledate_details = $row_details["scheduledate"];
-                $scheduletime_details = $row_details["scheduletime"];
-                $case_description_details = $row_details["case_description"];
-                $clientname_details = $row_details["cname"];
-                $clientemail_details = $row_details["cemail"];
-                $clienttel_details = $row_details["ctel"];
-                $clientaddress_details = $row_details["caddress"];
-                $clientdob_details = $row_details["cdob"];
-
-
-                echo '
-                <div id="popup1" class="overlay">
-                        <div class="popup">
-                        <center>
-                            <a class="close" href="lawyer_appointments.php">&times;</a>
-                            <div class="content">
-                                <br>
-                                <img src="../img/lawyers/lawyer_icon.png" alt="" width="50%" style="border-radius: 50%;">
-                                <br><br>
-                                
-                                <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Appointment Details</p>
-                                <br><br>
-                                <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
-                                
-                                    <tr>
-                                        <td>
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 14px;font-weight: 600;">Appointment Number: </p>
-                                        </td>
-                                        <td>
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 14px;font-weight: 600;">'.$apponum_details.'</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="name" class="form-label">Client Name: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            '.htmlspecialchars($clientname_details).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="title" class="form-label">Session Title: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            '.htmlspecialchars($title_details).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="scheduledate" class="form-label">Scheduled Date: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            '.htmlspecialchars($scheduledate_details).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="scheduletime" class="form-label">Scheduled Time: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            '.substr(htmlspecialchars($scheduletime_details),0,5).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="appodate_made" class="form-label">Appointment Made On: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            '.htmlspecialchars($appodate_made_details).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="status" class="form-label">Status: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <span class="status-badge status-'.strtolower($status_details).'">'.$status_details.'</span><br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="case_description" class="form-label">Case Description: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            '.nl2br(htmlspecialchars($case_description_details)).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="client_contact" class="form-label">Client Contact: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            Email: '.htmlspecialchars($clientemail_details).'<br>
-                                            Phone: '.htmlspecialchars($clienttel_details).'<br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <a href="lawyer_appointments.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </center>
+                    <div class="modal-footer">
+                        <a href="lawyer_appointments.php" class="non-style-link"><button type="button" class="modal-btn modal-btn-soft">Close</button></a>
                     </div>
-                </div>';  
-            }
+                </div>
+            </div>';
         }
     }
     ?>
+
+    <script>
+        const viewModal = document.getElementById('viewModal');
+
+        // Close modal if clicked outside of the content area
+        window.onclick = function(event) {
+            if (event.target == viewModal) {
+                // Redirect to close the view modal by removing GET params
+                window.location.href = 'lawyer_appointments.php';
+            }
+        }
+    </script>
 </body>
 </html>

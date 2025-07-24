@@ -3,13 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 22, 2025 at 10:30 AM
+-- Generation Time: Jul 24, 2025 at 09:15 AM
 -- Server version: 8.0.40
 -- PHP Version: 8.3.14
-
--- Create and use the database
-CREATE DATABASE IF NOT EXISTS `SafeSpacePH`;
-USE `SafeSpacePH`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -56,8 +52,17 @@ CREATE TABLE `appointment` (
   `scheduleid` int DEFAULT NULL,
   `appodate` date DEFAULT NULL,
   `status` varchar(20) DEFAULT 'pending',
-  `description` text
+  `description` text,
+  `cancellation_reason` varchar(255) DEFAULT NULL,
+  `cancellation_explanation` text
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `appointment`
+--
+
+INSERT INTO `appointment` (`appoid`, `cid`, `apponum`, `scheduleid`, `appodate`, `status`, `description`, `cancellation_reason`, `cancellation_explanation`) VALUES
+(17, 13, 1753340073, 27, '2025-07-24', 'cancelled', 'HAHAUHDAUIGDAHISBDANSK D', 'Personal emergency', 'testing ulit');
 
 -- --------------------------------------------------------
 
@@ -124,7 +129,7 @@ CREATE TABLE `identity_verifications` (
 --
 
 INSERT INTO `identity_verifications` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `dob`, `sex`, `civil_status`, `citizenship`, `birth_place`, `present_address`, `permanent_address`, `email`, `contact_number`, `emergency_contact_name`, `emergency_contact_number`, `emergency_contact_relationship`, `id_type`, `id_number`, `id_photo_front_path`, `id_photo_back_path`, `profile_photo_path`, `agree_terms`, `submission_date`, `is_verified`) VALUES
-(3, 'Bill', 'Chavez', 'Mamorno', '', '2006-03-18', 'Male', 'Single', 'Filipino', 'Manila', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', 'mamornobillc@gmail.com', '09917912370', 'Edmuna Mamorno', '09396035648', 'Mother', 'Driver&#039;s License', '11001212154548', 'uploads/id_front/front_6873c9f225cc6_id 1.jpg', 'uploads/id_back/back_6873c9f225fd7_id 2.png', 'uploads/profile_photo_client/profile_6873c9f226122_profile photo sample.jpg', 1, '2025-07-13 15:00:02', 0);
+(3, 'Bill', 'Chavez', 'Mamorno', '', '2006-03-18', 'Male', 'Single', 'Filipino', 'Manila', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', '119 San Isidro St., Villa Espana II, Brgy. Tatalon', 'mamornobillc@gmail.com', '09917912370', 'Edmuna Mamorno', '09396035648', 'Mother', 'Driver&#039;s License', '11001212154548', 'uploads/id_front/front_6873c9f225cc6_id 1.jpg', 'uploads/id_back/back_6873c9f225fd7_id 2.png', 'uploads/profile_photo_client/profile_6873c9f226122_profile photo sample.jpg', 1, '2025-07-13 15:00:02', 1);
 
 -- --------------------------------------------------------
 
@@ -137,7 +142,7 @@ CREATE TABLE `lawyer` (
   `lawyeremail` varchar(255) DEFAULT NULL,
   `lawyername` varchar(255) DEFAULT NULL,
   `lawyerpassword` varchar(255) DEFAULT NULL,
-  `lawyernic` varchar(15) DEFAULT NULL,
+  `lawyerrollid` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `lawyertel` varchar(15) DEFAULT NULL,
   `specialties` int DEFAULT NULL,
   `meeting_link` varchar(255) DEFAULT NULL,
@@ -148,8 +153,8 @@ CREATE TABLE `lawyer` (
 -- Dumping data for table `lawyer`
 --
 
-INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyernic`, `lawyertel`, `specialties`, `meeting_link`, `meeting_platform`) VALUES
-(1, 'lawyer@safespaceph.com', 'Test Lawyer', '123', '000000000', '0110000000', 1, NULL, NULL);
+INSERT INTO `lawyer` (`lawyerid`, `lawyeremail`, `lawyername`, `lawyerpassword`, `lawyerrollid`, `lawyertel`, `specialties`, `meeting_link`, `meeting_platform`) VALUES
+(1, 'lawyer@safespaceph.com', 'Test Lawyer', '123', '202411951', '09917912370', 18, 'SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015', 'SafeSpace PH Office');
 
 -- --------------------------------------------------------
 
@@ -200,7 +205,8 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`scheduleid`, `lawyerid`, `title`, `scheduledate`, `scheduletime`, `nop`, `clientid`) VALUES
-(26, NULL, 'DDD', '2026-02-11', '15:33:00', 1, 1);
+(26, NULL, 'DDD', '2026-02-11', '15:33:00', 1, 1),
+(27, '1', 'TETSING TESTING', '2027-11-11', '11:11:00', 1, 13);
 
 -- --------------------------------------------------------
 
@@ -296,7 +302,7 @@ INSERT INTO `webuser` (`email`, `usertype`) VALUES
 ('admin@safespaceph.com', 'a'),
 ('lawyer@safespaceph.com', 'l'),
 ('client@safespaceph.com', 'u'),
-('mamornobillc@gmail.com', 'u'),
+('mamornobillc@gmail.com', 'c'),
 ('sihareg730@simerm.com', 'u'),
 ('unverifieduser@safespace.com', 'u');
 
@@ -378,7 +384,7 @@ ALTER TABLE `webuser`
 -- AUTO_INCREMENT for table `appointment`
 --
 ALTER TABLE `appointment`
-  MODIFY `appoid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `appoid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `client`
@@ -408,7 +414,7 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `scheduleid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `scheduleid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `volunteer_lawyer`

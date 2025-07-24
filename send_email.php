@@ -473,6 +473,154 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
     }
 }
 
+/**
+ * Sends a detailed appointment cancellation email to the user, including the reason.
+ *
+ * @param string $recipientEmail The client's email address.
+ * @param string $recipientName The client's full name.
+ * @param array $appointmentDetails Associative array with appointment info.
+ * @param string $cancellationReason The reason for cancellation.
+ * @param string $cancellationExplanation Additional details from the lawyer.
+ */
+function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $appointmentDetails, $cancellationReason, $cancellationExplanation) {
+    error_log("Attempting to send detailed appointment cancellation email to: $recipientEmail");
+    
+    $mail = new PHPMailer(true);
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $_ENV['EMAIL_USER'];
+        $mail->Password   = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        // Recipients
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Important: Your SafeSpace PH Appointment Has Been Canceled';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        // Sanitize data
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+        $lawyerName_safe = htmlspecialchars($appointmentDetails['lawyerName'] ?? 'The assigned lawyer', ENT_QUOTES, 'UTF-8');
+        $appointmentDate_safe = htmlspecialchars(date("F j, Y", strtotime($appointmentDetails['appointmentDate'])), ENT_QUOTES, 'UTF-8');
+        $appointmentTime_safe = htmlspecialchars(date("g:i A", strtotime($appointmentDetails['appointmentTime'])), ENT_QUOTES, 'UTF-8');
+        $caseTitle_safe = htmlspecialchars($appointmentDetails['caseTitle'], ENT_QUOTES, 'UTF-8');
+        $cancellationReason_safe = htmlspecialchars($cancellationReason, ENT_QUOTES, 'UTF-8');
+        $cancellationExplanation_safe = !empty($cancellationExplanation) ? nl2br(htmlspecialchars($cancellationExplanation, ENT_QUOTES, 'UTF-8')) : 'No additional details were provided.';
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Appointment Canceled</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
+                .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #aaa; border-radius: 5px; }
+                .details-list li { margin-bottom: 10px; }
+                .details-list li strong { color: #555; }
+                .reason-box { list-style: none; padding: 15px; margin: 20px 0; background-color: #fff0f0; border-left: 4px solid #d9534f; border-radius: 5px; color: #721c24; }
+                .reason-box li { margin-bottom: 10px; }
+                .reason-box li strong { color: #d9534f; }
+                .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+                .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #6a0dad; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                        <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; vertical-align: middle; margin-right: 15px;'>
+                                        <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <p>Dear {$recipientName_safe},</p>
+                                        <p>We are writing to inform you that your upcoming appointment with <strong>{$lawyerName_safe}</strong> has been <strong>canceled</strong>.</p>
+                                        
+                                        <h2>Reason for Cancellation:</h2>
+                                        <ul class='reason-box'>
+                                            <li><strong>Reason:</strong> {$cancellationReason_safe}</li>
+                                            <li><strong>Note from the Lawyer:</strong><br>{$cancellationExplanation_safe}</li>
+                                        </ul>
+
+                                        <h2>Canceled Appointment Details:</h2>
+                                        <ul class='details-list'>
+                                            <li><strong>Lawyer:</strong> {$lawyerName_safe}</li>
+                                            <li><strong>Date:</strong> {$appointmentDate_safe}</li>
+                                            <li><strong>Time:</strong> {$appointmentTime_safe} (PHT)</li>
+                                            <li><strong>Case/Concern:</strong> {$caseTitle_safe}</li>
+                                        </ul>
+
+                                        <p>We understand this may be inconvenient and apologize for any disruption to your schedule. If you would like to reschedule, you can book a new appointment through your account.</p>
+                                        
+                                        <div class='button-container'>
+                                            <a href='https://safespaceph.com/my-account' class='button'>Book Another Appointment</a>
+                                        </div>
+
+                                        <p>We appreciate your understanding and remain committed to helping you find the support you need.</p>
+                                        <p>Sincerely,<br>The SafeSpace PH Team</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; margin-bottom: 15px;'>
+                                        <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
+                                        <div>
+                                           <a href='https://safespaceph.com/about'>About Us</a> | <a href='https://safespaceph.com/contact'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+
+        $mail->send();
+        error_log("Detailed appointment cancellation email sent successfully to: $recipientEmail");
+        return true;
+    } catch (Exception $e) {
+        error_log("Failed to send detailed appointment cancellation email to {$recipientEmail}: {$mail->ErrorInfo}");
+        throw $e;
+    }
+}
+
+
 function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $appointmentDetails) {
     $mail = new PHPMailer(true);
     try {
@@ -983,6 +1131,144 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
     } catch (Exception $e) {
         error_log("Unverification notice email error for {$recipientEmail}: {$mail->ErrorInfo}");
         // Re-throw the exception to allow the caller to handle the failure gracefully
+        throw $e;
+    }
+}
+
+function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $appointmentDetails) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Important: Your SafeSpace PH Meeting Link Has Been Updated';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        // Extracting and sanitizing details from the $appointmentDetails array
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+        $lawyerName_safe = htmlspecialchars($appointmentDetails['lawyerName'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $appointmentDate_safe = htmlspecialchars($appointmentDetails['appointmentDate'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $appointmentTime_safe = htmlspecialchars($appointmentDetails['appointmentTime'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $oldMeetingLink_safe = htmlspecialchars($appointmentDetails['oldMeetingLink'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+        $newMeetingLink_safe = htmlspecialchars($appointmentDetails['newMeetingLink'] ?? '#', ENT_QUOTES, 'UTF-8');
+        $caseTitle_safe = htmlspecialchars($appointmentDetails['caseTitle'] ?? 'N/A', ENT_QUOTES, 'UTF-8');
+
+        $mail->Body = "
+        <!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>SafeSpace PH: Meeting Link Updated</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+        table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        td { padding: 0; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        a { text-decoration: none; color: #8a2be2; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+        .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+        .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+        .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+        .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
+        .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; border-radius: 5px; }
+        .details-list li { margin-bottom: 10px; }
+        .details-list li strong { color: #555; }
+        .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+        .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #6a0dad; }
+        .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .footer-logo { height: 50px; width: auto; }
+        .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+        .footer-links-container { margin-bottom: 10px; }
+        .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <center>
+        <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+            <tr>
+                <td align='center' style='padding: 20px 0;'>
+                    <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                        <tr>
+                            <td class='header'>
+                                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'>
+                                    <tr>
+                                        <td style='text-align: center;'>
+                                            <img src=\"cid:logoimg\" alt=\"SafeSpace PH Logo\" style=\"height: 70px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='header-title'>SafeSpace PH</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='content'>
+                                <p>Dear {$recipientName_safe},</p>
+                                <p>This is an important notification regarding your upcoming appointment with <strong>Attorney {$lawyerName_safe}</strong>.</p>
+                                <p>The meeting link for your consultation has been updated by the lawyer. Please use the <strong>new link</strong> provided below to join your meeting at the scheduled time.</p>
+                                
+                                <h2>Appointment Details Update:</h2>
+                                <ul class='details-list'>
+                                    <li><strong>Lawyer:</strong> Attorney {$lawyerName_safe}</li>
+                                    <li><strong>Date:</strong> {$appointmentDate_safe}</li>
+                                    <li><strong>Time:</strong> {$appointmentTime_safe} (PHT)</li>
+                                    <li><strong>Case Title:</strong> {$caseTitle_safe}</li>
+                                    <li style='color: #777;'><strong>Old Meeting Link:</strong> <span style='text-decoration: line-through;'>{$oldMeetingLink_safe}</span> (No longer valid)</li>
+                                    <li><strong>New Meeting Link:</strong> <a href='{$newMeetingLink_safe}' style='color: #8a2be2; font-weight: bold; word-break: break-all;'>{$newMeetingLink_safe}</a></li>
+                                </ul>
+                                
+                                <p>Please ensure you use this new link to avoid any issues joining your consultation. We recommend updating any calendar invites you may have created.</p>
+                                
+                                <div class='button-container'>
+                                    <a href='https://safespaceph.com/my-appointments' class='button'>View My Appointments</a>
+                                </div>
+                                
+                                <p>We apologize for any inconvenience this may cause and look forward to assisting you.</p>
+                                <p>Sincerely,<br>The SafeSpace PH Team</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='footer'>
+                                <div class='footer-branding'>
+                                   <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                    <span class='footer-title'>SafeSpace PH</span>
+                                </div>
+                                <div class='footer-links-container'>
+                                    <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
+                                    <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
+                                    <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                </div>
+                                <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tr>
+        </table>
+    </center>
+</body>
+</html>";
+        $mail->send();
+        error_log("Meeting link update email sent successfully to: {$recipientEmail}");
+        return true;
+    } catch (Exception $e) {
+        error_log("Meeting link update email error for {$recipientEmail}: {$mail->ErrorInfo}");
+        // Re-throw the exception to allow the calling script to handle the failure (e.g., rollback a transaction)
         throw $e;
     }
 }

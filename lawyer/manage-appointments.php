@@ -61,18 +61,46 @@
             max-width: 500px;
             border-radius: 10px;
             animation: transitionIn-Y-bottom 0.5s;
+            position: relative;
         }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        /* Replace the existing close-btn style block with this: */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+    text-decoration: none;
+    z-index: 1;
+}
+
+.close-btn:hover {
+    background-color: #f0e9f7;
+    color: #5A2675;
+}
+        /* Styles for the rejection reason modal */
+        .rejection-reason {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .rejection-reason input[type="radio"] {
+            margin-right: 10px;
+        }
+        .rejection-reason label {
+            flex-grow: 1;
         }
     </style>
 </head>
@@ -95,6 +123,41 @@
     include("../connection.php");
     // Include the email functions file
     require_once('../send_email.php');
+
+    // Handle form submission for rejection from modal
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'reject') {
+        if (isset($_POST['appoid']) && !empty($_POST['appoid']) && isset($_POST['rejection_reason'])) {
+            $appoid = $_POST['appoid'];
+            $reason = $_POST['rejection_reason'];
+            if ($reason === 'Other') {
+                // Ensure the 'other' text is provided if 'Other' is selected
+                if (isset($_POST['other_reason_text']) && !empty(trim($_POST['other_reason_text']))) {
+                    $reason = 'Other: ' . htmlspecialchars(trim($_POST['other_reason_text']));
+                } else {
+                    // This should be caught by frontend JS, but as a fallback:
+                    header("Location: manage-appointments.php?action=reject_error&reason=other_empty");
+                    exit();
+                }
+            }
+            $description = isset($_POST['rejection_description']) ? htmlspecialchars(trim($_POST['rejection_description'])) : '';
+    
+            // Here you could also notify the user and log the reason/description.
+            // For now, we just update the status as per the original logic.
+    
+            $stmt = $database->prepare("UPDATE appointment SET status = 'rejected' WHERE appoid = ?");
+            $stmt->bind_param("i", $appoid);
+            $stmt->execute();
+            $stmt->close();
+            
+            // Redirect to clean the URL
+            header("Location: manage-appointments.php?action=reject_success");
+            exit();
+        } else {
+            // Handle error - missing data
+             header("Location: manage-appointments.php?action=reject_error&reason=missing_data");
+             exit();
+        }
+    }
 
     // Handle appointment acceptance or rejection actions
     if (isset($_GET['action']) && isset($_GET['appoid'])) {
@@ -152,8 +215,6 @@
                     ];
 
                     // Call the function to send the email to the user
-                    // This function will now throw an error if the email fails,
-                    // which will be caught by the catch block below.
                     sendAppointmentAcceptedNoticeToUser($details['cemail'], $details['cname'], $appointmentDetails);
                 }
 
@@ -171,40 +232,16 @@
                 header("Location: manage-appointments.php?action=accept_error");
                 exit();
             }
-        } elseif ($_GET['action'] == 'reject') {
-            // Handle the 'reject' action
-            $stmt = $database->prepare("UPDATE appointment SET status = 'rejected' WHERE appoid = ?");
-            $stmt->bind_param("i", $appoid);
-            $stmt->execute();
-            $stmt->close();
-            
-            // Redirect to clean the URL
-            header("Location: manage-appointments.php?action=reject_success");
-            exit();
-        }
+        } 
+        // Note: The GET-based 'reject' action is now handled by the POST form from the modal.
+        // The old code block for it is no longer needed here.
     }
 
     $lawyerid = $_SESSION['lawyerid']; // Lawyer ID from session
     $lawyername = $_SESSION['lawyername']; // Lawyer name from session
     $lawyeremail = $_SESSION['user']; // Lawyer email from session
-
-    // Handle Meeting Link Form Submission
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_link'])) {
-        $new_link = $_POST['meeting_link'];
-        $new_platform = $_POST['meeting_platform'];
-
-        // Prepare and execute the update statement to prevent SQL injection
-        $stmt = $database->prepare("UPDATE lawyer SET meeting_link = ?, meeting_platform = ? WHERE lawyerid = ?");
-        $stmt->bind_param("ssi", $new_link, $new_platform, $lawyerid);
-        $stmt->execute();
-        $stmt->close();
-
-        // Redirect to avoid form resubmission on refresh
-        header("Location: manage-appointments.php?action=link_updated");
-        exit();
-    }
-
-    // Fetch lawyer's meeting link details
+    
+    // Fetch lawyer's current meeting link details to use as the 'old link' if an update occurs
     $link_query = $database->prepare("SELECT meeting_link, meeting_platform FROM lawyer WHERE lawyerid = ?");
     $link_query->bind_param("i", $lawyerid);
     $link_query->execute();
@@ -213,6 +250,75 @@
     $meeting_link = $lawyer_link_data['meeting_link'] ?? '';
     $meeting_platform = $lawyer_link_data['meeting_platform'] ?? '';
     $link_query->close();
+
+    // Handle Meeting Link Form Submission
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_link'])) {
+        $new_link = $_POST['meeting_link'];
+        $new_platform = $_POST['meeting_platform'];
+        $old_meeting_link = $meeting_link; // Store the old link before updating
+
+        // Use a transaction to ensure that the link is only updated if all notifications can be sent.
+        $database->begin_transaction();
+        try {
+            // Step 1: Fetch all clients with upcoming, accepted appointments with this lawyer
+            $sql_clients = $database->prepare("
+                SELECT
+                    c.cname, c.cemail,
+                    s.title, s.scheduledate, s.scheduletime
+                FROM appointment a
+                JOIN client c ON a.cid = c.cid
+                JOIN schedule s ON a.scheduleid = s.scheduleid
+                WHERE s.lawyerid = ?
+                  AND a.status = 'accepted'
+                  AND s.scheduledate >= ?
+            ");
+            $today_for_query = date('Y-m-d');
+            $sql_clients->bind_param("is", $lawyerid, $today_for_query);
+            $sql_clients->execute();
+            $clients_result = $sql_clients->get_result();
+            $clients_to_notify = [];
+            while ($row = $clients_result->fetch_assoc()) {
+                $clients_to_notify[] = $row;
+            }
+            $sql_clients->close();
+
+            // Step 2: Update the lawyer's meeting link in the database
+            $stmt_update = $database->prepare("UPDATE lawyer SET meeting_link = ?, meeting_platform = ? WHERE lawyerid = ?");
+            $stmt_update->bind_param("ssi", $new_link, $new_platform, $lawyerid);
+            $stmt_update->execute();
+            $stmt_update->close();
+
+            // Step 3: Send email notifications to the fetched clients
+            foreach ($clients_to_notify as $client) {
+                $appointmentDetails = [
+                    'lawyerName'      => $lawyername,
+                    'appointmentDate' => date("F j, Y", strtotime($client['scheduledate'])),
+                    'appointmentTime' => date("g:i A", strtotime($client['scheduletime'])),
+                    'oldMeetingLink'  => $old_meeting_link,
+                    'newMeetingLink'  => $new_link,
+                    'caseTitle'       => $client['title']
+                ];
+
+                sendMeetingLinkUpdateNoticeToUser($client['cemail'], $client['cname'], $appointmentDetails);
+            }
+
+            // If all operations succeed, commit the transaction
+            $database->commit();
+
+            // Redirect to avoid form resubmission and show success message
+            header("Location: manage-appointments.php?action=link_updated");
+            exit();
+
+        } catch (Exception $e) {
+            // If any step fails (DB update or email sending), roll back the transaction
+            $database->rollback();
+            error_log("Failed to update meeting link and notify clients: " . $e->getMessage());
+
+            // Redirect with an error message
+            header("Location: manage-appointments.php?action=link_update_error");
+            exit();
+        }
+    }
 
 
     date_default_timezone_set('Asia/Manila'); // Set timezone to Manila
@@ -318,6 +424,10 @@
                                     echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'>There was an error accepting the appointment. The user was not notified and the appointment was not confirmed. Please try again.</div>";
                                 } elseif ($_GET['action']=='reject_success'){
                                     echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;'>Appointment has been successfully rejected.</div>";
+                                } elseif ($_GET['action'] == 'link_updated') {
+                                    echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;'>Meeting link updated successfully. All clients with upcoming appointments have been notified of the change.</div>";
+                                } elseif ($_GET['action'] == 'link_update_error') {
+                                    echo "<div style='padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'>There was an error updating the meeting link. No changes were saved, and no notifications were sent. Please try again.</div>";
                                 }
                             }
                         ?>
@@ -417,8 +527,8 @@
                                                         </button>
                                                     </a>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <a href="manage-appointments.php?action=reject&appoid='.$appoid.'" class="non-style-link" onclick="return confirm(\'Are you sure you want to reject this appointment?\');">
-                                                        <button class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 20px;padding-right: 20px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
+                                                    <a href="manage-appointments.php?action=reject&appoid='.$appoid.'" class="non-style-link reject-btn">
+                                                        <button type="button" class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 20px;padding-right: 20px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
                                                             <font class="tn-in-text">Reject</font>
                                                         </button>
                                                     </a>
@@ -438,6 +548,7 @@
         </div>
     </div>
 
+    <!-- View Meeting Link Modal -->
     <div id="viewLinkModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -459,6 +570,7 @@
         </div>
     </div>
 
+    <!-- Edit/Add Meeting Link Modal -->
     <div id="meetingLinkModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
@@ -490,14 +602,60 @@
         </div>
     </div>
 
+    <!-- Rejection Confirmation Modal -->
+    <div id="rejectionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 style="margin-bottom: 15px;">Reason for Rejection</h2>
+            <form id="rejectionForm" action="manage-appointments.php" method="POST" novalidate>
+                <input type="hidden" name="action" value="reject">
+                <input type="hidden" id="rejectAppoId" name="appoid" value="">
+
+                <div id="rejectionError" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none;"></div>
+                
+                <p style="margin-bottom: 15px;">Why do you want to reject this appointment?</p>
+
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_time" name="rejection_reason" value="Change of time" required>
+                    <label for="reason_time">Change of time</label>
+                </div>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_emergency" name="rejection_reason" value="Personal emergency">
+                    <label for="reason_emergency">Personal emergency</label>
+                </div>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_details" name="rejection_reason" value="Incomplete details">
+                    <label for="reason_details">Incomplete details</label>
+                </div>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_other" name="rejection_reason" value="Other">
+                    <label for="reason_other">Other</label>
+                </div>
+                <input type="text" id="other_reason_text" name="other_reason_text" class="input-text" placeholder="Please specify" style="display: none; margin-top: 5px; width: 100%;">
+
+                <div style="margin-top: 20px;">
+                    <label for="rejection_description" class="form-label">Optional Description:</label>
+                    <textarea name="rejection_description" id="rejection_description" class="input-text" rows="3" placeholder="Provide more details (optional)"></textarea>
+                </div>
+
+                <div style="text-align: right; margin-top: 25px;">
+                     <button type="button" id="cancelRejectionBtn" class="btn-primary-soft btn">Cancel</button>
+                     <button type="submit" name="confirm_rejection" class="login-btn btn-primary btn">Confirm Rejection</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <script>
     // Get the modals
     var meetingModal = document.getElementById("meetingLinkModal");
     var viewModal = document.getElementById("viewLinkModal");
+    var rejectionModal = document.getElementById("rejectionModal");
 
     // Get the buttons that open the modals
     var openMeetingBtn = document.getElementById("meetingLinkBtn");
     var showLinkBtn = document.getElementById("showMyLinkBtn");
+    var rejectBtns = document.getElementsByClassName("reject-btn");
 
     // Get all <span> elements that close the modals
     var closeBtns = document.getElementsByClassName("close-btn");
@@ -510,11 +668,34 @@
         viewModal.style.display = "block";
     }
 
+    // When a user clicks a reject button, open the rejection modal
+    for (let i = 0; i < rejectBtns.length; i++) {
+        rejectBtns[i].onclick = function(event) {
+            event.preventDefault(); // Stop the link from navigating
+            
+            // Get appoid from the href attribute
+            const href = this.getAttribute('href');
+            const urlParams = new URLSearchParams(href.substring(href.indexOf('?')));
+            const appoId = urlParams.get('appoid');
+
+            // Set the appoid in the hidden form field
+            document.getElementById('rejectAppoId').value = appoId;
+            
+            // Show the modal
+            rejectionModal.style.display = "block";
+        }
+    }
+
     // When the user clicks on <span> (x) in any modal, close it
     for (let i = 0; i < closeBtns.length; i++) {
         closeBtns[i].onclick = function() {
-            closeBtns[i].parentElement.parentElement.style.display = "none";
+            this.closest('.modal').style.display = "none";
         }
+    }
+
+    // When the user clicks the cancel button in the rejection modal, close it
+    document.getElementById('cancelRejectionBtn').onclick = function() {
+        rejectionModal.style.display = "none";
     }
 
     // When the user clicks anywhere outside of a modal, close it
@@ -525,42 +706,88 @@
         if (event.target == viewModal) {
             viewModal.style.display = "none";
         }
+        if (event.target == rejectionModal) {
+            rejectionModal.style.display = "none";
+        }
     }
 
-    // --- START: Added functionality for the meeting link form ---
+    // --- START: Rejection Modal Form Logic ---
+    const rejectionForm = document.getElementById('rejectionForm');
+    const reasonRadios = rejectionForm.querySelectorAll('input[name="rejection_reason"]');
+    const otherReasonText = document.getElementById('other_reason_text');
+    const rejectionError = document.getElementById('rejectionError');
 
-    // Get the platform dropdown and the link input field
+    reasonRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.id === 'reason_other' && this.checked) {
+                otherReasonText.style.display = 'block';
+                otherReasonText.setAttribute('required', 'required');
+            } else {
+                otherReasonText.style.display = 'none';
+                otherReasonText.removeAttribute('required');
+            }
+        });
+    });
+
+    rejectionForm.addEventListener('submit', function(event) {
+        const otherRadio = document.getElementById('reason_other');
+        const selectedReason = rejectionForm.querySelector('input[name="rejection_reason"]:checked');
+        rejectionError.style.display = 'none'; // Hide previous errors
+
+        // Check if any reason is selected
+        if (!selectedReason) {
+            rejectionError.textContent = 'Please select a reason for rejection.';
+            rejectionError.style.display = 'block';
+            event.preventDefault(); // Stop form submission
+            return;
+        }
+
+        // Check if 'Other' is selected but the text field is empty
+        if (otherRadio.checked && otherReasonText.value.trim() === '') {
+            rejectionError.textContent = 'Please specify the reason for selecting "Other".';
+            rejectionError.style.display = 'block';
+            event.preventDefault(); // Stop form submission
+        }
+    });
+
+    // Use a MutationObserver to reset the form whenever the modal is hidden.
+    // This ensures the form is clean every time it's opened.
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === "style" && rejectionModal.style.display === 'none') {
+                 rejectionForm.reset();
+                 otherReasonText.style.display = 'none';
+                 otherReasonText.removeAttribute('required');
+                 rejectionError.style.display = 'none';
+            }
+        });
+    });
+    observer.observe(rejectionModal, { attributes: true });
+    // --- END: Rejection Modal Form Logic ---
+
+
+    // --- START: Added functionality for the meeting link form ---
     const platformSelect = document.getElementById('meeting_platform');
     const linkInput = document.getElementById('meeting_link');
     const officeAddress = 'SafeSpace PH Office, P. Paredes St., Sampaloc, Manila 1015';
 
-    // This function updates the link input based on the selected platform
     function handlePlatformChange() {
         if (platformSelect.value === 'SafeSpace PH Office') {
-            // If "SafeSpace PH Office" is selected, populate the address and make it read-only
             linkInput.value = officeAddress;
             linkInput.readOnly = true;
         } else {
-            // For any other platform, make the input editable
             linkInput.readOnly = false;
-            // If the input currently holds the office address, clear it for the user
             if (linkInput.value === officeAddress) {
                 linkInput.value = '';
             }
         }
     }
 
-    // Add an event listener to detect changes in the platform dropdown
     platformSelect.addEventListener('change', handlePlatformChange);
 
-    // Also, check the initial state when the page loads.
-    // This handles the case where "SafeSpace PH Office" is already saved and the form is opened for editing.
-    // The script is at the end of the body, so the elements are guaranteed to be available.
     if (platformSelect.value === 'SafeSpace PH Office') {
-        // The value is already populated by PHP, so we just need to ensure the field is read-only.
         linkInput.readOnly = true;
     }
-    
     // --- END: Added functionality ---
 </script>
 

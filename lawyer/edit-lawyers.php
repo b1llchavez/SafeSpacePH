@@ -1,75 +1,64 @@
-
-    <?php
-    
-    
+<?php
+    session_start(); // Add this to manage session variables
 
     //import database
     include("../connection.php");
 
-
-
     if($_POST){
-        //print_r($_POST);
-        $result= $database->query("select * from webuser");
-        $name=$_POST['name'];
-        $oldemail=$_POST["oldemail"];
-        $lawyerbarid=$_POST['lawyerbarid'];
-        $spec=$_POST['spec'];
-        $email=$_POST['email'];
-        $tele=$_POST['Tele'];
-        $password=$_POST['password'];
-        $cpassword=$_POST['cpassword'];
-        $id=$_POST['id00'];
+        // Get all the submitted data from the form
+        $name = $_POST['name'];
+        $oldemail = $_POST["oldemail"];
+        $rollid = $_POST['nic']; 
+        $spec = $_POST['spec'];
+        $email = $_POST['email'];
+        $tele = $_POST['Tele'];
+        $password = $_POST['password'];
+        $cpassword = $_POST['cpassword'];
+        $id = $_POST['id00'];
         
-        if ($password==$cpassword){
-            $error='3';
-            $result= $database->query("select lawyer.lawyerid from lawyer inner join webuser on lawyer.lawyeremail=webuser.email where webuser.email='$email';");
-            //$resultqq= $database->query("select * from lawyer where lawyerid='$id';");
-            if($result->num_rows==1){
-                $id2=$result->fetch_assoc()["lawyerid"];
-            }else{
-                $id2=$id;
+        // Check if passwords match
+        if ($password == $cpassword){
+            $error = '3'; // Default error
+            
+            // Check if the new email address is already being used by ANOTHER lawyer
+            $email_check_result = $database->query("SELECT lawyerid FROM lawyer WHERE lawyeremail='$email';");
+
+            if($email_check_result->num_rows > 0){
+                $id2 = $email_check_result->fetch_assoc()["lawyerid"];
+            } else {
+                $id2 = $id;
             }
             
-            echo $id2."jdfjdfdh";
-            if($id2!=$id){
-                $error='1';
-                //$resultqq1= $database->query("select * from lawyer where lawyeremail='$email';");
-                //$did= $resultqq1->fetch_assoc()["lawyerid"];
-                //if($resultqq1->num_rows==1){
-                    
-            }else{
-
-                //$sql1="insert into lawyer(lawyeremail,lawyername,docpassword,lawyerbarid,lawyertel,specialties) values('$email','$name','$password','$lawyerbarid','$tele',$spec);";
-                $sql1="update lawyer set lawyeremail='$email',lawyername='$name',docpassword='$password',lawyerbarid='$lawyerbarid',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
-                $database->query($sql1);
-
-                $sql1="update webuser set email='$email' where email='$oldemail' ;";
-                $database->query($sql1);
-
-                echo $sql1;
-                //echo $sql2;
-                $error= '4';
+            if($id2 != $id){
+                $error = '1'; // Error: Email is already taken
+            } else {
+                // Construct the base of the update query with correct column names
+                $sql1 = "UPDATE lawyer SET lawyeremail='$email', lawyername='$name', lawyerrollid='$rollid', lawyertel='$tele', specialties=$spec";
                 
+                if (!empty($password)) {
+                    $sql1 .= ", lawyerpassword='$password'";
+                }
+                
+                $sql1 .= " WHERE lawyerid=$id;";
+                
+                $database->query($sql1);
+
+                $sql2 = "UPDATE webuser SET email='$email' WHERE email='$oldemail';";
+                $database->query($sql2);
+                
+                // FIX: Update the session with the new email address
+                $_SESSION["user"] = $email;
+
+                $error = '4'; // Success
             }
-            
-        }else{
-            $error='2';
+        } else {
+            $error = '2'; // Error: Passwords do not match
         }
-    
-    
-        
-        
-    }else{
-        //header('location: signup.php');
-        $error='3';
+    } else {
+        $error = '3'; // Error: Not a POST request
     }
     
-
+    // Redirect back to the settings page, passing the error code and ID
     header("location: settings.php?action=edit&error=".$error."&id=".$id);
-    ?>
-    
-   
-
-</body>
-</html>
+    exit(); 
+?>
