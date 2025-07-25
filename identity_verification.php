@@ -9,12 +9,38 @@ $formData = [];
 $formSubmittedSuccessfully = false;
 
 
-$fname_session = $_SESSION['personal']['fname'] ?? '';
-$lname_session = $_SESSION['personal']['lname'] ?? '';
-$address_session = $_SESSION['personal']['address'] ?? '';
-$dob_session = $_SESSION['personal']['dob'] ?? '';
-$email_session = $_SESSION['personal']['email'] ?? ''; 
-$tele_session = $_SESSION['personal']['tele'] ?? '';  
+// ...existing code...
+$errors = [];
+$formData = [];
+$formSubmittedSuccessfully = false;
+
+// Autofill for both 'c' and 'u' usertypes
+$fname_session = '';
+$lname_session = '';
+$address_session = '';
+$dob_session = '';
+$email_session = '';
+$tele_session = '';
+
+if (
+    isset($_SESSION['usertype']) &&
+    ($_SESSION['usertype'] == 'c' || $_SESSION['usertype'] == 'u') &&
+    isset($_SESSION['cid'])
+) {
+    $cid = $_SESSION['cid'];
+    $result = $database->query("SELECT cname, caddress, cdob, cemail, ctel FROM client WHERE cid='$cid' LIMIT 1");
+    if ($result && $result->num_rows > 0) {
+        $client = $result->fetch_assoc();
+        $full_name_from_db = $client['cname'];
+        $name_parts = explode(' ', $full_name_from_db, 2);
+        $fname_session = $name_parts[0] ?? ''; 
+        $lname_session = $name_parts[1] ?? '';
+        $address_session = $client['caddress'];
+        $dob_session = $client['cdob'];
+        $email_session = $client['cemail'];
+        $tele_session = $client['ctel'];
+    }
+}
 
 function sanitize_input($data) {
     $data = trim($data);

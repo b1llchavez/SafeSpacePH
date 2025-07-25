@@ -8,11 +8,7 @@ $_SESSION["usertype"]="u";
 // Set the default timezone
 date_default_timezone_set('Asia/Manila'); 
 
-// Define the $date variable with the current date
-$date = date('Y-m-d'); 
-
-// Store the date in the session
-$_SESSION["date"] = $date;
+$_SESSION["date"]=$date;
 
 
 include("connection.php");
@@ -32,7 +28,6 @@ if($_POST){
     $tele=$_POST['tele']; 
     $newpassword=$_POST['newpassword'];
     $cpassword=$_POST['cpassword'];
-    
     
     $password_valid = true;
     if (strlen($newpassword) < 8) {

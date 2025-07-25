@@ -302,7 +302,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         #viewDetailsModal .detail-item strong {  
             flex: 0 0 180px;  
             margin-right: 10px;  
-            color: #555;
+            color: #000;
             font-weight: bold;  
         }
         #viewDetailsModal .detail-item span {  
@@ -312,14 +312,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             font-weight: normal;  
         }
         #viewDetailsModal .close-button {
-            background-color: #C9A8F1;  
-            color: white;
-            padding: 10px 20px;  
-            border-radius: 20px;  
-            border: none;  
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            border: none;
+    border-radius: 7px;
+    padding: 12px 28px;
+    font-size: 16px;
+    color: #5A2675;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
             margin-top: 25px;  
             display: block;  
             margin-left: auto;
@@ -353,7 +353,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         echo '<div id="viewDetailsModal" class="custom-modal" style="display:flex;">
                 <div class="custom-modal-content">
                     <a href="javascript:void(0)" class="close-x-button" onclick="closeViewDetailsModal()">&times;</a>
-                    <h3>Verification Request Details</h3>
+                    <h3 style="text-align: center; color: #391053; font-size: 1.8rem; font-weight: 700; margin-bottom: 10px; margin-top: 0; letter-spacing: 0.5px; position: relative;">Verification Request Details</h3>
+<div style="width: 100%; height: 3px; background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border: none; border-radius: 2px; margin: 18px 0 28px 0;"></div>
 
                     <div class="detail-section">
                         <h4>Personal Information</h4>
