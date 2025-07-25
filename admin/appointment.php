@@ -234,6 +234,19 @@
         .add-new-form .modal-btn {
             min-width: 100px;
         }
+
+        .btn-reset {
+    /* Inherits styles from .btn-primary-soft and .btn */
+    /* Add transition for smooth hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover styles for the Reset button, matching .btn-primary-soft:hover */
+.btn-reset:hover {
+    background-color: var(--primarycolor); /* This will be #5A2675 */
+    color: #fff;
+    box-shadow: 0 3px 5px 0 rgba(57, 108, 240, 0.3);
+}
 </style>
 </head>
 <body>
@@ -389,14 +402,10 @@
                                 Filter
                             </button>
 
-                            <a href="appointment.php" class="non-style-link btn-primary-soft btn" 
-                                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                                </svg>
-                                Reset
-                            </a>
+                             <a href="appointment.php" class="non-style-link btn-primary-soft btn btn-reset" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+    Reset
+</a>
                         </form>
                     </td>
                 </tr>
