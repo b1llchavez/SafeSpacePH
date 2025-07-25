@@ -310,6 +310,11 @@ include("../connection.php");
                     </td>
                 </tr>
                 <tr class="menu-row">
+                    <td class="menu-btn menu-icon-lawyer-verification">
+                        <a href="lawyer_verification.php" class="non-style-link-menu"><div><p class="menu-text">Lawyer Verification</p></div></a>
+                    </td>
+                </tr>
+                <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers">
                         <a href="lawyers.php" class="non-style-link-menu">
                             <div>

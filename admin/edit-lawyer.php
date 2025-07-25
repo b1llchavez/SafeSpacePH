@@ -12,7 +12,7 @@
 
         $result= $database->query("select * from webuser");
         $name=$_POST['name'];
-        $lawyerbarid=$_POST['lawyerbarid'];
+        $lawyerrollid=$_POST['lawyerrollid'];
         $oldemail=$_POST["oldemail"];
         $spec=$_POST['spec'];
         $email=$_POST['email'];
@@ -41,7 +41,7 @@
             }else{
 
 
-                $sql1="update lawyer set lawyeremail='$email',lawyername='$name',lawyerpassword='$password',lawyerbarid='$lawyerbarid',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
+                $sql1="update lawyer set lawyeremail='$email',lawyername='$name',lawyerpassword='$password',lawyerrollid='$lawyerrollid',lawyertel='$tele',specialties=$spec where lawyerid=$id ;";
                 $database->query($sql1);
                 
                 $sql1="update webuser set email='$email' where email='$oldemail' ;";
