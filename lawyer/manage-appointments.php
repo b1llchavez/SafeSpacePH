@@ -560,11 +560,11 @@
                                                     <a href="manage-appointments.php?action=accept&appoid=' . $appoid . '&scheduleid=' . $scheduleid . '" class="non-style-link">
                                                     <button class="btn-primary-soft btn button-icon menu-icon-verify"> Accept </button>
                                                     </a>
-                                                    <a href="manage-appointments.php?action=reject&appoid=' . $appoid . '"class="non-style-link">
-                                                        <button type="button" class="btn-primary-soft btn button-icon btn-delete">
-                                                           Reject
-                                                        </button>
-                                                    </a>
+                                                    <a href="manage-appointments.php?action=reject&appoid=<?php echo $appoid; ?>" class="non-style-link reject-btn">
+    <button type="button" class="btn-primary-soft btn button-icon btn-delete">
+        Reject
+    </button>
+</a>
                                                 </div>
                                             </td>
                                         </tr>';
@@ -753,8 +753,8 @@
         // Get buttons that open modals
         var openMeetingBtn = document.getElementById("meetingLinkBtn");
         var showLinkBtn = document.getElementById("showMyLinkBtn");
-        var rejectBtns = document.getElementsByClassName("btn-delete");
-        var acceptBtns = document.getElementsByClassName("accept-btn");
+        var rejectBtns = document.getElementsByClassName("reject-btn");
+        var acceptBtns = document.getElementsByClassName("menu-icon-verify");
         var viewDetailsBtns = document.getElementsByClassName("btn-view");
 
         var closeBtns = document.getElementsByClassName("close-btn");
