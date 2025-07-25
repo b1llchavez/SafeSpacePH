@@ -22,7 +22,6 @@
 <body>
     <?php
 
-    //learn from w3schools.com
 
     session_start();
 
@@ -39,13 +38,11 @@
     
     
 
-    //import database
     include("../connection.php");
     $userrow = $database->query("select * from lawyer where lawyeremail='$useremail'");
     $userfetch=$userrow->fetch_assoc();
     $userid= $userfetch["lawyerid"];
     $username=$userfetch["lawyername"];
- //echo $userid;
  ?>
  <div class="container">
      <div class="menu">
@@ -177,7 +174,6 @@
 
                 $sqlmain= "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid where lawyer.lawyerid=$userid ";
                     if($_POST){
-                        //print_r($_POST);
                         $sqlpt1="";
                         if(!empty($_POST["sheduledate"])){
                             $sheduledate=$_POST["sheduledate"];
