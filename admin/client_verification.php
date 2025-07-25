@@ -517,6 +517,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                         </a>
                     </td>
                 </tr>
+              <tr class="menu-row">
+                    <td class="menu-btn menu-icon-client-verification">
+                        <a href="lawyer_verification.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text menu-text">Lawyer Verification</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers">
                         <a href="lawyers.php" class="non-style-link-menu">
