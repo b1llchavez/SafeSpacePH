@@ -138,7 +138,7 @@
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
-                    <td>                
+                    <td colspan="3">                
                         <form action="" method="post" class="header-search">
 
                             <input type="search" name="search" class="input-text header-searchbar" placeholder="Search Lawyer name or Email" list="lawyers">&nbsp;&nbsp;
@@ -180,17 +180,23 @@
                         <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
 
-
                 </tr>
                
-                <tr >
-                    <td colspan="2" style="padding-top:30px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">Add New Lawyer</p>
-                    </td>
-                    <td colspan="2">
-                        <a href="?action=add&id=none&error=0" class="non-style-link"><button  class="login-btn btn-primary btn button-icon"  style="display: flex;justify-content: center;align-items: center;margin-left:75px;background-image: url('../img/icons/add.svg');">Add New</font></button>
-                            </a></td>
-                </tr>
+                <tr>
+    <td colspan="3" style="padding-top:30px;">
+        <p class="heading-main12" style="margin-left: 45px; font-size:20px; color:rgb(49, 49, 49); margin-bottom: 0;">
+            Add New Lawyer
+        </p>
+    </td>
+    <td colspan="2" style="text-align: right; padding-top:30px; padding-right: 45px; white-space: nowrap;">
+        <a href="?action=add&id=none&error=0" class="non-style-link">
+            <button class="login-btn btn-primary btn button-icon"
+                style="display: inline-flex; align-items: center; background-image: url('../img/icons/add.svg'); white-space: nowrap; min-width: 170px;">
+                Add New Lawyer
+            </button>
+        </a>
+    </td>
+</tr>
                 <tr>
                     <td colspan="4" style="padding-top:10px;">
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Lawyers (<?php echo $list11->num_rows; ?>)</p>
@@ -212,7 +218,7 @@
                 ?>
                   
                 <tr>
-                   <td colspan="4">
+                   <td colspan="5">
                        <center>
                         <div class="abc scroll">
                         <table width="93%" class="sub-table scrolldown" border="0">
