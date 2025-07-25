@@ -241,14 +241,12 @@ $username = $userfetch["lawyername"];
         }
 
         .btn-reset {
-    /* Inherits styles from .btn-primary-soft and .btn */
-    /* Add transition for smooth hover effect */
     transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover styles for the Reset button, matching .btn-primary-soft:hover */
+
 .btn-reset:hover {
-    background-color: var(--primarycolor); /* This will be #5A2675 */
+    background-color: var(--primarycolor); 
     color: #fff;
     box-shadow: 0 3px 5px 0 rgba(57, 108, 240, 0.3);
 }
