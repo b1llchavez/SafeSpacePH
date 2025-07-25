@@ -2,14 +2,8 @@
 
 session_start(); 
 
-$_SESSION["user"]="";
-$_SESSION["usertype"]="u";
-
 // Set the default timezone
 date_default_timezone_set('Asia/Manila'); 
-
-$_SESSION["date"]=$date;
-
 
 include("connection.php");
 
@@ -63,7 +57,16 @@ if($_POST){
         
                 sendConfirmationEmail($email, $name);
 
-                header('Location: client/index.php');
+                $_SESSION['user'] = $email;
+                $_SESSION['usertype'] = 'u'; // unverified user
+                // Get the new user's cid from the database
+                $get_cid = $database->query("SELECT cid, cname FROM client WHERE cemail='$email' LIMIT 1");
+                if ($get_cid && $get_cid->num_rows == 1) {
+                    $client_data = $get_cid->fetch_assoc();
+                    $_SESSION['cid'] = $client_data['cid'];
+                    $_SESSION['cname'] = $client_data['cname'];
+                }
+                header('Location: client/index_unverified.php');
                 $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>';
             }
             
