@@ -321,7 +321,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         echo '<div id="viewDetailsModal" class="custom-modal" style="display:flex;">
                 <div class="custom-modal-content">
                     <a href="javascript:void(0)" class="close-x-button" onclick="closeViewDetailsModal()">&times;</a>
-                    <h3>Volunteer Lawyer Application Details</h3>
+                     <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">Volunteer Lawyer Application Details</h3>
+                    <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
+
 
                     <div class="detail-section">
                         <h4>Personal & Contact Information</h4>

@@ -554,7 +554,9 @@
     <div id="viewDetailsModal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
-            <h2 style="margin-bottom: 20px;">Session Request Details</h2>
+            <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">Session Request Details</h3>
+<div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
+
             <div>
                 <p class="details-label">Client Name:</p>
                 <p id="detailClientName" class="details-data"></p>
