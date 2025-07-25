@@ -300,33 +300,31 @@ $username = $userfetch["lawyername"];
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr>
-                    <td>
-                        <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Manage Appointments</p>
-                    </td>
-                    <td width="15%">
-                        <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                            Today's Date
-                        </p>
-                        <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php
-                            date_default_timezone_set('Asia/Manila');
-                            echo date('Y-m-d');
+                    <td style="padding-left: 45px; vertical-align: bottom;">
+                        <p style="font-size: 23px;font-weight: 600;">Manage Appointments</p>
+                        <?php
                             $list110 = $database->query("select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid  where  lawyer.lawyerid=$userid ");
-                            ?>
-                        </p>
+                        ?>
+                        <p class="heading-main12" style="font-size:18px;color:rgb(49, 49, 49)">All Appointments (<?php echo $list110->num_rows; ?>)</p>
                     </td>
-                    <td width="10%">
-                        <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="50%" style="padding-top:10px;">
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Appointments (<?php echo $list110->num_rows; ?>)</p>
-                    </td>
-                    <td style="padding-top:10px; text-align: right; padding-right: 45px;">
+                    <td style="padding-right: 45px; text-align: right; vertical-align: bottom;">
+                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 15px; margin-bottom: 10px;">
+                            <div style="text-align: right;">
+                                <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;">
+                                    Today's Date
+                                </p>
+                                <p class="heading-sub12" style="padding: 0;margin: 0;">
+                                    <?php
+                                    date_default_timezone_set('Asia/Manila');
+                                    echo date('Y-m-d');
+                                    ?>
+                                </p>
+                            </div>
+                            <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
+                        </div>
                         <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
                              <input type="date" name="sheduledate" id="date" class="input-text" style="width: auto; padding: 8px 10px;" value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
-                             
+
                              <button type="submit" name="filter" class="btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                                 Filter
@@ -350,7 +348,7 @@ $username = $userfetch["lawyername"];
                 }
                 ?>
                 <tr>
-                    <td colspan="4" style="padding-top:20px;">
+                    <td colspan="2" style="padding-top:20px;">
                         <center>
                             <div class="abc scroll">
                                 <table width="93%" class="sub-table scrolldown" border="0">
