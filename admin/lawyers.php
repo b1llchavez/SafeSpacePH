@@ -115,6 +115,11 @@
                         </a>
                     </td>
                 </tr>
+               <tr class="menu-row">
+                    <td class="menu-btn menu-icon-lawyer-verification">
+                        <a href="lawyer_verification.php" class="non-style-link-menu"><div><p class="menu-text">Lawyer Verification</p></div></a>
+                    </td>
+                </tr> 
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-lawyers menu-active menu-icon-lawyers-active">
                         <a href="lawyers.php" class="non-style-link-menu non-style-link-menu-active">
@@ -269,33 +274,33 @@
                                     
                                 }
                                 else{
-                                for ( $x=0; $x<$result->num_rows;$x++){
-                                    $row=$result->fetch_assoc();
-                                    $lawyerid=$row["lawyerid"];
-                                    $name=$row["lawyername"];
-                                    $email=$row["lawyeremail"];
-                                    $spe=$row["specialties"];
-                                    $spcil_res= $database->query("select sname from specialties where id='$spe'");
-                                    $spcil_array= $spcil_res->fetch_assoc();
-                                    $spcil_name=$spcil_array["sname"];
+                                for ($x = 0; $x < $result->num_rows; $x++) {
+                                    $row = $result->fetch_assoc();
+                                    $lawyerid = $row["lawyerid"];
+                                    $name = $row["lawyername"];
+                                    $email = $row["lawyeremail"];
+                                    $spe = $row["specialties"];
+                                    $spcil_res = $database->query("select sname from specialties where id='$spe'");
+                                    $spcil_array = $spcil_res ? $spcil_res->fetch_assoc() : null;
+                                    $spcil_name = ($spcil_array && isset($spcil_array["sname"])) ? $spcil_array["sname"] : "N/A";
                                     echo '<tr>
-                                        <td> &nbsp;'.
-                                        substr($name,0,30)
-                                        .'</td>
+                                        <td> &nbsp;' .
+                                        substr($name, 0, 30)
+                                        . '</td>
                                         <td>
-                                        '.substr($email,0,20).'
+                                        ' . substr($email, 0, 20) . '
                                         </td>
                                         <td>
-                                            '.substr($spcil_name,0,20).'
+                                            ' . substr($spcil_name, 0, 20) . '
                                         </td>
 
                                         <td>
                                         <div style="display:flex;justify-content: center;">
-                                        <a href="?action=edit&id='.$lawyerid.'&error=0" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-edit"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Edit</font></button></a>
+                                        <a href="?action=edit&id=' . $lawyerid . '&error=0" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-edit"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Edit</font></button></a>
                                         &nbsp;&nbsp;&nbsp;
-                                        <a href="?action=view&id='.$lawyerid.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
+                                        <a href="?action=view&id=' . $lawyerid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
                                        &nbsp;&nbsp;&nbsp;
-                                       <a href="?action=drop&id='.$lawyerid.'&name='.$name.'" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
+                                       <a href="?action=drop&id=' . $lawyerid . '&name=' . $name . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
                                         </div>
                                         </td>
                                     </tr>';
@@ -424,7 +429,7 @@
 
             <div>
                 <label style="font-weight:600; color:#391053;">Valid ID:</label><br>
-                <input type="text" name="lawyerbarid" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+                <input type="text" name="lawyerrollid" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
             </div>
 
             <div>
@@ -499,7 +504,7 @@ echo '          </select>
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
             $spcil_name=$spcil_array["sname"];
-            $lawyerbarid=$row['lawyerbarid'];
+            $lawyerrollid =$row['lawyerrollid'];
             $tele=$row['lawyertel'];
 
             $error_1=$_GET["error"];
@@ -539,7 +544,7 @@ echo '          </select>
 
             <div>
                 <label style="font-weight:600; color:#391053;">Valid ID:</label><br>
-                <input type="text" name="lawyerbarid" value="'.$lawyerbarid.'" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+                <input type="text" name="lawyerrollid" value="'.$lawyerrollid.'" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
             </div>
 
             <div>
