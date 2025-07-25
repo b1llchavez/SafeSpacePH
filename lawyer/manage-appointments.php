@@ -753,9 +753,9 @@
         // Get buttons that open modals
         var openMeetingBtn = document.getElementById("meetingLinkBtn");
         var showLinkBtn = document.getElementById("showMyLinkBtn");
-        var rejectBtns = document.getElementsByClassName("reject-btn");
+        var rejectBtns = document.getElementsByClassName("btn-delete");
         var acceptBtns = document.getElementsByClassName("accept-btn");
-        var viewDetailsBtns = document.getElementsByClassName("view-details-btn");
+        var viewDetailsBtns = document.getElementsByClassName("btn-view");
 
         var closeBtns = document.getElementsByClassName("close-btn");
 
