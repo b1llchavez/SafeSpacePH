@@ -165,7 +165,7 @@
                           <br>
 
                             </p>
-                            <a href="appointment.php" class="non-style-link"><button class="btn-primary btn" style="width:30%">View My Appointments</button></a>
+                            <a href="lawyer_appointments.php" class="non-style-link"><button class="btn-primary btn" style="width:30%">View My Appointments</button></a>
                             <br>
                             <br>
                         </td>
