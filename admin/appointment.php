@@ -397,53 +397,7 @@
                     </td>
                 </tr>
 =======
-               <tr>
-    <td width="50%" style="padding-top:10px;">
-        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">
-            All Appointments (<?php echo $list110->num_rows; ?>)
-        </p>
-    </td>
-    <td style="padding-top:10px; text-align: right; padding-right: 45px;" colspan="3">
-        <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
-            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items"
-                style="width: auto; padding: 8px 10px;"
-                value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
 
-            <select name="lawyerid" class="box filter-container-items" style="width: 200px; height: 42px; padding: 8px 10px;">
-                <option value="" disabled <?php if (!isset($_POST['lawyerid'])) echo 'selected'; ?> hidden>Choose Lawyer Name</option>
-                <?php
-                $list11 = $database->query("select * from lawyer order by lawyername asc;");
-                $selected_lawyer = isset($_POST['lawyerid']) ? $_POST['lawyerid'] : '';
-                for ($y = 0; $y < $list11->num_rows; $y++) {
-                    $row00 = $list11->fetch_assoc();
-                    $sn = $row00["lawyername"];
-                    $id00 = $row00["lawyerid"];
-                    $selected = ($id00 == $selected_lawyer) ? "selected" : "";
-                    echo "<option value='" . $id00 . "' " . $selected . ">" . htmlspecialchars($sn) . "</option>";
-                }
-                ?>
-            </select>
-
-            <button type="submit" name="filter" class="btn-primary-soft btn"
-                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                Filter
-            </button>
-
-            <a href="appointment.php" class="non-style-link btn-primary-soft btn"
-                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 4 23 10 17 10"></polyline>
-                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                </svg>
-                Reset
-            </a>
-        </form>
-    </td>
-</tr>
->>>>>>> 8a3bc641d5937492316b124eacef4b6048a3da31
                 
                 <?php
                     $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,lawyer.lawyername,client.cname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join client on client.cid=appointment.cid inner join lawyer on schedule.lawyerid=lawyer.lawyerid";
