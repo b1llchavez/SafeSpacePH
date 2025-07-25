@@ -178,7 +178,7 @@
                             </p>
                             
                             <h3>Channel a Lawyer Here</h3>
-                            <form action="schedule.php" method="post" style="display: flex">
+                            <form action="lawyers.php" method="post" style="display: flex">
 
                                 <input type="search" name="search" class="input-text " placeholder="Search Lawyer and We will Find The Session Available" list="lawyers" style="width:45%;">&nbsp;&nbsp;
                                 
