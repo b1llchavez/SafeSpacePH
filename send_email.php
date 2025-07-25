@@ -109,7 +109,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -201,7 +201,7 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
                                 </ul>
                                 <p>You can monitor your verification status at any time via your SafeSpace PH account.</p>
                                 <div class='button-container'>
-                                    <a href='https://safespaceph.com/my-account' class='button'>View My Account</a>
+                                    <a href='https://safespaceph.byethost31.com/login.php' class='button'>View My Account</a>
                                 </div>
                                 <p>We appreciate your trust in SafeSpace PH. Our lawyers are ready to help you with your legal needs once your verification is approved.</p>
                                 <p>Warm regards,<br>SafeSpace PH Legal Team</p>
@@ -218,7 +218,7 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                             </td>
                         </tr>
                     </table>
@@ -316,7 +316,7 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
                     <p>You will receive another email from us once your appointment has been confirmed and a lawyer has been assigned, or if we need to propose alternative time slots. Please keep an eye on your inbox.</p>
                     
                     <div class='button-container'>
-                        <a href='https://safespaceph.com/my-account' class='button'>Check My Appointments</a>
+                        <a href='https://safespaceph.byethost31.com/client/client-appointment.php' class='button'>Check My Appointments</a>
                     </div>
 
                     <p>Thank you for choosing SafeSpace PH. We are committed to providing you with the support you need.</p>
@@ -334,7 +334,7 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                      </td>
                 </tr>
             </table>
@@ -429,7 +429,7 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
 
 <p>This appointment request has been canceled — either manually by you or due to other circumstances. This may have been due to scheduling conflicts, incomplete information, or other factors. If you believe this was a mistake or you would like to reschedule, we encourage you to request another appointment at your convenience.</p>                    
                     <div class='button-container'>
-                        <a href='https://safespaceph.com/my-account' class='button'>Book Another Appointment</a>
+                        <a href='https://safespaceph.byethost31.com/client/request-session.php' class='button'>Book Another Appointment</a>
                     </div>
 
                     <p>We appreciate your understanding, and we remain committed to helping you find the support you need.</p>
@@ -447,7 +447,7 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                     </td>
                 </tr>
             </table>
@@ -565,7 +565,7 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
                                         <p>We understand this may be inconvenient and apologize for any disruption to your schedule. If you would like to reschedule, you can book a new appointment through your account.</p>
                                         
                                         <div class='button-container'>
-                                            <a href='https://safespaceph.com/my-account' class='button'>Book Another Appointment</a>
+                                            <a href='https://safespaceph.byethost31.com/client/request-session.php' class='button'>Book Another Appointment</a>
                                         </div>
 
                                         <p>We appreciate your understanding and remain committed to helping you find the support you need.</p>
@@ -583,7 +583,7 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -702,7 +702,7 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
                                 <p>Please make sure to click the <strong>meeting link</strong> at the scheduled time to join your consultation. If you have any documents or information relevant to your case, please prepare them beforehand.</p>
                                 <p>We encourage you to review the <strong>Safe Spaces Act (RA 11313)</strong> beforehand to better understand your rights. You can find more information on our website.</p>
                                 <div class='button-container'>
-                                    <a href='https://safespaceph.com/my-appointments' class='button'>View My Appointments</a>
+                                    <a href='https://safespaceph.byethost31.com/client/client-appointment.php' class='button'>View My Appointments</a>
                                 </div>
                                 <p>If you need to reschedule or cancel your appointment, please do so at least 24 hours in advance through your SafeSpace PH account or by contacting our support team.</p>
                                 <p>We look forward to assisting you.</p>
@@ -720,7 +720,7 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                         </tr>
                     </table>
@@ -824,7 +824,7 @@ function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName)
                                 </ul>
                                 <p>We are here to support you on your journey to justice and empowerment.</p>
                                 <div class='button-container'>
-                                    <a href='https://safespaceph.com/appointment' class='button'>Book an Appointment</a>
+                                    <a href='https://safespaceph.byethost31.com/client/request-session.php' class='button'>Book an Appointment</a>
                                 </div>
                                 <p>Thank you for your trust in us.</p>
                                 <p>Sincerely,<br>The SafeSpace PH Team</p>
@@ -841,7 +841,7 @@ function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName)
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                         </tr>
                     </table>
@@ -955,7 +955,7 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
                                         </ul>
                                         <p>We understand this may be disappointing. If you believe there has been a mistake or if you have new documents to provide, you are welcome to submit a new application.</p>
                                         <div class='button-container'>
-                                            <a href='https://safespaceph.com/my-account' class='button'>Submit a New Application</a>
+                                            <a href='https://safespaceph.byethost31.com/client/index_unverified.php' class='button'>Submit a New Application</a>
                                         </div>
                                         <p>If you have any questions, please don't hesitate to contact our support team for further assistance.</p>
                                         <p>Thank you for your understanding.</p>
@@ -973,7 +973,7 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1071,7 +1071,7 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
                                         <p>This means your account is no longer considered verified. As a result, you will lose access to features that require identity verification, such as booking appointments with legal professionals, until your account is re-verified.</p>
                                         <p>If you believe this was done in error or have questions regarding this action, please contact our support team immediately for clarification.</p>
                                         <div class='button-container'>
-                                            <a href='https://safespaceph.com/contact' class='button'>Contact Support</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='button'>Contact Support</a>
                                         </div>
                                         <p>Thank you for your understanding.</p>
                                         <p>Sincerely,<br>The SafeSpace PH Team</p>
@@ -1088,7 +1088,7 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1204,7 +1204,7 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
                                 <p>Please ensure you use this new link to avoid any issues joining your consultation. We recommend updating any calendar invites you may have created.</p>
                                 
                                 <div class='button-container'>
-                                    <a href='https://safespaceph.com/my-appointments' class='button'>View My Appointments</a>
+                                    <a href='https://safespaceph.byethost31.com/client/client-appointment.php' class='button'>View My Appointments</a>
                                 </div>
                                 
                                 <p>We apologize for any inconvenience this may cause and look forward to assisting you.</p>
@@ -1222,7 +1222,7 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                         </tr>
                     </table>
@@ -1239,6 +1239,106 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
     } catch (Exception $e) {
         error_log("Meeting link update email error for {$recipientEmail}: {$mail->ErrorInfo}");
         throw $e;
+    }
+}
+
+function sendClientGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Your SafeSpace PH Account is Scheduled for Deletion';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Account Deletion Request</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content p { margin: 0 0 15px; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                       <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                       <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <p>Dear {$recipientName},</p>
+                                        <p>We've received your request to delete your SafeSpace PH account. We're sorry to see you leave our community.</p>
+                                        <p>Your account has been deactivated and is now scheduled for permanent deletion in <strong>48 hours</strong>. During this period, your profile and data will not be accessible on the platform.</p>
+                                        <p>If you did not request this or wish to restore your account, please <strong>contact the SafeSpace PH support team</strong> by replying to this email within the next 48 hours.</p>
+                                        <div class='button-container'>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='button'>Contact Support</a>
+                                        </div>
+                                        <p>If we do not hear from you, your account and all associated data will be permanently deleted. This action cannot be undone.</p>
+                                        <p>Thank you for being a part of SafeSpace PH. We wish you all the best.</p>
+                                        <p>Sincerely,<br>The SafeSpace PH Team</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\" alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Client account deletion goodbye email error for {$recipientEmail}: {$mail->ErrorInfo}");
     }
 }
 
@@ -1308,7 +1408,7 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                                         <p>Your account has been deactivated and is now scheduled for permanent deletion in <strong>48 hours</strong>. During this time, your profile will not be visible on the platform.</p>
                                         <p>If you've made a mistake or wish to restore your account, please <strong>contact the SafeSpace PH support team</strong> by replying to this email within the next 48 hours.</p>
                                            <div class='button-container'>
-                                            <a href='https://safespaceph.com/contact' class='button'>Contact Support</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='button'>Contact Support</a>
                                         </div>
                                         <p>If we do not hear from you, your account and all associated data will be permanently deleted. This action cannot be undone.</p>
                                         <p>Thank you for being a part of our community.</p>
@@ -1326,7 +1426,7 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1430,7 +1530,7 @@ function sendLawyerVerificationApprovedNotice($recipientEmail, $recipientName, $
                                         <p>Your profile is now active, and you can begin receiving appointment requests. You can manage your appointments and availability through your dashboard.</p>
                                         
                                         <div class='button-container'>
-                                            <a href='https://safespaceph.com/login.php' class='button'>Login to My Dashboard</a>
+                                            <a href='https://safespaceph.byethost31.com/lawyer/index.php' class='button'>Login to My Dashboard</a>
                                         </div>
                                         <p>Thank you for joining our cause.</p>
                                         <p>Sincerely,<br>The SafeSpace PH Team</p>
@@ -1447,7 +1547,7 @@ function sendLawyerVerificationApprovedNotice($recipientEmail, $recipientName, $
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1584,7 +1684,7 @@ function sendLawyerVerificationRejectedNotice($recipientEmail, $recipientName, $
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1700,7 +1800,7 @@ function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
                                             <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
