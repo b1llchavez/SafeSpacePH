@@ -324,209 +324,311 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/admin.css">
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
-    <style>
+   <style>
         body {
-            background: rgba(0, 0, 0, 0.15);
-            min-height: 100vh;
-            margin: 0;
-            font-family: 'Inter', Arial, sans-serif;
-        }
-        .modal {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .modal-content {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            padding: 40px 64px;
-            max-width: 800px;
-            width: 100%;
-            position: relative;
-            animation: fadeIn 0.3s;
-        }
-        .close {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 22px;
-            color: #888;
-            cursor: pointer;
-            border: none;
-            background: none;
-        }
-        .form-title {
-            text-align: center;
-            color: #391053;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0;
-            margin-top: 0;
-            letter-spacing: 0.5px;
-        }
-        .form-divider {
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
-            border: none;
-            border-radius: 2px;
-            margin: 18px 0 32px 0;
-        }
-        .section-title {
-            font-size: 1.18rem;
-            color: #391053;
-            font-weight: 600;
-            margin: 32px 0 14px 0;
-            letter-spacing: 0.2px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #e2d8fa;
-        }
-        .section-title:first-of-type {
-            margin-top: 0;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px 32px;
-            margin-bottom: 18px;
-        }
-        .form-group {
-            margin-bottom: 0;
-        }
-        .form-group.full-width {
-            grid-column: 1 / 3;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-        }
-        input[type="file"] {
-            margin-top: 4px;
-            padding: 8px 0;
-            border: none;
-            background: none;
-            font-size: 15px;
-            color: #3a2c5c;
-        }
-        input[type="file"]::-webkit-file-upload-button,
-        input[type="file"]::file-selector-button {
-            background: #5A2675;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 22px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-right: 10px;
-        }
-        input[type="file"]:hover::-webkit-file-upload-button,
-        input[type="file"]:hover::file-selector-button {
-            background: #391053;
-        }
-        textarea {
-            resize: vertical;
-        }
-        .checkbox-group {
-            margin-bottom: 16px;
-            padding: 12px 16px;
-            background: #f7f4fd;
-            border-radius: 5px;
-            border: 1px solid #e2d8fa;
-            display: flex;
-            align-items: flex-start;
-        }
-        .checkbox-group label {
-            display: flex;
-            align-items: flex-start;
-            font-weight: 500;
-            font-size: 14px;
-            color: #3a2c5c;
-            line-height: 1.6;
-            cursor: pointer;
-        }
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 10px;
-            margin-top: 3px;
-            accent-color: #5A2675;
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-        button[type="submit"] {
-            background: #5A2675;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 28px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button[type="submit"]:hover {
-            background: #391053;
-        }
-        select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-            background-color: white;
-            cursor: pointer;
-        }
-        .preferred-areas-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px 32px;
-            margin-top: 6px;
-            margin-bottom: 4px;
-        }
-        .preferred-areas-list label {
-            font-size: 15px;
-            font-weight: 500;
-            color: #3a2c5c;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 0;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 800px) {
-            .modal-content {
-                padding: 24px 8vw;
-                max-width: 98vw;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 18px 0;
-            }
-            .form-group.full-width {
-                grid-column: 1 / 2;
-            }
-        }
-        @media (max-width: 600px) {
-            .preferred-areas-list {
-                grid-template-columns: 1fr;
-            }
-        }
+    background: rgba(0, 0, 0, 0.15);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    padding: 40px 64px;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+.close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 22px;
+    color: #888;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.form-title {
+    text-align: center;
+    color: #391053;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 0;
+    letter-spacing: 0.5px;
+}
+
+.form-divider {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+    border: none;
+    border-radius: 2px;
+    margin: 18px 0 32px 0;
+}
+
+.section-title {
+    font-size: 1.18rem;
+    color: #391053;
+    font-weight: 600;
+    margin: 32px 0 14px 0;
+    letter-spacing: 0.2px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e2d8fa;
+}
+
+.section-title:first-of-type {
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 32px;
+    margin-bottom: 18px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / 3;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+input[type="file"] {
+    margin-top: 4px;
+    padding: 8px 0;
+    border: none;
+    background: none;
+    font-size: 15px;
+    color: #3a2c5c;
+}
+
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::file-selector-button {
+    background: #5A2675;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 22px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-right: 10px;
+}
+
+input[type="file"]:hover::-webkit-file-upload-button,
+input[type="file"]:hover::file-selector-button {
+    background: #391053;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.checkbox-group {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #f7f4fd;
+    border-radius: 5px;
+    border: 1px solid #e2d8fa;
+    display: flex;
+    align-items: flex-start;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: flex-start;
+    font-weight: 500;
+    font-size: 14px;
+    color: #3a2c5c;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    margin-top: 3px;
+    accent-color: #5A2675;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+button[type="submit"] {
+    background: #5A2675;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #391053;
+    border: 2px solid #9D72B3;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(157, 114, 179, 0.18);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #5A2675 !important;
+    box-shadow: none;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+button[type="submit"]:focus,
+button[type="submit"]:active {
+    border: 2px solid #5A2675;
+    background: #391053;
+    color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(157, 114, 179, 0.18);
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus,
+button[type="submit"]:active {
+    background: #5A2675;
+    border: none;
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+    transition: none;
+}
+
+select,
+select:focus {
+    background: #5A2675 url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 16px center/18px 18px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 38px 10px 22px;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    transition: background 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+select:hover {
+    background-color: #391053;
+    color: #fff;
+}
+
+input[type="checkbox"] {
+    accent-color: #5A2675;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #5A2675;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #5A2675;
+    border-color: #5A2675;
+}
+
+.preferred-areas-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 32px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+.preferred-areas-list label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #3a2c5c;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 800px) {
+    .modal-content,
+    .popup {
+        padding: 24px 8vw;
+        max-width: 98vw;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px 0;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .preferred-areas-list {
+        grid-template-columns: 1fr;
+    }
+}
+
     </style>
 </head>
 <body>

@@ -94,7 +94,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                         </ul>
                                         <p>We believe that increased awareness and easy access to legal assistance are crucial steps towards achieving justice and equality. Your journey towards empowerment and healing begins here.</p>
                                         <div class='button-container'>
-                                            <a href='https://safespaceph.com' class='button'>Get Started</a>
+                                            <a href='https://safespaceph.byethost31.com/' class='button'>Get Started</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -105,9 +105,9 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
-                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
                                         <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
