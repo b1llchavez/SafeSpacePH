@@ -1585,4 +1585,116 @@ function sendLawyerVerificationRejectedNotice($recipientEmail, $recipientName, $
         throw $e;
     }
 }
+
+function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
+    // Passing true enables exceptions for error handling
+    $mail = new PHPMailer(true);
+
+    try {
+        // --- Server Settings ---
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER']; // Your Gmail address from environment variables
+        $mail->Password = $_ENV['EMAIL_PASS']; // Your Gmail App Password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // --- Recipients ---
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        // --- Content ---
+        $mail->isHTML(true);
+        $mail->Subject = 'Application Received - Volunteer Lawyer for SafeSpace PH';
+
+        // Embed images for header and footer
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        // Sanitize recipient name for safe inclusion in HTML
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+
+        // --- Email Body ---
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Volunteer Application Received - SafeSpace PH</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content h1 { font-size: 24px; color: #391053; font-weight: 700; margin-top: 0; margin-bottom: 16px; }
+                .content p { margin: 0 0 18px; }
+                .highlight-box { background: #f7f4fd; border-left: 5px solid #8a2be2; padding: 18px 22px; margin: 28px 0; border-radius: 7px; }
+                .highlight-box strong { color: #391053; font-weight: 700; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                        <img src='cid:logoimg' alt='SafeSpace PH Logo' class='header-logo'>
+                                        <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <h1>Application Received!</h1>
+                                        <p>Dear Atty. {$recipientName_safe},</p>
+                                        <p>Thank you for applying to be a <strong>Volunteer Lawyer</strong> with SafeSpace PH. We have successfully received your application and are incredibly grateful for your willingness to support our cause.</p>
+
+                                        <div class='highlight-box'>
+                                            <strong>What happens next?</strong><br>
+                                            Our team will carefully review your application and the documents you submitted. We will contact you within <strong>24 hours</strong> for verification purposes. Please keep an eye on the email address and phone number you provided.
+                                        </div>
+
+                                        <p>Your expertise and commitment have the power to create a safer space for many. We appreciate your patience during the review process.</p>
+                                        <p>Warm regards,<br><strong>The SafeSpace PH Team</strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                            <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' class='footer-logo'>
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <p>If you have any questions, please don't hesitate to email us at <a href='mailto:safespaceph2025@gmail.com'>safespaceph2025@gmail.com</a>.</p>
+                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+
+        $mail->send();
+    } catch (Exception $e) {
+        // Log the error for debugging instead of showing it to the user
+        error_log("Volunteer application email could not be sent. Mailer Error: {$mail->ErrorInfo}");
+    }
+}
 ?>
