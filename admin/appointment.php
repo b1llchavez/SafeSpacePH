@@ -350,7 +350,6 @@
                     </td>
                 </tr>
                 
-<<<<<<< HEAD
                 <tr>
                     <td width="50%" style="padding-top:10px;">
                         <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Appointments (<?php echo $list110->num_rows; ?>)</p>
@@ -396,7 +395,6 @@
                         </form>
                     </td>
                 </tr>
-=======
 
                 
                 <?php
