@@ -137,10 +137,9 @@
         <div class="dash-body">
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 <tr >
-                    <td>
-                        <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Appointment Manager</p>
-                                           
-                    </td>
+                     <td colspan="2">
+                    <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Appointment Manager</p>
+                </td>
                     <td width="15%">
                         <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
                             Today's Date
