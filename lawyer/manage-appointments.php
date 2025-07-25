@@ -557,7 +557,7 @@
                                                         data-description="' . htmlspecialchars($case_description) . '">
                                                        View
                                                     </button>
-                                                    <a href="manage-appointments.php?action=accept&appoid=' . $appoid . '&scheduleid=' . $scheduleid . '" class="non-style-link">
+                                                    <a href="manage-appointments.php?action=accept&appoid=' . $appoid . '&scheduleid=' . $scheduleid . '" class="non-style-link accept-btn">
                                                     <button class="btn-primary-soft btn button-icon menu-icon-verify"> Accept </button>
                                                     </a>
                                                     <a href="manage-appointments.php?action=reject&appoid=<?php echo $appoid; ?>" class="non-style-link reject-btn">
@@ -735,7 +735,7 @@
                 notified via email.</p>
             <div style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" id="cancelAcceptanceBtn" class="btn-primary-soft btn">Cancel</button>
-                <a id="confirmAcceptanceLink" href="#" class="non-style-link">
+                <a id="confirmAcceptanceLink" class="non-style-link">
                     <button type="button" class="login-btn btn-primary btn">Confirm Acceptance</button>
                 </a>
             </div>
@@ -754,7 +754,7 @@
         var openMeetingBtn = document.getElementById("meetingLinkBtn");
         var showLinkBtn = document.getElementById("showMyLinkBtn");
         var rejectBtns = document.getElementsByClassName("reject-btn");
-        var acceptBtns = document.getElementsByClassName("menu-icon-verify");
+        var acceptBtns = document.getElementsByClassName("accept-btn");
         var viewDetailsBtns = document.getElementsByClassName("btn-view");
 
         var closeBtns = document.getElementsByClassName("close-btn");
