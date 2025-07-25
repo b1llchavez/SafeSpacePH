@@ -50,8 +50,7 @@
                             <button type="submit" class="modal-btn modal-btn-danger">Yes, Delete</button>
                         </form>
                         <a href="admin_reports.php" class="non-style-link">
-                            <button type="button" class="modal-btn modal-btn-secondary">Cancel</button>
-                        </a>
+<button type="button" class="modal-btn modal-btn-soft">Cancel</button>                        </a>
                     </div>
                 </div>
             </div>';
@@ -166,7 +165,7 @@
                         </div>
                         <div class="modal-footer">
                              <a href="admin_reports.php" class="non-style-link">
-                                <button type="button" class="modal-btn modal-btn-secondary">Close</button>
+                                <button type="button" class="modal-btn modal-btn-soft">Close</button>
                             </a>
                         </div>
                     </div>
@@ -198,8 +197,7 @@
                         <div class="modal-footer">
                              <button type="submit" class="modal-btn modal-btn-primary">Yes, Reject</button>
                             <a href="admin_reports.php" class="non-style-link">
-                                <button type="button" class="modal-btn modal-btn-secondary">Cancel</button>
-                            </a>
+<button type="button" class="modal-btn modal-btn-soft">Cancel</button>                            </a>
                         </div>
                     </form>
                 </div>
@@ -230,8 +228,7 @@
                         <div class="modal-footer">
                             <button type="submit" class="modal-btn modal-btn-primary">Yes, Submit</button>
                             <a href="admin_reports.php" class="non-style-link">
-                                <button type="button" class="modal-btn modal-btn-secondary">Cancel</button>
-                            </a>
+<button type="button" class="modal-btn modal-btn-soft">Cancel</button>                            </a>
                         </div>
                     </form>
                 </div>
@@ -481,21 +478,21 @@
             margin-top: 25px;
         }
         
-        .modal-btn {
+       .modal-btn {
             border: none;
             border-radius: 7px;
             padding: 12px 28px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            transition: background 0.2s, box-shadow 0.2s;
         }
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
         }
 
         .modal-btn-primary {
