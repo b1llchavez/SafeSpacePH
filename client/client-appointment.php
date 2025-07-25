@@ -92,8 +92,8 @@
             padding: 5px 10px;
             border-radius: 5px;
             font-weight: bold;
-            color: #fff;
-            text-transform: capitalize;
+  color: #fff !important;
+              text-transform: capitalize;
         }
         .status-pending {
             background-color: #ffc107;  
@@ -225,6 +225,33 @@
         }
         .detail-full {
             grid-column: 1 / -1;
+        }
+
+        /* --- STYLES FOR SELECT WITH ICON --- */
+        .select-container {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle; /* Aligns dropdown with other form items */
+        }
+        .select-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none; /* Lets you click through the icon */
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+        .select-with-icon.input-text {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 180px;
+            padding: 8px 30px 8px 10px; /* Adds space on the right for the icon */
+            height: 40px;
+            margin: 0;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -372,21 +399,24 @@
                             
                             <input type="date" name="sheduledate" id="date" class="input-text" style="width: auto; padding: 8px 10px;" value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
                             
-                            
-                            <select name="lawyerid" id="lawyerid" class="input-text" style="width: auto; padding: 8px 10px; height: 37px; margin: 0;">
-                                <option value="" disabled <?php if (!isset($_POST['lawyerid']) || $_POST['lawyerid'] == '') echo 'selected'; ?>>Choose a Lawyer</option>
-                                <option value="NULL" <?php if (isset($_POST['lawyerid']) && $_POST['lawyerid'] == 'NULL') echo 'selected'; ?>>Unassigned</option>
-                                <?php
-                                    $list11 = $database->query("select * from lawyer order by lawyername asc;");
-                                    while ($row00 = $list11->fetch_assoc()) {
-                                        $sn = $row00["lawyername"];
-                                        $id00 = $row00["lawyerid"];
-                                        $selected = (isset($_POST['lawyerid']) && $_POST['lawyerid'] == $id00) ? 'selected' : '';
-                                        echo "<option value='".$id00."' ".$selected.">".htmlspecialchars($sn)."</option>";
-                                    }
-                                ?>
-                            </select>
-
+                            <div class="select-container">
+                                <select name="lawyerid" id="lawyerid" class="input-text select-with-icon">
+                                    <option value="" disabled <?php if (!isset($_POST['lawyerid']) || $_POST['lawyerid'] == '') echo 'selected'; ?>>Choose a Lawyer</option>
+                                    <option value="NULL" <?php if (isset($_POST['lawyerid']) && $_POST['lawyerid'] == 'NULL') echo 'selected'; ?>>Unassigned</option>
+                                    <?php
+                                        $list11 = $database->query("select * from lawyer order by lawyername asc;");
+                                        while ($row00 = $list11->fetch_assoc()) {
+                                            $sn = $row00["lawyername"];
+                                            $id00 = $row00["lawyerid"];
+                                            $selected = (isset($_POST['lawyerid']) && $_POST['lawyerid'] == $id00) ? 'selected' : '';
+                                            echo "<option value='".$id00."' ".$selected.">".htmlspecialchars($sn)."</option>";
+                                        }
+                                    ?>
+                                </select>
+                                <div class="select-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                                </div>
+                            </div>
                             
                             <button type="submit" name="filter" class="btn-primary-soft btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>

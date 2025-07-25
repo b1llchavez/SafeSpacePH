@@ -323,20 +323,6 @@
             line-height: 1.5;
             cursor: pointer;
         }
-
-        .abc.scroll {
-            padding: 20px;
-            max-width: 800px;  
-            margin: 0 auto;  
-            width: 90%;  
-        }
-
-        .add-new-form {
-            width: 100%;
-            max-width: 500px;  
-            margin: 0 auto;  
-        }
-
          
         .dash-body {
             padding: 20px;
@@ -425,104 +411,115 @@
                 <tr>
                     <td colspan="4">
                         <center>
-                            <div class="abc scroll" style="padding: 20px; max-width: 100%;">
-                                <form action="" method="POST" enctype="multipart/form-data" class="add-new-form">
-                                    <div class="form-group">
-                                        <label for="reporter_name" class="form-label">Your Name (Optional):</label>
-                                        <input type="text" name="reporter_name" class="input-text" placeholder="Enter your name" value="<?php echo $reporter_name; ?>">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="reporter_phone" class="form-label">Your Phone Number (Optional):</label>
-                                        <input type="tel" name="reporter_phone" class="input-text" placeholder="Enter your phone number" value="<?php echo $reporter_phone; ?>">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="reporter_email" class="form-label">Your Email (Optional):</label>
-                                        <input type="email" name="reporter_email" class="input-text" placeholder="Enter your email" value="<?php echo $reporter_email; ?>">
-                                    </div>
+                            <div class="abc">
+                                <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
+                                    <tr>
+                                        <td>
+                                            <p style="padding: 0;margin: 0;text-align: center;font-size: 25px;font-weight: 600;">Submit a Violation Report.</p><br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label-td" colspan="2" style="padding: 20px;">
+                                            <form action="" method="POST" enctype="multipart/form-data" class="add-new-form">
+                                                <div class="form-group">
+                                                    <label for="reporter_name" class="form-label">Your Name (Optional):</label>
+                                                    <input type="text" name="reporter_name" class="input-text" placeholder="Enter your name" value="<?php echo $reporter_name; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="reporter_phone" class="form-label">Your Phone Number (Optional):</label>
+                                                    <input type="tel" name="reporter_phone" class="input-text" placeholder="Enter your phone number" value="<?php echo $reporter_phone; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="reporter_email" class="form-label">Your Email (Optional):</label>
+                                                    <input type="email" name="reporter_email" class="input-text" placeholder="Enter your email" value="<?php echo $reporter_email; ?>">
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label class="form-label">Type of Violation:</label>
-                                        <div class="btn-group" id="violation-type-buttons">
-                                            <button type="button" class="btn btn-primary-soft" data-value="Public Harassment">Public Harassment</button>
-                                            <button type="button" class="btn btn-primary-soft" data-value="Online Harassment">Online Harassment</button>
-                                            <button type="button" class="btn btn-primary-soft" data-value="Workplace/School Harassment">Workplace/School Harassment</button>
-                                            <button type="button" class="btn btn-primary-soft" data-value="Gender-Based Sexual Harassment">Gender-Based Sexual Harassment</button>
-                                            <button type="button" class="btn btn-primary-soft" data-value="Other">Other</button>
-                                        </div>
-                                        <input type="hidden" name="violation_type" id="violation_type" value="<?php echo $violation_type; ?>">
-                                    </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Type of Violation:</label>
+                                                    <div class="btn-group" id="violation-type-buttons">
+                                                        <button type="button" class="btn btn-primary-soft" data-value="Public Harassment">Public Harassment</button>
+                                                        <button type="button" class="btn btn-primary-soft" data-value="Online Harassment">Online Harassment</button>
+                                                        <button type="button" class="btn btn-primary-soft" data-value="Workplace/School Harassment">Workplace/School Harassment</button>
+                                                        <button type="button" class="btn btn-primary-soft" data-value="Gender-Based Sexual Harassment">Gender-Based Sexual Harassment</button>
+                                                        <button type="button" class="btn btn-primary-soft" data-value="Other">Other</button>
+                                                    </div>
+                                                    <input type="hidden" name="violation_type" id="violation_type" value="<?php echo $violation_type; ?>">
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="incident_date" class="form-label">Date of Incident:</label>
-                                        <input type="date" name="incident_date" class="input-text" value="<?php echo $incident_date; ?>" required>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="incident_date" class="form-label">Date of Incident:</label>
+                                                    <input type="date" name="incident_date" class="input-text" value="<?php echo $incident_date; ?>" required>
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="incident_time" class="form-label">Time of Incident:</label>
-                                        <input type="time" name="incident_time" class="input-text" value="<?php echo $incident_time; ?>" required>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="incident_time" class="form-label">Time of Incident:</label>
+                                                    <input type="time" name="incident_time" class="input-text" value="<?php echo $incident_time; ?>" required>
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="incident_location" class="form-label">Location of Incident:</label>
-                                        <textarea name="incident_location" class="input-text" placeholder="Exact address, landmark, or online platform" required><?php echo $incident_location; ?></textarea>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="incident_location" class="form-label">Location of Incident:</label>
+                                                    <textarea name="incident_location" class="input-text" placeholder="Exact address, landmark, or online platform" required><?php echo $incident_location; ?></textarea>
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="incident_description" class="form-label">Description of the Incident (Required):</label>
-                                        <textarea name="incident_description" class="input-text" placeholder="Provide a detailed description of the incident..."><?php echo $incident_description; ?></textarea>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="incident_description" class="form-label">Description of the Incident (Required):</label>
+                                                    <textarea name="incident_description" class="input-text" placeholder="Provide a detailed description of the incident..."><?php echo $incident_description; ?></textarea>
+                                                </div>
 
-                                    <h3>Victim Information (if different from Reporter)</h3>
-                                    <div class="form-group">
-                                        <label for="victim_name" class="form-label">Victim's Full Name (Optional):</label>
-                                        <input type="text" name="victim_name" class="input-text" placeholder="Victim's Name" value="<?php echo $victim_name; ?>">
-                                    </div>
+                                                <h3>Victim Information (if different from Reporter)</h3>
+                                                <div class="form-group">
+                                                    <label for="victim_name" class="form-label">Victim's Full Name (Optional):</label>
+                                                    <input type="text" name="victim_name" class="input-text" placeholder="Victim's Name" value="<?php echo $victim_name; ?>">
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="victim_contact" class="form-label">Victim's Contact (Email/Phone - Optional):</label>
-                                        <input type="text" name="victim_contact" class="input-text" placeholder="Victim's Email or Phone" value="<?php echo $victim_contact; ?>">
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="victim_contact" class="form-label">Victim's Contact (Email/Phone - Optional):</label>
+                                                    <input type="text" name="victim_contact" class="input-text" placeholder="Victim's Email or Phone" value="<?php echo $victim_contact; ?>">
+                                                </div>
 
-                                    <h3>Perpetrator Information</h3>
-                                    <div class="form-group">
-                                        <label for="perpetrator_name" class="form-label">Perpetrator's Name or Description:</label>
-                                        <input type="text" name="perpetrator_name" class="input-text" placeholder="Name, description, or 'Unknown'" value="<?php echo $perpetrator_name; ?>" required>
-                                    </div>
+                                                <h3>Perpetrator Information</h3>
+                                                <div class="form-group">
+                                                    <label for="perpetrator_name" class="form-label">Perpetrator's Name or Description:</label>
+                                                    <input type="text" name="perpetrator_name" class="input-text" placeholder="Name, description, or 'Unknown'" value="<?php echo $perpetrator_name; ?>" required>
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label class="form-label">Request Legal Consultation?</label>
-                                        <div class="btn-group" id="legal-consultation-buttons">
-                                            <button type="button" class="btn btn-primary-soft" data-value="Yes">Yes</button>
-                                            <button type="button" class="btn btn-primary-soft" data-value="No">No</button>
-                                        </div>
-                                        <input type="hidden" name="legal_consultation" id="legal_consultation" value="<?php echo $legal_consultation; ?>">
-                                    </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Request Legal Consultation?</label>
+                                                    <div class="btn-group" id="legal-consultation-buttons">
+                                                        <button type="button" class="btn btn-primary-soft" data-value="Yes">Yes</button>
+                                                        <button type="button" class="btn btn-primary-soft" data-value="No">No</button>
+                                                    </div>
+                                                    <input type="hidden" name="legal_consultation" id="legal_consultation" value="<?php echo $legal_consultation; ?>">
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="supporting_files" class="form-label">Upload Supporting Documentation (Optional - Only the first file will be saved):</label>
-                                        <div class="file-upload-area" id="file-upload-area">
-                                            Drag & Drop Files Here or Click to Browse
-                                            <input type="file" name="supporting_files[]" id="supporting_files" multiple style="display: none;">
-                                        </div>
-                                        <ul class="file-list" id="file-list">
-                                            </ul>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="supporting_files" class="form-label">Upload Supporting Documentation (Optional - Only the first file will be saved):</label>
+                                                    <div class="file-upload-area" id="file-upload-area">
+                                                        Drag & Drop Files Here or Click to Browse
+                                                        <input type="file" name="supporting_files[]" id="supporting_files" multiple style="display: none;">
+                                                    </div>
+                                                    <ul class="file-list" id="file-list">
+                                                        </ul>
+                                                </div>
 
-                                    <div class="form-group">
-                                        <label for="supplementary_notes" class="form-label">Supplementary Notes (Optional):</label>
-                                        <textarea name="supplementary_notes" class="input-text" placeholder="Add any additional notes or questions..."><?php echo $supplementary_notes; ?></textarea>
-                                    </div>
+                                                <div class="form-group">
+                                                    <label for="supplementary_notes" class="form-label">Supplementary Notes (Optional):</label>
+                                                    <textarea name="supplementary_notes" class="input-text" placeholder="Add any additional notes or questions..."><?php echo $supplementary_notes; ?></textarea>
+                                                </div>
 
-                                    <div class="form-group consent-checkbox-group">
-                                        <input type="checkbox" name="consent" id="consent" <?php echo $consent_checked; ?>>
-                                        <label for="consent">I consent to SafeSpace PH using my shared information for case assessment and potential connection with pro bono legal assistance.</label>
-                                    </div>
+                                                <div class="form-group consent-checkbox-group">
+                                                    <input type="checkbox" name="consent" id="consent" <?php echo $consent_checked; ?>>
+                                                    <label for="consent">I consent to SafeSpace PH using my shared information for case assessment and potential connection with pro bono legal assistance.</label>
+                                                </div>
 
-                                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
-                                        <input type="reset" value="Reset Form" class="login-btn btn-primary-soft btn">
-                                        <input type="submit" value="Submit Report" class="login-btn btn-primary btn">
-                                    </div>
-                                </form>
+                                                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
+                                                    <input type="reset" value="Reset Form" class="login-btn btn-primary-soft btn">
+                                                    <input type="submit" value="Submit Report" class="login-btn btn-primary btn">
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </center>
                     </td>
