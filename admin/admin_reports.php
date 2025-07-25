@@ -619,15 +619,6 @@
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-schedule">
-                        <a href="schedule.php" class="non-style-link-menu">
-                            <div>
-                                <p class="menu-text">Schedules</p>
-                            </div>
-                        </a>
-                    </td>
-                </tr>
-                <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
                         <a href="appointment.php" class="non-style-link-menu">
                             <div>
@@ -744,10 +735,10 @@
                                                     <td>'. date("M d, Y", strtotime($submission_date)) .'</td>
                                                     <td>
                                                         <div style="display:flex;justify-content: center; gap: 5px;">
-                                                        <a href="?action=view&id='. $id .'" class="non-style-link"><button class="btn-primary-soft btn" style="padding: 5px 10px;"><i class="fa-solid fa-eye"></i> View</button></a>
-                                                        <a href="?action=submit&id='. $id .'" class="non-style-link"><button class="btn-primary-soft btn" style="padding: 5px 10px;"><i class="fa-solid fa-check"></i> Submit</button></a>
-                                                        <a href="?action=reject&id='. $id .'" class="non-style-link"><button class="btn-primary-soft btn" style="padding: 5px 10px;"><i class="fa-solid fa-xmark"></i> Reject</button></a>
-                                                        <a href="?action=drop&id='. $id .'&name='. urlencode($reporter_name) .'" class="non-style-link"><button class="btn-primary-soft btn" style="padding: 5px 10px;"><i class="fa-solid fa-trash"></i> Delete</button></a>
+                                                        <a href="?action=view&id='. $id .'" class="non-style-link"><button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
+                                                        <a href="?action=submit&id='. $id .'" class="non-style-link"><button class="btn-primary-soft btn button-icon menu-icon-verify" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Submit</font></button></a>
+                                                        <a href="?action=reject&id='. $id .'" class="non-style-link"><button class="btn-primary-soft btn button-icon btn-unverify" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Reject</font></button></a>
+                                                        <a href="?action=drop&id='. $id .'&name='. urlencode($reporter_name) .'" class="non-style-link"><button class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Delete</font></button></a>
                                                         </div>
                                                     </td>
                                                 </tr>';

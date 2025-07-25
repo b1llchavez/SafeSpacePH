@@ -293,15 +293,6 @@
                     </td>
                 </tr>
                 <tr class="menu-row">
-                    <td class="menu-btn menu-icon-schedule">
-                        <a href="schedule.php" class="non-style-link-menu">
-                            <div>
-                                <p class="menu-text">Schedules</p>
-                            </div>
-                        </a>
-                    </td>
-                </tr>
-                <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment menu-active menu-icon-appoinment-active">
                         <a href="appointment.php" class="non-style-link-menu non-style-link-menu-active">
                             <div>
