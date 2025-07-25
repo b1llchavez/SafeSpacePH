@@ -286,7 +286,7 @@ include("../connection.php");
                     <td class="menu-btn menu-icon-schedule menu-active menu-icon-schedule-active">
                         <a href="schedule.php" class="non-style-link-menu non-style-link-menu-active">
                             <div>
-                                <p class="menu-text menu-text-active">Schedules</p>
+                                <p class="menu-text menu-text-active">Session Requests</p>
                             </div>
                         </a>
                     </td>
@@ -339,7 +339,7 @@ include("../connection.php");
         <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
             <tr>
                 <td colspan="2">
-                    <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Schedule Manager</p>
+                    <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Session Requests Manager</p>
                 </td>
                 <td style="text-align: right;">
                     <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;">

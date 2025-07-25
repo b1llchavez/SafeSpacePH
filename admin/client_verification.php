@@ -490,6 +490,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                         </a>
                     </td>
                 </tr>
+                     </tr>
+                     <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="schedule.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Session Requests</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-appoinment">
                         <a href="appointment.php" class="non-style-link-menu">
