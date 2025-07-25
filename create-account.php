@@ -5,13 +5,15 @@ session_start();
 $_SESSION["user"]="";
 $_SESSION["usertype"]="u";
 
+// Set the default timezone
 date_default_timezone_set('Asia/Manila'); 
+
+$_SESSION["date"]=$date;
 
 
 include("connection.php");
 
-
-
+// ... the rest of your code
 
 if($_POST){
 
@@ -53,7 +55,7 @@ if($_POST){
             }else{
                
 
-                $database->query("insert into client(cemail,cname, fname, lname, cpassword, caddress,cdob,ctel) values('$email','$name', '$fname', '$lname', '$newpassword','$address','$dob','$tele');");
+                $database->query("insert into client(cemail,cname,cpassword, caddress,cdob,ctel) values('$email','$name','$newpassword','$address','$dob','$tele');");
                 $database->query("insert into webuser values('$email','u')");
 
                 require 'send_email.php'; 

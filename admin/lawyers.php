@@ -357,93 +357,37 @@
             $spcil_name=$spcil_array["sname"];
             $tele=$row['lawyertel'];
             echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                        <h2></h2>
-                        <a class="close" href="lawyers.php">&times;</a>
-                        <div class="content">
-                            SafeSpace PH<br>
-                            
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        <table width="80%" class="sub-table scrolldown add-lawyers-form-container" border="0">
-                        
-                            <tr>
-                                <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">View Details.</p><br><br>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                
-                                <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Name: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    '.$name.'<br><br>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Email" class="form-label">Email: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Valid ID: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">Telephone: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Specialties: </label>
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                            <td class="label-td" colspan="2">
-                            '.$spcil_name.'<br><br>
-                            </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="lawyers.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
+<div id="viewDetailsModal" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background-color:#fff; padding:30px; border-radius:8px; width:90%; max-width:700px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative;">
+        <a href="lawyers.php" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; text-decoration:none; color:#391053;">&times;</a>
+        <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">View Details</h3>
+        <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
 
+        <div style="margin-bottom:25px;">
+            <div style="margin-bottom:10px;"><strong>Name:</strong> <span>' . htmlspecialchars($name) . '</span></div>
+            <div style="margin-bottom:10px;"><strong>Email:</strong> <span>' . htmlspecialchars($email) . '</span></div>
+            <div style="margin-bottom:10px;"><strong>Valid ID:</strong> <span></span></div>
+            <div style="margin-bottom:10px;"><strong>Telephone:</strong> <span>' . htmlspecialchars($tele) . '</span></div>
+            <div style="margin-bottom:10px;"><strong>Specialties:</strong> <span>' . htmlspecialchars($spcil_name) . '</span></div>
+        </div>
 
-                                </td>
-                
-                            </tr>
-                           
-
-                        </table>
-                        </div>
-                    </center>
-                    <br><br>
-            </div>
-            </div>
-            ';
+        <div style="display:flex; justify-content:center; margin-top:30px;">
+            <a href="lawyers.php" style="text-decoration:none;">
+                <button style="
+                    border: none;
+                    border-radius: 7px;
+                    padding: 12px 28px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    background: #f0e9f7;
+                    color: #5A2675;
+                    transition: background 0.2s, box-shadow 0.2s;
+                ">Close</button>
+            </a>
+        </div>
+    </div>
+</div>';
         }elseif($action=='add'){
                 $error_1=$_GET["error"];
                 $errorlist= array(

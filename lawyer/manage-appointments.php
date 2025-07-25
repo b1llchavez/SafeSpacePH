@@ -41,7 +41,7 @@
         }
       
         .modal {
-            display: none; 
+            display: none; /* Initially hidden */
             position: fixed; 
             z-index: 1000; 
             left: 0;
@@ -50,10 +50,12 @@
             height: 100%; 
             overflow: auto; 
             background-color: rgba(0,0,0,0.4);
+            align-items: center;
+            justify-content: center;
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 10% auto;
+            margin: auto;
             padding: 25px;
             border: 1px solid #888;
             width: 90%;
@@ -62,32 +64,32 @@
             animation: transitionIn-Y-bottom 0.5s;
             position: relative;
         }
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s, color 0.2s;
-    text-decoration: none;
-    z-index: 1;
-}
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+            text-decoration: none;
+            z-index: 1;
+        }
 
-.close-btn:hover {
-    background-color: #f0e9f7;
-    color: #5A2675;
-}
+        .close-btn:hover {
+            background-color: #f0e9f7;
+            color: #5A2675;
+        }
         .rejection-reason {
             margin-bottom: 10px;
             display: flex;
@@ -98,6 +100,31 @@
         }
         .rejection-reason label {
             flex-grow: 1;
+        }
+        .action-btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .details-label {
+            font-weight: bold;
+            color: #555;
+            margin-top: 10px;
+        }
+        .details-data {
+            background-color: #f1f1f1;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        /* New robust style for button icons */
+        .button-icon img {
+            width: 15px;
+            height: auto;
+            vertical-align: middle;
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -407,9 +434,6 @@
                         <thead>
                         <tr>
                                 <th class="table-headin">
-                                    Appointment Number
-                                </th>
-                                <th class="table-headin">
                                     Client Name
                                 </th>
                                 <th class="table-headin">
@@ -421,7 +445,7 @@
                                 <th class="table-headin">
                                     Requested On
                                 </th>
-                                <th class="table-headin">
+                                <th class="table-headin" style="width: 30%;">
                                     Actions
                                 </th>
                             </tr>
@@ -438,9 +462,7 @@
                                     schedule.title,
                                     schedule.scheduledate,
                                     schedule.scheduletime,
-                                    client.cname,
-                                    client.cemail,
-                                    client.ctel
+                                    client.cname
                                 FROM appointment 
                                 INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
                                 INNER JOIN client ON appointment.cid = client.cid
@@ -451,7 +473,7 @@
 
                                 if($result_new_requests->num_rows == 0){
                                     echo '<tr>
-                                    <td colspan="6"> <br><br><br><br>
+                                    <td colspan="5"> <br><br><br><br>
                                     <center>
                                     <img src="../img/notfound.svg" width="25%">
                                     
@@ -463,37 +485,53 @@
                                     </tr>';
                                     
                                 } else {
-                                    for ( $x=0; $x<$result_new_requests->num_rows;$x++){
-                                        $row_request = $result_new_requests->fetch_assoc();
+                                    while ($row_request = $result_new_requests->fetch_assoc()){
                                         $appoid = $row_request["appoid"];
-                                        $apponum = $row_request["apponum"];
                                         $appodate = $row_request["appodate"];
-                                        $case_description = $row_request["case_description"];
                                         $scheduleid = $row_request["scheduleid"];
                                         $title = $row_request["title"];
                                         $scheduledate = $row_request["scheduledate"];
                                         $scheduletime = $row_request["scheduletime"];
                                         $clientname = $row_request["cname"];
-                                        $clientemail = $row_request["cemail"];
-                                        $clienttel = $row_request["ctel"];
+                                        $case_description = $row_request["case_description"];
+                                        
+                                        $view_icon_path = '../img/icons/view.svg';
+                                        $view_icon_white_path = '../img/icons/view-white.svg';
+                                        $accept_icon_path = '../img/icons/verify.svg';
+                                        $accept_icon_white_path = '../img/icons/verify-white.svg';
+                                        $reject_icon_path = '../img/icons/reject.svg';
+                                        $reject_icon_white_path = '../img/icons/reject-white.svg';
+
 
                                         echo '<tr>
-                                            <td style="text-align:center;">'.$apponum.'</td>
                                             <td>'.htmlspecialchars($clientname).'</td>
                                             <td>'.htmlspecialchars($title).'</td>
-                                            <td style="text-align:center;">'.htmlspecialchars($scheduledate).'<br>at '.substr(htmlspecialchars($scheduletime),0,5).'</td>
-                                            <td style="text-align:center;">'.htmlspecialchars($appodate).'</td>
+                                            <td style="text-align:center;">'.date("M d, Y", strtotime($scheduledate)).'<br>'.date("g:i A", strtotime($scheduletime)).'</td>
+                                            <td style="text-align:center;">'.date("M d, Y", strtotime($appodate)).'</td>
                                             <td>
-                                                <div style="display:flex;justify-content: center;">
-                                                    <a href="manage-appointments.php?action=accept&appoid='.$appoid.'&scheduleid='.$scheduleid.'" class="non-style-link">
-                                                        <button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 20px;padding-right: 20px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
-                                                            <font class="tn-in-text">Accept</font>
-                                                        </button>
-                                                    </a>
-                                                    &nbsp;&nbsp;&nbsp;
+                                                <div class="action-btn-container">
+                                                    <button class="btn-primary-soft btn button-icon btn-view view-details-btn"
+                                                        onmouseover="this.querySelector(\'img\').src=\''.$view_icon_white_path.'\'"
+                                                        onmouseout="this.querySelector(\'img\').src=\''.$view_icon_path.'\'"
+                                                        data-clientname="'.htmlspecialchars($clientname).'"
+                                                        data-title="'.htmlspecialchars($title).'"
+                                                        data-date="'.date("F j, Y", strtotime($scheduledate)).'"
+                                                        data-time="'.date("g:i A", strtotime($scheduletime)).'"
+                                                        data-description="'.htmlspecialchars($case_description).'">
+                                                       View Details
+                                                    </button>
+                                               <a href="manage-appointments.php?action=accept&appoid='.$appoid.'&scheduleid='.$scheduleid.'" class="non-style-link accept-btn">
+    <button class="btn-primary-soft btn button-icon"
+        onmouseover="this.querySelector(\'img\').src=\''.$accept_icon_white_path.'\'"
+        onmouseout="this.querySelector(\'img\').src=\''.$accept_icon_path.'\'">
+        <img src="'.$accept_icon_path.'" alt="Accept"> Accept
+    </button>
+</a>
                                                     <a href="manage-appointments.php?action=reject&appoid='.$appoid.'" class="non-style-link reject-btn">
-                                                        <button type="button" class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 20px;padding-right: 20px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
-                                                            <font class="tn-in-text">Reject</font>
+                                                        <button type="button" class="btn-primary-soft btn button-icon btn-delete"
+                                                            onmouseover="this.querySelector(\'img\').src=\''.$reject_icon_white_path.'\'"
+                                                            onmouseout="this.querySelector(\'img\').src=\''.$reject_icon_path.'\'">
+                                                           Reject
                                                         </button>
                                                     </a>
                                                 </div>
@@ -509,6 +547,27 @@
                    </td> 
                 </tr>
             </table>
+        </div>
+    </div>
+
+    <!-- View Details Modal -->
+    <div id="viewDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 style="margin-bottom: 20px;">Session Request Details</h2>
+            <div>
+                <p class="details-label">Client Name:</p>
+                <p id="detailClientName" class="details-data"></p>
+
+                <p class="details-label">Session Title:</p>
+                <p id="detailSessionTitle" class="details-data"></p>
+
+                <p class="details-label">Preferred Date & Time:</p>
+                <p id="detailDateTime" class="details-data"></p>
+
+                <p class="details-label">Case Description:</p>
+                <p id="detailDescription" class="details-data" style="max-height: 150px; overflow-y: auto;"></p>
+            </div>
         </div>
     </div>
 
@@ -607,60 +666,104 @@
         </div>
     </div>
 
+    <!-- Acceptance Confirmation Modal -->
+    <div id="acceptanceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 style="margin-bottom: 15px;">Confirm Acceptance</h2>
+            <p style="margin-bottom: 25px;">Are you sure you want to accept this appointment? The client will be notified via email.</p>
+            <div style="text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+                 <button type="button" id="cancelAcceptanceBtn" class="btn-primary-soft btn">Cancel</button>
+                 <a id="confirmAcceptanceLink" href="#" class="non-style-link">
+                    <button type="button" class="login-btn btn-primary btn">Confirm Acceptance</button>
+                 </a>
+            </div>
+        </div>
+    </div>
+
 <script>
+    // Get all modals
     var meetingModal = document.getElementById("meetingLinkModal");
     var viewModal = document.getElementById("viewLinkModal");
     var rejectionModal = document.getElementById("rejectionModal");
+    var acceptanceModal = document.getElementById("acceptanceModal");
+    var viewDetailsModal = document.getElementById("viewDetailsModal");
 
+    // Get buttons that open modals
     var openMeetingBtn = document.getElementById("meetingLinkBtn");
     var showLinkBtn = document.getElementById("showMyLinkBtn");
     var rejectBtns = document.getElementsByClassName("reject-btn");
+    var acceptBtns = document.getElementsByClassName("accept-btn");
+    var viewDetailsBtns = document.getElementsByClassName("view-details-btn");
 
     var closeBtns = document.getElementsByClassName("close-btn");
 
+    // Open modal functions
     openMeetingBtn.onclick = function() {
-        meetingModal.style.display = "block";
+        meetingModal.style.display = "flex";
     }
     showLinkBtn.onclick = function() {
-        viewModal.style.display = "block";
+        viewModal.style.display = "flex";
     }
 
-    for (let i = 0; i < rejectBtns.length; i++) {
-        rejectBtns[i].onclick = function(event) {
-            event.preventDefault(); 
-            
-            const href = this.getAttribute('href');
-            const urlParams = new URLSearchParams(href.substring(href.indexOf('?')));
-            const appoId = urlParams.get('appoid');
-
-            document.getElementById('rejectAppoId').value = appoId;
-            
-            rejectionModal.style.display = "block";
+    // Handler for View Details buttons
+    for (let i = 0; i < viewDetailsBtns.length; i++) {
+        viewDetailsBtns[i].onclick = function(event) {
+            event.preventDefault();
+            const button = this;
+            document.getElementById('detailClientName').innerText = button.getAttribute('data-clientname');
+            document.getElementById('detailSessionTitle').innerText = button.getAttribute('data-title');
+            document.getElementById('detailDateTime').innerText = button.getAttribute('data-date') + ' at ' + button.getAttribute('data-time');
+            document.getElementById('detailDescription').innerText = button.getAttribute('data-description');
+            viewDetailsModal.style.display = "flex";
         }
     }
 
+    // Handler for Accept buttons
+    for (let i = 0; i < acceptBtns.length; i++) {
+        acceptBtns[i].onclick = function(event) {
+            event.preventDefault();
+            const href = this.getAttribute('href');
+            document.getElementById('confirmAcceptanceLink').setAttribute('href', href);
+            acceptanceModal.style.display = "flex";
+        }
+    }
+    
+    // Handler for Reject buttons
+    for (let i = 0; i < rejectBtns.length; i++) {
+        rejectBtns[i].onclick = function(event) {
+            event.preventDefault(); 
+            const href = this.getAttribute('href');
+            const urlParams = new URLSearchParams(href.substring(href.indexOf('?')));
+            const appoId = urlParams.get('appoid');
+            document.getElementById('rejectAppoId').value = appoId;
+            rejectionModal.style.display = "flex";
+        }
+    }
+
+    // Handler for all close buttons in modals
     for (let i = 0; i < closeBtns.length; i++) {
         closeBtns[i].onclick = function() {
             this.closest('.modal').style.display = "none";
         }
     }
 
+    // Handler for cancel buttons
     document.getElementById('cancelRejectionBtn').onclick = function() {
         rejectionModal.style.display = "none";
     }
+    document.getElementById('cancelAcceptanceBtn').onclick = function() {
+        acceptanceModal.style.display = "none";
+    }
 
+    // Close modal if clicked outside
     window.onclick = function(event) {
-        if (event.target == meetingModal) {
-            meetingModal.style.display = "none";
-        }
-        if (event.target == viewModal) {
-            viewModal.style.display = "none";
-        }
-        if (event.target == rejectionModal) {
-            rejectionModal.style.display = "none";
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
         }
     }
 
+    // Rejection form logic
     const rejectionForm = document.getElementById('rejectionForm');
     const reasonRadios = rejectionForm.querySelectorAll('input[name="rejection_reason"]');
     const otherReasonText = document.getElementById('other_reason_text');
@@ -734,4 +837,4 @@
 </script>
 
 </body>
-</html>
+</ht

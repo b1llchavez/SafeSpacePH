@@ -323,10 +323,6 @@
             line-height: 1.5;
             cursor: pointer;
         }
-         
-        .dash-body {
-            padding: 20px;
-        }
     </style>
 </head>
 <body>
@@ -412,7 +408,7 @@
                     <td colspan="4">
                         <center>
                             <div class="abc">
-                                <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
+                                <table width="80%" class="sub-table add-lawyer-form-container" border="0">
                                     <tr>
                                         <td>
                                             <p style="padding: 0;margin: 0;text-align: center;font-size: 25px;font-weight: 600;">Submit a Violation Report.</p><br>
