@@ -166,63 +166,52 @@
                 </tr>
                
                 
-                <tr>
-                    <td colspan="4" style="padding-top:10px;width: 100%;" >
-                    
-                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Appointments (<?php echo $list110->num_rows; ?>)</p>
-                    </td>
-                    
-                </tr>
-                <tr>
-                    <td colspan="4" style="padding-top:0px;width: 100%;" >
-                        <center>
-                        <table class="filter-container" border="0" >
-                        <tr>
-                           <td width="10%">
+               <tr>
+    <td width="50%" style="padding-top:10px;">
+        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">
+            All Appointments (<?php echo $list110->num_rows; ?>)
+        </p>
+    </td>
+    <td style="padding-top:10px; text-align: right; padding-right: 45px;" colspan="3">
+        <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
+            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items"
+                style="width: auto; padding: 8px 10px;"
+                value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
 
-                           </td> 
-                        <td width="5%" style="text-align: center;">
-                        Date:
-                        </td>
-                        <td width="30%">
-                        <form action="" method="post">
-                            
-                            <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
+            <select name="lawyerid" class="box filter-container-items" style="width: 200px; height: 42px; padding: 8px 10px;">
+                <option value="" disabled <?php if (!isset($_POST['lawyerid'])) echo 'selected'; ?> hidden>Choose Lawyer Name</option>
+                <?php
+                $list11 = $database->query("select * from lawyer order by lawyername asc;");
+                $selected_lawyer = isset($_POST['lawyerid']) ? $_POST['lawyerid'] : '';
+                for ($y = 0; $y < $list11->num_rows; $y++) {
+                    $row00 = $list11->fetch_assoc();
+                    $sn = $row00["lawyername"];
+                    $id00 = $row00["lawyerid"];
+                    $selected = ($id00 == $selected_lawyer) ? "selected" : "";
+                    echo "<option value='" . $id00 . "' " . $selected . ">" . htmlspecialchars($sn) . "</option>";
+                }
+                ?>
+            </select>
 
-                        </td>
-                        <td width="5%" style="text-align: center;">
-                        Lawyer:
-                        </td>
-                        <td width="30%">
-                        <select name="lawyerid" id="" class="box filter-container-items" style="width:90% ;height: 37px;margin: 0;" >
-                            <option value="" disabled selected hidden>Choose Lawyer Name from the list</option><br/>
-                                
-                            <?php
+            <button type="submit" name="filter" class="btn-primary-soft btn"
+                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                Filter
+            </button>
 
-                                $list11 = $database->query("select  * from  lawyer order by lawyername asc;");
-
-                                for ($y=0;$y<$list11->num_rows;$y++){
-                                    $row00=$list11->fetch_assoc();
-                                    $sn=$row00["lawyername"];
-                                    $id00=$row00["lawyerid"];
-                                    echo "<option value=".$id00.">$sn</option><br/>";
-                                };
-
-
-                                ?></select>
-                    </td>
-                    <td width="12%">
-                        <input type="submit"  name="filter" value=" Filter" class=" btn-primary-soft btn button-icon btn-filter"  style="padding: 15px; margin :0;width:100%">
-                        </form>
-                    </td>
-
-                    </tr>
-                            </table>
-
-                        </center>
-                    </td>
-                    
-                </tr>
+            <a href="appointment.php" class="non-style-link btn-primary-soft btn"
+                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                Reset
+            </a>
+        </form>
+    </td>
+</tr>
                 
                 <?php
                     if($_POST){
