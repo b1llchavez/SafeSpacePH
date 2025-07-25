@@ -301,12 +301,7 @@ if ($userfetch) {
                         <div><p class="menu-text">All Lawyers</p></a></div>
                 </td>
             </tr>
-            <tr class="menu-row">
-                <td class="menu-btn menu-icon-appoinment">
-                    <a href="appointment.php" class="non-style-link-menu">
-                        <div><p class="menu-text">My Bookings</p></a></div>
-                </td>
-            </tr>
+          
             <tr class="menu-row">
                 <td class="menu-btn menu-icon-settings menu-active menu-icon-settings-active">
                     <a href="settings.php" class="non-style-link-menu non-style-link-menu-active">
