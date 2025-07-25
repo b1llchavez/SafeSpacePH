@@ -209,14 +209,16 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
                         </tr>
                         <tr>
                             <td class='footer'>
-                                <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px;'>
-                                <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
-                                <div>
-                                    <a href='https://safespaceph.com/about'>About Us</a>
-                                    <a href='https://safespaceph.com/services'>Services</a>
-                                    <a href='https://safespaceph.com/contact'>Contact</a>
-                                </div>
-                                <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                             </td>
                         </tr>
                     </table>
@@ -323,13 +325,17 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
                 </tr>
                 <tr>
                     <td class='footer'>
-                       <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; margin-bottom: 15px;'>
-                        <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
-                        <div>
-                           <a href='https://safespaceph.com/about'>About Us</a> | <a href='https://safespaceph.com/contact'>Contact Us</a>
-                        </div>
-                        <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
-                    </td>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                     </td>
                 </tr>
             </table>
             </center>
@@ -432,12 +438,16 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
                 </tr>
                 <tr>
                     <td class='footer'>
-                       <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; margin-bottom: 15px;'>
-                        <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
-                        <div>
-                           <a href='https://safespaceph.com/about'>About Us</a> | <a href='https://safespaceph.com/contact'>Contact Us</a>
-                        </div>
-                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                     </td>
                 </tr>
             </table>
@@ -563,13 +573,17 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class='footer'>
-                                        <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; margin-bottom: 15px;'>
-                                        <div style='font-size: 24px; font-weight: 1000;'>SafeSpace PH</div>
-                                        <div>
-                                           <a href='https://safespaceph.com/about'>About Us</a> | <a href='https://safespaceph.com/contact'>Contact Us</a>
+                                   <td class='footer'>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
                                         </div>
-                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -697,17 +711,17 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
                         </tr>
                         <tr>
                             <td class='footer'>
-                                <div class='footer-branding'>
-                                   <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
-                                    <span class='footer-title'>SafeSpace PH</span>
-                                </div>
-                                <div class='footer-links-container'>
-                                    <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                    <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                    <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
-                                </div>
-                                <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
-                            </td>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                    </td>
                         </tr>
                     </table>
                 </td>
@@ -818,17 +832,17 @@ function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName)
                         </tr>
                         <tr>
                             <td class='footer'>
-                                <div class='footer-branding'>
-                                   <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
-                                    <span class='footer-title'>SafeSpace PH</span>
-                                </div>
-                                <div class='footer-links-container'>
-                                    <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                    <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                    <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
-                                </div>
-                                <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
-                            </td>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                    </td>
                         </tr>
                     </table>
                 </td>
@@ -951,15 +965,15 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                           <img src=\"cid:logoimg_footer\" alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
-                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1066,15 +1080,15 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                           <img src=\"cid:logoimg_footer\" alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
-                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1199,17 +1213,17 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
                         </tr>
                         <tr>
                             <td class='footer'>
-                                <div class='footer-branding'>
-                                   <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
-                                    <span class='footer-title'>SafeSpace PH</span>
-                                </div>
-                                <div class='footer-links-container'>
-                                    <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                    <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                    <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
-                                </div>
-                                <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
-                            </td>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
+                                    </td>
                         </tr>
                     </table>
                 </td>
@@ -1304,15 +1318,15 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                           <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
-                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                            <a href='https://safespaceph.com/services' class='footer-link'>Our Services</a>
-                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; ".date('Y')." SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1425,14 +1439,15 @@ function sendLawyerVerificationApprovedNotice($recipientEmail, $recipientName, $
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                           <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
-                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1561,14 +1576,15 @@ function sendLawyerVerificationRejectedNotice($recipientEmail, $recipientName, $
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                           <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>
-                                            <a href='https://safespaceph.com/about' class='footer-link'>About Us</a>
-                                            <a href='https://safespaceph.com/contact' class='footer-link'>Contact Us</a>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
                                         </div>
-                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
@@ -1676,11 +1692,15 @@ function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                            <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' class='footer-logo'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
-                                        <p>If you have any questions, please don't hesitate to email us at <a href='mailto:safespaceph2025@gmail.com'>safespaceph2025@gmail.com</a>.</p>
-                                        <p>&copy; " . date('Y') . " SafeSpace PH. All rights reserved.</p>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2023 SafeSpace PH. All rights reserved.</p>
                                     </td>
                                 </tr>
                             </table>
