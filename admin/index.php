@@ -190,8 +190,7 @@
                                 </tr>
                                 <tr>
                                     <td style="width: 25%;">
-                                        <div class="dashboard-items"
-                                            style="padding:20px;margin:auto;width:95%;display: flex">
+                                        <div class="dashboard-items" style="padding:20px;margin:auto;width:95%;display: flex;justify-content: space-between;align-items: center;">
                                             <div>
                                                 <div class="h1-dashboard">
                                                     <?php echo $lawyerrow->num_rows ?>
@@ -205,8 +204,7 @@
                                         </div>
                                     </td>
                                     <td style="width: 25%;">
-                                        <div class="dashboard-items"
-                                            style="padding:20px;margin:auto;width:95%;display: flex;">
+                                        <div class="dashboard-items" style="padding:20px;margin:auto;width:95%;display: flex;justify-content: space-between;align-items: center;">
                                             <div>
                                                 <div class="h1-dashboard">
                                                     <?php echo $clientrow->num_rows ?>
@@ -220,8 +218,7 @@
                                         </div>
                                     </td>
                                     <td style="width: 25%;">
-                                        <div class="dashboard-items"
-                                            style="padding:20px;margin:auto;width:95%;display: flex; ">
+                                        <div class="dashboard-items" style="padding:20px;margin:auto;width:95%;display: flex;justify-content: space-between;align-items: center;">
                                             <div>
                                                 <div class="h1-dashboard">
                                                     <?php echo $appointmentrow->num_rows ?>
@@ -236,8 +233,7 @@
                                         </div>
                                     </td>
                                     <td style="width: 25%;">
-                                        <div class="dashboard-items"
-                                            style="padding:20px;margin:auto;width:95%;display: flex">
+                                       <div class="dashboard-items" style="padding:20px;margin:auto;width:95%;display: flex;justify-content: space-between;align-items: center;">
                                             <div>
                                                 <div class="h1-dashboard">
                                                     <?php echo $schedulerow->num_rows ?>
