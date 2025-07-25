@@ -23,6 +23,7 @@
     $username = $userfetch["cname"];
 
 
+    // Pre-fill form fields, retaining values on failed submission
     $reporter_name = isset($_POST['reporter_name']) ? htmlspecialchars($_POST['reporter_name']) : $username;
     $reporter_phone = isset($_POST['reporter_phone']) ? htmlspecialchars($_POST['reporter_phone']) : '';
     $reporter_email = isset($_POST['reporter_email']) ? htmlspecialchars($_POST['reporter_email']) : $useremail;
@@ -38,19 +39,18 @@
     $perpetrator_name = isset($_POST['perpetrator_name']) ? htmlspecialchars($_POST['perpetrator_name']) : '';
     $consent_checked = isset($_POST['consent']) ? 'checked' : '';
 
-    $message = ''; // For displaying success/error messages
-
+    $modal_html = ''; // For displaying success/error modals
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($_POST) && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > 0) {
             $display_limit = ini_get('post_max_size');
             $error_html = "The submission failed because the uploaded file or form data was too large. The server limit is " . $display_limit . ".";
-            $message = '<div id="popup1" class="overlay">...</div>'; // Popup code omitted for brevity
+            $modal_html = '<div class="modal-content">...</div>'; // Simplified for brevity
         } else {
             $errors = [];
 
-
+            // --- Validation Checks ---
             if (empty($_POST['incident_description'])) $errors[] = "Description of the Incident is required.";
             if (!isset($_POST['consent'])) $errors[] = "You must agree to the consent statement.";
             if (empty($_POST['violation_type'])) $errors[] = "Type of Violation is required.";
@@ -59,24 +59,9 @@
             if (empty($_POST['incident_location'])) $errors[] = "Location of Incident is required.";
             if (empty($_POST['perpetrator_name'])) $errors[] = "Perpetrator Information is required.";
 
-
-            $client_id_submit = mysqli_real_escape_string($database, $clientid);
-            $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name'] ?? '');
-            $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone'] ?? '');
-            $reporter_email_submit = mysqli_real_escape_string($database, $_POST['reporter_email'] ?? '');
-            $violation_type_submit = mysqli_real_escape_string($database, $_POST['violation_type'] ?? '');
-            $incident_date_submit = mysqli_real_escape_string($database, $_POST['incident_date'] ?? '');
-            $incident_time_submit = mysqli_real_escape_string($database, $_POST['incident_time'] ?? '');
-            $incident_location_submit = mysqli_real_escape_string($database, $_POST['incident_location'] ?? '');
-            $description_submit = mysqli_real_escape_string($database, $_POST['incident_description'] ?? '');
-            $victim_name_submit = mysqli_real_escape_string($database, $_POST['victim_name'] ?? '');
-            $victim_contact_submit = mysqli_real_escape_string($database, $_POST['victim_contact'] ?? '');
-            $perpetrator_name_submit = mysqli_real_escape_string($database, $_POST['perpetrator_name'] ?? '');
-            $legal_consultation_submit = mysqli_real_escape_string($database, $_POST['legal_consultation'] ?? 'No');
-            $supplementary_notes_submit = mysqli_real_escape_string($database, $_POST['supplementary_notes'] ?? '');
-            
-
-            $evidence_file_submit = '';
+            // --- File Upload Handling ---
+            $file_name_submit = '';
+            $file_path_submit = '';
             if (!empty($_FILES['supporting_files']['name'][0])) {
                 $upload_dir = '../uploads/reports/';
                 if (!is_dir($upload_dir)) {
@@ -103,7 +88,8 @@
                         $destination_path = $upload_dir . $new_unique_file_name;
 
                         if (move_uploaded_file($tmp_name, $destination_path)) {
-                            $evidence_file_submit = $database->real_escape_string($new_unique_file_name);
+                            $file_name_submit = $database->real_escape_string($name);
+                            $file_path_submit = $database->real_escape_string($destination_path);
                         } else {
                             $errors[] = "Failed to move uploaded file: " . htmlspecialchars($name);
                         }
@@ -117,40 +103,55 @@
                 }
             }
 
-
+            // --- Process and Insert if No Errors ---
             if (empty($errors)) {
+                // Sanitize basic reporter info
+                $client_id_submit = mysqli_real_escape_string($database, $clientid);
+                $reporter_name_submit = mysqli_real_escape_string($database, $_POST['reporter_name'] ?? '');
+                $reporter_phone_submit = mysqli_real_escape_string($database, $_POST['reporter_phone'] ?? '');
+                $reporter_email_submit = mysqli_real_escape_string($database, $_POST['reporter_email'] ?? '');
+                $legal_consultation_submit = mysqli_real_escape_string($database, $_POST['legal_consultation'] ?? 'No');
+                $supplementary_notes_submit = mysqli_real_escape_string($database, $_POST['supplementary_notes'] ?? '');
+
+                $title_submit = "Violation Report: " . ($_POST['violation_type'] ?? 'N/A');
+
+                $full_description = "Violation Type: " . ($_POST['violation_type'] ?? 'N/A') . "\n" .
+                                    "Date of Incident: " . ($_POST['incident_date'] ?? 'N/A') . "\n" .
+                                    "Time of Incident: " . ($_POST['incident_time'] ?? 'N/A') . "\n" .
+                                    "Location of Incident: " . ($_POST['incident_location'] ?? 'N/A') . "\n" .
+                                    "Perpetrator Information: " . ($_POST['perpetrator_name'] ?? 'N/A') . "\n" .
+                                    "Victim's Name: " . (!empty($_POST['victim_name']) ? $_POST['victim_name'] : 'N/A') . "\n" .
+                                    "Victim's Contact: " . (!empty($_POST['victim_contact']) ? $_POST['victim_contact'] : 'N/A') . "\n\n" .
+                                    "---Reporter's Detailed Description---\n" . ($_POST['incident_description'] ?? '');
+
+                $description_submit = mysqli_real_escape_string($database, $full_description);
+                $title_submit_escaped = mysqli_real_escape_string($database, $title_submit);
+
                 $insert_query = "INSERT INTO reports (
                     client_id, reporter_name, reporter_phone, reporter_email,
-                    violation_type, incident_date, incident_time, incident_location,
-                    description, victim_name, victim_contact, perpetrator_name,
-                    legal_consultation_requested, supplementary_notes, evidence_file,
-                    status, submission_date
+                    title, description, legal_consultation_requested, supplementary_notes,
+                    file_name, file_path, report_status, uploaded_at
                 ) VALUES (
                     '$client_id_submit', '$reporter_name_submit', '$reporter_phone_submit', '$reporter_email_submit',
-                    '$violation_type_submit', '$incident_date_submit', '$incident_time_submit', '$incident_location_submit',
-                    '$description_submit', '$victim_name_submit', '$victim_contact_submit', '$perpetrator_name_submit',
-                    '$legal_consultation_submit', '$supplementary_notes_submit', '$evidence_file_submit',
-                    'pending', NOW()
+                    '$title_submit_escaped', '$description_submit', '$legal_consultation_submit', '$supplementary_notes_submit',
+                    '$file_name_submit', '$file_path_submit', 'pending', NOW()
                 )";
 
                 if ($database->query($insert_query)) {
-                    $message = '<div id="popup1" class="overlay">
-                                    <div class="popup">
-                                    <center>
-                                    <br><br><br><br>
-                                        <h2>Report Submitted Successfully!</h2>
-                                        <a class="close" href="report.php">&times;</a>
-                                        <div class="content">
-                                            Your violation report has been received.
-                                        </div>
-                                        <div style="display: flex;justify-content: center;">
-                                        <a href="report.php" class="non-style-link"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                                        </div>
-                                        <br><br>
-                                    </center>
-                                    </div>
-                                </div>';
+                    $modal_html = '
+                    <div class="modal-content">
+                        <a href="report.php" class="close-btn">&times;</a>
+                        <h2 class="modal-header">Success!</h2>
+                        <div class="modal-divider"></div>
+                        <div class="modal-body" style="text-align: center; font-size: 16px;">
+                            Your violation report has been submitted successfully.
+                        </div>
+                        <div class="modal-footer">
+                            <a href="report.php" class="modal-btn modal-btn-primary">OK</a>
+                        </div>
+                    </div>';
 
+                    // Clear form fields on success
                     $reporter_name = $username;
                     $reporter_phone = '';
                     $reporter_email = $useremail;
@@ -167,42 +168,35 @@
                     $consent_checked = '';
 
                 } else {
-                    $message = '<div id="popup1" class="overlay">
-                                    <div class="popup">
-                                    <center>
-                                    <br><br><br><br>
-                                        <h2>Submission Failed!</h2>
-                                        <a class="close" href="#" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;">&times;</a>
-                                        <div class="content">
-                                            There was an error submitting your report: ' . $database->error . '
-                                        </div>
-                                        <div style="display: flex;justify-content: center;">
-                                        <a href="#" class="non-style-link" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                                        </div>
-                                        <br><br>
-                                    </center>
-                                    </div>
-                                </div>';
+                    $error_message = $database->error;
+                    $modal_html = '
+                    <div class="modal-content">
+                        <a href="#" onclick="this.closest(\'.overlay\').classList.remove(\'active\'); return false;" class="close-btn">&times;</a>
+                        <h2 class="modal-header" style="color: #c72e2e;">Submission Failed!</h2>
+                        <div class="modal-divider"></div>
+                        <div class="modal-body" style="text-align: center; color: #c72e2e; font-size: 16px;">
+                            There was a database error submitting your report.<br>'.htmlspecialchars($error_message).'
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" onclick="this.closest(\'.overlay\').classList.remove(\'active\'); return false;" class="modal-btn modal-btn-soft">Close</a>
+                        </div>
+                    </div>';
                 }
             } else {
-
+                // Display validation errors
                 $error_html = implode('<br>', $errors);
-                $message = '<div id="popup1" class="overlay">
-                                <div class="popup">
-                                <center>
-                                <br><br><br><br>
-                                    <h2>Submission Failed!</h2>
-                                    <a class="close" href="#" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;">&times;</a>
-                                    <div class="content" style="color:rgb(255, 62, 62);">
-                                        ' . $error_html . '
-                                    </div>
-                                    <div style="display: flex;justify-content: center;">
-                                    <a href="#" class="non-style-link" onclick="this.closest(\'.overlay\').style.display=\'none\'; return false;"><button class="btn-primary btn" style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-                                    </div>
-                                    <br><br>
-                                </center>
-                                </div>
-                            </div>';
+                $modal_html = '
+                <div class="modal-content">
+                    <a href="#" onclick="this.closest(\'.overlay\').classList.remove(\'active\'); return false;" class="close-btn">&times;</a>
+                    <h2 class="modal-header" style="color: #c72e2e;">Submission Failed!</h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body" style="text-align: left; color: #c72e2e; font-size: 15px; line-height: 1.6;">
+                        ' . $error_html . '
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" onclick="this.closest(\'.overlay\').classList.remove(\'active\'); return false;" class="modal-btn modal-btn-soft">Close</a>
+                    </div>
+                </div>';
             }
         }
     }
@@ -219,9 +213,6 @@
     <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
     <title>Report Violation | SafeSpace PH</title>
     <style>
-        .popup{
-            animation: transitionIn-Y-bottom 0.5s;
-        }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
@@ -323,6 +314,121 @@
             line-height: 1.5;
             cursor: pointer;
         }
+
+        /* MODAL STYLES FROM LAWYERS.PHP */
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
+            padding: 25px 40px;
+            max-width: 550px;
+            width: 95%;
+            position: relative;
+            animation: fadeIn 0.3s;
+            max-height: 90vh;
+            overflow-y: auto; 
+        }
+        .modal-header {
+            text-align: center;
+            color: #391053;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+        .modal-divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+            border: none;
+            border-radius: 2px;
+            margin: 15px 0 20px 0;
+        }
+        .modal-body {
+            text-align: left;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .modal-btn {
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .modal-btn-primary {
+            background: #5A2675;
+            color: #fff;
+        }
+        .modal-btn-primary:hover {
+            background: #391053;
+            box-shadow: 0 4px 15px rgba(90, 38, 117, 0.3);
+        }
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
+        }
+        .close-btn { 
+             position: absolute; 
+             top: 18px; 
+             right: 18px; 
+             font-size: 24px; 
+             font-weight: bold; 
+             color: #aaa; 
+             cursor: pointer; 
+             border: none; 
+             background: transparent; 
+             line-height: 1; 
+             padding: 0; 
+             width: 32px; 
+             height: 32px; 
+             border-radius: 50%; 
+             display: flex; 
+             align-items: center; 
+             justify-content: center; 
+             transition: background-color 0.2s, color 0.2s; 
+             text-decoration: none;
+         } 
+         .close-btn:hover { 
+             background-color: #f0e9f7; 
+             color: #5A2675; 
+         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -416,7 +522,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2" style="padding: 20px;">
-                                            <form action="" method="POST" enctype="multipart/form-data" class="add-new-form">
+                                            <form action="report.php" method="POST" enctype="multipart/form-data" class="add-new-form">
                                                 <div class="form-group">
                                                     <label for="reporter_name" class="form-label">Your Name (Optional):</label>
                                                     <input type="text" name="reporter_name" class="input-text" placeholder="Enter your name" value="<?php echo $reporter_name; ?>">
@@ -524,7 +630,10 @@
         </div>
     </div>
 
-    <?php echo $message; // Display submission feedback ?>
+    <div id="popup1" class="overlay <?php echo !empty($modal_html) ? 'active' : ''; ?>">
+        <?php echo $modal_html; // Display submission feedback modal ?>
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -533,22 +642,27 @@
                 const buttons = document.querySelectorAll(`#${groupId} .btn`);
                 const hiddenInput = document.getElementById(hiddenInputId);
 
-
+                // Set initial active button based on hidden input's value (retained after POST)
                 if (hiddenInput.value) {
                     buttons.forEach(button => {
                         if (button.dataset.value === hiddenInput.value) {
                             button.classList.add('active');
                         }
                     });
+                } else if (groupId === 'legal-consultation-buttons') {
+                    // Set default for legal consultation if no value is present
+                     buttons.forEach(button => {
+                        if (button.dataset.value === 'No') {
+                            button.classList.add('active');
+                        }
+                    });
                 }
+
 
                 buttons.forEach(button => {
                     button.addEventListener('click', function() {
-
                         buttons.forEach(btn => btn.classList.remove('active'));
-
                         this.classList.add('active');
-
                         hiddenInput.value = this.dataset.value;
                     });
                 });
@@ -556,8 +670,6 @@
 
 
             setupButtonGroup('violation-type-buttons', 'violation_type');
-
-
             setupButtonGroup('legal-consultation-buttons', 'legal_consultation');
 
 
@@ -610,6 +722,7 @@
 
                 if (selectedFiles.items.length === 0) {
                     fileList.style.display = 'none';
+                    fileInput.value = ""; // Clear the file input
                     return;
                 } else {
                     fileList.style.display = 'block';
@@ -625,7 +738,7 @@
                     fileList.appendChild(listItem);
                 }
 
-                fileInput.files = selectedFiles.files;
+                fileInput.files = selectedFiles.files; // Sync the input with our managed list
 
                 document.querySelectorAll('.remove-file').forEach(button => {
                     button.addEventListener('click', function() {
@@ -637,7 +750,14 @@
 
 
             function removeFile(indexToRemove) {
-                selectedFiles = new DataTransfer();
+                const newFiles = new DataTransfer();
+                const currentFiles = Array.from(selectedFiles.files);
+                for (let i = 0; i < currentFiles.length; i++) {
+                    if (i !== indexToRemove) {
+                        newFiles.items.add(currentFiles[i]);
+                    }
+                }
+                selectedFiles = newFiles;
                 updateFileList();
             }
 
