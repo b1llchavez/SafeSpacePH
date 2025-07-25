@@ -1,3 +1,4 @@
+
 body {
     padding-top: 20px;
     background-image: url(../img/1.png);
@@ -18,14 +19,11 @@ body {
     background-attachment: fixed;
     max-height: 100vh;
     height: 100vh;
-
-
 }
 
 table {
     width: 100%;
     padding-top: 10px;
-
 }
 
 .heading-text {
@@ -36,6 +34,8 @@ table {
     margin-top: 20%;
     text-align: center;
     margin-bottom: 0;
+    /* --- ENHANCEMENT: Added glowing text animation --- */
+    animation: text-glow 4s ease-in-out infinite;
 }
 
 .sub-text2 {
@@ -47,6 +47,20 @@ table {
     margin-top: 0;
     margin-bottom: 10;
 }
+
+/* --- ENHANCEMENT: CTA Button Animation & Hover Effect --- */
+.signup-btn {
+    animation: float-pulse 4s ease-in-out infinite;
+    transition: all 0.3s ease-in-out;
+}
+
+.signup-btn:hover {
+    transform: translateY(-4px) scale(1.05) !important;
+    background-color: #5A2675 !important;
+    color: #fff !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
 
 .nav-button {
     display: block;
@@ -73,12 +87,7 @@ table {
 .nav-button.active-nav-link {
     color: #851abf;
     background-color: #f0e4ff;
-
-
-
 }
-
-
 
 .nav-button.active-nav-link:hover {
     font-size: 1.1rem;
@@ -90,7 +99,6 @@ table {
     background-color: rgba(240, 248, 255, 0.589);
     color: #345cc4;
 }
-
 
 .safespaceph-logo {
     color: white;
@@ -115,7 +123,6 @@ table {
 }
 
 .safespaceph-logo-sub {
-
     font-size: 32px;
     font-weight: 1000;
     color: #391053;
@@ -133,7 +140,6 @@ table {
 
 .nav-item:hover {
     color: #f0f0f0;
-
 }
 
 .footer-hashen {
@@ -144,7 +150,6 @@ table {
     animation: transitionIn-Y-over 0.5s;
 }
 
-
 .volunteers-section {
     text-align: center;
     width: 100%;
@@ -154,13 +159,9 @@ table {
 
 .section-title {
     font-size: 3.5em;
-
     font-weight: 1000;
-
     color: #391053;
-
     white-space: nowrap;
-
     text-shadow: 2px 2px 10px #3910534b;
 }
 
@@ -173,82 +174,61 @@ table {
 .volunteer-cards-container {
     display: flex;
     justify-content: center;
-
     gap: 20px;
-
     padding-bottom: 20px;
-
     overflow-x: auto;
-
     -webkit-overflow-scrolling: touch;
-
-    scrollbar-width: thin;
-
-    scrollbar-color: #888 #f1f1f1;
-
+    /* --- ENHANCEMENT: Hide scrollbar --- */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
-
+/* --- ENHANCEMENT: Hide scrollbar for Webkit browsers --- */
 .volunteer-cards-container::-webkit-scrollbar {
-    height: 8px;
+    display: none;
 }
-
-.volunteer-cards-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.volunteer-cards-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
-
-.volunteer-cards-container::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
 
 .volunteer-card {
     background-color: #fbf5ff;
-
     border-radius: 15px;
     padding: 20px;
     width: 350px;
-
     flex-shrink: 0;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* --- ENHANCEMENT: Added softer, more prominent shadow --- */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     min-height: 380px;
+    /* --- ENHANCEMENT: Added transition for hover effect --- */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
+/* --- ENHANCEMENT: Added hover effect for volunteer cards --- */
+.volunteer-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(57, 16, 83, 0.15);
 }
 
 .volunteer-card img {
     width: 150px;
-
     height: 150px;
-
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
     border: 4px solid #e0caff;
-
 }
 
 .volunteer-card h3 {
     font-size: 1.4em;
     color: #5d00a0;
-
     margin-bottom: 5px;
 }
 
 .volunteer-card .specialty {
     font-size: 0.95em;
     color: #8a2be2;
-
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -261,7 +241,6 @@ table {
 
 .be-a-volunteer-button {
     background-color: #8a2be2;
-
     color: white;
     padding: 12px 25px;
     border: none;
@@ -274,9 +253,7 @@ table {
 
 .be-a-volunteer-button:hover {
     background-color: #6a0dad;
-
 }
-
 
 .why-volunteer-section {
     background-color: #fff;
@@ -315,6 +292,15 @@ table {
 
 .volunteer-reason {
     margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* --- ENHANCEMENT: Added hover effect for volunteer reasons --- */
+.volunteer-reason:hover {
+    transform: translateX(10px);
+    background-color: #f8f0ff;
 }
 
 .volunteer-reason h3 {
@@ -343,12 +329,18 @@ table {
     width: 100%;
     max-width: 470px;
     height: 550px;
-    aspect-ratio: 4/3;
-    border-radius: 8px;
+    object-fit: cover;
+    border-radius: 15px;
     background: linear-gradient(135deg, #f8f0ff 0%, #e9d6ff 100%);
     transition: transform 0.3s cubic-bezier(.4, 2, .6, 1), box-shadow 0.3s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
+/* --- ENHANCEMENT: Added hover effect for volunteer image --- */
+.why-volunteer-image img:hover {
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 12px 28px rgba(57, 16, 83, 0.2);
+}
 
 @media (max-width: 768px) {
     .why-volunteer-content-wrapper {
@@ -363,6 +355,10 @@ table {
     .why-volunteer-title {
         font-size: 2.5em;
         margin: 0 auto 30px;
+    }
+    
+    .volunteer-reason:hover {
+        transform: translateX(0) translateY(-5px);
     }
 
     .why-volunteer-image {
@@ -392,44 +388,58 @@ table {
     }
 }
 
-
+/* --- START: Final Styles for "Make Your Impact Count" Section --- */
 .get-involved-section {
     background-color: #fff;
-    padding: 80px 90px;
+    padding: 80px 40px;
     text-align: center;
 }
 
 .volunteer-roles-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     gap: 30px;
-    margin-top: 40px;
+    margin-top: 50px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .role-card {
-    background-color: #fff;
-    border-left: 6px solid #391053;
-    padding: 25px;
-    border-radius: 10px;
-    width: 300px;
+    /* UPDATED: Gradient now uses the specific brand colors you provided. */
+    background: linear-gradient(145deg, #5A2675, #9D72B3);
+    color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    /* UPDATED: Shadow is now based on your brand's darkest purple for consistency. */
+    box-shadow: 0 5px 15px rgba(57, 16, 83, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: left;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 230px;
+    border: none; 
+}
+
+.role-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(57, 16, 83, 0.3);
 }
 
 .role-card h3 {
-    color: #391053;
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    border: none;
+    padding-bottom: 0;
 }
 
 .role-card p {
     font-size: 0.95em;
-    color: #555;
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    flex-grow: 1; 
 }
-
-.role-card:hover {
-    transform: translateY(-5px);
-}
+/* --- END: Final Styles for "Make Your Impact Count" Section --- */
+/* --- END: Final Styles for "Make Your Impact Count" Section --- */

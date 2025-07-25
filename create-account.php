@@ -5,15 +5,19 @@ session_start();
 $_SESSION["user"]="";
 $_SESSION["usertype"]="u";
 
+// Set the default timezone
 date_default_timezone_set('Asia/Manila'); 
 
-$_SESSION["date"]=$date;
+// Define the $date variable with the current date
+$date = date('Y-m-d'); 
+
+// Store the date in the session
+$_SESSION["date"] = $date;
 
 
 include("connection.php");
 
-
-
+// ... the rest of your code
 
 if($_POST){
 
