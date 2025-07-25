@@ -7,8 +7,6 @@ $_SESSION["usertype"]="u";
 
 date_default_timezone_set('Asia/Manila'); 
 
-$_SESSION["date"]=$date;
-
 
 include("connection.php");
 
@@ -28,7 +26,6 @@ if($_POST){
     $tele=$_POST['tele']; 
     $newpassword=$_POST['newpassword'];
     $cpassword=$_POST['cpassword'];
-    
     
     $password_valid = true;
     if (strlen($newpassword) < 8) {
@@ -56,7 +53,7 @@ if($_POST){
             }else{
                
 
-                $database->query("insert into client(cemail,cname,cpassword, caddress,cdob,ctel) values('$email','$name','$newpassword','$address','$dob','$tele');");
+                $database->query("insert into client(cemail,cname, fname, lname, cpassword, caddress,cdob,ctel) values('$email','$name', '$fname', '$lname', '$newpassword','$address','$dob','$tele');");
                 $database->query("insert into webuser values('$email','u')");
 
                 require 'send_email.php'; 
