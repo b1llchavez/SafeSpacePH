@@ -91,7 +91,7 @@ if($_POST){
     <link rel="stylesheet" href="css/animations.css">  
     <link rel="stylesheet" href="css/main.css">  
     <link rel="stylesheet" href="css/signup.css">
-    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46L/logo.png">
+    <link rel="icon" type="image/png" href="img/logo.png">
         
     <title>Create Account | SafeSpace PH</title>
     <style>

@@ -147,7 +147,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
     <link rel="stylesheet" href="../css/animations.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
-    <link rel="icon" type="image/png" href="https://i.ibb.co/qYYZs46/logo.png">
+    <link rel="icon" type="image/png" href="../img/logo.png">
 
     <title>Lawyer Verification | SafeSpace PH</title>
     <style>
