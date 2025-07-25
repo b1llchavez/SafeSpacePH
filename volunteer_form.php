@@ -101,38 +101,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $preferred_areas = implode(",", $preferred_areas_arr);
 
-    $sql = "INSERT INTO volunteer_lawyer 
-        (last_name, first_name, email, contact_number, home_address, years_experience, roll_number, license_file, profile_photo_lawyer, motivation, consent_background_check, agree_terms, info_certified,
-        availability_hours, urgent_consult, commitment_months, preferred_areas, bar_region, resume_file, affiliation, reference_contact) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   $sql = "INSERT INTO volunteer_lawyer 
+    (last_name, first_name, email, contact_number, home_address, years_experience, roll_number, license_file, profile_photo, motivation, consent_background_check, agree_terms, info_certified,
+    availability_hours, urgent_consult, commitment_months, preferred_areas, bar_region, resume_file, affiliation, reference_contact) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $stmt = $database->prepare($sql);
+$stmt = $database->prepare($sql);
 
-    if ($stmt) {
-$stmt->bind_param(
-    "sssssissssiiiisssssss",  
-    $last_name,             
-    $first_name,            
-    $email,                 
-    $contact_number,        
-    $home_address,          
-    $years_experience,      
-    $roll_number,          
-    $license_path,         
-    $photo_path,            
-    $motivation,          
-    $consent_check,         
-    $agree_terms,           
-    $info_certified,       
-    $availability_hours,    
-    $urgent_consult,        
-    $commitment_months,   
-    $preferred_areas,       
-    $bar_region,            
-    $resume_path,         
-    $affiliation,           
-    $reference              
-);
+if ($stmt) {
+    // The bind_param call remains the same as the variable names are correct.
+    $stmt->bind_param(
+        "sssssissssiiiisssssss",  
+        $last_name,             
+        $first_name,            
+        $email,                 
+        $contact_number,        
+        $home_address,          
+        $years_experience,      
+        $roll_number,          
+        $license_path,         
+        $photo_path,  // This variable holds the path for the profile photo          
+        $motivation,          
+        $consent_check,         
+        $agree_terms,           
+        $info_certified,       
+        $availability_hours,    
+        $urgent_consult,        
+        $commitment_months,   
+        $preferred_areas,       
+        $bar_region,            
+        $resume_path,         
+        $affiliation,           
+        $reference              
+    );
         if ($stmt->execute()) {
             ?>
             <!DOCTYPE html>
