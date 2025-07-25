@@ -8,12 +8,6 @@ $errors = [];
 $formData = [];
 $formSubmittedSuccessfully = false;
 
-
-// ...existing code...
-$errors = [];
-$formData = [];
-$formSubmittedSuccessfully = false;
-
 // Autofill for both 'c' and 'u' usertypes
 $fname_session = '';
 $lname_session = '';
