@@ -394,133 +394,70 @@
                 );
                 if($error_1!='4'){
                 echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
+<div id="popup1" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background-color:#fff; padding:30px 35px; border-radius:10px; width:90%; max-width:720px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative; font-family:Arial, sans-serif;">
+        <a href="lawyers.php" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; text-decoration:none; color:#391053;">&times;</a>
 
-                        <a class="close" href="lawyers.php">&times;</a>
-                        <div style="display: flex;justify-content: center;">
-                        <div class="abc">
-                        <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
-                        <tr>
-                                <td class="label-td" colspan="2">'.
-                                    $errorlist[$error_1]
-                                .'</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Add New Lawyer.</p><br><br>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <form action="add-new.php" method="POST" class="add-new-form">
-                                <td class="label-td" colspan="2">
-                                    <label for="name" class="form-label">Name: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="text" name="name" class="input-text" placeholder="Lawyer Name" required><br>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Email" class="form-label">Email: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="email" name="email" class="input-text" placeholder="Email Address" required><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="lawyerbarid" class="form-label">Valid ID: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="text" name="lawyerbarid" class="input-text" placeholder="Valid ID Number" required><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="Tele" class="form-label">Telephone: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="tel" name="Tele" class="input-text" placeholder="Telephone Number" required><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Choose specialties: </label>
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <select name="spec" id="" class="box" >';
-                                        
-        
-                                        $list11 = $database->query("select  * from  specialties order by sname asc;");
-        
-                                        for ($y=0;$y<$list11->num_rows;$y++){
-                                            $row00=$list11->fetch_assoc();
-                                            $sn=$row00["sname"];
-                                            $id00=$row00["id"];
-                                            echo "<option value=".$id00.">$sn</option><br/>";
-                                        };
-        
-        
-        
-                                        
-                        echo     '       </select><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="password" class="form-label">Password: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="password" name="password" class="input-text" placeholder="Defind a Password" required><br>
-                                </td>
-                            </tr><tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="cpassword" class="form-label">Conform Password: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <input type="password" name="cpassword" class="input-text" placeholder="Conform Password" required><br>
-                                </td>
-                            </tr>
-                            
-                
-                            <tr>
-                                <td colspan="2">
-                                    <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                
-                                    <input type="submit" value="Add" class="login-btn btn-primary btn">
-                                </td>
-                
-                            </tr>
-                           
-                            </form>
-                            </tr>
-                        </table>
-                        </div>
-                        </div>
-                    </center>
-                    <br><br>
+        <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin-bottom:10px;">Add New Lawyer</h3>
+        <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 30px 0;"></div>
+
+        <div style="color:#D8000C; font-weight:500; text-align:center; margin-bottom:20px;">'.
+            $errorlist[$error_1]
+        .'</div>
+
+        <form action="add-new.php" method="POST" style="display:flex; flex-direction:column; gap:18px;">
+            <div>
+                <label style="font-weight:600; color:#391053;">Name:</label><br>
+                <input type="text" name="name" placeholder="Lawyer Name" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
             </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Email:</label><br>
+                <input type="email" name="email" placeholder="Email Address" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
             </div>
-            ';
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Valid ID:</label><br>
+                <input type="text" name="lawyerbarid" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Telephone:</label><br>
+                <input type="tel" name="Tele" placeholder="Telephone Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Choose Specialties:</label><br>
+                <select name="spec" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">';
+
+                    $list11 = $database->query("SELECT * FROM specialties ORDER BY sname ASC;");
+                    while ($row00 = $list11->fetch_assoc()) {
+                        $sn = $row00["sname"];
+                        $id00 = $row00["id"];
+                        echo "<option value=\"$id00\">$sn</option>";
+                    }
+
+echo '          </select>
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Password:</label><br>
+                <input type="password" name="password" placeholder="Define a Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Confirm Password:</label><br>
+                <input type="password" name="cpassword" placeholder="Confirm Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
+                <input type="reset" value="Reset" style="border:none; padding:10px 25px; background:#f0e9f7; color:#5A2675; border-radius:7px; font-weight:600; cursor:pointer;">
+                <input type="submit" value="Add" style="border:none; padding:10px 25px; background:#5A2675; color:#fff; border-radius:7px; font-weight:600; cursor:pointer;">
+            </div>
+        </form>
+    </div>
+</div>';
+
 
             }else{
                 echo '
@@ -570,138 +507,73 @@
                 );
 
             if($error_1!='4'){
-                    echo '
-                    <div id="popup1" class="overlay">
-                            <div class="popup">
-                            <center>
+                   echo '
+<div id="popup1" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background-color:#fff; padding:30px 35px; border-radius:10px; width:90%; max-width:720px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative; font-family:Arial, sans-serif;">
+        <a href="lawyers.php" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; text-decoration:none; color:#391053;">&times;</a>
 
-                                <a class="close" href="lawyers.php">&times;</a>
-                                <div style="display: flex;justify-content: center;">
-                                <div class="abc">
-                                <table width="80%" class="sub-table scrolldown add-lawyer-form-container" border="0">
-                                <tr>
-                                        <td class="label-td" colspan="2">'.
-                                            $errorlist[$error_1]
-                                        .'</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Edit Lawyer Details.</p>
-                                        Lawyer ID : '.$id.' (Auto Generated)<br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <form action="edit-lawyer.php" method="POST" class="add-new-form">
-                                            <label for="Email" class="form-label">Email: </label>
-                                            <input type="hidden" value="'.$id.'" name="id00">
-                                            <input type="hidden" name="oldemail" value="'.$email.'" >
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                        <input type="email" name="email" class="input-text" placeholder="Email Address" value="'.$email.'" required><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        
-                                        <td class="label-td" colspan="2">
-                                            <label for="name" class="form-label">Name: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="text" name="name" class="input-text" placeholder="Lawyer Name" value="'.$name.'" required><br>
-                                        </td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="lawyerbarid" class="form-label">Valid ID: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="text" name="lawyerbarid" class="input-text" placeholder="Valid ID Number" value="'.$lawyerbarid.'" required><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="Tele" class="form-label">Telephone: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="tel" name="Tele" class="input-text" placeholder="Telephone Number" value="'.$tele.'" required><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="spec" class="form-label">Choose specialties: (Current'.$spcil_name.')</label>
-                                            
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <select name="spec" id="" class="box">';
-                                                
-                
-                                                $list11 = $database->query("select  * from  specialties;");
-                
-                                                for ($y=0;$y<$list11->num_rows;$y++){
-                                                    $row00=$list11->fetch_assoc();
-                                                    $sn=$row00["sname"];
-                                                    $id00=$row00["id"];
-                                                    echo "<option value=".$id00.">$sn</option><br/>";
-                                                };
-                
-                
-                
-                                                
-                                echo     '       </select><br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="password" class="form-label">Password: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="password" name="password" class="input-text" placeholder="Defind a Password" required><br>
-                                        </td>
-                                    </tr><tr>
-                                        <td class="label-td" colspan="2">
-                                            <label for="cpassword" class="form-label">Conform Password: </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <input type="password" name="cpassword" class="input-text" placeholder="Conform Password" required><br>
-                                        </td>
-                                    </tr>
-                                    
-                        
-                                    <tr>
-                                        <td colspan="2">
-                                            <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        
-                                            <input type="submit" value="Save" class="login-btn btn-primary btn">
-                                        </td>
-                        
-                                    </tr>
-                                
-                                    </form>
-                                    </tr>
-                                </table>
-                                </div>
-                                </div>
-                            </center>
-                            <br><br>
-                    </div>
-                    </div>
-                    ';
+        <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin-bottom:10px;">Edit Lawyer Details</h3>
+        <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 30px 0;"></div>
+
+        <div style="color:#D8000C; font-weight:500; text-align:center; margin-bottom:20px;">' . $errorlist[$error_1] . '</div>
+
+        <form action="edit-lawyer.php" method="POST" style="display:flex; flex-direction:column; gap:18px;">
+            <input type="hidden" name="id00" value="'.$id.'">
+            <input type="hidden" name="oldemail" value="'.$email.'">
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Email:</label><br>
+                <input type="email" name="email" value="'.$email.'" placeholder="Email Address" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Name:</label><br>
+                <input type="text" name="name" value="'.$name.'" placeholder="Lawyer Name" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Valid ID:</label><br>
+                <input type="text" name="lawyerbarid" value="'.$lawyerbarid.'" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Telephone:</label><br>
+                <input type="tel" name="Tele" value="'.$tele.'" placeholder="Telephone Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Choose Specialties: (Current: '.$spcil_name.')</label><br>
+                <select name="spec" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">';
+
+$list11 = $database->query("SELECT * FROM specialties ORDER BY sname ASC;");
+while ($row00 = $list11->fetch_assoc()) {
+    $sn = $row00["sname"];
+    $id00 = $row00["id"];
+    echo "<option value=\"$id00\">$sn</option>";
+}
+
+echo '
+                </select>
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Password:</label><br>
+                <input type="password" name="password" placeholder="Define a Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div>
+                <label style="font-weight:600; color:#391053;">Confirm Password:</label><br>
+                <input type="password" name="cpassword" placeholder="Confirm Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
+                <input type="reset" value="Reset" style="border:none; padding:10px 25px; background:#f0e9f7; color:#5A2675; border-radius:7px; font-weight:600; cursor:pointer;">
+                <input type="submit" value="Save" style="border:none; padding:10px 25px; background:#5A2675; color:#fff; border-radius:7px; font-weight:600; cursor:pointer;">
+            </div>
+        </form>
+    </div>
+</div>';
+
         }else{
             echo '
                 <div id="popup1" class="overlay">
