@@ -1,3 +1,73 @@
+<?php
+    session_start();
+
+    include("../connection.php");
+    require_once '../send_email.php';
+
+    // Must be at the top before any HTML output
+    if(isset($_SESSION["user"])){
+        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='c'){
+            header("location: ../login.php");
+            exit();
+        }
+    }else{
+        header("location: ../login.php");
+        exit();
+    }
+    
+    $clientid = $_SESSION['cid']; 
+    $clientname = $_SESSION['cname'];
+
+    // Handle actions that modify data or redirect BEFORE any HTML is output
+    if(isset($_GET['action']) && $_GET['action'] == 'confirm_cancel' && isset($_GET['id'])){
+        $id = $_GET['id'];
+        
+        $sql_fetch = "SELECT 
+                        a.scheduleid,
+                        c.cemail, 
+                        c.cname, 
+                        s.scheduledate, 
+                        s.scheduletime, 
+                        s.title, 
+                        a.description, 
+                        COALESCE(l.lawyername, 'Not Assigned') AS lawyername
+                      FROM appointment AS a
+                      JOIN client AS c ON a.cid = c.cid
+                      JOIN schedule AS s ON a.scheduleid = s.scheduleid
+                      LEFT JOIN lawyer AS l ON s.lawyerid = l.lawyerid
+                      WHERE a.appoid = '$id' AND a.cid = '$clientid'";
+        
+        $result_fetch = $database->query($sql_fetch);
+
+        if ($result_fetch->num_rows > 0) {
+            $details = $result_fetch->fetch_assoc();
+            $scheduleid_to_delete = $details['scheduleid'];
+
+            try {
+                sendAppointmentCanceledEmail(
+                    $details['cemail'],
+                    $details['cname'],
+                    $details['scheduledate'],
+                    $details['scheduletime'],
+                    $details['title'],
+                    $details['description'],
+                    $details['lawyername']
+                );
+            } catch (Exception $e) {
+                error_log("Email sending failed for cancellation of appoid $id: " . $e->getMessage());
+            }
+
+            $database->query("DELETE FROM appointment WHERE appoid='$id'");
+            $database->query("DELETE FROM schedule WHERE scheduleid='$scheduleid_to_delete'");
+            
+            header("location: client-appointment.php?action=cancel_success");
+            exit();
+        } else {
+            header("location: client-appointment.php?action=cancel_error");
+            exit();
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,9 +84,6 @@
         .dash-body{
             overflow-y: auto;
         }
-        .popup{
-            animation: transitionIn-Y-bottom 0.5s;
-        }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
@@ -26,6 +93,7 @@
             border-radius: 5px;
             font-weight: bold;
             color: #fff;
+            text-transform: capitalize;
         }
         .status-pending {
             background-color: #ffc107;  
@@ -42,34 +110,125 @@
         .status-unassigned {
             background-color: #6c757d;  
         }
+        
+        /* New Modal Styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
+            padding: 30px 40px;
+            max-width: 650px;
+            width: 95%;
+            position: relative;
+            animation: fadeIn 0.3s;
+            max-height: 90vh; 
+            overflow-y: auto;
+            text-align: center;
+        }
+        .modal-header {
+            text-align: center;
+            color: #391053;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+        }
+        .modal-divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+            border: none;
+            border-radius: 2px;
+            margin: 18px 0 28px 0;
+        }
+        .modal-body {
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+        .modal-body .content{
+            text-align: center;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        .modal-btn {
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
+        }
+        .modal-btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .modal-btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 30px; 
+            text-align: left;
+        }
+        .detail-item {
+            font-size: 15px;
+        }
+        .detail-item strong {
+            color: #391053;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .detail-item span {
+            color: #555;
+        }
+        .detail-full {
+            grid-column: 1 / -1;
+        }
     </style>
 </head>
 <body>
-    <?php
-
-    session_start();
-
-
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='c'){
-            header("location: ../login.php");
-            exit(); // Added exit to prevent further execution
-        }
-    }else{
-        header("location: ../login.php");
-        exit(); // Added exit to prevent further execution
-    }
-    
-
-    include("../connection.php");
-    require_once '../send_email.php';
-
-
-
-    $clientid = $_SESSION['cid']; 
-    $clientname = $_SESSION['cname']; // Retrieve clientname from session
-
-    ?>
     <div class="container">
         <div class="menu">
             <table class="menu-container" border="0">
@@ -131,6 +290,53 @@
             </table>
         </div>
         <div class="dash-body">
+            <?php
+            // Notification for various actions
+            if(isset($_GET['action'])){
+                $action = $_GET['action'];
+                $modal_title = '';
+                $modal_message = '';
+                $modal_header_color = '';
+
+                if($action == 'session-requested' && isset($_GET['title'])){
+                    $title = htmlspecialchars(urldecode($_GET['title']));
+                    $modal_title = 'Success!';
+                    $modal_header_color = '#28a745';
+                    $modal_message = 'Your session request for "<b>'.$title.'</b>" has been submitted successfully.<br>You will be notified via email once a lawyer accepts your request.';
+                } elseif ($action == 'error' && isset($_GET['message'])) {
+                    $message = htmlspecialchars(urldecode($_GET['message']));
+                    $modal_title = 'Error!';
+                    $modal_header_color = '#dc3545';
+                    $modal_message = $message;
+                } elseif ($action == 'cancel_success') {
+                    $modal_title = 'Canceled!';
+                    $modal_header_color = '#28a745';
+                    $modal_message = 'Your appointment has been canceled successfully.';
+                } elseif ($action == 'cancel_error') {
+                    $modal_title = 'Error!';
+                    $modal_header_color = '#dc3545';
+                    $modal_message = 'Could not cancel the appointment. It might not exist or you may not have permission.';
+                }
+
+                if (!empty($modal_message)) {
+                    echo '
+                    <div id="popup1" class="overlay show">
+                        <div class="modal-content">
+                            <h2 class="modal-header" style="color: '.$modal_header_color.';">'.$modal_title.'</h2>
+                            <div class="modal-divider"></div>
+                            <div class="modal-body">
+                                <div class="content">
+                                    '.$modal_message.'
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="client-appointment.php" class="non-style-link"><button class="modal-btn modal-btn-soft">OK</button></a>
+                            </div>
+                        </div>
+                    </div>';
+                }
+            }
+            ?>
             <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
                 
                 <tr>
@@ -314,10 +520,10 @@
                                         '.$apponum.'
                                         </td>
                                         <td>
-                                        '.substr($lawyername,0,25).'
+                                        '.substr(htmlspecialchars($lawyername),0,25).'
                                         </td>
                                         <td>
-                                        '.substr($title,0,15).'
+                                        '.substr(htmlspecialchars($title),0,15).'
                                         </td>
                                         <td style="text-align:center;font-size:12px;">
                                             '.substr($scheduledate,0,10).' <br>'.substr($scheduletime,0,5).'
@@ -326,13 +532,13 @@
                                             '.$appodate.'
                                         </td>
                                         <td>
-                                            <span class="status-badge status-'.strtolower($status).'">'.$status.'</span> </td>
+                                            <span class="status-badge status-'.strtolower($status).'">'.htmlspecialchars($status).'</span> </td>
                                         <td>
                                         <div style="display:flex;justify-content: center;">';
                                         
 
                                         if ($status == 'pending') {
-                                            echo '<a href="?action=cancel&id='.$appoid.'&session='.$title.'&apponum='.$apponum.'" class="non-style-link">
+                                            echo '<a href="?action=cancel&id='.$appoid.'&session='.urlencode($title).'&apponum='.$apponum.'" class="non-style-link">
                                                     <button class="btn-primary-soft btn button-icon btn-delete" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
                                                         <font class="tn-in-text">Cancel Request</font>
                                                     </button>
@@ -344,7 +550,12 @@
                                                     </button>
                                                 </a>';
                                         } else {
-                                            echo '<button class="btn-primary-soft btn" disabled style="padding: 12px; margin-top: 10px;">No Action</button>';
+                                            // For rejected, completed, or other statuses
+                                            echo '<a href="?action=view_details&id='.$appoid.'" class="non-style-link">
+                                                    <button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;">
+                                                        <font class="tn-in-text">View Details</font>
+                                                    </button>
+                                                </a>';
                                         }
                                         
                                         echo '</div>
@@ -366,225 +577,111 @@
     </div>
     <?php
 
-    if($_GET){
-        $id=$_GET["id"];
+    if(isset($_GET['action'])){
         $action=$_GET["action"];
-        
-        if($action=='cancel'){ // Renamed from 'drop' for clarity
-            $session=$_GET["session"];
-            $apponum=$_GET["apponum"];
-            echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                        <h2>Are you sure you want to cancel?</h2>
-                        <a class="close" href="client-appointment.php">&times;</a>
-                        <div class="content">
-                            You are about to cancel your appointment:<br><br>
-                            Appointment number &nbsp; : <b>'.substr($apponum,0,40).'</b><br>
-                            Session Title: &nbsp;<b>'.substr($session,0,40).'</b><br><br>
-                            This action cannot be undone.
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        <a href="client-appointment.php?action=confirm_cancel&id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes, Cancel&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
-                        <a href="client-appointment.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
-
-                        </div>
-                    </center>
-            </div>
-            </div>
-            '; 
-        } elseif ($action == 'confirm_cancel') {
-
-            $sql_fetch = "SELECT 
-                            c.cemail, 
-                            c.cname, 
-                            s.scheduledate, 
-                            s.scheduletime, 
-                            s.title, 
-                            a.description, 
-                            COALESCE(l.lawyername, 'Not Assigned') AS lawyername
-                          FROM appointment AS a
-                          JOIN client AS c ON a.cid = c.cid
-                          JOIN schedule AS s ON a.scheduleid = s.scheduleid
-                          LEFT JOIN lawyer AS l ON s.lawyerid = l.lawyerid
-                          WHERE a.appoid = '$id' AND a.cid = '$clientid'";
-            
-            $result_fetch = $database->query($sql_fetch);
-
-            if ($result_fetch->num_rows > 0) {
-                $details = $result_fetch->fetch_assoc();
-
-
-                try {
-                    sendAppointmentCanceledEmail(
-                        $details['cemail'],
-                        $details['cname'],
-                        $details['scheduledate'],
-                        $details['scheduletime'],
-                        $details['title'],
-                        $details['description'],
-                        $details['lawyername']
-                    );
-
-
-                    $database->query("DELETE FROM appointment WHERE appoid='$id'");
-                    
-
-                    echo "<script>alert('Your appointment has been canceled successfully.'); window.location.href='client-appointment.php';</script>";
-                    exit();
-
-                } catch (Exception $e) {
-
-                    error_log("Email sending failed for cancellation of appoid $id: " . $e->getMessage());
-                    echo "<script>alert('Could not send cancellation email, but the appointment will be canceled. Please contact support if you have questions.');</script>";
-                    
-
-                    $database->query("DELETE FROM appointment WHERE appoid='$id'");
-                    echo "<script>window.location.href='client-appointment.php';</script>";
-                    exit();
-                }
-
-            } else {
-
-                echo "<script>alert('Error: Appointment not found or you do not have permission to cancel it.'); window.location.href='client-appointment.php';</script>";
-                exit();
-            }
-
-        } elseif($action=='view_details'){ // For viewing appointment details for accepted/completed
-
-            $sqlmain_view = "SELECT 
-                                appointment.appoid,
-                                schedule.scheduleid,
-                                schedule.title,
-                                COALESCE(lawyer.lawyername, 'Unassigned') AS lawyername, -- Display 'Unassigned' if lawyerid is NULL
-                                lawyer.lawyeremail,
-                                lawyer.lawyertel,
-                                specialties.sname AS specialty_name,
-                                schedule.scheduledate,
-                                schedule.scheduletime,
-                                appointment.apponum,
-                                appointment.appodate,
-                                appointment.status,
-                                appointment.description 
-                            FROM appointment
-                            INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
-                            LEFT JOIN lawyer ON schedule.lawyerid = lawyer.lawyerid -- Use LEFT JOIN
-                            LEFT JOIN specialties ON lawyer.specialties = specialties.id
-                            WHERE appointment.appoid='$id' AND appointment.cid = '$clientid'"; 
-            
-            $result_view = $database->query($sqlmain_view);
-            if ($result_view->num_rows > 0) {
-                $row_view = $result_view->fetch_assoc();
-                $session_title = $row_view["title"];
-                $lawyer_name = $row_view["lawyername"];
-                $lawyer_email = $row_view["lawyeremail"];
-                $lawyer_tel = $row_view["lawyertel"];
-                $specialty_name = $row_view["specialty_name"];
-                $session_date = $row_view["scheduledate"];
-                $session_time = $row_view["scheduletime"];
-                $appointment_number = $row_view["apponum"];
-                $appointment_date = $row_view["appodate"];
-                $current_status = $row_view["status"];
-                $case_description = $row_view["description"]; 
-
+        // These actions are now handled by the notification system at the top of the dash-body
+        if ($action != 'session-requested' && $action != 'error' && $action != 'cancel_success' && $action != 'cancel_error') {
+            $id=$_GET["id"];
+            if($action=='cancel'){ 
+                $session=urldecode($_GET["session"]);
+                $apponum=$_GET["apponum"];
                 echo '
-                <div id="popup1" class="overlay">
-                    <div class="popup">
-                        <center>
-                            <h2>Appointment Details</h2>
-                            <a class="close" href="client-appointment.php">&times;</a>
-                            <div class="content">
-                                <table width="90%" class="sub-table scrolldown add-lawyer-form-container" border="0">
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Details for Appointment #'.$appointment_number.'</p><br><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label class="form-label">Session Title: </label>
-                                            <p>'.htmlspecialchars($session_title).'</p><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label class="form-label">Lawyer: </label>
-                                            <p>'.htmlspecialchars($lawyer_name).'</p><br>
-                                        </td>
-                                    </tr>';
+                <div id="popup1" class="overlay show">
+                    <div class="modal-content">
+                        <h2 class="modal-header">Are you sure?</h2>
+                        <div class="modal-divider"></div>
+                        <div class="modal-body">
+                           <div class="content">
+                                You are about to cancel your appointment request for:<br><br>
+                                <strong>'.htmlspecialchars($session).'</strong><br>
+                                (Appointment #'.htmlspecialchars($apponum).')
+                                <br><br>This action cannot be undone.
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="client-appointment.php" class="non-style-link"><button class="modal-btn modal-btn-soft">No, Keep It</button></a>
+                            <a href="client-appointment.php?action=confirm_cancel&id='.$id.'" class="non-style-link"><button class="modal-btn modal-btn-danger">Yes, Cancel</button></a>
+                        </div>
+                    </div>
+                </div>
+                '; 
+            } elseif($action=='view_details'){ 
 
-                                    if ($lawyer_name !== 'Unassigned') {
-                                        echo '<tr>
-                                            <td class="label-td" colspan="2">
-                                                <label class="form-label">Lawyer Email: </label>
-                                                <p>'.htmlspecialchars($lawyer_email).'</p><br>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label-td" colspan="2">
-                                                <label class="form-label">Lawyer Phone: </label>
-                                                <p>'.htmlspecialchars($lawyer_tel).'</p><br>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label-td" colspan="2">
-                                                <label class="form-label">Lawyer Specialty: </label>
-                                                <p>'.htmlspecialchars($specialty_name).'</p><br>
-                                            </td>
-                                        </tr>';
+                $sqlmain_view = "SELECT 
+                                    appointment.appoid,
+                                    schedule.scheduleid,
+                                    schedule.title,
+                                    COALESCE(lawyer.lawyername, 'Unassigned') AS lawyername,
+                                    lawyer.lawyeremail,
+                                    lawyer.lawyertel,
+                                    specialties.sname AS specialty_name,
+                                    schedule.scheduledate,
+                                    schedule.scheduletime,
+                                    appointment.apponum,
+                                    appointment.appodate,
+                                    appointment.status,
+                                    appointment.description 
+                                FROM appointment
+                                INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
+                                LEFT JOIN lawyer ON schedule.lawyerid = lawyer.lawyerid
+                                LEFT JOIN specialties ON lawyer.specialties = specialties.id
+                                WHERE appointment.appoid='$id' AND appointment.cid = '$clientid'"; 
+                
+                $result_view = $database->query($sqlmain_view);
+                if ($result_view->num_rows > 0) {
+                    $row_view = $result_view->fetch_assoc();
+                    
+                    echo '
+                    <div id="popup1" class="overlay show">
+                        <div class="modal-content">
+                            <h2 class="modal-header">Appointment Details</h2>
+                            <div class="modal-divider"></div>
+                            <div class="modal-body">
+                                <div class="detail-grid">
+                                    <div class="detail-item"><strong>Appointment No:</strong> <span>'.htmlspecialchars($row_view["apponum"]).'</span></div>
+                                    <div class="detail-item"><strong>Status:</strong> <span><span class="status-badge status-'.strtolower($row_view["status"]).'">'.ucfirst($row_view["status"]).'</span></span></div>
+                                    <div class="detail-item"><strong>Session Title:</strong> <span>'.htmlspecialchars($row_view["title"]).'</span></div>
+                                    <div class="detail-item"><strong>Appointment Booked:</strong> <span>'.date("F j, Y", strtotime($row_view["appodate"])).'</span></div>
+                                    <div class="detail-item"><strong>Scheduled Date:</strong> <span>'.date("l, F j, Y", strtotime($row_view["scheduledate"])).'</span></div>
+                                    <div class="detail-item"><strong>Scheduled Time:</strong> <span>'.date("h:i A", strtotime($row_view["scheduletime"])).'</span></div>
+                                    <div class="detail-full" style="height: 1px; background-color: #e0e0e0; margin: 10px 0;"></div>
+                                    <div class="detail-item"><strong>Lawyer:</strong> <span>'.htmlspecialchars($row_view["lawyername"]).'</span></div>';
+                                    
+                                    if ($row_view["lawyername"] !== 'Unassigned') {
+                                        echo '<div class="detail-item"><strong>Lawyer Specialty:</strong> <span>'.htmlspecialchars($row_view["specialty_name"]).'</span></div>';
+                                        echo '<div class="detail-item"><strong>Lawyer Email:</strong> <span>'.htmlspecialchars($row_view["lawyeremail"]).'</span></div>';
+                                        echo '<div class="detail-item"><strong>Lawyer Phone:</strong> <span>'.htmlspecialchars($row_view["lawyertel"]).'</span></div>';
                                     }
-                                    echo '<tr>
-                                        <td class="label-td" colspan="2">
-                                            <label class="form-label">Scheduled Date & Time: </label>
-                                            <p>'.htmlspecialchars($session_date).' at '.substr(htmlspecialchars($session_time),0,5).'</p><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label class="form-label">Appointment Date (Requested): </label>
-                                            <p>'.htmlspecialchars($appointment_date).'</p><br>
-                                        </td>
-                                    </tr>
-                                     <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label class="form-label">Status: </label>
-                                            <p><span class="status-badge status-'.strtolower($current_status).'">'.htmlspecialchars($current_status).'</span></p><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label-td" colspan="2">
-                                            <label class="form-label">Case Description: </label>
-                                            <p>'.(empty($case_description) ? 'No description provided.' : htmlspecialchars($case_description)).'</p><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <a href="client-appointment.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
-                                        </td>
-                                    </tr>
-                                </table>
+
+                                    echo '<div class="detail-full"><strong>Case Description:</strong>
+                                        <div style="background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 5px; padding: 10px; margin-top: 5px;">
+                                            '.nl2br(htmlspecialchars($row_view["description"])).'
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </center>
-                        <br><br>
-                    </div>
-                </div>';
-            } else {
-                echo '
-                <div id="popup1" class="overlay">
-                    <div class="popup">
-                        <center>
-                            <h2>Error!</h2>
-                            <a class="close" href="client-appointment.php">&times;</a>
-                            <div class="content">
-                                Appointment details not found or you do not have permission to view this appointment.
+                            <div class="modal-footer">
+                                <a href="client-appointment.php" class="non-style-link"><button class="modal-btn modal-btn-soft">Close</button></a>
                             </div>
-                            <div style="display: flex;justify-content: center;">
-                                <a href="client-appointment.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
+                        </div>
+                    </div>';
+                } else {
+                     echo '
+                    <div id="popup1" class="overlay show">
+                        <div class="modal-content">
+                            <h2 class="modal-header" style="color: #dc3545;">Error!</h2>
+                            <div class="modal-divider"></div>
+                            <div class="modal-body">
+                                <div class="content">
+                                    Appointment details not found or you do not have permission to view this.
+                                </div>
                             </div>
-                        </center>
-                    </div>
-                </div>';
+                            <div class="modal-footer">
+                                <a href="client-appointment.php" class="non-style-link"><button class="modal-btn modal-btn-soft">OK</button></a>
+                            </div>
+                        </div>
+                    </div>';
+                }
             }
         }
     }

@@ -39,8 +39,10 @@ if(isset($_POST['submit_request'])){
 
     try {
 
-        $insert_schedule_query = "INSERT INTO schedule (lawyerid, title, scheduledate, scheduletime, nop, clientid) 
-                                  VALUES (NULL, '$title', '$preferred_date', '$preferred_time', 1, '$clientid')";
+        // Insert into schedule first. The client is linked via the appointment table.
+        // Removed `nop` and `clientid` as they are likely not in the `schedule` table schema, causing the error.
+        $insert_schedule_query = "INSERT INTO schedule (lawyerid, title, scheduledate, scheduletime) 
+                                  VALUES (NULL, '$title', '$preferred_date', '$preferred_time')";
         
         if (!mysqli_query($database, $insert_schedule_query)) {
             throw new Exception("Error creating schedule: " . mysqli_error($database));
@@ -54,6 +56,7 @@ if(isset($_POST['submit_request'])){
 
 
         $appodate = date('Y-m-d'); 
+        // Insert into appointment with 'pending' status
         $insert_appointment_query = "INSERT INTO appointment (cid, apponum, scheduleid, appodate, status, description) 
                                      VALUES ('$clientid', '$apponum', '$scheduleid', '$appodate', 'pending', '$description')";
         
@@ -65,6 +68,7 @@ if(isset($_POST['submit_request'])){
         mysqli_commit($database);
 
 
+        // Send email notification to the client that the request is pending
         try {
             sendAppointmentPendingEmail(
                 $clientEmail,
@@ -78,11 +82,13 @@ if(isset($_POST['submit_request'])){
             );
         } catch (Exception $e) {
 
+            // Log email error but don't stop the user flow
             error_log("Email sending failed: " . $e->getMessage());
 
         }
 
 
+        // Redirect to the appointments page with a success message
         header("location: client-appointment.php?action=session-requested&title=".urlencode($title));
         exit();
 
@@ -95,7 +101,7 @@ if(isset($_POST['submit_request'])){
     }
 
 } else {
-
+    // Redirect back to the form if accessed directly
     header("location: request-session.php");
     exit();
 }
