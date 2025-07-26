@@ -302,15 +302,17 @@
                     <td style="padding:15px 10px;" colspan="2">
                         <table border="0" class="profile-container">
                             <tr>
-                                <td width="25%" style="padding-left:10px">
+                                <td width="30%" style="padding-left:20px">
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
-                                <td class="profile-info-cell" style="vertical-align: middle;">
+                                <td style="padding:0px;margin:0px;">
                                     <p class="profile-title">Administrator</p>
                                     <p class="profile-subtitle">admin@safespaceph.com</p>
-                                    <a href="../logout.php">
-                                        <input type="button" value="Log out" class="logout-btn btn-primary-soft btn">
-                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
                                 </td>
                             </tr>
                         </table>
