@@ -255,27 +255,65 @@
                 header("location: admin_reports.php?action=error&message=".urlencode("Failed to delete report. " . $database->error));
                 exit();
             }
-        } elseif($action_type == 'confirm_reject'){
+        } elseif ($action_type == 'confirm_reject') {
 
-            $update_sql = "UPDATE reports SET report_status = 'rejected', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
-            if ($database->query($update_sql)) {
-                header("location: admin_reports.php?action=rejected");
+        $update_sql = "UPDATE reports SET report_status = 'rejected', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
+        if ($database->query($update_sql)) {
+            // --- Send email to client notifying report rejection ---
+            $report_query = "SELECT * FROM reports WHERE id = '$id_safe' LIMIT 1";
+            $report_result = $database->query($report_query);
+            if ($report_result && $report_result->num_rows > 0) {
+                $report = $report_result->fetch_assoc();
+                $client_id = $report['client_id'] ?? '';
+                $report_title = $report['title'] ?? '';
+                // Get client email and name
+                $client_query = "SELECT * FROM client WHERE cid = '$client_id' LIMIT 1";
+                $client_result = $database->query($client_query);
+                if ($client_result && $client_result->num_rows > 0) {
+                    $client = $client_result->fetch_assoc();
+                    $client_email = $client['cemail'] ?? '';
+                    $client_name = $client['cname'] ?? '';
+                    if (!empty($client_email) && !empty($client_name)) {
+                        require_once("../send_email.php");
+                        sendClientReportRejectedEmail($client_email, $client_name, $report_title, $admin_notes);
+                    }
+                }
+            } header("location: admin_reports.php?action=rejected");
                 exit();
             } else {
                 header("location: admin_reports.php?action=error&message=".urlencode("Failed to reject report. " . $database->error));
                 exit();
             }
         } elseif ($action_type == 'confirm_submit'){
-
-            $update_sql = "UPDATE reports SET report_status = 'submitted', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
-            if ($database->query($update_sql)) {
-                header("location: admin_reports.php?action=submitted");
-                exit();
-            } else {
-                header("location: admin_reports.php?action=error&message=".urlencode("Failed to submit report. " . $database->error));
-                exit();
+        $update_sql = "UPDATE reports SET report_status = 'submitted', admin_notes = '$admin_notes' WHERE id = '$id_safe'";
+        if ($database->query($update_sql)) {
+            // --- Send email to client notifying report submitted to authorities ---
+            $report_query = "SELECT * FROM reports WHERE id = '$id_safe' LIMIT 1";
+            $report_result = $database->query($report_query);
+            if ($report_result && $report_result->num_rows > 0) {
+                $report = $report_result->fetch_assoc();
+                $client_id = $report['client_id'] ?? '';
+                $report_title = $report['title'] ?? '';
+                // Get client email and name
+                $client_query = "SELECT * FROM client WHERE cid = '$client_id' LIMIT 1";
+                $client_result = $database->query($client_query);
+                if ($client_result && $client_result->num_rows > 0) {
+                    $client = $client_result->fetch_assoc();
+                    $client_email = $client['cemail'] ?? '';
+                    $client_name = $client['cname'] ?? '';
+                    if (!empty($client_email) && !empty($client_name)) {
+                        require_once("../send_email.php");
+                        sendClientReportSubmittedToAuthoritiesEmail($client_email, $client_name, $report_title);
+                    }
+                }
             }
+            header("location: admin_reports.php?action=submitted");
+            exit();
+        } else {
+            header("location: admin_reports.php?action=error&message=".urlencode("Failed to submit report. " . $database->error));
+            exit();
         }
+    }
     }
 
 

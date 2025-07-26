@@ -151,6 +151,15 @@
                         </div>
                     </div>';
 
+                    // Send confirmation email to client
+                    require_once("../send_email.php");
+                    sendClientReportSubmissionEmail(
+                        $reporter_email_submit,
+                        $reporter_name_submit,
+                        $title_submit,
+                        $legal_consultation_submit
+                    );
+
                     // Clear form fields on success
                     $reporter_name = $username;
                     $reporter_phone = '';
