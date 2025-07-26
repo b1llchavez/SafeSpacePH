@@ -58,6 +58,7 @@ body {
   width: 92%;
   transition: 0.2s;
   outline: none;
+  font-family: inherit;
 }
 
 .input-text {
@@ -78,6 +79,7 @@ body {
   appearance: none;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  font-family: inherit;
 }
 
 .input-text:hover {

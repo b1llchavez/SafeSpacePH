@@ -393,6 +393,7 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-family:inherit;
         }
         .modal-btn-primary {
             background: #5A2675;

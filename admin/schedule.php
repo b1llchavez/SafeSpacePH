@@ -217,6 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family:inherit;
         }
 
         .modal-btn-soft {

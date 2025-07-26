@@ -265,6 +265,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
 
         .modal-btn-soft {

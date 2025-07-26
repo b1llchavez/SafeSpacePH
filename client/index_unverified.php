@@ -147,6 +147,7 @@ $username=$userfetch["cname"];
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(57, 16, 83, 0.2);
             transition: all 0.3s ease;
+            font-family:inherit;
         }
 
         .verify-button:hover {
@@ -178,6 +179,7 @@ $username=$userfetch["cname"];
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  
             transition: all 0.3s ease;
             margin-top: 15px;  
+            font-family:inherit;
         }
 
         .logout-modal-btn:hover {

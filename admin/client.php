@@ -338,6 +338,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-family: inherit;
         }
         .modal-btn:hover {
             transform: translateY(-2px);
