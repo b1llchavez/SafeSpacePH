@@ -1,3 +1,115 @@
+ <?php
+
+
+
+    
+    
+
+
+    include("../connection.php");
+
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'unverify_lawyer') {
+        $lawyer_id = $_POST['lawyer_id'];
+        $lawyer_email = $_POST['lawyer_email'];
+    
+        $database->begin_transaction();
+    
+        try {
+            $stmt_check_usertype = $database->prepare("SELECT usertype FROM webuser WHERE email = ?");
+            if ($stmt_check_usertype) {
+                $stmt_check_usertype->bind_param("s", $lawyer_email);
+                $stmt_check_usertype->execute();
+                $result_check_usertype = $stmt_check_usertype->get_result();
+                $user_data = $result_check_usertype->fetch_assoc();
+                $stmt_check_usertype->close();
+    
+                if ($user_data && $user_data['usertype'] == 'u') {
+                    throw new Exception("unverified_already");
+                }
+            } else {
+                throw new Exception("Failed to prepare usertype check statement: " . $database->error);
+            }
+    
+            $stmt_webuser_update = $database->prepare("UPDATE webuser SET usertype = 'u' WHERE email = ?");
+            if ($stmt_webuser_update) {
+                $stmt_webuser_update->bind_param("s", $lawyer_email);
+                $stmt_webuser_update->execute();
+                $stmt_webuser_update->close();
+            } else {
+                throw new Exception("Failed to prepare webuser update statement: " . $database->error);
+            }
+    
+            $database->commit();
+    
+            header("Location: lawyers.php?message=unverified_success");
+            exit();
+    
+        } catch (Exception $e) {
+            $database->rollback();
+            error_log("Lawyer unverification failed: " . $e->getMessage());
+            if ($e->getMessage() == "unverified_already") {
+                header("Location: lawyers.php?message=unverified_already");
+            } else {
+                header("Location: lawyers.php?message=unverified_error&details=" . urlencode($e->getMessage()));
+            }
+            exit();
+        }
+    }
+    
+    if (isset($_GET['message'])) {
+        $action_result = $_GET['message'];
+        $popup_title = '';
+        $popup_content = '';
+        $is_error = false;
+        $header_color = '#5A2675';
+    
+        switch ($action_result) {
+            case 'unverified_success':
+                $popup_title = "Verification Revoked!";
+                $popup_content = "Lawyer has been successfully unverified.";
+                break;
+            case 'unverified_error':
+                $is_error = true;
+                $popup_title = "Unverification Error!";
+                $popup_content = "Lawyer unverification failed. Please try again.";
+                if (isset($_GET['details'])) {
+                    $popup_content .= '<br><small style="color:#555;">Details: ' . htmlspecialchars($_GET['details']) . '</small>';
+                }
+                break;
+            case 'unverified_already':
+                $is_error = true;
+                $popup_title = "Warning";
+                $popup_content = 'This user is already unverified or was never verified.';
+                break;
+        }
+        
+        if ($is_error) {
+            $header_color = '#dc3545';
+        }
+    
+        if (!empty($popup_title)) {
+            echo '
+            <div id="messagePopup" class="overlay" style="display: flex;">
+                <div class="modal-content" style="max-width: 450px;">
+                    <h2 class="modal-header" style="color: '. $header_color .';">
+                        '. $popup_title .'
+                    </h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body">
+                        <p>'. $popup_content .'</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="lawyers.php" class="non-style-link">
+                            <button type="button" class="modal-btn modal-btn-primary">OK</button>
+                        </a>
+                    </div>
+                </div>
+            </div>';
+        }
+    }
+    ?>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,153 +238,72 @@
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
+
+        /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
+        /* 1. Reduce the overall width of the sidebar menu */
+        .menu {
+            width: 250px; 
+        }
+        /* 2. Adjust all menu items for new width and spacing */
+        .menu-btn {
+            /* Position icon closer to the left edge */
+            background-position: 52px center !important;
+            /* Compress vertical padding and adjust left padding for icon */
+            padding: 9px 15px 9px 4px !important;
+        }
+        /* 3. Force menu text to a single line */
+        .menu-text {
+            font-size: 14px;
+            white-space: nowrap; /* Prevents text from wrapping */
+            overflow: hidden; /* Hides any part of the text that still overflows */
+            text-overflow: ellipsis; /* Adds "..." if text is too long for the container */
+        }
+        /* 4. Compact the Profile Container */
+        .profile-container td {
+            padding: 0 5px; /* Reduce padding on cells */
+        }
+        .profile-container .profile-info-cell {
+            padding-left: 10px !important;
+        }
+        .profile-title {
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        .profile-subtitle {
+            font-size: 12px;
+            word-break: break-all;
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 8px !important;
+            margin-top: 8px !important;
+            font-size: 13px;
+        }
+        /* --- End of Custom Styles --- */
 </style>
 </head>
 <body>
-    <?php
-
-
-
-    session_start();
-
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
-            header("location: ../login.php");
-        }
-
-    }else{
-        header("location: ../login.php");
-    }
-    
-
-
-
-    include("../connection.php");
-
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'unverify_lawyer') {
-        $lawyer_id = $_POST['lawyer_id'];
-        $lawyer_email = $_POST['lawyer_email'];
-    
-        $database->begin_transaction();
-    
-        try {
-            $stmt_check_usertype = $database->prepare("SELECT usertype FROM webuser WHERE email = ?");
-            if ($stmt_check_usertype) {
-                $stmt_check_usertype->bind_param("s", $lawyer_email);
-                $stmt_check_usertype->execute();
-                $result_check_usertype = $stmt_check_usertype->get_result();
-                $user_data = $result_check_usertype->fetch_assoc();
-                $stmt_check_usertype->close();
-    
-                if ($user_data && $user_data['usertype'] == 'u') {
-                    throw new Exception("unverified_already");
-                }
-            } else {
-                throw new Exception("Failed to prepare usertype check statement: " . $database->error);
-            }
-    
-            $stmt_webuser_update = $database->prepare("UPDATE webuser SET usertype = 'u' WHERE email = ?");
-            if ($stmt_webuser_update) {
-                $stmt_webuser_update->bind_param("s", $lawyer_email);
-                $stmt_webuser_update->execute();
-                $stmt_webuser_update->close();
-            } else {
-                throw new Exception("Failed to prepare webuser update statement: " . $database->error);
-            }
-    
-            $database->commit();
-    
-            header("Location: lawyers.php?message=unverified_success");
-            exit();
-    
-        } catch (Exception $e) {
-            $database->rollback();
-            error_log("Lawyer unverification failed: " . $e->getMessage());
-            if ($e->getMessage() == "unverified_already") {
-                header("Location: lawyers.php?message=unverified_already");
-            } else {
-                header("Location: lawyers.php?message=unverified_error&details=" . urlencode($e->getMessage()));
-            }
-            exit();
-        }
-    }
-    
-    if (isset($_GET['message'])) {
-        $action_result = $_GET['message'];
-        $popup_title = '';
-        $popup_content = '';
-        $is_error = false;
-        $header_color = '#5A2675';
-    
-        switch ($action_result) {
-            case 'unverified_success':
-                $popup_title = "Verification Revoked!";
-                $popup_content = "Lawyer has been successfully unverified.";
-                break;
-            case 'unverified_error':
-                $is_error = true;
-                $popup_title = "Unverification Error!";
-                $popup_content = "Lawyer unverification failed. Please try again.";
-                if (isset($_GET['details'])) {
-                    $popup_content .= '<br><small style="color:#555;">Details: ' . htmlspecialchars($_GET['details']) . '</small>';
-                }
-                break;
-            case 'unverified_already':
-                $is_error = true;
-                $popup_title = "Warning";
-                $popup_content = 'This user is already unverified or was never verified.';
-                break;
-        }
-        
-        if ($is_error) {
-            $header_color = '#dc3545';
-        }
-    
-        if (!empty($popup_title)) {
-            echo '
-            <div id="messagePopup" class="overlay" style="display: flex;">
-                <div class="modal-content" style="max-width: 450px;">
-                    <h2 class="modal-header" style="color: '. $header_color .';">
-                        '. $popup_title .'
-                    </h2>
-                    <div class="modal-divider"></div>
-                    <div class="modal-body">
-                        <p>'. $popup_content .'</p>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="lawyers.php" class="non-style-link">
-                            <button type="button" class="modal-btn modal-btn-primary">OK</button>
-                        </a>
-                    </div>
-                </div>
-            </div>';
-        }
-    }
-    ?>
+   
     <div class="container">
         <div class="menu">
             <table class="menu-container" border="0">
                 <tr>
-                    <td style="padding:10px" colspan="2">
+                    <td style="padding:15px 10px;" colspan="2">
                         <table border="0" class="profile-container">
                             <tr>
-                                <td width="30%" style="padding-left:20px" >
+                                <td width="25%" style="padding-left:10px">
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
-                                <td style="padding:0px;margin:0px;">
+                                <td class="profile-info-cell" style="vertical-align: middle;">
                                     <p class="profile-title">Administrator</p>
                                     <p class="profile-subtitle">admin@safespaceph.com</p>
+                                    <a href="../logout.php">
+                                        <input type="button" value="Log out" class="logout-btn btn-primary-soft btn">
+                                    </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td colspan="2">
-                                <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
-                                </td>
-                            </tr>
-                    </table>
+                        </table>
                     </td>
-                
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-dashbord">

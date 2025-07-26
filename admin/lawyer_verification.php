@@ -314,6 +314,47 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         .file-link:hover {
             background-color: #C9A8F1;
         }
+        /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
+        /* 1. Reduce the overall width of the sidebar menu */
+        .menu {
+            width: 250px; 
+        }
+        /* 2. Adjust all menu items for new width and spacing */
+        .menu-btn {
+            /* Position icon closer to the left edge */
+            background-position: 52px center !important;
+            /* Compress vertical padding and adjust left padding for icon */
+            padding: 9px 15px 9px 4px !important;
+        }
+        /* 3. Force menu text to a single line */
+        .menu-text {
+            font-size: 14px;
+            white-space: nowrap; /* Prevents text from wrapping */
+            overflow: hidden; /* Hides any part of the text that still overflows */
+            text-overflow: ellipsis; /* Adds "..." if text is too long for the container */
+        }
+        /* 4. Compact the Profile Container */
+        .profile-container td {
+            padding: 0 5px; /* Reduce padding on cells */
+        }
+        .profile-container .profile-info-cell {
+            padding-left: 10px !important;
+        }
+        .profile-title {
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        .profile-subtitle {
+            font-size: 12px;
+            word-break: break-all;
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 8px !important;
+            margin-top: 8px !important;
+            font-size: 13px;
+        }
+        /* --- End of Custom Styles --- */
     </style>
 </head>
 <body>
@@ -397,23 +438,21 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         <div class="menu">
             <table class="menu-container" border="0">
                 <tr>
-                    <td style="padding:10px" colspan="2">
+                    <td style="padding:15px 10px;" colspan="2">
                         <table border="0" class="profile-container">
                             <tr>
-                                <td width="30%" style="padding-left:20px" >
+                                <td width="25%" style="padding-left:10px">
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
-                                <td style="padding:0px;margin:0px;">
+                                <td class="profile-info-cell" style="vertical-align: middle;">
                                     <p class="profile-title">Administrator</p>
                                     <p class="profile-subtitle">admin@safespaceph.com</p>
+                                    <a href="../logout.php">
+                                        <input type="button" value="Log out" class="logout-btn btn-primary-soft btn">
+                                    </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td colspan="2">
-                                <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
-                                </td>
-                            </tr>
-                    </table>
+                        </table>
                     </td>
                 </tr>
                 <tr class="menu-row">
@@ -582,7 +621,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         </div>
     </div>
 
-    <!-- New Modal for Verification with Password Input -->
     <div id="verifyPasswordModal" class="custom-modal">
         <div class="custom-modal-content">
             <form id="verifyForm" onsubmit="submitVerification(event)">
@@ -747,8 +785,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             const urlParams = new URLSearchParams(window.location.search);
             if (!urlParams.has('action') || urlParams.get('action') !== 'view') {
                  const viewModal = document.getElementById('viewDetailsModal');
-                if (viewModal && viewModal.style.display !== 'none') {
-                    // This case is unlikely with the server-side logic but good for robustness
+                if (viewModal) {
                     viewModal.style.display = 'none';
                 }
             }
