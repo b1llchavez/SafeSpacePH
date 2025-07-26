@@ -30,48 +30,10 @@
             background-repeat: no-repeat;
             transition: 0.5s;
         }
-<<<<<<< HEAD
-
-        /* 3. Force menu text to a single line */
-        .menu-text {
-            font-size: 14px;
-            white-space: nowrap; /* Prevents text from wrapping */
-            overflow: hidden; /* Hides any part of the text that still overflows */
-            text-overflow: ellipsis; /* Adds "..." if text is too long for the container */
-        }
-
-        /* 4. Compact the Profile Container */
-        .profile-container td {
-            padding: 0 5px; /* Reduce padding on cells */
-        }
-
-        .profile-container .profile-info-cell {
-            padding-left: 10px !important;
-        }
-        
-        .profile-title {
-            font-size: 15px;
-            margin-bottom: 2px;
-        }
-
-        .profile-subtitle {
-            font-size: 12px;
-            word-break: break-all;
-        }
-
-        .logout-btn {
-            width: 100%;
-            padding: 8px !important;
-            margin-top: 8px !important;
-            font-size: 13px;
-        }
-        /* --- End of Custom Styles --- */
 
         .header-searchbar {
             border-color: #5A2675;
         }
-=======
->>>>>>> a395603f5d5190abb57bebe0abe414ddb676fb69
     </style>
 </head>
 
