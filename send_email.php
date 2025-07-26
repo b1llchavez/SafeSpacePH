@@ -1380,6 +1380,17 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                 .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content p { margin: 0 0 15px; }
+                .button-container { text-align: center; margin: 20px 0; }
+                .button { 
+                    display: inline-block; 
+                    background-color: #8a2be2; 
+                    color: #ffffff !important; 
+                    padding: 12px 25px; 
+                    border-radius: 25px; 
+                    font-size: 17px; 
+                    font-weight: bold; 
+                    text-decoration: none; 
+                }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
                 .footer-logo { height: 50px; width: auto; }
@@ -1404,21 +1415,21 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                                 <tr>
                                     <td class='content'>
                                         <p>Dear {$recipientName},</p>
-                                        <p>We've received your request to delete your SafeSpace PH account. We are sorry to see you go.</p>
-                                        <p>Your account has been deactivated and is now scheduled for permanent deletion in <strong>48 hours</strong>. During this time, your profile will not be visible on the platform.</p>
-                                        <p>If you've made a mistake or wish to restore your account, please <strong>contact the SafeSpace PH support team</strong> by replying to this email within the next 48 hours.</p>
-                                           <div class='button-container'>
+                                        <p>We've received your request to delete your SafeSpace PH account. We're sorry to see you leave our community.</p>
+                                        <p>Your account has been deactivated and is now scheduled for permanent deletion in <strong>48 hours</strong>. During this period, your profile and data will not be accessible on the platform.</p>
+                                        <p>If you did not request this or wish to restore your account, please <strong>contact the SafeSpace PH support team</strong> by replying to this email within the next 48 hours.</p>
+                                        <div class='button-container'>
                                             <a href='https://safespaceph.byethost31.com/contactus.html' class='button'>Contact Support</a>
                                         </div>
                                         <p>If we do not hear from you, your account and all associated data will be permanently deleted. This action cannot be undone.</p>
-                                        <p>Thank you for being a part of our community.</p>
+                                        <p>Thank you for being a part of SafeSpace PH. We wish you all the best.</p>
                                         <p>Sincerely,<br>The SafeSpace PH Team</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class='footer'>
                                         <div class='footer-branding'>
-                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <img src='cid:logoimg_footer' alt='SafeSpace PH Logo' style='height: 50px; width: auto; vertical-align: middle; margin-right: 15px;'>
                                             <span class='footer-title'>SafeSpace PH</span>
                                         </div>
                                         <div class='footer-links-container'>

@@ -151,6 +151,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
     <title>Lawyer Verification | SafeSpace PH</title>
     <style>
+        
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }
@@ -374,7 +375,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         echo '<div id="messagePopup" class="overlay" style="display:flex;">
                 <div class="popup">
                     <center>
-                        <a class="close" href="lawyer_verification.php">&times;</a>
                         <div class="content">';
         if ($_GET['message'] == 'success') {
             echo '<h3>Success!</h3><p>Lawyer has been successfully verified and an account has been created.</p>';
@@ -424,6 +424,16 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-report">
                         <a href="admin_reports.php" class="non-style-link-menu"><div><p class="menu-text">Violation Reports</p></div></a>
+                    </td>
+                </tr>
+                     </tr>
+                     <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="schedule.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Session Requests</p>
+                            </div>
+                        </a>
                     </td>
                 </tr>
                 <tr class="menu-row">

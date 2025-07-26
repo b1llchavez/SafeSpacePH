@@ -503,7 +503,7 @@
                                 <th class="table-headin">
                                     Status </th>
                                 <th class="table-headin">
-                                    Events
+                                    Action
                                 </th>
                             </tr>
                         </thead>

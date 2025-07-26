@@ -197,7 +197,7 @@
                                 </th>
                                 <th class="table-headin">
                                     
-                                    Events
+                                    Action
                                     
                                 </tr>
                         </thead>

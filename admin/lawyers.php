@@ -21,6 +21,111 @@
         .dash-body{
             overflow-y: auto;
         }
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            display: none;  
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
+            padding: 30px 40px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: fadeIn 0.4s ease-out;
+            margin: 0 auto;
+        }
+
+        .modal-header {
+            text-align: center;
+            color: #391053;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .modal-divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+            border: none;
+            border-radius: 2px;
+            margin: 18px 0 28px 0;
+        }
+
+        .modal-body {
+            text-align: center;
+            font-size: 16px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .modal-btn {
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        .modal-btn-primary {
+            background-color: #5A2675;
+            color: white;
+        }
+        .modal-btn-primary:hover {
+            background-color: #5A2675;
+        }
+        .modal-btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .modal-btn-danger:hover {
+            background-color: #c82333;
+        }
+        .modal-btn-secondary {
+            background: #f0f0f0;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+        .modal-btn-secondary:hover {
+            background: #e0e0e0;
+            border-color: #ccc;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
 </style>
 </head>
 <body>
@@ -39,12 +144,111 @@
         header("location: ../login.php");
     }
     
-    
+
 
 
     include("../connection.php");
 
     
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'unverify_lawyer') {
+        $lawyer_id = $_POST['lawyer_id'];
+        $lawyer_email = $_POST['lawyer_email'];
+    
+        $database->begin_transaction();
+    
+        try {
+            $stmt_check_usertype = $database->prepare("SELECT usertype FROM webuser WHERE email = ?");
+            if ($stmt_check_usertype) {
+                $stmt_check_usertype->bind_param("s", $lawyer_email);
+                $stmt_check_usertype->execute();
+                $result_check_usertype = $stmt_check_usertype->get_result();
+                $user_data = $result_check_usertype->fetch_assoc();
+                $stmt_check_usertype->close();
+    
+                if ($user_data && $user_data['usertype'] == 'u') {
+                    throw new Exception("unverified_already");
+                }
+            } else {
+                throw new Exception("Failed to prepare usertype check statement: " . $database->error);
+            }
+    
+            $stmt_webuser_update = $database->prepare("UPDATE webuser SET usertype = 'u' WHERE email = ?");
+            if ($stmt_webuser_update) {
+                $stmt_webuser_update->bind_param("s", $lawyer_email);
+                $stmt_webuser_update->execute();
+                $stmt_webuser_update->close();
+            } else {
+                throw new Exception("Failed to prepare webuser update statement: " . $database->error);
+            }
+    
+            $database->commit();
+    
+            header("Location: lawyers.php?message=unverified_success");
+            exit();
+    
+        } catch (Exception $e) {
+            $database->rollback();
+            error_log("Lawyer unverification failed: " . $e->getMessage());
+            if ($e->getMessage() == "unverified_already") {
+                header("Location: lawyers.php?message=unverified_already");
+            } else {
+                header("Location: lawyers.php?message=unverified_error&details=" . urlencode($e->getMessage()));
+            }
+            exit();
+        }
+    }
+    
+    if (isset($_GET['message'])) {
+        $action_result = $_GET['message'];
+        $popup_title = '';
+        $popup_content = '';
+        $is_error = false;
+        $header_color = '#5A2675';
+    
+        switch ($action_result) {
+            case 'unverified_success':
+                $popup_title = "Verification Revoked!";
+                $popup_content = "Lawyer has been successfully unverified.";
+                break;
+            case 'unverified_error':
+                $is_error = true;
+                $popup_title = "Unverification Error!";
+                $popup_content = "Lawyer unverification failed. Please try again.";
+                if (isset($_GET['details'])) {
+                    $popup_content .= '<br><small style="color:#555;">Details: ' . htmlspecialchars($_GET['details']) . '</small>';
+                }
+                break;
+            case 'unverified_already':
+                $is_error = true;
+                $popup_title = "Warning";
+                $popup_content = 'This user is already unverified or was never verified.';
+                break;
+        }
+        
+        if ($is_error) {
+            $header_color = '#dc3545';
+        }
+    
+        if (!empty($popup_title)) {
+            echo '
+            <div id="messagePopup" class="overlay" style="display: flex;">
+                <div class="modal-content" style="max-width: 450px;">
+                    <h2 class="modal-header" style="color: '. $header_color .';">
+                        '. $popup_title .'
+                    </h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body">
+                        <p>'. $popup_content .'</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="lawyers.php" class="non-style-link">
+                            <button type="button" class="modal-btn modal-btn-primary">OK</button>
+                        </a>
+                    </div>
+                </div>
+            </div>';
+        }
+    }
     ?>
     <div class="container">
         <div class="menu">
@@ -84,6 +288,16 @@
                         <a href="admin_reports.php" class="non-style-link-menu">
                             <div>
                                 <p class="menu-text">Violation Reports</p>
+                            </div>
+                        </a>
+                    </td>
+                </tr>
+                     </tr>
+                     <tr class="menu-row">
+                    <td class="menu-btn menu-icon-schedule">
+                        <a href="schedule.php" class="non-style-link-menu">
+                            <div>
+                                <p class="menu-text">Session Requests</p>
                             </div>
                         </a>
                     </td>
@@ -153,7 +367,7 @@
 
                             echo ' </datalist>';
 ?>
-                            <input type="hidden" name="lawyerid" value="<?php echo $lawyerid; ?>">
+                            <input type="hidden" name="lawyerid" value="<?php echo isset($lawyerid) ? $lawyerid : ''; ?>">
                             <input type="Submit" value="Search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
                         
                         </form>
@@ -181,7 +395,7 @@
                 <tr>
     <td colspan="3" style="padding-top:30px;">
         <p class="heading-main12" style="margin-left: 45px; font-size:20px; color:rgb(49, 49, 49); margin-bottom: 0;">
-            Add New Lawyer
+            Lawyers Manager
         </p>
     </td>
     <td colspan="2" style="text-align: right; padding-top:30px; padding-right: 45px; white-space: nowrap;">
@@ -236,7 +450,7 @@
                                 </th>
                                 <th class="table-headin">
                                     
-                                    Events
+                                    Action
                                     
                                 </tr>
                         </thead>
@@ -291,6 +505,12 @@
                                         &nbsp;&nbsp;&nbsp;
                                         <a href="?action=view&id=' . $lawyerid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
                                        &nbsp;&nbsp;&nbsp;
+                                        <button class="btn-primary-soft btn button-icon btn-unverify"
+                                            onclick="event.stopPropagation(); showUnverifyConfirmModal(\''.$lawyerid.'\', \''.$email.'\')"
+                                            style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
+                                            <font class="tn-in-text">Unverify</font>
+                                        </button>
+                                       &nbsp;&nbsp;&nbsp;
                                        <a href="?action=drop&id=' . $lawyerid . '&name=' . $name . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
                                         </div>
                                         </td>
@@ -314,30 +534,40 @@
             </table>
         </div>
     </div>
+    <div id="unverifyConfirmModal" class="overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <h2 class="modal-header">Confirm Unverification</h2>
+            <div class="modal-divider"></div>
+            <div class="modal-body">
+                <p>Are you sure you want to unverify this lawyer?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-primary" id="confirmUnverifyBtn">Yes, Unverify</button>
+                <button type="button" class="modal-btn modal-btn-secondary" onclick="hideUnverifyConfirmModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
     <?php 
-    if($_GET){
+    if(isset($_GET['action'])){
         
         $id=$_GET["id"];
         $action=$_GET["action"];
         if($action=='drop'){
             $nameget=$_GET["name"];
             echo '
-            <div id="popup1" class="overlay">
-                    <div class="popup">
-                    <center>
-                        <h2>Are you sure?</h2>
-                        <a class="close" href="lawyers.php">&times;</a>
-                        <div class="content">
-                            You want to delete this record<br>('.substr($nameget,0,40).').
-                            
-                        </div>
-                        <div style="display: flex;justify-content: center;">
-                        <a href="delete-lawyer.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
-                        <a href="lawyers.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
-
-                        </div>
-                    </center>
-            </div>
+            <div id="popup1" class="overlay" style="display:flex;">
+                <div class="modal-content" style="max-width: 500px;">
+                    <h2 class="modal-header" style="color:#dc3545;">Are you sure?</h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body">
+                        <p>You want to delete this record<br>('.substr($nameget,0,40).').</p>
+                        <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="delete-lawyer.php?id='.$id.'" class="modal-btn modal-btn-danger">Yes, Delete</a>
+                        <a href="lawyers.php" class="modal-btn modal-btn-secondary">Cancel</a>
+                    </div>
+                </div>
             </div>
             ';
         }elseif($action=='view'){
@@ -355,7 +585,6 @@
             echo '
 <div id="viewDetailsModal" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
     <div style="background-color:#fff; padding:30px; border-radius:8px; width:90%; max-width:700px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative;">
-        <a href="lawyers.php" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; text-decoration:none; color:#391053;">&times;</a>
         <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">View Details</h3>
         <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
 
@@ -606,6 +835,51 @@ echo '
 
 ?>
 </div>
+<script>
+    let currentLawyerId = null;
+    let currentLawyerEmail = null;
+
+    function showUnverifyConfirmModal(lawyerId, lawyerEmail) {
+        currentLawyerId = lawyerId;
+        currentLawyerEmail = lawyerEmail;
+        document.getElementById('unverifyConfirmModal').style.display = 'flex';
+    }
+
+    function hideUnverifyConfirmModal() {
+        document.getElementById('unverifyConfirmModal').style.display = 'none';
+        currentLawyerId = null;
+        currentLawyerEmail = null;
+    }
+    document.getElementById('confirmUnverifyBtn').addEventListener('click', function() {
+        if (currentLawyerId && currentLawyerEmail) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'lawyers.php';
+
+            const actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'action';
+            actionInput.value = 'unverify_lawyer';
+            form.appendChild(actionInput);
+
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'lawyer_id';
+            idInput.value = currentLawyerId;
+            form.appendChild(idInput);
+
+            const emailInput = document.createElement('input');
+            emailInput.type = 'hidden';
+            emailInput.name = 'lawyer_email';
+            emailInput.value = currentLawyerEmail;
+            form.appendChild(emailInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+        hideUnverifyConfirmModal();
+    });
+</script>
 
 </body>
 </html>
