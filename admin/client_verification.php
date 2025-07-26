@@ -429,7 +429,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         echo '<div id="messagePopup" class="overlay" style="display:flex;">
                 <div class="popup">
                     <center>
-                        <a class="close" href="client_verification.php">&times;</a>
                         <div class="content">';
         if ($_GET['message'] == 'success') {
             echo '<h3>Success!</h3><p>Client has been successfully verified.</p>';

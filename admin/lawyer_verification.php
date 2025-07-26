@@ -375,7 +375,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         echo '<div id="messagePopup" class="overlay" style="display:flex;">
                 <div class="popup">
                     <center>
-                        <a class="close" href="lawyer_verification.php">&times;</a>
                         <div class="content">';
         if ($_GET['message'] == 'success') {
             echo '<h3>Success!</h3><p>Lawyer has been successfully verified and an account has been created.</p>';
