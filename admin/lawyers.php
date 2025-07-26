@@ -1,9 +1,6 @@
- <?php
+<?php
 
 
-
-    
-    
 
 
     include("../connection.php");
@@ -129,10 +126,24 @@
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-         
         .dash-body{
             overflow-y: auto;
         }
+
+        /* --- Custom Styles from admin_reports.php --- */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+        }
+        .status-verified { background-color: #28a745; }
+        .status-unverified { background-color: #ffc107; }
+        .status-unknown { background-color: #6c757d; }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -146,6 +157,11 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
+        }
+        .overlay.view-modal-overlay {
+            display: block;
+            overflow-y: auto;
+            padding: 30px 15px;
         }
 
         .modal-content {
@@ -186,6 +202,10 @@
             color: #444;
             line-height: 1.6;
         }
+        
+        .modal-body-left {
+            text-align: left;
+        }
 
         .modal-footer {
             display: flex;
@@ -215,7 +235,7 @@
             color: white;
         }
         .modal-btn-primary:hover {
-            background-color: #5A2675;
+            background-color: #4a1e63;
         }
         .modal-btn-danger {
             background-color: #dc3545;
@@ -233,6 +253,32 @@
             background: #e0e0e0;
             border-color: #ccc;
         }
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #391053;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 7px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-input:focus {
+            border-color: #5A2675;
+            box-shadow: 0 0 0 3px rgba(90, 38, 117, 0.2);
+            outline: none;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
@@ -240,27 +286,21 @@
         }
 
         /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
-        /* 1. Reduce the overall width of the sidebar menu */
         .menu {
             width: 250px; 
         }
-        /* 2. Adjust all menu items for new width and spacing */
         .menu-btn {
-            /* Position icon closer to the left edge */
             background-position: 52px center !important;
-            /* Compress vertical padding and adjust left padding for icon */
             padding: 9px 15px 9px 4px !important;
         }
-        /* 3. Force menu text to a single line */
         .menu-text {
             font-size: 14px;
-            white-space: nowrap; /* Prevents text from wrapping */
-            overflow: hidden; /* Hides any part of the text that still overflows */
-            text-overflow: ellipsis; /* Adds "..." if text is too long for the container */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        /* 4. Compact the Profile Container */
         .profile-container td {
-            padding: 0 5px; /* Reduce padding on cells */
+            padding: 0 5px;
         }
         .profile-container .profile-info-cell {
             padding-left: 10px !important;
@@ -454,8 +494,6 @@
 
                     }
 
-
-
                 ?>
                   
                 <tr>
@@ -465,25 +503,12 @@
                         <table width="93%" class="sub-table scrolldown" border="0">
                         <thead>
                         <tr>
-                                <th class="table-headin">
-                                    
-                                
-                                Lawyer Name
-                                
-                                </th>
-                                <th class="table-headin">
-                                    Email
-                                </th>
-                                <th class="table-headin">
-                                    
-                                    Specialties
-                                    
-                                </th>
-                                <th class="table-headin">
-                                    
-                                    Action
-                                    
-                                </tr>
+                                <th class="table-headin">Lawyer Name</th>
+                                <th class="table-headin">Email</th>
+                                <th class="table-headin">Specialties</th>
+                                <th class="table-headin">Status</th>
+                                <th class="table-headin">Action</th>
+                        </tr>
                         </thead>
                         <tbody>
                         
@@ -494,7 +519,7 @@
 
                                 if($result->num_rows==0){
                                     echo '<tr>
-                                    <td colspan="4">
+                                    <td colspan="5">
                                     <br><br><br><br>
                                     <center>
                                     <img src="../img/notfound.svg" width="25%">
@@ -516,6 +541,28 @@
                                     $name = $row["lawyername"];
                                     $email = $row["lawyeremail"];
                                     $spe = $row["specialties"];
+
+                                    $status = "Unknown";
+                                    $status_class = "status-unknown";
+                                
+                                    $stmt_status = $database->prepare("SELECT usertype FROM webuser WHERE email = ?");
+                                    if ($stmt_status) {
+                                        $stmt_status->bind_param("s", $email);
+                                        $stmt_status->execute();
+                                        $status_result = $stmt_status->get_result();
+                                        if ($status_data = $status_result->fetch_assoc()) {
+                                            $usertype = $status_data['usertype'];
+                                            if ($usertype == 'l' || $usertype == 'a') {
+                                                $status = "Verified";
+                                                $status_class = "status-verified";
+                                            } elseif ($usertype == 'u') {
+                                                $status = "Unverified";
+                                                $status_class = "status-unverified";
+                                            }
+                                        }
+                                        $stmt_status->close();
+                                    }
+
                                     $spcil_res = $database->query("select sname from specialties where id='$spe'");
                                     $spcil_array = $spcil_res ? $spcil_res->fetch_assoc() : null;
                                     $spcil_name = ($spcil_array && isset($spcil_array["sname"])) ? $spcil_array["sname"] : "N/A";
@@ -529,7 +576,7 @@
                                         <td>
                                             ' . substr($spcil_name, 0, 20) . '
                                         </td>
-
+                                        <td><span class="status-badge ' . $status_class . '">' . $status . '</span></td>
                                         <td>
                                         <div style="display:flex;justify-content: center;">
                                         <a href="?action=edit&id=' . $lawyerid . '&error=0" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-edit"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Edit</font></button></a>
@@ -542,7 +589,7 @@
                                             <font class="tn-in-text">Unverify</font>
                                         </button>
                                        &nbsp;&nbsp;&nbsp;
-                                       <a href="?action=drop&id=' . $lawyerid . '&name=' . $name . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
+                                       <a href="?action=drop&id=' . $lawyerid . '&name=' . urlencode($name) . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
                                         </div>
                                         </td>
                                     </tr>';
@@ -567,14 +614,21 @@
     </div>
     <div id="unverifyConfirmModal" class="overlay">
         <div class="modal-content" style="max-width: 500px;">
-            <h2 class="modal-header">Confirm Unverification</h2>
+            <h2 class="modal-header" style="color:#5A2675;">Confirm Unverification</h2>
             <div class="modal-divider"></div>
             <div class="modal-body">
                 <p>Are you sure you want to unverify this lawyer?</p>
+                <p>This will revoke their verified status.</p>
+                 <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">The lawyer must submit an application<br>again once unverified.</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn modal-btn-primary" id="confirmUnverifyBtn">Yes, Unverify</button>
                 <button type="button" class="modal-btn modal-btn-secondary" onclick="hideUnverifyConfirmModal()">Cancel</button>
+                <form id="unverifyForm" method="POST" action="lawyers.php" style="margin:0;">
+                     <input type="hidden" name="action" value="unverify_lawyer">
+                     <input type="hidden" name="lawyer_id" id="unverifyLawyerId">
+                     <input type="hidden" name="lawyer_email" id="unverifyLawyerEmail">
+                     <button type="submit" class="modal-btn modal-btn-danger">Yes, Unverify</button>
+                </form>
             </div>
         </div>
     </div>
@@ -584,14 +638,14 @@
         $id=$_GET["id"];
         $action=$_GET["action"];
         if($action=='drop'){
-            $nameget=$_GET["name"];
+            $nameget=urldecode($_GET["name"]);
             echo '
             <div id="popup1" class="overlay" style="display:flex;">
                 <div class="modal-content" style="max-width: 500px;">
-                    <h2 class="modal-header" style="color:#dc3545;">Are you sure?</h2>
+                    <h2 class="modal-header" style="color:#5A2675;">Are you sure?</h2>
                     <div class="modal-divider"></div>
                     <div class="modal-body">
-                        <p>You want to delete this record<br>('.substr($nameget,0,40).').</p>
+                        <p>You are about to permanently delete the record for<br><strong>'.htmlspecialchars($nameget).'</strong>.</p>
                         <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">This action cannot be undone.</p>
                     </div>
                     <div class="modal-footer">
@@ -608,42 +662,46 @@
             $name=$row["lawyername"];
             $email=$row["lawyeremail"];
             $spe=$row["specialties"];
+            $lawyerrollid =$row['lawyerrollid'];
             
             $spcil_res= $database->query("select sname from specialties where id='$spe'");
             $spcil_array= $spcil_res->fetch_assoc();
-            $spcil_name=$spcil_array["sname"];
+            $spcil_name= $spcil_array ? $spcil_array["sname"] : "N/A";
             $tele=$row['lawyertel'];
             echo '
-<div id="viewDetailsModal" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-    <div style="background-color:#fff; padding:30px; border-radius:8px; width:90%; max-width:700px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative;">
-        <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">View Details</h3>
-        <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
-
-        <div style="margin-bottom:25px;">
-            <div style="margin-bottom:10px;"><strong>Name:</strong> <span>' . htmlspecialchars($name) . '</span></div>
-            <div style="margin-bottom:10px;"><strong>Email:</strong> <span>' . htmlspecialchars($email) . '</span></div>
-            <div style="margin-bottom:10px;"><strong>Valid ID:</strong> <span></span></div>
-            <div style="margin-bottom:10px;"><strong>Telephone:</strong> <span>' . htmlspecialchars($tele) . '</span></div>
-            <div style="margin-bottom:10px;"><strong>Specialties:</strong> <span>' . htmlspecialchars($spcil_name) . '</span></div>
-        </div>
-
-        <div style="display:flex; justify-content:center; margin-top:30px;">
-            <a href="lawyers.php" style="text-decoration:none;">
-                <button style="
-                    border: none;
-                    border-radius: 7px;
-                    padding: 12px 28px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    background: #f0e9f7;
-                    color: #5A2675;
-                    transition: background 0.2s, box-shadow 0.2s;
-                ">Close</button>
-            </a>
-        </div>
-    </div>
-</div>';
+            <div id="viewDetailsModal" class="overlay" style="display:flex;">
+                <div class="modal-content" style="max-width: 700px;">
+                    <h2 class="modal-header">View Lawyer Details</h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body modal-body-left">
+                        <div class="detail-item" style="display:flex; margin-bottom: 15px; font-size: 16px;">
+                            <strong style="width: 150px; color: #555;">Name:</strong>
+                            <span>' . htmlspecialchars($name) . '</span>
+                        </div>
+                        <div class="detail-item" style="display:flex; margin-bottom: 15px; font-size: 16px;">
+                            <strong style="width: 150px; color: #555;">Email:</strong>
+                            <span>' . htmlspecialchars($email) . '</span>
+                        </div>
+                        <div class="detail-item" style="display:flex; margin-bottom: 15px; font-size: 16px;">
+                            <strong style="width: 150px; color: #555;">Valid ID:</strong>
+                            <span>' . htmlspecialchars($lawyerrollid) . '</span>
+                        </div>
+                        <div class="detail-item" style="display:flex; margin-bottom: 15px; font-size: 16px;">
+                            <strong style="width: 150px; color: #555;">Telephone:</strong>
+                            <span>' . htmlspecialchars($tele) . '</span>
+                        </div>
+                        <div class="detail-item" style="display:flex; margin-bottom: 15px; font-size: 16px;">
+                            <strong style="width: 150px; color: #555;">Specialties:</strong>
+                            <span>' . htmlspecialchars($spcil_name) . '</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="lawyers.php" class="non-style-link">
+                            <button type="button" class="modal-btn modal-btn-soft">Close</button>
+                        </a>
+                    </div>
+                </div>
+            </div>';
         }elseif($action=='add'){
                 $error_1=$_GET["error"];
                 $errorlist= array(
@@ -656,93 +714,75 @@
                 );
                 if($error_1!='4'){
                 echo '
-<div id="popup1" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-    <div style="background-color:#fff; padding:30px 35px; border-radius:10px; width:90%; max-width:720px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative; font-family:Arial, sans-serif;">
-        <a href="lawyers.php" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; text-decoration:none; color:#391053;">&times;</a>
-
-        <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin-bottom:10px;">Add New Lawyer</h3>
-        <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 30px 0;"></div>
-
-        <div style="color:#D8000C; font-weight:500; text-align:center; margin-bottom:20px;">'.
-            $errorlist[$error_1]
-        .'</div>
-
-        <form action="add-new.php" method="POST" style="display:flex; flex-direction:column; gap:18px;">
-            <div>
-                <label style="font-weight:600; color:#391053;">Name:</label><br>
-                <input type="text" name="name" placeholder="Lawyer Name" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Email:</label><br>
-                <input type="email" name="email" placeholder="Email Address" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Valid ID:</label><br>
-                <input type="text" name="lawyerrollid" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Telephone:</label><br>
-                <input type="tel" name="Tele" placeholder="Telephone Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Choose Specialties:</label><br>
-                <select name="spec" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">';
-
-                    $list11 = $database->query("SELECT * FROM specialties ORDER BY sname ASC;");
-                    while ($row00 = $list11->fetch_assoc()) {
-                        $sn = $row00["sname"];
-                        $id00 = $row00["id"];
-                        echo "<option value=\"$id00\">$sn</option>";
-                    }
-
-echo '          </select>
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Password:</label><br>
-                <input type="password" name="password" placeholder="Define a Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Confirm Password:</label><br>
-                <input type="password" name="cpassword" placeholder="Confirm Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-                <input type="reset" value="Reset" style="border:none; padding:10px 25px; background:#f0e9f7; color:#5A2675; border-radius:7px; font-weight:600; cursor:pointer;">
-                <input type="submit" value="Add" style="border:none; padding:10px 25px; background:#5A2675; color:#fff; border-radius:7px; font-weight:600; cursor:pointer;">
-            </div>
-        </form>
-    </div>
-</div>';
-
-
+                <div id="popup1" class="overlay" style="display:flex;">
+                    <div class="modal-content" style="max-width: 720px;">
+                        <a href="lawyers.php" class="close" style="position:absolute; top:10px; right:15px; font-size:2rem; text-decoration:none; color:#888;">&times;</a>
+                        <h2 class="modal-header">Add New Lawyer</h2>
+                        <div class="modal-divider"></div>
+                        <div class="modal-body modal-body-left">
+                            <form action="add-new.php" method="POST" style="display:flex; flex-direction:column; gap:18px;">
+                                <div style="text-align:center; margin-bottom: 10px;">'.$errorlist[$error_1].'</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                    <div>
+                                        <label class="form-label">Full Name:</label>
+                                        <input type="text" name="name" class="form-input" placeholder="Lawyer Name" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Email:</label>
+                                        <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Valid ID:</label>
+                                        <input type="text" name="lawyerrollid" class="form-input" placeholder="Valid ID Number" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Telephone:</label>
+                                        <input type="tel" name="Tele" class="form-input" placeholder="Telephone Number" required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="form-label">Choose Specialties:</label>
+                                    <select name="spec" required class="form-input">';
+                                        $list11 = $database->query("SELECT * FROM specialties ORDER BY sname ASC;");
+                                        while ($row00 = $list11->fetch_assoc()) {
+                                            $sn = $row00["sname"];
+                                            $id00 = $row00["id"];
+                                            echo "<option value=\"".htmlspecialchars($id00)."\">".htmlspecialchars($sn)."</option>";
+                                        }
+                echo '              </select>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                    <div>
+                                        <label class="form-label">Password:</label>
+                                        <input type="password" name="password" class="form-input" placeholder="Define a Password" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Confirm Password:</label>
+                                        <input type="password" name="cpassword" class="form-input" placeholder="Confirm Password" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="reset" value="Reset" class="modal-btn modal-btn-secondary">
+                                    <input type="submit" value="Add" class="modal-btn modal-btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>';
             }else{
                 echo '
-                    <div id="popup1" class="overlay">
-                            <div class="popup">
-                            <center>
-                            <br><br><br><br>
-                                <h2>New Record Added Successfully!</h2>
-                                <a class="close" href="lawyers.php">&times;</a>
-                                <div class="content">
-                                    
-                                    
-                                </div>
-                                <div style="display: flex;justify-content: center;">
-
-                                <a href="lawyers.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-
-                                </div>
-                                <br><br>
-                            </center>
-                    </div>
-                    </div>
-        ';
+                    <div id="popup1" class="overlay" style="display:flex;">
+                        <div class="modal-content" style="max-width: 450px;">
+                            <h2 class="modal-header" style="color: #28a745;">Success!</h2>
+                            <div class="modal-divider"></div>
+                            <div class="modal-body">
+                                <p>New Lawyer Added Successfully!</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="lawyers.php" class="modal-btn modal-btn-primary">OK</a>
+                            </div>
+                        </div>
+                    </div>';
             }
         }elseif($action=='edit'){
             $sqlmain= "select * from lawyer where lawyerid='$id'";
@@ -770,97 +810,78 @@ echo '          </select>
 
             if($error_1!='4'){
                    echo '
-<div id="popup1" style="display:flex; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-    <div style="background-color:#fff; padding:30px 35px; border-radius:10px; width:90%; max-width:720px; box-shadow:0 4px 12px rgba(0,0,0,0.3); position:relative; font-family:Arial, sans-serif;">
-        <a href="lawyers.php" style="position:absolute; top:15px; right:20px; font-size:28px; font-weight:bold; text-decoration:none; color:#391053;">&times;</a>
-
-        <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin-bottom:10px;">Edit Lawyer Details</h3>
-        <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 30px 0;"></div>
-
-        <div style="color:#D8000C; font-weight:500; text-align:center; margin-bottom:20px;">' . $errorlist[$error_1] . '</div>
-
-        <form action="edit-lawyer.php" method="POST" style="display:flex; flex-direction:column; gap:18px;">
-            <input type="hidden" name="id00" value="'.$id.'">
-            <input type="hidden" name="oldemail" value="'.$email.'">
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Email:</label><br>
-                <input type="email" name="email" value="'.$email.'" placeholder="Email Address" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Name:</label><br>
-                <input type="text" name="name" value="'.$name.'" placeholder="Lawyer Name" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Valid ID:</label><br>
-                <input type="text" name="lawyerrollid" value="'.$lawyerrollid.'" placeholder="Valid ID Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Telephone:</label><br>
-                <input type="tel" name="Tele" value="'.$tele.'" placeholder="Telephone Number" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Choose Specialties: (Current: '.$spcil_name.')</label><br>
-                <select name="spec" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">';
-
-$list11 = $database->query("SELECT * FROM specialties ORDER BY sname ASC;");
-while ($row00 = $list11->fetch_assoc()) {
-    $sn = $row00["sname"];
-    $id00 = $row00["id"];
-    echo "<option value=\"$id00\">$sn</option>";
-}
-
-echo '
-                </select>
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Password:</label><br>
-                <input type="password" name="password" placeholder="Define a Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div>
-                <label style="font-weight:600; color:#391053;">Confirm Password:</label><br>
-                <input type="password" name="cpassword" placeholder="Confirm Password" required style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-            </div>
-
-            <div style="display:flex; justify-content:center; gap:20px; margin-top:10px;">
-                <input type="reset" value="Reset" style="border:none; padding:10px 25px; background:#f0e9f7; color:#5A2675; border-radius:7px; font-weight:600; cursor:pointer;">
-                <input type="submit" value="Save" style="border:none; padding:10px 25px; background:#5A2675; color:#fff; border-radius:7px; font-weight:600; cursor:pointer;">
-            </div>
-        </form>
-    </div>
-</div>';
-
+                   <div id="popup1" class="overlay" style="display:flex;">
+                       <div class="modal-content" style="max-width: 720px;">
+                           <a href="lawyers.php" class="close" style="position:absolute; top:10px; right:15px; font-size:2rem; text-decoration:none; color:#888;">&times;</a>
+                           <h2 class="modal-header">Edit Lawyer Details</h2>
+                           <div class="modal-divider"></div>
+                           <div class="modal-body modal-body-left">
+                               <form action="edit-lawyer.php" method="POST" style="display:flex; flex-direction:column; gap:18px;">
+                                   <input type="hidden" name="id00" value="'.htmlspecialchars($id).'">
+                                   <div style="text-align:center; margin-bottom: 10px;">' . $errorlist[$error_1] . '</div>
+                                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                       <div>
+                                           <label class="form-label">Full Name:</label>
+                                           <input type="text" name="name" class="form-input" value="'.htmlspecialchars($name).'" required>
+                                       </div>
+                                       <div>
+                                           <label class="form-label">Email:</label>
+                                           <input type="email" name="email" class="form-input" value="'.htmlspecialchars($email).'" required>
+                                           <input type="hidden" name="oldemail" value="'.htmlspecialchars($email).'">
+                                       </div>
+                                       <div>
+                                           <label class="form-label">Valid ID:</label>
+                                           <input type="text" name="lawyerrollid" class="form-input" value="'.htmlspecialchars($lawyerrollid).'" required>
+                                       </div>
+                                       <div>
+                                           <label class="form-label">Telephone:</label>
+                                           <input type="tel" name="Tele" class="form-input" value="'.htmlspecialchars($tele).'" required>
+                                       </div>
+                                   </div>
+                                   <div>
+                                       <label class="form-label">Choose Specialties: (Current: '.htmlspecialchars($spcil_name).')</label>
+                                       <select name="spec" required class="form-input">';
+                                           $list11 = $database->query("SELECT * FROM specialties ORDER BY sname ASC;");
+                                           while ($row00 = $list11->fetch_assoc()) {
+                                               $sn = $row00["sname"];
+                                               $id00 = $row00["id"];
+                                               $selected = ($id00 == $spe) ? "selected" : "";
+                                               echo "<option value=\"".htmlspecialchars($id00)."\" ".$selected.">".htmlspecialchars($sn)."</option>";
+                                           }
+                   echo '              </select>
+                                   </div>
+                                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                       <div>
+                                           <label class="form-label">New Password:</label>
+                                           <input type="password" name="password" class="form-input" placeholder="Leave blank to keep current password">
+                                       </div>
+                                       <div>
+                                           <label class="form-label">Confirm New Password:</label>
+                                           <input type="password" name="cpassword" class="form-input" placeholder="Confirm new password">
+                                       </div>
+                                   </div>
+                                   <div class="modal-footer">
+                                       <input type="reset" value="Reset" class="modal-btn modal-btn-secondary">
+                                       <input type="submit" value="Save Changes" class="modal-btn modal-btn-primary">
+                                   </div>
+                               </form>
+                           </div>
+                       </div>
+                   </div>';
         }else{
             echo '
-                <div id="popup1" class="overlay">
-                        <div class="popup">
-                        <center>
-                        <br><br><br><br>
-                            <h2>Edit Successfully!</h2>
-                            <a class="close" href="lawyers.php">&times;</a>
-                            <div class="content">
-                                
-                                
-                            </div>
-                            <div style="display: flex;justify-content: center;">
-
-                            <a href="lawyers.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;OK&nbsp;&nbsp;</font></button></a>
-
-                            </div>
-                            <br><br>
-                        </center>
+            <div id="popup1" class="overlay" style="display:flex;">
+                <div class="modal-content" style="max-width: 450px;">
+                    <h2 class="modal-header" style="color: #28a745;">Success!</h2>
+                    <div class="modal-divider"></div>
+                    <div class="modal-body">
+                        <p>Lawyer Details Edited Successfully!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="lawyers.php" class="modal-btn modal-btn-primary">OK</a>
+                    </div>
                 </div>
-                </div>
-    ';
-
-
-
+            </div>';
         }; };
     };
 
@@ -871,45 +892,26 @@ echo '
     let currentLawyerEmail = null;
 
     function showUnverifyConfirmModal(lawyerId, lawyerEmail) {
-        currentLawyerId = lawyerId;
-        currentLawyerEmail = lawyerEmail;
+        // Set the values for the form
+        document.getElementById('unverifyLawyerId').value = lawyerId;
+        document.getElementById('unverifyLawyerEmail').value = lawyerEmail;
+        
+        // Show the modal
         document.getElementById('unverifyConfirmModal').style.display = 'flex';
     }
 
     function hideUnverifyConfirmModal() {
         document.getElementById('unverifyConfirmModal').style.display = 'none';
-        currentLawyerId = null;
-        currentLawyerEmail = null;
     }
-    document.getElementById('confirmUnverifyBtn').addEventListener('click', function() {
-        if (currentLawyerId && currentLawyerEmail) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'lawyers.php';
 
-            const actionInput = document.createElement('input');
-            actionInput.type = 'hidden';
-            actionInput.name = 'action';
-            actionInput.value = 'unverify_lawyer';
-            form.appendChild(actionInput);
-
-            const idInput = document.createElement('input');
-            idInput.type = 'hidden';
-            idInput.name = 'lawyer_id';
-            idInput.value = currentLawyerId;
-            form.appendChild(idInput);
-
-            const emailInput = document.createElement('input');
-            emailInput.type = 'hidden';
-            emailInput.name = 'lawyer_email';
-            emailInput.value = currentLawyerEmail;
-            form.appendChild(emailInput);
-
-            document.body.appendChild(form);
-            form.submit();
+    // Attach the event listener to the form itself, to be triggered on submission.
+    // This simplifies the logic and removes the need for the JS form creation part.
+    document.getElementById('unverifyConfirmModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            hideUnverifyConfirmModal();
         }
-        hideUnverifyConfirmModal();
     });
+
 </script>
 
 </body>
