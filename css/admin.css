@@ -72,17 +72,24 @@
 .header-search {
     display: flex;
     justify-content: center;
-
-
 }
 
 .header-searchbar {
     width: 75%;
     background-color: rgba(255, 255, 255, 0.705);
-    border: 0.5px solid rgba(190, 190, 190, 0.884);
-
-
+    border: 1px solid rgba(190, 190, 190, 0.884);
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.header-searchbar:focus {
+    border-color: #5A2675 !important;
+    box-shadow: 0 0 5px rgba(90, 38, 117, 0.4);
+    outline: none;
+}
+
 
 .add-lawyer-form-container {
     padding: 25px;

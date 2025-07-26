@@ -74,6 +74,10 @@
             font-size: 13px;
         }
         /* --- End of Custom Styles --- */
+
+        .header-searchbar {
+            border-color: #5A2675;
+        }
     </style>
 </head>
 

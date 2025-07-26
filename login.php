@@ -10,6 +10,26 @@
     <link rel="icon" type="image/png" href="img/logo.png">
         
     <title>Login | SafeSpace PH</title>
+
+    <style>
+        /* --- LAYOUT REFINEMENTS --- */
+
+        /* Ensure the body takes up the full viewport height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrolling on the main page */
+        }
+
+        /* Center the login form vertically and horizontally */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #F6F7FA; /* Match background from login.css */
+        }
+    </style>
 </head>
 <body>
     <?php
@@ -119,84 +139,128 @@
     }
     ?>
 
-    <center>
-        <div class="container">
-            <table border="0" style="margin: 0;padding: 0;width: 60%;">
-                <tr>
-                    <td>
-                        <p class="header-text">Login</p>
-                    </td>
-                </tr>
-                <div class="form-body">
-                    <tr>
-                        <td>
-                            <p class="sub-text">Login with your details to continue</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <form action="" method="POST">
-                        <td class="label-td">
-                            <label for="useremail" class="form-label">Email: </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label-td">
-                            <input type="email" name="useremail" class="input-text" placeholder="Email Address" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label-td">
-                            <label for="userpassword" class="form-label">Password: </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label-td">
-                            <input type="Password" name="userpassword" class="input-text" placeholder="Password" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><br/>
-                        <?php 
-                                if(isset($_GET["error"])){
-                                     echo '<div class="error-message"><label>' . htmlspecialchars(urldecode($_GET["error"])) . '</label></div>';
-                                }
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="submit" value="Login" class="login-btn btn-primary btn">
-                        </td>
-                    </tr>
-                    <tr>
+    <div class="container">
+        <table border="0" style="margin: 0;padding: 0;width: 60%; margin: auto;">
+            <tr>
+                <!-- Logo and Login text are now in the same cell, aligned with flexbox -->
+                <td style="display: flex; justify-content: center; align-items: center; padding-bottom: 0px; padding-top: 20px;">
+                    <img src="img/logo.png" alt="SafeSpace PH Logo" style="width: 90px; height: auto; margin-right: 15px;">
+                    <p class="header-text" style="margin: 0;">Login</p>
+                </td>
+            </tr>
+            <tr>
                 <td>
-                    <button type="button" onclick="window.location.href='index.html';" class="back-btn btn btn-primary-soft">
+                    <p class="sub-text">Login with your details to continue</p>
+                </td>
+            </tr>
+            <tr>
+                <form action="" method="POST">
+                <td class="label-td">
+                    <label for="useremail" class="form-label">Email: </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="label-td">
+                    <input type="email" name="useremail" class="input-text" placeholder="Email Address" required>
+                </td>
+            </tr>
+            <tr>
+                <td class="label-td">
+                    <label for="userpassword" class="form-label">Password: </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="label-td">
+                    <input type="Password" name="userpassword" class="input-text" placeholder="Password" required>
+                </td>
+            </tr>
+            <tr>
+                <td><br/>
+                <?php 
+                        if(isset($_GET["error"])){
+                             echo '<div class="error-message"><label>' . htmlspecialchars(urldecode($_GET["error"])) . '</label></div>';
+                        }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Login" class="login-btn btn-primary btn">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" onclick="window.location.href='index.html';" class="back-btn btn-primary-soft btn">
                         Return Home
                     </button>
                 </td>
             </tr>
-                    </form>
-                    <tr>
-                        <td>
-                            <br>
-                            <label for="" class="sub-text">Don't have an account? </label>
-                            <a href="signup.php" class="hover-link1 non-style-link">Sign Up</a>
-                            <br><br><br>
-                        </td>
-                    </tr>
-                </div>
-            </table>
-        </div>
-    </center>
-    <style>
-.login-btn {
-  width: 100%;
+            </form>
+            <tr>
+                <td>
+                    <br>
+                    <label for="" class="sub-text">Don't have an account? </label>
+                    <a href="signup.php" class="hover-link1 non-style-link">Sign Up</a>
+                    <br><br><br>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+<style>
+/* --- VISUAL IMPROVEMENTS & STYLE SYNC --- */
+
+/* Match container style with admin modals */
+.container {
+    border-radius: 16px !important;
+    border: 1px solid #e0e0e0 !important;
 }
 
-.back-btn {
-  width: 100%;
+/* More welcoming sub-text */
+.sub-text {
+  font-size: 16px !important;
+  color: rgb(108, 117, 125) !important;
+  margin-bottom: 25px;
 }
 
+/* Input field style to match theme */
+.input-text:focus {
+    border-color: #5A2675 !important;
+    box-shadow: 0 0 0 2px #e2d8fa !important; /* Soft purple glow */
+}
+
+/* Base button style to match admin modal buttons */
+.btn {
+    border: none;
+    border-radius: 7px;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+/* Primary "Login" button style */
+.btn-primary {
+    background-color: #5A2675;
+    color: white;
+    margin-bottom: 10px; /* Spacing between buttons */
+}
+.btn-primary:hover {
+    background-color: #4a2061; /* Darker purple on hover */
+}
+
+/* Soft "Return Home" button style */
+.btn-primary-soft {
+    background: #f0e9f7;
+    color: #5A2675;
+}
+.btn-primary-soft:hover {
+    background-color: #9D72B3; /* More visible lavender on hover */
+}
+
+/* Error message styling */
 .error-message label {
   display: block;
   background: #ffeaea;

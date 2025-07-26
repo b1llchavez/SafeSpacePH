@@ -201,20 +201,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        .status-btn {
-            padding: 8px 15px;
-            border-radius: 20px;
-            color: #fff !important;
-            font-weight: bold;
-            display: inline-block;
-            text-align: center;
-        }
-        .status-verified {
-            background-color: #4CAF50;
-        }
-        .status-unverified {
-            background-color: #f44336;
-        }
+ .status-btn {
+    display: block; /* or inline-block if inside <td> */
+    margin: 0 auto;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff !important;
+    font-size: 14px;
+    text-align: center;
+}
+              .status-verified { background-color: #28a745; }
+
+             .status-unverified { background-color: #ffc107; }
+
         .file-link {
             display: inline-block;
             padding: 8px 15px;
@@ -476,7 +476,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                             <div class="detail-item"><strong>Civil Status:</strong> <span>' . htmlspecialchars($client_details['civil_status'] ?? 'N/A') . '</span></div>
                             <div class="detail-item"><strong>Citizenship:</strong> <span>' . htmlspecialchars($client_details['citizenship'] ?? 'N/A') . '</span></div>
                             <div class="detail-item"><strong>Birth Place:</strong> <span>' . htmlspecialchars($client_details['birth_place'] ?? 'N/A') . '</span></div>
-                            <div class="detail-item"><strong>Verified:</strong> <span><span class="status-btn ' . (($client_details['usertype'] == 'c') ? 'status-verified' : 'status-unverified') . '">' . (($client_details['usertype'] == 'c') ? 'Yes' : 'No') . '</span></span></div>
                         </div>
 
                         <div class="detail-section">
@@ -755,7 +754,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                 <th class="table-headin">Phone Number</th>
                                 <th class="table-headin">Email</th>
                                 <th class="table-headin">Date of Birth</th>
-                                <th class="table-headin">Verified</th>
+                                <th class="table-headin">Status</th>
                                 <th class="table-headin">Actions</th>
                             </tr>
                         </thead>
@@ -787,7 +786,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                     $tel=$row["ctel"];
                                     $usertype=$row["usertype"];
 
-                                    $verified_text = ($usertype == 'c') ? 'Yes' : 'No';
+                                    $verified_text = ($usertype == 'c') ? 'Verified' : 'Unverified';
                                     $verified_class = ($usertype == 'c') ? 'status-verified' : 'status-unverified';
 
                                     echo '<tr>
