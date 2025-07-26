@@ -169,12 +169,12 @@
                     <table class="filter-container lawyer-header client-header" style="border: none;width:95%" border="0" >
                     <tr>
                         <td >
-                            <h3>Welcome!</h3>
+                            <h3>Welcome to SafeSpace PH!</h3>
                             <h1><?php echo $username  ?>.</h1>
-                            <p>Haven't any idea about lawyers? no problem let's jumping to 
-                                <a href="lawyers.php" class="non-style-link"><b>"All Lawyers"</b></a> section or 
-                                <a href="schedule.php" class="non-style-link"><b>"Sessions"</b> </a><br>
-                                Track your past and future appointments history.<br>Also find out the expected arrival time of your lawyer or medical consultant.<br><br>
+                            <p>
+                                From here, you can easily book consultations, report violations, and connect with trusted<br>legal professionals who are ready to help.
+                                Use the search bar to find the right lawyer for your<br>needs,review your appointment history, or explore available sessions.<br>
+                                You're not alone—SafeSpace PH is here to support you every step of the way.
                             </p>
                             
                             <h3>Channel a Lawyer Here</h3>
