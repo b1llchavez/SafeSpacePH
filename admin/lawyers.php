@@ -619,7 +619,7 @@
             <div class="modal-body">
                 <p>Are you sure you want to unverify this lawyer?</p>
                 <p>This will revoke their verified status.</p>
-                 <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">The lawyer must submit an application again once unverified.</p>
+                 <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">The lawyer must submit an application<br>again once unverified.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="modal-btn modal-btn-secondary" onclick="hideUnverifyConfirmModal()">Cancel</button>

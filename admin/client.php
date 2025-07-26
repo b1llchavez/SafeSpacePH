@@ -831,7 +831,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
     <div id="deleteConfirmModal" class="overlay">
         <div class="modal-content" style="max-width: 500px;">
-            <h2 class="modal-header">Confirm Deletion</h2>
+            <h2 class="modal-header">Are You Sure?</h2>
             <div class="modal-divider"></div>
             <div class="modal-body">
                 <p>Are you sure you want to delete this client?</p>
@@ -850,9 +850,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             <div class="modal-divider"></div>
             <div class="modal-body">
                 <p>Are you sure you want to unverify this client?</p>
+                                        <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">You can verify this client again in the<br>Client Verification menu.</p>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn modal-btn-primary" id="confirmUnverifyBtn">Yes, Unverify</button>
+                <button class="modal-btn modal-btn-danger" id="confirmUnverifyBtn">Yes, Unverify</button>
                 <button type="button" class="modal-btn modal-btn-secondary" onclick="hideUnverifyConfirmModal()">Cancel</button>
             </div>
         </div>

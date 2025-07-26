@@ -283,11 +283,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             background-color: #5A2675;
         }
         .modal-btn-danger {
-            background-color: #f44336; /* Keep red for reject */
+            background-color: #dc3545; /* Keep red for reject */
             color: white;
         }
         .modal-btn-danger:hover {
-            background-color: #da190b;
+            background-color: #c82333;
         }
 
         @keyframes fadeIn {
@@ -332,17 +332,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         }
          
         .file-link {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #5A2675;  
-            color: white;
-            border-radius: 20px;  
             text-decoration: none;
-            margin: 5px;
-            font-weight: bold;
         }
-        .file-link:hover {
-            background-color: #C9A8F1;  
+        .file-link button {
+            font-size: 14px;
+            padding: 8px 12px;
+            margin-top: 5px;
+            width: auto;
         }
 
         /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
@@ -446,9 +442,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                             <hr>
                             <div class="detail-item"><strong>ID Type:</strong> <span>' . htmlspecialchars($verification_details['id_type']) . '</span></div>
                             <div class="detail-item"><strong>ID Number:</strong> <span>' . htmlspecialchars($verification_details['id_number']) . '</span></div>
-                            <div class="detail-item"><strong>ID Photo Front:</strong> <span><a href="../' . htmlspecialchars($verification_details['id_photo_front_path']) . '" target="_blank" class="file-link">View File</a></span></div>
-                            <div class="detail-item"><strong>ID Photo Back:</strong> <span><a href="../' . htmlspecialchars($verification_details['id_photo_back_path']) . '" target="_blank" class="file-link">View File</a></span></div>
-                            <div class="detail-item"><strong>Profile Photo:</strong> <span><a href="../' . htmlspecialchars($verification_details['profile_photo_path']) . '" target="_blank" class="file-link">View File</a></span></div>
+                            <div class="detail-item"><strong>ID Photo Front:</strong> <span><a href="../' . htmlspecialchars($verification_details['id_photo_front_path']) . '" target="_blank" class="file-link"><button class="btn-primary-soft btn">View File</button></a></span></div>
+                            <div class="detail-item"><strong>ID Photo Back:</strong> <span><a href="../' . htmlspecialchars($verification_details['id_photo_back_path']) . '" target="_blank" class="file-link"><button class="btn-primary-soft btn">View File</button></a></span></div>
+                            <div class="detail-item"><strong>Profile Photo:</strong> <span><a href="../' . htmlspecialchars($verification_details['profile_photo_path']) . '" target="_blank" class="file-link"><button class="btn-primary-soft btn">View File</button></a></span></div>
                         </div>
 
                         <div class="detail-section" style="border-bottom: none; margin-bottom: 0;">
@@ -756,10 +752,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
     <div id="rejectConfirmModal" class="overlay" style="display: none;">
         <div class="modal-content" style="max-width: 500px;">
-            <h2 class="modal-header">Confirm Rejection</h2>
+            <h2 class="modal-header">Are You Sure?</h2>
             <div class="modal-divider"></div>
             <div class="modal-body">
-                <p>Are you sure you want to reject this client's verification request? This action cannot be undone.</p>
+                <p>Are you sure you want to reject this client's verification request?</p>
+                                        <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">This action cannot be undone.</p>
             </div>
             <div class="modal-footer">
                 <button class="modal-btn modal-btn-danger" id="confirmRejectBtn">Reject</button>
