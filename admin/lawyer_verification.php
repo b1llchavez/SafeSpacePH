@@ -350,41 +350,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             width: auto;
         }
         
-        /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
-        .menu {
-            width: 250px; 
-        }
         .menu-btn {
-            background-position: 52px center !important;
-            padding: 9px 15px 9px 4px !important;
+            padding: 2px;
+            background-position: 30% 50%;
+            background-repeat: no-repeat;
+            transition: 0.5s;
         }
-        .menu-text {
-            font-size: 14px;
-            white-space: nowrap; 
-            overflow: hidden;
-            text-overflow: ellipsis; 
-        }
-        .profile-container td {
-            padding: 0 5px;
-        }
-        .profile-container .profile-info-cell {
-            padding-left: 10px !important;
-        }
-        .profile-title {
-            font-size: 15px;
-            margin-bottom: 2px;
-        }
-        .profile-subtitle {
-            font-size: 12px;
-            word-break: break-all;
-        }
-        .logout-btn {
-            width: 100%;
-            padding: 8px !important;
-            margin-top: 8px !important;
-            font-size: 13px;
-        }
-        /* --- End of Custom Styles --- */
     </style>
 </head>
 <body>

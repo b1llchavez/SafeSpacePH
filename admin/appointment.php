@@ -248,55 +248,12 @@
     box-shadow: 0 3px 5px 0 rgba(57, 108, 240, 0.3);
 }
 
-        /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
-
-        /* 1. Reduce the overall width of the sidebar menu */
-        .menu {
-            width: 250px; 
-        }
-        
-        /* 2. Adjust all menu items for new width and spacing */
         .menu-btn {
-            /* Position icon closer to the left edge */
-            background-position: 52px center !important;
-            /* Compress vertical padding and adjust left padding for icon */
-            padding: 9px 15px 9px 4px !important;
+            padding: 2px;
+            background-position: 30% 50%;
+            background-repeat: no-repeat;
+            transition: 0.5s;
         }
-
-        /* 3. Force menu text to a single line */
-        .menu-text {
-            font-size: 14px;
-            white-space: nowrap; /* Prevents text from wrapping */
-            overflow: hidden; /* Hides any part of the text that still overflows */
-            text-overflow: ellipsis; /* Adds "..." if text is too long for the container */
-        }
-
-        /* 4. Compact the Profile Container */
-        .profile-container td {
-            padding: 0 5px; /* Reduce padding on cells */
-        }
-
-        .profile-container .profile-info-cell {
-            padding-left: 10px !important;
-        }
-        
-        .profile-title {
-            font-size: 15px;
-            margin-bottom: 2px;
-        }
-
-        .profile-subtitle {
-            font-size: 12px;
-            word-break: break-all;
-        }
-
-        .logout-btn {
-            width: 100%;
-            padding: 8px !important;
-            margin-top: 8px !important;
-            font-size: 13px;
-        }
-        /* --- End of Custom Styles --- */
 </style>
 </head>
 <body>

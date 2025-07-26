@@ -24,21 +24,13 @@
         .dash-body {
             overflow-y: auto;
         }
-
-        /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
-
-        /* 1. Reduce the overall width of the sidebar menu */
-        .menu {
-            width: 250px; 
-        }
-        
-        /* 2. Adjust all menu items for new width and spacing */
         .menu-btn {
-            /* Position icon closer to the left edge */
-            background-position: 52px center !important;
-            /* Compress vertical padding and adjust left padding for icon */
-            padding: 9px 15px 9px 4px !important;
+            padding: 2px;
+            background-position: 30% 50%;
+            background-repeat: no-repeat;
+            transition: 0.5s;
         }
+<<<<<<< HEAD
 
         /* 3. Force menu text to a single line */
         .menu-text {
@@ -78,6 +70,8 @@
         .header-searchbar {
             border-color: #5A2675;
         }
+=======
+>>>>>>> a395603f5d5190abb57bebe0abe414ddb676fb69
     </style>
 </head>
 
