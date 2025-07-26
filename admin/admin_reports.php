@@ -295,12 +295,11 @@
                 break;
             case 'rejected':
                 $popup_title = "Report Rejected!";
-                $popup_content = 'The report has been marked as "rejected".';
+                $popup_content = 'The report has been rejected.';
                 break;
             case 'submitted':
                 $popup_title = "Report Submitted!";
-                $popup_content = 'The report has been marked as "submitted to authorities".';
-                break;
+$popup_content = 'Your report has been forwarded to the appropriate local authorities and partner organizations.';                break;
             case 'error':
                 $is_error = true;
                 $popup_title = "Error!";
@@ -309,7 +308,7 @@
         }
 
         if (!empty($popup_title)) {
-            $header_color = $is_error ? '#dc3545' : '#28a745';
+            $header_color = $is_error ? '##5A2675' : '##5A2675';
             $button_class = $is_error ? 'modal-btn-secondary' : 'modal-btn-primary';
 
 

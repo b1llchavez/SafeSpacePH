@@ -10,6 +10,39 @@ if (isset($_SESSION["user"])) {
 }
 
 include("../connection.php");
+
+// Handler for appointment rejection
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'reject') {
+    if (isset($_POST['appoid']) && !empty($_POST['appoid']) && isset($_POST['rejection_reason'])) {
+        $appoid = $_POST['appoid'];
+        $reason = $_POST['rejection_reason'];
+        if ($reason === 'Other') {
+            if (isset($_POST['other_reason_text']) && !empty(trim($_POST['other_reason_text']))) {
+                $reason = 'Other: ' . htmlspecialchars(trim($_POST['other_reason_text']));
+            } else {
+                // Redirect with an error if 'Other' is selected but no text is provided
+                header("Location: schedule.php?action=reject_error&reason=other_empty");
+                exit();
+            }
+        }
+        $description = isset($_POST['rejection_description']) ? htmlspecialchars(trim($_POST['rejection_description'])) : '';
+
+        // Update the appointment status to 'rejected'
+        $stmt = $database->prepare("UPDATE appointment SET status = 'rejected' WHERE appoid = ?");
+        $stmt->bind_param("i", $appoid);
+        $stmt->execute();
+        $stmt->close();
+
+        // Redirect to show a success message
+        header("Location: schedule.php?action=reject_success");
+        exit();
+    } else {
+        // Redirect if essential data is missing
+        header("Location: schedule.php?action=reject_error&reason=missing_data");
+        exit();
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -235,6 +268,102 @@ include("../connection.php");
         .add-new-form .modal-btn {
             min-width: 100px;
         }
+        
+        /* STYLES FROM MANAGE-APPOINTMENTS.PHP */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content-req {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 25px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            animation: transitionIn-Y-bottom 0.5s;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+            text-decoration: none;
+            z-index: 1;
+        }
+
+        .close-btn:hover {
+            background-color: #f0e9f7;
+            color: #5A2675;
+        }
+
+        .rejection-reason {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rejection-reason input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .rejection-reason label {
+            flex-grow: 1;
+        }
+
+        .action-btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .details-label {
+            font-weight: bold;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .details-data {
+            background-color: #f1f1f1;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .button-icon img {
+            width: 15px;
+            height: auto;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
     </style>
 </head>
 
@@ -262,7 +391,6 @@ include("../connection.php");
                             </tr>
                         </table>
                     </td>
-
                 </tr>
                 <tr class="menu-row">
                     <td class="menu-btn menu-icon-dashbord">
@@ -332,205 +460,285 @@ include("../connection.php");
                         </a>
                     </td>
                 </tr>
-    </table>
-    </div>
+            </table>
+        </div>
 
-    <div class="dash-body" style="overflow-y: auto; overflow-x: hidden;">
-        <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
-            <tr>
-                <td colspan="2">
-                    <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Session Requests Manager</p>
-                </td>
-                <td style="text-align: right;">
-                    <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;">
-                        Today's Date
-                    </p>
-                    <p class="heading-sub12" style="padding: 0;margin: 0;">
-                        <?php
-                        date_default_timezone_set('Asia/Manila');
-                        $today = date('Y-m-d');
-                        echo $today;
-                        $list110 = $database->query("select  * from  schedule;");
-                        ?>
-                    </p>
-                </td>
-                <td width="10%">
-                    <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img
-                            src="../img/calendar.svg" width="100%"></button>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="50%" style="padding-top:10px;">
-                    <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All
-                        Sessions (<?php echo $list110->num_rows; ?>)</p>
-                </td>
-                <td style="padding-top:10px; text-align: right; padding-right: 45px;" colspan="3">
-                    <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
-                        <input type="date" name="sheduledate" id="date" class="input-text" 
-                            style="width: auto; padding: 8px 10px;" 
-                            value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
-                        
-                        <select name="lawyerid" class="box" style="width: 200px; height: 42px; padding: 8px 10px;">
-                            <option value="" disabled <?php if (!isset($_POST['lawyerid'])) echo 'selected'; ?> hidden>Choose Lawyer Name</option>
+        <div class="dash-body" style="overflow-y: auto; overflow-x: hidden;">
+            <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;margin-top:25px; ">
+                <tr>
+                    <td colspan="2">
+                        <p style="margin-left: 45px; font-size: 23px;font-weight: 600;">Session Requests Manager</p>
+                    </td>
+                    <td style="text-align: right;">
+                        <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;">
+                            Today's Date
+                        </p>
+                        <p class="heading-sub12" style="padding: 0;margin: 0;">
                             <?php
-                            $list11 = $database->query("select * from lawyer order by lawyername asc;");
-                            $selected_lawyer = isset($_POST['lawyerid']) ? $_POST['lawyerid'] : '';
-                            
-                            for ($y = 0; $y < $list11->num_rows; $y++) {
-                                $row00 = $list11->fetch_assoc();
-                                $sn = $row00["lawyername"];
-                                $id00 = $row00["lawyerid"];
-                                $selected = ($id00 == $selected_lawyer) ? "selected" : "";
-                                echo "<option value='" . $id00 . "' " . $selected . ">" . htmlspecialchars($sn) . "</option>";
+                            date_default_timezone_set('Asia/Manila');
+                            $today = date('Y-m-d');
+                            echo $today;
+                            ?>
+                        </p>
+                    </td>
+                    <td width="10%">
+                        <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img
+                                src="../img/calendar.svg" width="100%"></button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">New Session Requests</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <center>
+                            <?php
+                            if (isset($_GET['action'])) {
+                                if ($_GET['action'] == 'reject_success') {
+                                    echo "<div style='padding: 10px; margin: 10px 40px; border-radius: 5px; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;'>Appointment has been successfully rejected.</div>";
+                                }
                             }
                             ?>
-                        </select>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="padding-bottom: 30px;">
+                        <center>
+                            <div class="abc scroll">
+                                <table width="95%" class="sub-table scrolldown" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="table-headin">Client Name</th>
+                                            <th class="table-headin">Session Title</th>
+                                            <th class="table-headin">Preferred Date & Time</th>
+                                            <th class="table-headin">Requested On</th>
+                                            <th class="table-headin" style="width: 20%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $sql_new_requests = "SELECT 
+                                            appointment.appoid,
+                                            appointment.appodate,
+                                            appointment.description AS case_description,
+                                            schedule.scheduleid,
+                                            schedule.title,
+                                            schedule.scheduledate,
+                                            schedule.scheduletime,
+                                            client.cname
+                                        FROM appointment 
+                                        INNER JOIN schedule ON appointment.scheduleid = schedule.scheduleid
+                                        INNER JOIN client ON appointment.cid = client.cid
+                                        WHERE schedule.lawyerid IS NULL AND appointment.status = 'pending' 
+                                        ORDER BY schedule.scheduledate ASC, schedule.scheduletime ASC";
 
-                        <button type="submit" name="filter" class="btn-primary-soft btn" 
-                            style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                            </svg>
-                            Filter
-                        </button>
+                                        $result_new_requests = $database->query($sql_new_requests);
 
-                        <a href="schedule.php" class="non-style-link btn-primary-soft btn" 
-                            style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="23 4 23 10 17 10"></polyline>
-                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-                            </svg>
-                            Reset
-                        </a>
-                    </form>
-                </td>
-            </tr>
+                                        if ($result_new_requests->num_rows == 0) {
+                                            echo '<tr>
+                                                <td colspan="5">
+                                                    <br><br><br><br>
+                                                    <center>
+                                                        <img src="../img/notfound.svg" width="25%">
+                                                        <br>
+                                                        <p class="heading-main12" style="font-size:20px;color:rgb(49, 49, 49)">No new session requests found!</p>
+                                                    </center>
+                                                    <br><br><br><br>
+                                                </td>
+                                            </tr>';
+                                        } else {
+                                            while ($row_request = $result_new_requests->fetch_assoc()) {
+                                                $appoid = $row_request["appoid"];
+                                                $appodate = $row_request["appodate"];
+                                                $scheduleid = $row_request["scheduleid"];
+                                                $title = $row_request["title"];
+                                                $scheduledate = $row_request["scheduledate"];
+                                                $scheduletime = $row_request["scheduletime"];
+                                                $clientname = $row_request["cname"];
+                                                $case_description = $row_request["case_description"];
 
-            <?php
-            if ($_POST) {
-
-                $sqlpt1 = "";
-                if (!empty($_POST["sheduledate"])) {
-                    $sheduledate = $_POST["sheduledate"];
-                    $sqlpt1 = " schedule.scheduledate='$sheduledate' ";
-                }
-
-
-                $sqlpt2 = "";
-                if (!empty($_POST["lawyerid"])) {
-                    $lawyerid = $_POST["lawyerid"];
-                    $sqlpt2 = " lawyer.lawyerid=$lawyerid ";
-                }
-
-
-                $sqlmain = "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid ";
-                $sqllist = array($sqlpt1, $sqlpt2);
-                $sqlkeywords = array(" where ", " and ");
-                $key2 = 0;
-                foreach ($sqllist as $key) {
-
-                    if (!empty($key)) {
-                        $sqlmain .= $sqlkeywords[$key2] . $key;
-                        $key2++;
-                    }
-                }
-            } else {
-                $sqlmain = "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid  order by schedule.scheduledate desc";
-
-            }
-            ?>
-
-            <tr>
-                <td colspan="4">
-                    <center>
-                        <div class="abc scroll">
-                            <table width="95%" class="sub-table scrolldown" border="0">
-                                <thead>
-                                <tr>
-                                    <th class="table-headin">
-                                        Session Title
-                                    </th>
-                                    <th class="table-headin">
-                                        Lawyer
-                                    </th>
-                                    <th class="table-headin">
-                                        Scheduled Date & Time
-                                    </th>
-                                    <th class="table-headin">
-                                        Max num that can be booked
-                                    </th>
-                                    <th class="table-headin">
-                                        Events
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
+                                                echo '<tr>
+                                                    <td>' . htmlspecialchars($clientname) . '</td>
+                                                    <td>' . htmlspecialchars($title) . '</td>
+                                                    <td style="text-align:center;">' . date("M d, Y", strtotime($scheduledate)) . '<br>' . date("g:i A", strtotime($scheduletime)) . '</td>
+                                                    <td style="text-align:center;">' . date("M d, Y", strtotime($appodate)) . '</td>
+                                                    <td>
+                                                        <div class="action-btn-container">
+                                                            <button class="btn-primary-soft btn button-icon btn-view"
+                                                                data-clientname="' . htmlspecialchars($clientname) . '"
+                                                                data-title="' . htmlspecialchars($title) . '"
+                                                                data-date="' . date("F j, Y", strtotime($scheduledate)) . '"
+                                                                data-time="' . date("g:i A", strtotime($scheduletime)) . '"
+                                                                data-description="' . htmlspecialchars($case_description) . '">
+                                                               View
+                                                            </button>
+                                                            <a href="#" class="non-style-link reject-btn" data-appoid="' . $appoid . '">
+                                                                <button type="button" class="btn-primary-soft btn button-icon btn-delete">
+                                                                    Reject
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>';
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50%" style="padding-top:10px;">
+                        <?php
+                            $list110 = $database->query("select  * from  schedule;");
+                        ?>
+                        <p class="heading-main12" style="margin-left: 45px;font-size:18px;color:rgb(49, 49, 49)">All Sessions (<?php echo $list110->num_rows; ?>)</p>
+                    </td>
+                    <td style="padding-top:10px; text-align: right; padding-right: 45px;" colspan="3">
+                        <form action="" method="post" style="display: inline-flex; gap: 10px; align-items: center;">
+                            <input type="date" name="sheduledate" id="date" class="input-text" 
+                                style="width: auto; padding: 8px 10px;" 
+                                value="<?php echo isset($_POST['sheduledate']) ? htmlspecialchars($_POST['sheduledate']) : '' ?>">
+                            
+                            <select name="lawyerid" class="box" style="width: 200px; height: 42px; padding: 8px 10px;">
+                                <option value="" disabled <?php if (!isset($_POST['lawyerid'])) echo 'selected'; ?> hidden>Choose Lawyer Name</option>
                                 <?php
-                                $result = $database->query($sqlmain);
-                                if ($result->num_rows == 0) {
-                                    echo '<tr>
-                                    <td colspan="5">
-                                    <br><br><br><br>
-                                    <center>
-                                    <img src="../img/notfound.svg" width="25%">
-                                    
-                                    <br>
-                                    <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldnt find anything related to your keywords !</p>
-                                    <a class="non-style-link" href="schedule.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Sessions &nbsp;</font></button>
-                                    </a>
-                                    </center>
-                                    <br><br><br><br>
-                                    </td>
-                                    </tr>';
-                                } else {
-                                    for ($x = 0; $x < $result->num_rows; $x++) {
-                                        $row = $result->fetch_assoc();
-                                        $scheduleid = $row["scheduleid"];
-                                        $title = $row["title"];
-                                        $lawyername = $row["lawyername"];
-                                        $scheduledate = $row["scheduledate"];
-                                        $scheduletime = $row["scheduletime"];
-                                        $nop = $row["nop"];
-                                        echo '<tr>
-                                        <td> &nbsp;' .
-                                            substr($title, 0, 30)
-                                            . '</td>
-                                        <td>
-                                        ' . substr($lawyername, 0, 20) . '
-                                        </td>
-                                        <td style="text-align:center;">
-                                            ' . substr($scheduledate, 0, 10) . ' ' . substr($scheduletime, 0, 5) . '
-                                        </td>
-                                        <td style="text-align:center;">
-                                            ' . $nop . '
-                                        </td>
-
-                                        <td>
-                                        <div style="display:flex;justify-content: center;">
-                                        
-                                        <a href="?action=view&id=' . $scheduleid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
-                                       &nbsp;&nbsp;&nbsp;
-                                       <a href="?action=drop&id=' . $scheduleid . '&name=' . urlencode($title) . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
-                                        </div>
-                                        </td>
-                                    </tr>';
-                                    }
+                                $list11 = $database->query("select * from lawyer order by lawyername asc;");
+                                $selected_lawyer = isset($_POST['lawyerid']) ? $_POST['lawyerid'] : '';
+                                
+                                for ($y = 0; $y < $list11->num_rows; $y++) {
+                                    $row00 = $list11->fetch_assoc();
+                                    $sn = $row00["lawyername"];
+                                    $id00 = $row00["lawyerid"];
+                                    $selected = ($id00 == $selected_lawyer) ? "selected" : "";
+                                    echo "<option value='" . $id00 . "' " . $selected . ">" . htmlspecialchars($sn) . "</option>";
                                 }
                                 ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </center>
-                </td>
-            </tr>
-        </table>
-    </div>
-    </div>
-    <?php
+                            </select>
 
-    if ($_GET) {
+                            <button type="submit" name="filter" class="btn-primary-soft btn" 
+                                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                </svg>
+                                Filter
+                            </button>
+
+                            <a href="schedule.php" class="non-style-link btn-primary-soft btn" 
+                                style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 15px; font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                </svg>
+                                Reset
+                            </a>
+                        </form>
+                    </td>
+                </tr>
+
+                <?php
+                if ($_POST && isset($_POST['filter'])) { // Check if filter form was submitted
+                    $sqlpt1 = "";
+                    if (!empty($_POST["sheduledate"])) {
+                        $sheduledate = $_POST["sheduledate"];
+                        $sqlpt1 = " schedule.scheduledate='$sheduledate' ";
+                    }
+
+                    $sqlpt2 = "";
+                    if (!empty($_POST["lawyerid"])) {
+                        $lawyerid = $_POST["lawyerid"];
+                        $sqlpt2 = " lawyer.lawyerid=$lawyerid ";
+                    }
+
+                    $sqlmain = "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid ";
+                    $sqllist = array($sqlpt1, $sqlpt2);
+                    $sqlkeywords = array(" where ", " and ");
+                    $key2 = 0;
+                    foreach ($sqllist as $key) {
+                        if (!empty($key)) {
+                            $sqlmain .= $sqlkeywords[$key2] . $key;
+                            $key2++;
+                        }
+                    }
+                } else {
+                    $sqlmain = "select schedule.scheduleid,schedule.title,lawyer.lawyername,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join lawyer on schedule.lawyerid=lawyer.lawyerid  order by schedule.scheduledate desc";
+                }
+                ?>
+
+                <tr>
+                    <td colspan="4">
+                        <center>
+                            <div class="abc scroll">
+                                <table width="95%" class="sub-table scrolldown" border="0">
+                                    <thead>
+                                    <tr>
+                                        <th class="table-headin">Session Title</th>
+                                        <th class="table-headin">Lawyer</th>
+                                        <th class="table-headin">Scheduled Date & Time</th>
+                                        <th class="table-headin">Max num that can be booked</th>
+                                        <th class="table-headin">Events</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    $result = $database->query($sqlmain);
+                                    if ($result->num_rows == 0) {
+                                        echo '<tr>
+                                        <td colspan="5">
+                                        <br><br><br><br>
+                                        <center>
+                                        <img src="../img/notfound.svg" width="25%">
+                                        <br>
+                                        <p class="heading-main12" style="margin-left: 45px;font-size:20px;color:rgb(49, 49, 49)">We couldnt find anything related to your keywords !</p>
+                                        <a class="non-style-link" href="schedule.php"><button  class="login-btn btn-primary-soft btn"  style="display: flex;justify-content: center;align-items: center;margin-left:20px;">&nbsp; Show all Sessions &nbsp;</font></button>
+                                        </a>
+                                        </center>
+                                        <br><br><br><br>
+                                        </td>
+                                        </tr>';
+                                    } else {
+                                        for ($x = 0; $x < $result->num_rows; $x++) {
+                                            $row = $result->fetch_assoc();
+                                            $scheduleid = $row["scheduleid"];
+                                            $title = $row["title"];
+                                            $lawyername = $row["lawyername"];
+                                            $scheduledate = $row["scheduledate"];
+                                            $scheduletime = $row["scheduletime"];
+                                            $nop = $row["nop"];
+                                            echo '<tr>
+                                            <td> &nbsp;' . substr($title, 0, 30) . '</td>
+                                            <td>' . substr($lawyername, 0, 20) . '</td>
+                                            <td style="text-align:center;">' . substr($scheduledate, 0, 10) . ' ' . substr($scheduletime, 0, 5) . '</td>
+                                            <td style="text-align:center;">' . $nop . '</td>
+                                            <td>
+                                            <div style="display:flex;justify-content: center;">
+                                            <a href="?action=view&id=' . $scheduleid . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-view"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
+                                           &nbsp;&nbsp;&nbsp;
+                                           <a href="?action=drop&id=' . $scheduleid . '&name=' . urlencode($title) . '" class="non-style-link"><button  class="btn-primary-soft btn button-icon btn-delete"  style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">Remove</font></button></a>
+                                            </div>
+                                            </td>
+                                        </tr>';
+                                        }
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </center>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <?php
+    if (isset($_GET['action']) && isset($_GET['id'])) {
         $id = $_GET["id"];
         $action = $_GET["action"];
         
@@ -685,10 +893,172 @@ include("../connection.php");
             </div>';
         }
     }
-
     ?>
+
+    <div id="viewDetailsModal" class="modal">
+        <div class="modal-content-req">
+            <span class="close-btn">&times;</span>
+            <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">
+                Session Request Details
+            </h3>
+            <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
+            <div>
+                <p class="details-label">Client Name:</p>
+                <p id="detailClientName" class="details-data"></p>
+                <p class="details-label">Session Title:</p>
+                <p id="detailSessionTitle" class="details-data"></p>
+                <p class="details-label">Preferred Date & Time:</p>
+                <p id="detailDateTime" class="details-data"></p>
+                <p class="details-label">Case Description:</p>
+                <p id="detailDescription" class="details-data" style="max-height: 150px; overflow-y: auto;"></p>
+            </div>
+        </div>
     </div>
 
+    <div id="rejectionModal" class="modal">
+        <div class="modal-content-req">
+            <span class="close-btn">&times;</span>
+            <h2 style="margin-bottom: 15px;">Reason for Rejection</h2>
+            <form id="rejectionForm" action="schedule.php" method="POST" novalidate>
+                <input type="hidden" name="action" value="reject">
+                <input type="hidden" id="rejectAppoId" name="appoid" value="">
+                <div id="rejectionError" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none;"></div>
+                <p style="margin-bottom: 15px;">Why do you want to reject this appointment?</p>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_time" name="rejection_reason" value="Change of time" required>
+                    <label for="reason_time">Change of time</label>
+                </div>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_emergency" name="rejection_reason" value="Personal emergency">
+                    <label for="reason_emergency">Personal emergency</label>
+                </div>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_details" name="rejection_reason" value="Incomplete details">
+                    <label for="reason_details">Incomplete details</label>
+                </div>
+                <div class="rejection-reason">
+                    <input type="radio" id="reason_other" name="rejection_reason" value="Other">
+                    <label for="reason_other">Other</label>
+                </div>
+                <input type="text" id="other_reason_text" name="other_reason_text" class="input-text" placeholder="Please specify" style="display: none; margin-top: 5px; width: 100%;">
+                <div style="margin-top: 20px;">
+                    <label for="rejection_description" class="form-label">Optional Description:</label>
+                    <textarea name="rejection_description" id="rejection_description" class="input-text" rows="3" placeholder="Provide more details (optional)"></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 25px;">
+                    <button type="button" id="cancelRejectionBtn" class="btn-primary-soft btn">Cancel</button>
+                    <button type="submit" name="confirm_rejection" class="login-btn btn-primary btn">Confirm Rejection</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get all modals for new requests
+        var rejectionModal = document.getElementById("rejectionModal");
+        var viewDetailsModal = document.getElementById("viewDetailsModal");
+
+        // Get buttons that open these modals
+        var rejectBtns = document.getElementsByClassName("reject-btn");
+        var viewDetailsBtns = document.getElementsByClassName("btn-view");
+        var closeBtns = document.querySelectorAll(".modal .close-btn");
+
+        // Handler for View Details buttons
+        for (let i = 0; i < viewDetailsBtns.length; i++) {
+            viewDetailsBtns[i].onclick = function (event) {
+                event.preventDefault();
+                const button = this;
+                document.getElementById('detailClientName').innerText = button.getAttribute('data-clientname');
+                document.getElementById('detailSessionTitle').innerText = button.getAttribute('data-title');
+                document.getElementById('detailDateTime').innerText = button.getAttribute('data-date') + ' at ' + button.getAttribute('data-time');
+                document.getElementById('detailDescription').innerText = button.getAttribute('data-description');
+                viewDetailsModal.style.display = "flex";
+            }
+        }
+
+        // Handler for Reject buttons
+        for (let i = 0; i < rejectBtns.length; i++) {
+            rejectBtns[i].onclick = function (event) {
+                event.preventDefault();
+                const appoId = this.getAttribute('data-appoid');
+                document.getElementById('rejectAppoId').value = appoId;
+                rejectionModal.style.display = "flex";
+            }
+        }
+
+        // Handler for all close buttons in modals
+        for (let i = 0; i < closeBtns.length; i++) {
+            closeBtns[i].onclick = function () {
+                this.closest('.modal').style.display = "none";
+            }
+        }
+
+        // Handler for cancel buttons
+        if(document.getElementById('cancelRejectionBtn')) {
+            document.getElementById('cancelRejectionBtn').onclick = function () {
+                rejectionModal.style.display = "none";
+            }
+        }
+        
+        // Close modal if clicked outside
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+
+        // Rejection form logic
+        const rejectionForm = document.getElementById('rejectionForm');
+        if (rejectionForm) {
+            const reasonRadios = rejectionForm.querySelectorAll('input[name="rejection_reason"]');
+            const otherReasonText = document.getElementById('other_reason_text');
+            const rejectionError = document.getElementById('rejectionError');
+
+            reasonRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (this.id === 'reason_other' && this.checked) {
+                        otherReasonText.style.display = 'block';
+                        otherReasonText.setAttribute('required', 'required');
+                    } else {
+                        otherReasonText.style.display = 'none';
+                        otherReasonText.removeAttribute('required');
+                    }
+                });
+            });
+
+            rejectionForm.addEventListener('submit', function (event) {
+                const otherRadio = document.getElementById('reason_other');
+                const selectedReason = rejectionForm.querySelector('input[name="rejection_reason"]:checked');
+                rejectionError.style.display = 'none';
+
+                if (!selectedReason) {
+                    rejectionError.textContent = 'Please select a reason for rejection.';
+                    rejectionError.style.display = 'block';
+                    event.preventDefault();
+                    return;
+                }
+
+                if (otherRadio.checked && otherReasonText.value.trim() === '') {
+                    rejectionError.textContent = 'Please specify the reason for selecting "Other".';
+                    rejectionError.style.display = 'block';
+                    event.preventDefault();
+                }
+            });
+
+            // Observer to reset form when modal is hidden
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.attributeName === "style" && rejectionModal.style.display === 'none') {
+                        rejectionForm.reset();
+                        otherReasonText.style.display = 'none';
+                        otherReasonText.removeAttribute('required');
+                        rejectionError.style.display = 'none';
+                    }
+                });
+            });
+            observer.observe(rejectionModal, { attributes: true });
+        }
+    </script>
 </body>
 
 </html>
