@@ -151,191 +151,221 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 
     <title>Lawyer Verification | SafeSpace PH</title>
     <style>
-        
         .popup{
             animation: transitionIn-Y-bottom 0.5s;
         }
         .sub-table{
             animation: transitionIn-Y-bottom 0.5s;
         }
-        .custom-modal {
-            display: none;
+        
+        .overlay {
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .custom-modal-content {
-            background-color: #fefefe;
-            padding: 30px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-            text-align: center;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-        }
-        .custom-modal-content h3 {
-            margin-top: 0;
-            color: #333;
-        }
-        .custom-modal-content .modal-buttons button {
-            margin: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .custom-modal-content .modal-buttons .confirm-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .custom-modal-content .modal-buttons .cancel-btn {
-            background-color: #f44336;
-            color: white;
-        }
-        .overlay:target, #messagePopup {
-            visibility: visible;
-            opacity: 1;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 15px;
         }
-        .overlay .popup {
-            margin: auto;
-        }
-        #viewDetailsModal .custom-modal-content {
-            max-width: 800px;
-            text-align: left;
-            padding: 30px;
-            max-height: 90vh;
+        
+        .overlay.view-modal-overlay {
+            display: block;
             overflow-y: auto;
+            padding: 30px 15px;
         }
-        #viewDetailsModal .custom-modal-content h3 {
+        
+        .overlay:target, .overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15);
+            padding: 30px 40px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: fadeIn 0.4s ease-out;
+            margin: 0 auto;
+        }
+        
+        .modal-content-view {
+            max-width: 850px;
+        }
+
+        .modal-header {
             text-align: center;
-            margin-bottom: 25px;
+            color: #391053;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 0.5px;
+            position: relative;
         }
-        #viewDetailsModal .close-x-button {
+
+        .modal-header .close {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
+            top: -25px;
+            right: -20px;
+            font-size: 2.5rem;
             font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
             text-decoration: none;
+            color: #888;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
-        #viewDetailsModal .close-x-button:hover,
-        #viewDetailsModal .close-x-button:focus {
-            color: #000;
-            text-decoration: none;
+        .modal-header .close:hover {
+            color: #333;
+            transform: scale(1.1);
+        }
+
+        .modal-divider {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%);
+            border: none;
+            border-radius: 2px;
+            margin: 18px 0 28px 0;
+        }
+
+        .modal-body {
+            text-align: center;
+            font-size: 16px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .modal-body-left {
+            text-align: left;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+       .modal-btn {
+            border: none;
+            border-radius: 7px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
         }
-        #viewDetailsModal .detail-section {
+        .modal-btn-soft {
+            background: #f0e9f7;
+            color: #5A2675;
+        }
+        .modal-btn-soft:hover {
+            background: #e2d8fa;
+        }
+
+        .modal-btn-primary {
+            background-color: #5A2675;
+            color: white;
+        }
+        .modal-btn-primary:hover {
+            background-color: #5A2675;
+        }
+        .modal-btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .modal-btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .detail-section {
             margin-bottom: 20px;
             padding-bottom: 10px;
         }
-        #viewDetailsModal .detail-section:last-of-type {
-            border-bottom: none;
-        }
-        #viewDetailsModal .detail-section h4 {
+        .detail-section h4 {
             color: #5A2675;
             font-weight: bold;
             margin-top: 0;
             margin-bottom: 15px;
             display: inline-block;
-            padding-bottom: 5px;
             width: 100%;
             text-align: left;
         }
-        #viewDetailsModal .detail-section hr {
+        .detail-section hr {
             border: none;
-            border-top: 1px solid #5A2675;
+            border-top: 1px solid #C9A8F1;
             margin-top: -10px;
             margin-bottom: 15px;
         }
-        #viewDetailsModal .detail-item {
-            margin-bottom: 8px;
+        .detail-item {
+            margin-bottom: 10px;
             display: flex;
             align-items: baseline;
+            font-size: 15px;
         }
-        #viewDetailsModal .detail-item strong {
-            flex: 0 0 200px; /* Adjusted width */
+        .detail-item strong {
+            flex: 0 0 200px;
             margin-right: 10px;
-            color: #555;
-            font-weight: bold;
-        }
-        #viewDetailsModal .detail-item span {
-            flex-grow: 1;
             color: #333;
+            font-weight: 600;
+        }
+        .detail-item span {
+            flex-grow: 1;
+            color: #444;
             word-wrap: break-word;
-            font-weight: normal;
         }
-        #viewDetailsModal .close-button {
-            background-color: #C9A8F1;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 25px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+        .description-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            max-height: 120px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            flex-grow: 1;
         }
-        #viewDetailsModal .close-button:hover {
-            background-color: #b193d5;
-        }
+        
         .file-link {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #5A2675;
-            color: white;
-            border-radius: 20px;
             text-decoration: none;
-            margin: 5px;
-            font-weight: bold;
         }
-        .file-link:hover {
-            background-color: #C9A8F1;
+        .file-link button {
+            font-size: 14px;
+            padding: 8px 12px;
+            margin-top: 5px;
+            width: auto;
         }
+        
         /* --- Custom Styles for Sidebar Adjustment (Final Fix) --- */
-        /* 1. Reduce the overall width of the sidebar menu */
         .menu {
             width: 250px; 
         }
-        /* 2. Adjust all menu items for new width and spacing */
         .menu-btn {
-            /* Position icon closer to the left edge */
             background-position: 52px center !important;
-            /* Compress vertical padding and adjust left padding for icon */
             padding: 9px 15px 9px 4px !important;
         }
-        /* 3. Force menu text to a single line */
         .menu-text {
             font-size: 14px;
-            white-space: nowrap; /* Prevents text from wrapping */
-            overflow: hidden; /* Hides any part of the text that still overflows */
-            text-overflow: ellipsis; /* Adds "..." if text is too long for the container */
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis; 
         }
-        /* 4. Compact the Profile Container */
         .profile-container td {
-            padding: 0 5px; /* Reduce padding on cells */
+            padding: 0 5px;
         }
         .profile-container .profile-info-cell {
             padding-left: 10px !important;
@@ -360,78 +390,103 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
 <body>
     <?php
     if ($verification_details) {
-        echo '<div id="viewDetailsModal" class="custom-modal" style="display:flex;">
-                <div class="custom-modal-content">
-                    <a href="javascript:void(0)" class="close-x-button" onclick="closeViewDetailsModal()">&times;</a>
-                     <h3 style="text-align:center; color:#391053; font-size:1.8rem; font-weight:700; margin:0 0 10px 0; letter-spacing:0.5px;">Volunteer Lawyer Application Details</h3>
-                    <div style="width:100%; height:3px; background:linear-gradient(90deg, #391053 0%, #5A2675 30%, #9D72B3 65%, #C9A8F1 100%); border-radius:2px; margin:18px 0 28px 0;"></div>
+        echo '<div id="viewDetailsModal" class="overlay view-modal-overlay active">
+                <div class="modal-content modal-content-view">
+                    <a href="javascript:void(0)" class="modal-header close" onclick="closeViewDetailsModal()" style="text-decoration: none;">&times;</a>
+                    <h2 class="modal-header">Volunteer Lawyer Application Details</h2>
+                    <div class="modal-divider"></div>
 
+                    <div class="modal-body modal-body-left">
+                        <div class="detail-section">
+                            <h4>Personal & Contact Information</h4>
+                            <hr>
+                            <div class="detail-item"><strong>Full Name:</strong> <span>' . htmlspecialchars($verification_details['first_name'] . ' ' . $verification_details['last_name']) . '</span></div>
+                            <div class="detail-item"><strong>Email:</strong> <span>' . htmlspecialchars($verification_details['email']) . '</span></div>
+                            <div class="detail-item"><strong>Contact Number:</strong> <span>' . htmlspecialchars($verification_details['contact_number']) . '</span></div>
+                            <div class="detail-item"><strong>Home Address:</strong> <span>' . htmlspecialchars($verification_details['home_address']) . '</span></div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Personal & Contact Information</h4>
-                        <hr>
-                        <div class="detail-item"><strong>Full Name:</strong> <span>' . htmlspecialchars($verification_details['first_name'] . ' ' . $verification_details['last_name']) . '</span></div>
-                        <div class="detail-item"><strong>Email:</strong> <span>' . htmlspecialchars($verification_details['email']) . '</span></div>
-                        <div class="detail-item"><strong>Contact Number:</strong> <span>' . htmlspecialchars($verification_details['contact_number']) . '</span></div>
-                        <div class="detail-item"><strong>Home Address:</strong> <span>' . htmlspecialchars($verification_details['home_address']) . '</span></div>
-                    </div>
+                        <div class="detail-section">
+                            <h4>Professional Information</h4>
+                            <hr>
+                            <div class="detail-item"><strong>IBP Roll Number:</strong> <span>' . htmlspecialchars($verification_details['roll_number']) . '</span></div>
+                            <div class="detail-item"><strong>Years of Experience:</strong> <span>' . htmlspecialchars($verification_details['years_experience']) . '</span></div>
+                            <div class="detail-item"><strong>Bar Region/Chapter:</strong> <span>' . htmlspecialchars($verification_details['bar_region']) . '</span></div>
+                            <div class="detail-item"><strong>Affiliation:</strong> <span>' . htmlspecialchars($verification_details['affiliation']) . '</span></div>
+                             <div class="detail-item"><strong>Reference Contact:</strong> <span>' . htmlspecialchars($verification_details['reference_contact']) . '</span></div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Professional Information</h4>
-                        <hr>
-                        <div class="detail-item"><strong>IBP Roll Number:</strong> <span>' . htmlspecialchars($verification_details['roll_number']) . '</span></div>
-                        <div class="detail-item"><strong>Years of Experience:</strong> <span>' . htmlspecialchars($verification_details['years_experience']) . '</span></div>
-                        <div class="detail-item"><strong>Bar Region/Chapter:</strong> <span>' . htmlspecialchars($verification_details['bar_region']) . '</span></div>
-                        <div class="detail-item"><strong>Affiliation:</strong> <span>' . htmlspecialchars($verification_details['affiliation']) . '</span></div>
-                         <div class="detail-item"><strong>Reference Contact:</strong> <span>' . htmlspecialchars($verification_details['reference_contact']) . '</span></div>
-                    </div>
+                        <div class="detail-section">
+                            <h4>Application Details</h4>
+                            <hr>
+                            <div class="detail-item"><strong>Motivation:</strong> <div class="description-box" style="flex-grow:1;">' . nl2br(htmlspecialchars($verification_details['motivation'])) . '</div></div>
+                            <div class="detail-item"><strong>Preferred Areas of Law:</strong> <span>' . htmlspecialchars($verification_details['preferred_areas']) . '</span></div>
+                            <div class="detail-item"><strong>Availability (Hours/Week):</strong> <span>' . htmlspecialchars($verification_details['availability_hours']) . '</span></div>
+                            <div class="detail-item"><strong>Commitment (Months):</strong> <span>' . htmlspecialchars($verification_details['commitment_months']) . '</span></div>
+                            <div class="detail-item"><strong>Available for Urgent Consults:</strong> <span>' . htmlspecialchars($verification_details['urgent_consult']) . '</span></div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Application Details</h4>
-                        <hr>
-                        <div class="detail-item"><strong>Motivation:</strong> <span>' . nl2br(htmlspecialchars($verification_details['motivation'])) . '</span></div>
-                        <div class="detail-item"><strong>Preferred Areas of Law:</strong> <span>' . htmlspecialchars($verification_details['preferred_areas']) . '</span></div>
-                        <div class="detail-item"><strong>Availability (Hours/Week):</strong> <span>' . htmlspecialchars($verification_details['availability_hours']) . '</span></div>
-                        <div class="detail-item"><strong>Commitment (Months):</strong> <span>' . htmlspecialchars($verification_details['commitment_months']) . '</span></div>
-                        <div class="detail-item"><strong>Available for Urgent Consults:</strong> <span>' . htmlspecialchars($verification_details['urgent_consult']) . '</span></div>
-                    </div>
-
-                    <div class="detail-section">
-                        <h4>Uploaded Documents & Consents</h4>
-                        <hr>
-                        <div class="detail-item"><strong>Attorney License/ID:</strong> <span><a href="../' . htmlspecialchars($verification_details['license_file']) . '" target="_blank" class="file-link">View File</a></span></div>
-                        <div class="detail-item"><strong>Resume/CV:</strong> <span><a href="../' . htmlspecialchars($verification_details['resume_file']) . '" target="_blank" class="file-link">View File</a></span></div>
-                        <div class="detail-item"><strong>Profile Photo:</strong> <span><a href="../' . htmlspecialchars($verification_details['profile_photo']) . '" target="_blank" class="file-link">View File</a></span></div>
-                        <div class="detail-item"><strong>Consent to Background Check:</strong> <span>' . ($verification_details['consent_background_check'] ? 'Yes' : 'No') . '</span></div>
-                        <div class="detail-item"><strong>Agreed to Terms:</strong> <span>' . ($verification_details['agree_terms'] ? 'Yes' : 'No') . '</span></div>
-                        <div class="detail-item"><strong>Certified Information Correct:</strong> <span>' . ($verification_details['info_certified'] ? 'Yes' : 'No') . '</span></div>
+                        <div class="detail-section">
+                            <h4>Uploaded Documents & Consents</h4>
+                            <hr>
+                            <div class="detail-item"><strong>Attorney License/ID:</strong> <span><a href="../' . htmlspecialchars($verification_details['license_file']) . '" target="_blank" class="file-link"><button class="btn-primary-soft btn">View File</button></a></span></div>
+                            <div class="detail-item"><strong>Resume/CV:</strong> <span><a href="../' . htmlspecialchars($verification_details['resume_file']) . '" target="_blank" class="file-link"><button class="btn-primary-soft btn">View File</button></a></span></div>
+                            <div class="detail-item"><strong>Profile Photo:</strong> <span><a href="../' . htmlspecialchars($verification_details['profile_photo']) . '" target="_blank" class="file-link"><button class="btn-primary-soft btn">View File</button></a></span></div>
+                            <div class="detail-item"><strong>Consent to Background Check:</strong> <span>' . ($verification_details['consent_background_check'] ? 'Yes' : 'No') . '</span></div>
+                            <div class="detail-item"><strong>Agreed to Terms:</strong> <span>' . ($verification_details['agree_terms'] ? 'Yes' : 'No') . '</span></div>
+                            <div class="detail-item"><strong>Certified Information Correct:</strong> <span>' . ($verification_details['info_certified'] ? 'Yes' : 'No') . '</span></div>
+                        </div>
                     </div>
                     
-                    <button class="close-button" onclick="closeViewDetailsModal()">Close</button>
+                    <div class="modal-footer">
+                        <button type="button" class="modal-btn modal-btn-soft" onclick="closeViewDetailsModal()">Close</button>
+                    </div>
                 </div>
               </div>';
     }
 
     if (isset($_GET['message'])) {
-        echo '<div id="messagePopup" class="overlay" style="display:flex;">
-                <div class="popup">
-                    <center>
-                        <div class="content">';
-        if ($_GET['message'] == 'success') {
-            echo '<h3>Success!</h3><p>Lawyer has been successfully verified and an account has been created.</p>';
-        } else if ($_GET['message'] == 'rejected') {
-            echo '<h3>Rejected!</h3><p>Lawyer application has been rejected and removed.</p>';
-        } else if ($_GET['message'] == 'error') {
-            echo '<h3>Error!</h3><p>Action failed. Please try again.</p>';
-            if (isset($_GET['details'])) {
-                echo '<p>Details: ' . htmlspecialchars($_GET['details']) . '</p>';
-            }
+        $popup_title = '';
+        $popup_content = '';
+        $is_error = false;
+
+        switch ($_GET['message']) {
+            case 'success':
+                $popup_title = "Success!";
+                $popup_content = "Lawyer has been successfully verified and an account has been created.";
+                break;
+            case 'rejected':
+                $popup_title = "Rejected!";
+                $popup_content = "Lawyer application has been rejected and removed.";
+                break;
+            case 'error':
+                 $is_error = true;
+                $popup_title = "Error!";
+                $popup_content = 'Action failed. Please try again. <br><small>' . htmlspecialchars($_GET['details'] ?? '') . '</small>';
+                break;
         }
-        echo '      </div>
-                        <a href="lawyer_verification.php"><button class="login-btn btn-primary-soft btn" style="margin-top:15px;">OK</button></a>
-                    </center>
-                </div>
-              </div>';
+        
+        if (!empty($popup_title)) {
+            $header_color = $is_error ? '#dc3545' : '#5A2675';
+            $button_class = $is_error ? 'modal-btn-danger' : 'modal-btn-primary';
+
+            echo '<div id="messagePopup" class="overlay active">
+                    <div class="modal-content" style="max-width: 450px;">
+                        <h2 class="modal-header" style="color: '. $header_color .';">
+                            '. $popup_title .'
+                        </h2>
+                        <div class="modal-divider"></div>
+                        <div class="modal-body">
+                            <p>'. $popup_content .'</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="lawyer_verification.php" class="non-style-link">
+                                <button type="button" class="modal-btn '. $button_class .'">OK</button>
+                            </a>
+                        </div>
+                    </div>
+                  </div>';
+        }
     }
     ?>
     <div class="container">
@@ -590,17 +645,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
                                             <td>'.substr($contact_number,0,20).'</td>
                                             <td>'.substr($submission_date,0,10).'</td>
                                             <td>
-                                                <div style="display:flex;justify-content: center;">
-                                                    <a href="?action=view&id='.$id.'" class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
-                                                        <font class="tn-in-text">View</font>
-                                                    </a>
-                                                    &nbsp;&nbsp;&nbsp;
+                                                <div style="display:flex;justify-content: center; gap: 5px;">
+                                                    <a href="?action=view&id='.$id.'" class="non-style-link"><button class="btn-primary-soft btn button-icon btn-view" style="padding-left: 40px;padding-top: 12px;padding-bottom: 12px;margin-top: 10px;"><font class="tn-in-text">View</font></button></a>
+                                                    
                                                     <button class="btn-primary-soft btn button-icon menu-icon-verify"
                                                         onclick="showVerifyPasswordModal(\''.$id.'\', \''.addslashes($email).'\', \''.addslashes($first_name_lawyer).'\', \''.addslashes($last_name_lawyer).'\')"
                                                         style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
                                                         <font class="tn-in-text">Verify</font>
                                                     </button>
-                                                    &nbsp;&nbsp;&nbsp;
+                                                    
                                                     <button class="btn-primary-soft btn button-icon btn-delete"
                                                         onclick="showRejectConfirmModal(\''.$id.'\', \''.addslashes($email).'\', \''.addslashes($first_name_lawyer).'\', \''.addslashes($last_name_lawyer).'\')"
                                                         style="padding-left: 40px; padding-top: 12px; padding-bottom: 12px; margin-top: 10px;">
@@ -621,38 +674,42 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         </div>
     </div>
 
-    <div id="verifyPasswordModal" class="custom-modal">
-        <div class="custom-modal-content">
+    <div id="verifyPasswordModal" class="overlay">
+        <div class="modal-content">
             <form id="verifyForm" onsubmit="submitVerification(event)">
-                <h3>Verify Lawyer & Set Password</h3>
-                <p>You are verifying the account for: <strong id="verifyLawyerEmail"></strong>.</p>
-                <p>Please set a temporary password for the lawyer's account.</p>
+                <h2 class="modal-header">Verify Lawyer & Set Password</h2>
+                <div class="modal-divider"></div>
+                <div class="modal-body modal-body-left">
+                    <p>You are verifying the account for: <strong id="verifyLawyerEmail"></strong>.</p>
+                    <p>Please set a temporary password for the lawyer's account.</p>
 
-                <div style="margin: 15px 0;">
-                    <label for="lawyerPassword" style="display: block; text-align: left; margin-bottom: 5px; font-weight: bold;">Password:</label>
-                    <input type="password" id="lawyerPassword" name="lawyer_password" class="input-text" required style="width: 100%; box-sizing: border-box;">
+                    <label for="lawyerPassword" class="form-label" style="margin-top: 15px; display: block;">Password:</label>
+                    <input type="password" id="lawyerPassword" name="lawyer_password" class="input-text" required style="width: 100%;">
+                    
+                    <label for="confirmLawyerPassword" class="form-label" style="margin-top: 15px; display: block;">Confirm Password:</label>
+                    <input type="password" id="confirmLawyerPassword" class="input-text" required style="width: 100%;">
+                    
+                    <p id="passwordError" style="color: red; display: none; margin-top: 10px;"></p>
                 </div>
-                <div style="margin: 15px 0;">
-                    <label for="confirmLawyerPassword" style="display: block; text-align: left; margin-bottom: 5px; font-weight: bold;">Confirm Password:</label>
-                    <input type="password" id="confirmLawyerPassword" class="input-text" required style="width: 100%; box-sizing: border-box;">
-                </div>
-                <p id="passwordError" style="color: red; display: none; margin-top: 10px;"></p>
-
-                <div class="modal-buttons">
-                    <button type="submit" class="confirm-btn">Confirm & Verify</button>
-                    <button type="button" class="cancel-btn" onclick="hideVerifyPasswordModal()">Cancel</button>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-btn modal-btn-primary">Confirm & Verify</button>
+                    <button type="button" class="modal-btn modal-btn-soft" onclick="hideVerifyPasswordModal()">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="rejectConfirmModal" class="custom-modal">
-        <div class="custom-modal-content">
-            <h3>Confirm Rejection</h3>
-            <p>Are you sure you want to reject this application? This action cannot be undone.</p>
-            <div class="modal-buttons">
-                <button class="cancel-btn" id="confirmRejectBtn">Reject</button>
-                <button class="confirm-btn" onclick="hideRejectConfirmModal()">Cancel</button>
+    <div id="rejectConfirmModal" class="overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <h2 class="modal-header">Are You Sure?</h2>
+            <div class="modal-divider"></div>
+            <div class="modal-body">
+                <p>Are you sure you want to reject this application? The applicant will be notified.</p>
+                <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-danger" id="confirmRejectBtn">Yes, Reject</button>
+                <button class="modal-btn modal-btn-soft" onclick="hideRejectConfirmModal()">Cancel</button>
             </div>
         </div>
     </div>
@@ -669,7 +726,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             currentLawyerFirstName = firstName;
             currentLawyerLastName = lastName;
             document.getElementById('verifyLawyerEmail').innerText = lawyerEmail;
-            document.getElementById('verifyPasswordModal').style.display = 'flex';
+            document.getElementById('verifyPasswordModal').classList.add('active');
             // Clear previous values and errors
             document.getElementById('lawyerPassword').value = '';
             document.getElementById('confirmLawyerPassword').value = '';
@@ -677,7 +734,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
         }
 
         function hideVerifyPasswordModal() {
-            document.getElementById('verifyPasswordModal').style.display = 'none';
+            document.getElementById('verifyPasswordModal').classList.remove('active');
         }
 
         function submitVerification(event) {
@@ -734,11 +791,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             currentLawyerEmail = lawyerEmail;
             currentLawyerFirstName = firstName;
             currentLawyerLastName = lastName;
-            document.getElementById('rejectConfirmModal').style.display = 'flex';
+            document.getElementById('rejectConfirmModal').classList.add('active');
         }
 
         function hideRejectConfirmModal() {
-            document.getElementById('rejectConfirmModal').style.display = 'none';
+            document.getElementById('rejectConfirmModal').classList.remove('active');
         }
 
         function closeViewDetailsModal() {
@@ -748,7 +805,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             window.history.pushState({}, '', url);
             const viewModal = document.getElementById('viewDetailsModal');
             if (viewModal) {
-                 viewModal.style.display = 'none';
+                 viewModal.classList.remove('active');
             }
         }
 
@@ -780,13 +837,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'view' && isset($_GET['id'])) {
             hideRejectConfirmModal();
         });
 
+        // Use onload to ensure modals start hidden unless activated by a URL parameter
         window.onload = function() {
-            // This logic ensures the view modal doesn't re-appear on page load unless specified in URL
             const urlParams = new URLSearchParams(window.location.search);
-            if (!urlParams.has('action') || urlParams.get('action') !== 'view') {
+            const message = urlParams.get('message');
+            const action = urlParams.get('action');
+
+            if (!message) {
+                 const messageModal = document.getElementById('messagePopup');
+                 if(messageModal) messageModal.classList.remove('active');
+            }
+            if (action !== 'view') {
                  const viewModal = document.getElementById('viewDetailsModal');
                 if (viewModal) {
-                    viewModal.style.display = 'none';
+                    viewModal.classList.remove('active');
                 }
             }
         };
