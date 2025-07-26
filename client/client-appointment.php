@@ -110,18 +110,6 @@
   color: #fff !important;
               text-transform: capitalize;
         }
-        .status-pending {
-            background-color: #ffc107;  
-        }
-        .status-accepted {
-            background-color: #28a745;  
-        }
-        .status-rejected {
-            background-color: #dc3545;  
-        }
-        .status-completed {
-            background-color: #007bff;  
-        }
         .status-unassigned {
             background-color: #6c757d;  
         }
