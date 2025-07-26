@@ -183,6 +183,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         .modal-btn-soft {

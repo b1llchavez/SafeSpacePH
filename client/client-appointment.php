@@ -81,7 +81,21 @@
 
     <title>My Appointments | SafeSpace PH</title>
     <style>
-         
+         .status-badge {
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.status-pending    { background-color: #ffc107; }
+.status-accepted   { background-color: #28a745; }
+.status-rejected   { background-color: #dc3545; }
+.status-completed  { background-color: #007bff; }
+.status-cancelled  { background-color: #6c757d; }
         .dash-body{
             overflow-y: auto;
         }
@@ -186,6 +200,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s, box-shadow 0.2s;
+            font-family:inherit;
         }
         .modal-btn-soft {
             background: #f0e9f7;
@@ -559,8 +574,8 @@
                                             '.$appodate.'
                                         </td>
                                         <td>
-                                            <span class="status-badge status-'.strtolower($status).'">'.htmlspecialchars($status).'</span> </td>
-                                        <td>
+<span class="status-badge status-'.strtolower(trim($status)).'">'.htmlspecialchars($status).'</span>
+</td>                                        <td>
                                         <div style="display:flex;justify-content: center;">';
                                         
 

@@ -225,6 +225,7 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-family:inherit;
         }
         .modal-btn:hover {
             transform: translateY(-2px);

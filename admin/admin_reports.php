@@ -520,6 +520,7 @@ $popup_content = 'Your report has been forwarded to the appropriate local author
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
         .modal-btn-soft {
             background: #f0e9f7;

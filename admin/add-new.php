@@ -60,20 +60,11 @@
                 $sql2="insert into webuser values('$email','l')";
                 $database->query($sql1);
                 $database->query($sql2);
-
-
-
                 $error= '4';
-                
             }
-            
         }else{
             $error='2';
         }
-    
-    
-        
-        
     }else{
 
         $error='3';

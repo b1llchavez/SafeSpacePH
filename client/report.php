@@ -140,7 +140,6 @@
                 if ($database->query($insert_query)) {
                     $modal_html = '
                     <div class="modal-content">
-                        <a href="report.php" class="close-btn">&times;</a>
                         <h2 class="modal-header">Success!</h2>
                         <div class="modal-divider"></div>
                         <div class="modal-body" style="text-align: center; font-size: 16px;">
@@ -393,6 +392,7 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-family:inherit;
         }
         .modal-btn-primary {
             background: #5A2675;

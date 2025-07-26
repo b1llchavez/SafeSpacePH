@@ -109,6 +109,7 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            font-family: inherit;
         }
         .modal-btn-primary {
             background: #5A2675;
@@ -442,7 +443,7 @@
 
             $spcil_res = $database->query("select sname from specialties where id='$spe'");
             $spcil_array = $spcil_res->fetch_assoc();
-            $spcil_name = $spcil_array["sname"];
+            $spcil_name = isset($spcil_array["sname"]) ? $spcil_array["sname"] : "Not Set";
 
             $error_1 = $_GET["error"];
             $errorlist = array(

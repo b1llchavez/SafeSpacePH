@@ -147,6 +147,7 @@ $username=$userfetch["cname"];
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(57, 16, 83, 0.2);
             transition: all 0.3s ease;
+            font-family:inherit;
         }
 
         .verify-button:hover {
@@ -178,6 +179,7 @@ $username=$userfetch["cname"];
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  
             transition: all 0.3s ease;
             margin-top: 15px;  
+            font-family:inherit;
         }
 
         .logout-modal-btn:hover {
@@ -191,7 +193,7 @@ $username=$userfetch["cname"];
     
     <div id="verify-modal">
         <div class="verify-content" style="box-shadow: 0 8px 32px rgba(57, 16, 83, 0.15); border: 1px solid #e9d5ff;">
-            <img src="../img/logo.png" alt="SafeSpacePH Logo" style="width:70px; margin-bottom:20px; border-radius:50%; box-shadow:0 2px 8px rgba(57, 16, 83, 0.12);">
+            <img src="../img/logo.png" alt="SafeSpace PH Logo" style="width:70px; margin-bottom:20px; border-radius:50%; box-shadow:0 2px 8px rgba(57, 16, 83, 0.12);">
             <div class="verify-header" style="color:#391053; font-size:28px; font-weight:800; letter-spacing:0.5px;">
                 Help Us Keep SafeSpace PH Secure
             </div>
