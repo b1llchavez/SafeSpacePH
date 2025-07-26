@@ -176,9 +176,10 @@ if($_POST){
     <div class="container">
         <table border="0" style="width: 69%;">
             <tr>
-                <td colspan="2">
-                    <p class="header-text">Let's Get Started</p>
-                    <p class="sub-text">It's Okay, Now Create User Account.</p>
+                 <td colspan="2">
+                    <img src="img/logo.png" alt="SafeSpace PH Logo" class="logo" style="width: 70px; height: 70px; margin-top: 30px;">
+                    <p class="header-text" style="margin-top: 0;">Sign Up</p>
+                    <p class="sub-text">Add Your Personal Details to Continue</p>
                 </td>
             </tr>
             <tr>

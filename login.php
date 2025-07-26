@@ -143,13 +143,9 @@
         <table border="0" style="margin: 0;padding: 0;width: 60%; margin: auto;">
             <tr>
                 <!-- Logo and Login text are now in the same cell, aligned with flexbox -->
-                <td style="display: flex; justify-content: center; align-items: center; padding-bottom: 0px; padding-top: 20px;">
-                    <img src="img/logo.png" alt="SafeSpace PH Logo" style="width: 90px; height: auto; margin-right: 15px;">
-                    <p class="header-text" style="margin: 0;">Login</p>
-                </td>
-            </tr>
-            <tr>
                 <td>
+                    <img src="img/logo.png" alt="SafeSpace PH Logo" style="width: 70px; height: auto; margin-top: 30px;">
+                    <p class="header-text" style="margin: 0;">Login</p>
                     <p class="sub-text">Login with your details to continue</p>
                 </td>
             </tr>
@@ -184,13 +180,13 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td style="vertical-align: middle; text-align: center;">
                     <input type="submit" value="Login" class="login-btn btn-primary btn">
                 </td>
             </tr>
             <tr>
                 <td>
-                    <button type="button" onclick="window.location.href='index.html';" class="back-btn btn-primary-soft btn">
+                    <button type="button" onclick="window.location.href='index.html';" class="back-btn btn-primary-soft btn" style="width: 100%;">
                         Return Home
                     </button>
                 </td>
@@ -209,57 +205,6 @@
 
 <style>
 /* --- VISUAL IMPROVEMENTS & STYLE SYNC --- */
-
-/* Match container style with admin modals */
-.container {
-    border-radius: 16px !important;
-    border: 1px solid #e0e0e0 !important;
-}
-
-/* More welcoming sub-text */
-.sub-text {
-  font-size: 16px !important;
-  color: rgb(108, 117, 125) !important;
-  margin-bottom: 25px;
-}
-
-/* Input field style to match theme */
-.input-text:focus {
-    border-color: #5A2675 !important;
-    box-shadow: 0 0 0 2px #e2d8fa !important; /* Soft purple glow */
-}
-
-/* Base button style to match admin modal buttons */
-.btn {
-    border: none;
-    border-radius: 7px;
-    padding: 12px 28px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    width: 100%;
-}
-
-/* Primary "Login" button style */
-.btn-primary {
-    background-color: #5A2675;
-    color: white;
-    margin-bottom: 10px; /* Spacing between buttons */
-}
-.btn-primary:hover {
-    background-color: #4a2061; /* Darker purple on hover */
-}
-
-/* Soft "Return Home" button style */
-.btn-primary-soft {
-    background: #f0e9f7;
-    color: #5A2675;
-}
-.btn-primary-soft:hover {
-    background-color: #9D72B3; /* More visible lavender on hover */
-}
-
 /* Error message styling */
 .error-message label {
   display: block;
