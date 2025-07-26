@@ -197,8 +197,9 @@ CREATE TABLE `schedule` (
   `title` varchar(255) DEFAULT NULL,
   `scheduledate` date DEFAULT NULL,
   `scheduletime` time DEFAULT NULL,
-  `nop` int DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `nop` int DEFAULT NULL,
+  `clientid` int NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `schedule`
