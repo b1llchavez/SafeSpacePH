@@ -55,7 +55,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                 .button { display: inline-block; background-color: #8a2be2; color: white; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
                 .button:hover { background-color: #6a0dad; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -523,7 +523,7 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
                 .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
                 .button:hover { background-color: #6a0dad; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -658,7 +658,7 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
         .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
         .button:hover { background-color: #6a0dad; }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
         .footer-logo { height: 50px; width: auto; }
         .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
         .footer-links-container { margin-bottom: 10px; }
@@ -785,7 +785,7 @@ function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName)
         .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
         .button:hover { background-color: #6a0dad; }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
         .footer-logo { height: 50px; width: auto; }
         .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
         .footer-links-container { margin-bottom: 10px; }
@@ -912,7 +912,7 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
                 .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
                 .button:hover { background-color: #6a0dad; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -1037,7 +1037,7 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
                 .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
                 .button:hover { background-color: #6a0dad; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -1159,7 +1159,7 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
         .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
         .button:hover { background-color: #6a0dad; }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
         .footer-logo { height: 50px; width: auto; }
         .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
         .footer-links-container { margin-bottom: 10px; }
@@ -1281,7 +1281,7 @@ function sendClientGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content p { margin: 0 0 15px; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -1392,7 +1392,7 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                     text-decoration: none; 
                 }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -1506,7 +1506,7 @@ function sendLawyerVerificationApprovedNotice($recipientEmail, $recipientName, $
                 .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
                 .button:hover { background-color: #6a0dad; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -1642,7 +1642,7 @@ function sendLawyerVerificationRejectedNotice($recipientEmail, $recipientName, $
                 .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
                 .button:hover { background-color: #6a0dad; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer-links-container { margin-bottom: 10px; }
@@ -1766,7 +1766,7 @@ function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
                 .highlight-box { background: #f7f4fd; border-left: 5px solid #8a2be2; padding: 18px 22px; margin: 28px 0; border-radius: 7px; }
                 .highlight-box strong { color: #391053; font-weight: 700; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
-                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
                 .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
                 .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
