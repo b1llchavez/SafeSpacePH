@@ -48,7 +48,7 @@ To set up a local development environment:
 
 4.  **Set Up the Database**
     * Open `phpMyAdmin`.
-    * Create a new database (e.g., `safespaceph`).
+    * Create a new database : `SafeSpacePH`.
     * Import the `.sql` file included in the repository into the newly created database.
     * Update the `connection.php` file (or equivalent) with your local database credentials.
 
