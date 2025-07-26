@@ -97,6 +97,22 @@ $username = $userfetch["lawyername"];
 
     <title>Appointments | SafeSpace PH</title>
     <style>
+        /*--- Add these styles for the status badges ---*/
+
+.status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 12px;
+        }
+
+.status-pending { background-color: #ffc107; color: #212529; }
+.status-accepted { background-color: #28a745; }
+.status-rejected { background-color: #dc3545; }
+.status-completed { background-color: #007bff; }
+.status-cancelled { background-color: #6c757d; }
         .popup {
             animation: transitionIn-Y-bottom 0.5s;
         }
@@ -408,8 +424,9 @@ $username = $userfetch["lawyername"];
                                                     <td>' . substr($title, 0, 25) . '</td>
                                                     <td style="text-align:center;">' . substr($scheduledate, 0, 10) . ' @' . substr($scheduletime, 0, 5) . '</td>
                                                     <td style="text-align:center;">' . $appodate . '</td>
-                                                    <td style="text-align:center;">' . ucfirst($status) . '</td>
-                                                    <td>
+<td style="text-align:center;">
+    <span class="status-badge status-' . strtolower($status) . '">' . ucfirst($status) . '</span>
+</td>                                                    <td>
                                                     <div style="display:flex;justify-content: center;">';
                                                 
                                                 if ($status == 'cancelled') {
