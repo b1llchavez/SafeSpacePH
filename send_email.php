@@ -41,7 +41,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -50,10 +50,10 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
                 .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
                 .content ul { list-style: none; padding: 0; margin: 0; }
                 .content ul li { margin-bottom: 10px; padding-left: 25px; position: relative; }
-                .content ul li:before { content: '•'; color: #8a2be2; font-size: 20px; position: absolute; left: 0; top: -2px; }
+                .content ul li:before { content: '•'; color: #f0e4ff; font-size: 20px; position: absolute; left: 0; top: -2px; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: white; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-                .button:hover { background-color: #6a0dad; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -161,7 +161,7 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
         table { border-collapse: collapse; }
         td { padding: 0; }
         img { border: 0; height: auto; outline: none; }
-        a { text-decoration: none; color: #8a2be2; }
+        a { text-decoration: none; color: #f0e4ff; }
         .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
         .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; }
@@ -169,9 +169,10 @@ function sendVerificationNoticeToClient($recipientEmail, $recipientName) {
         .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; }
         .content ul { list-style: none; padding: 0; }
         .content ul li { margin-bottom: 10px; padding-left: 25px; position: relative; }
-        .content ul li:before { content: '•'; color: #8a2be2; position: absolute; left: 0; }
+        .content ul li:before { content: '•'; color: #f0e4ff; position: absolute; left: 0; }
         .button-container { text-align: center; margin-top: 30px; }
-        .button { background-color: #8a2be2; color: white; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; }
+        .button { display: inline-block; background-color: #f0e4ff; color: #5a2675; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #5a2675; color:white }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
         .footer a { color: #e0caff; margin: 0 8px; }
     </style>
@@ -279,11 +280,12 @@ function sendAppointmentPendingEmail($recipientEmail, $recipientName, $appointme
                 .header-title { font-size: 28px; font-weight: bold; vertical-align: middle;}
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content h2 { font-size: 20px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;}
-                .details-list { list-style: none; padding: 0; margin: 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; padding: 15px; border-radius: 5px; }
+                .details-list { list-style: none; padding: 0; margin: 0; background-color: #f9f9f9; border-left: 4px solid #f0e4ff; padding: 15px; border-radius: 5px; }
                 .details-list li { margin-bottom: 10px; }
                 .details-list li strong { color: #555; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer a { color: #e0caff; text-decoration: none; margin: 0 8px;}
             </style>
@@ -394,11 +396,12 @@ function sendAppointmentCanceledEmail($recipientEmail, $recipientName, $appointm
                 .header-title { font-size: 28px; font-weight: bold; vertical-align: middle;}
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content h2 { font-size: 20px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;}
-                .details-list { list-style: none; padding: 0; margin: 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; padding: 15px; border-radius: 5px; }
+                .details-list { list-style: none; padding: 0; margin: 0; background-color: #f9f9f9; border-left: 4px solid #f0e4ff; padding: 15px; border-radius: 5px; }
                 .details-list li { margin-bottom: 10px; }
                 .details-list li strong { color: #555; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer a { color: #e0caff; text-decoration: none; margin: 0 8px;}
             </style>
@@ -506,7 +509,7 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -520,8 +523,8 @@ function sendDetailedAppointmentCanceledEmail($recipientEmail, $recipientName, $
                 .reason-box li { margin-bottom: 10px; }
                 .reason-box li strong { color: #d9534f; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-                .button:hover { background-color: #6a0dad; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -644,19 +647,19 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
         table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
         td { padding: 0; }
         img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-        a { text-decoration: none; color: #8a2be2; }
+        a { text-decoration: none; color: #f0e4ff; }
         .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
         .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
         .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
         .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
         .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
-        .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; border-radius: 5px; }
+        .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #f0e4ff; border-radius: 5px; }
         .details-list li { margin-bottom: 10px; }
         .details-list li strong { color: #555; }
         .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-        .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-        .button:hover { background-color: #6a0dad; }
+        .button { display: inline-block; background-color: #f0e4ff; color: #5a2675; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #5a2675; color:white }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
         .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
         .footer-logo { height: 50px; width: auto; }
@@ -695,7 +698,7 @@ function sendAppointmentAcceptedNoticeToUser($recipientEmail, $recipientName, $a
                                     <li><strong>Date:</strong> {$appointmentDate}</li>
                                     <li><strong>Time:</strong> {$appointmentTime} (PHT)</li>
                                     <li><strong>Meeting Type:</strong> {$meetingType}</li>
-                                    <li><strong>Meeting Link:</strong> <a href='{$meetingLink}' style='color: #8a2be2; word-break: break-all;'>{$meetingLink}</a></li>
+                                    <li><strong>Meeting Link:</strong> <a href='{$meetingLink}' style='color: #f0e4ff; word-break: break-all;'>{$meetingLink}</a></li>
                                     <li><strong>Case Title/Concern:</strong> {$caseTitle}</li>
                                     <li><strong>Case Description:</strong><br>{$caseDescription}</li>
                                 </ul>
@@ -771,7 +774,7 @@ function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName)
         table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
         td { padding: 0; }
         img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-        a { text-decoration: none; color: #8a2be2; }
+        a { text-decoration: none; color: #f0e4ff; }
         .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
         .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -782,8 +785,8 @@ function sendVerificationApprovedNoticeToClient($recipientEmail, $recipientName)
         .content ul li { margin-bottom: 10px; padding-left: 25px; position: relative; }
         .content ul li:before { content: '✔'; color: #28a745; font-size: 20px; position: absolute; left: 0; top: -2px; }
         .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-        .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-        .button:hover { background-color: #6a0dad; }
+        .button { display: inline-block; background-color: #f0e4ff; color: #5a2675; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #5a2675; color:white }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
         .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
         .footer-logo { height: 50px; width: auto; }
@@ -896,7 +899,7 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -905,12 +908,12 @@ function sendVerificationRejectedNoticeToClient($recipientEmail, $recipientName,
                 .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
                 .content ul { list-style: none; padding: 0; margin: 0; }
                 .content ul:not(.details-list) li { margin-bottom: 10px; padding-left: 25px; position: relative; }
-                .content ul:not(.details-list) li:before { content: '•'; color: #8a2be2; font-size: 20px; position: absolute; left: 0; top: -2px; }
+                .content ul:not(.details-list) li:before { content: '•'; color: #f0e4ff; font-size: 20px; position: absolute; left: 0; top: -2px; }
                 .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #fff0f0; border-left: 4px solid #d9534f; border-radius: 5px; color: #721c24; }
                 .details-list li { margin-bottom: 0; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-                .button:hover { background-color: #6a0dad; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -1026,7 +1029,7 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -1034,8 +1037,8 @@ function sendUnverificationNoticeEmail($recipientEmail, $recipientName) {
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content h2 { font-size: 22px; color: #d9534f; margin-top: 25px; margin-bottom: 15px; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-                .button:hover { background-color: #6a0dad; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -1145,19 +1148,19 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
         table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
         td { padding: 0; }
         img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-        a { text-decoration: none; color: #8a2be2; }
+        a { text-decoration: none; color: #f0e4ff; }
         .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
         .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
         .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
         .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
         .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
-        .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #8a2be2; border-radius: 5px; }
+        .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #f0e4ff; border-radius: 5px; }
         .details-list li { margin-bottom: 10px; }
         .details-list li strong { color: #555; }
         .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-        .button { display: inline-block; background-color: #8a2be2; color: white !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-        .button:hover { background-color: #6a0dad; }
+        .button { display: inline-block; background-color: #f0e4ff; color: #5a2675; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+        .button:hover { background-color: #5a2675; color:white }
         .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
         .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
         .footer-logo { height: 50px; width: auto; }
@@ -1198,7 +1201,7 @@ function sendMeetingLinkUpdateNoticeToUser($recipientEmail, $recipientName, $app
                                     <li><strong>Time:</strong> {$appointmentTime_safe} (PHT)</li>
                                     <li><strong>Case Title:</strong> {$caseTitle_safe}</li>
                                     <li style='color: #777;'><strong>Old Meeting Link:</strong> <span style='text-decoration: line-through;'>{$oldMeetingLink_safe}</span> (No longer valid)</li>
-                                    <li><strong>New Meeting Link:</strong> <a href='{$newMeetingLink_safe}' style='color: #8a2be2; font-weight: bold; word-break: break-all;'>{$newMeetingLink_safe}</a></li>
+                                    <li><strong>New Meeting Link:</strong> <a href='{$newMeetingLink_safe}' style='color: #f0e4ff; font-weight: bold; word-break: break-all;'>{$newMeetingLink_safe}</a></li>
                                 </ul>
                                 
                                 <p>Please ensure you use this new link to avoid any issues joining your consultation. We recommend updating any calendar invites you may have created.</p>
@@ -1273,7 +1276,7 @@ function sendClientGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -1373,7 +1376,7 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -1381,16 +1384,8 @@ function sendGoodbyeEmailOnAccountDeletion($recipientEmail, $recipientName) {
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content p { margin: 0 0 15px; }
                 .button-container { text-align: center; margin: 20px 0; }
-                .button { 
-                    display: inline-block; 
-                    background-color: #8a2be2; 
-                    color: #ffffff !important; 
-                    padding: 12px 25px; 
-                    border-radius: 25px; 
-                    font-size: 17px; 
-                    font-weight: bold; 
-                    text-decoration: none; 
-                }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -1490,7 +1485,7 @@ function sendLawyerVerificationApprovedNotice($recipientEmail, $recipientName, $
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -1503,8 +1498,8 @@ function sendLawyerVerificationApprovedNotice($recipientEmail, $recipientName, $
                 .credentials-box span { font-family: 'Courier New', Courier, monospace; background: #e9e0f9; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
                 .security-note { font-size: 14px; color: #d9534f; margin-top: 15px; text-align: center; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-                .button:hover { background-color: #6a0dad; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -1626,7 +1621,7 @@ function sendLawyerVerificationRejectedNotice($recipientEmail, $recipientName, $
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -1635,12 +1630,12 @@ function sendLawyerVerificationRejectedNotice($recipientEmail, $recipientName, $
                 .content h2 { font-size: 22px; color: #5d00a0; margin-top: 25px; margin-bottom: 15px; }
                 .content ul:not(.details-list) { list-style: none; padding: 0; margin: 0; }
                 .content ul:not(.details-list) li { margin-bottom: 10px; padding-left: 25px; position: relative; }
-                .content ul:not(.details-list) li:before { content: '•'; color: #8a2be2; font-size: 20px; position: absolute; left: 0; top: -2px; }
+                .content ul:not(.details-list) li:before { content: '•'; color: #f0e4ff; font-size: 20px; position: absolute; left: 0; top: -2px; }
                 .details-list { list-style: none; padding: 15px; margin: 20px 0; background-color: #fff0f0; border-left: 4px solid #d9534f; border-radius: 5px; color: #721c24; }
                 .details-list li { margin-bottom: 0; }
                 .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
-                .button { display: inline-block; background-color: #8a2be2; color: #ffffff !important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
-                .button:hover { background-color: #6a0dad; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
                 .footer-logo { height: 50px; width: auto; }
@@ -1755,7 +1750,7 @@ function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
                 table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
                 td { padding: 0; }
                 img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-                a { text-decoration: none; color: #8a2be2; }
+                a { text-decoration: none; color: #f0e4ff; }
                 .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
                 .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
                 .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
@@ -1763,7 +1758,7 @@ function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
                 .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
                 .content h1 { font-size: 24px; color: #391053; font-weight: 700; margin-top: 0; margin-bottom: 16px; }
                 .content p { margin: 0 0 18px; }
-                .highlight-box { background: #f7f4fd; border-left: 5px solid #8a2be2; padding: 18px 22px; margin: 28px 0; border-radius: 7px; }
+                .highlight-box { background: #f7f4fd; border-left: 5px solid #f0e4ff; padding: 18px 22px; margin: 28px 0; border-radius: 7px; }
                 .highlight-box strong { color: #391053; font-weight: 700; }
                 .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
                 .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
@@ -1826,6 +1821,332 @@ function sendVolunteerApplicationNotice($recipientEmail, $recipientName) {
     } catch (Exception $e) {
         // Log the error for debugging instead of showing it to the user
         error_log("Volunteer application email could not be sent. Mailer Error: {$mail->ErrorInfo}");
+    }
+}
+
+function sendClientReportSubmissionEmail($recipientEmail, $recipientName, $reportTitle, $legalConsultationRequested) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Your Violation Report Has Been Submitted to SafeSpace PH';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $consultationMsg = '';
+        if (strtolower($legalConsultationRequested) === 'yes') {
+            $consultationMsg = "<p>Our team will reach out to you soon regarding your request for legal consultation.</p>";
+        } else {
+            $consultationMsg = "<p>If you need further assistance, you may contact us anytime.</p>";
+        }
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Report Submitted</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content p { margin: 0 0 15px; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                       <img src='cid:logoimg' alt='SafeSpace PH Logo' style='height: 70px; width: auto; vertical-align: middle; margin-right: 15px;'>
+                                       <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <p>Dear {$recipientName},</p>
+                                        <p>Your violation report (<strong>{$reportTitle}</strong>) has been successfully submitted to the SafeSpace PH team.</p>
+                                        <p>We appreciate your courage in reporting this incident. Our team will review your report and take appropriate action.</p>
+                                        {$consultationMsg}
+                                        <p>You will receive further updates regarding your report via email.</p>
+                                         <div class='button-container'>
+                                            <a href='https://safespaceph.byethost31.com/client/index.php' class='button'>Contact Support</a>
+                                        </div>
+                                        <p>Thank you for helping make SafeSpace PH a safer community.</p>
+                                        <p>Sincerely,<br>The SafeSpace PH Team</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\" alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Client report submission email error for {$recipientEmail}: {$mail->ErrorInfo}");
+    }
+}
+
+
+function sendClientReportSubmittedToAuthoritiesEmail($recipientEmail, $recipientName, $reportTitle) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Your Violation Report Has Been Submitted to Authorities';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+        $reportTitle_safe = htmlspecialchars($reportTitle, ENT_QUOTES, 'UTF-8');
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Report Submitted to Authorities</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100% !important; }
+                table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                td { padding: 0; }
+                img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333333; line-height: 1.6; font-size: 16px; }
+                .content h1 { font-size: 24px; color: #391053; font-weight: 700; margin-top: 0; margin-bottom: 16px; }
+                .content p { margin: 0 0 15px; }
+                .highlight-box { background: #f7f4fd; border-left: 5px solid #f0e4ff; padding: 18px 22px; margin: 28px 0; border-radius: 7px; }
+                .highlight-box strong { color: #391053; font-weight: 700; }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                        <img src='cid:logoimg' alt='SafeSpace PH Logo' class='header-logo'>
+                                        <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <h1>Your Report Has Been Submitted to Authorities</h1>
+                                        <p>Dear {$recipientName_safe},</p>
+                                        <p>We want to inform you that your violation report <strong>\"{$reportTitle_safe}\"</strong> has been successfully forwarded to the appropriate local authorities and our partner organizations for further action.</p>
+                                        <div class='highlight-box'>
+                                            <strong>What happens next?</strong><br>
+                                            The SafeSpace PH team and our partners will review your report and may reach out to you if additional information is needed. Please monitor your email and phone for any updates.
+                                        </div>
+                                        <p>Thank you for your courage in reporting this incident. Your action helps create a safer community for everyone.</p>
+                                        <p>Warm regards,<br><strong>The SafeSpace PH Team</strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Client report submitted to authorities email error for {$recipientEmail}: {$mail->ErrorInfo}");
+    }
+}
+
+function sendClientReportRejectedEmail($recipientEmail, $recipientName, $reportTitle, $adminNotes = '') {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom($_ENV['EMAIL_USER'], 'SafeSpace PH');
+        $mail->addAddress($recipientEmail, $recipientName);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Your Violation Report Has Been Rejected';
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
+        $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
+
+        $recipientName_safe = htmlspecialchars($recipientName, ENT_QUOTES, 'UTF-8');
+        $reportTitle_safe = htmlspecialchars($reportTitle, ENT_QUOTES, 'UTF-8');
+        $adminNotesHtml = '';
+        if (!empty($adminNotes)) {
+            $adminNotesHtml = "<div class='highlight-box-rejected' style='background:#fff0f0; border-left:5px solid #dc3545; color:#721c24;'><strong>Reason for Rejection:</strong><br>" . nl2br(htmlspecialchars($adminNotes, ENT_QUOTES, 'UTF-8')) . "</div>";
+        }
+
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>SafeSpace PH: Report Rejected</title>
+            <style>
+                body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+                table { border-collapse: collapse; }
+                td { padding: 0; }
+                img { border: 0; height: auto; }
+                a { text-decoration: none; color: #8a2be2; }
+                .email-container { max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+                .header { background-color: #391053; padding: 20px 30px; text-align: center; color: white; }
+                .header-logo { height: 70px; width: auto; vertical-align: middle; margin-right: 15px; }
+                .header-title { font-size: 28px; font-weight: 1000; color: #ffffff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57, 16, 83, 0.3); vertical-align: middle; }
+                .content { padding: 30px; color: #333; line-height: 1.6; font-size: 16px; }
+                .content h1 { font-size: 24px; color: #391053; font-weight: 700; margin-top: 0; margin-bottom: 16px; }
+                .content p { margin: 0 0 15px; }
+                .highlight-box-rejected { background: #fff0f0; border-left: 5px solid #dc3545; padding: 18px 22px; margin: 28px 0; border-radius: 7px; color: #721c24; }
+                .highlight-box-rejected strong { color: #dc3545; font-weight: 700; }
+                .button-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+                .button { display: inline-block; background-color: #f0e4ff; color: #5a2675!important; padding: 12px 25px; border-radius: 25px; font-size: 17px; font-weight: bold; text-decoration: none; transition: background-color 0.3s ease; }
+                .button:hover { background-color: #5a2675; color:white!important }
+                .footer { background-color: #391053; color: white; padding: 20px 30px; text-align: center; font-size: 14px; border-top: 1px solid #5d00a0; }
+                .footer-branding { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 15px; width: 50%; margin: 0 auto; }
+                .footer-logo { height: 50px; width: auto; }
+                .footer-title { font-size: 24px; font-weight: 1000; color: #fff; white-space: nowrap; text-shadow: 2px 2px 10px rgba(57,16,83,0.3); }
+                .footer-links-container { margin-bottom: 10px; }
+                .footer a { color: #e0caff; text-decoration: none; margin: 0 8px; }
+                .footer a:hover { text-decoration: underline; }
+            </style>
+        </head>
+        <body>
+            <center>
+                <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background-color: #f4f4f4;'>
+                    <tr>
+                        <td align='center' style='padding: 20px 0;'>
+                            <table role='presentation' cellspacing='0' cellpadding='0' border='0' width='600' class='email-container'>
+                                <tr>
+                                    <td class='header'>
+                                        <img src='cid:logoimg' alt='SafeSpace PH Logo' class='header-logo'>
+                                        <span class='header-title'>SafeSpace PH</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='content'>
+                                        <h1 style='color:#dc3545;'>Your Report Has Been Rejected</h1>
+                                        <p>Dear {$recipientName_safe},</p>
+                                        <p>We regret to inform you that your violation report <strong>\"{$reportTitle_safe}\"</strong> has been reviewed and rejected by our team.</p>
+                                        {$adminNotesHtml}
+                                        <p>If you believe this was a mistake or need further assistance, please feel free to contact us.</p>
+                                        <div class='button-container'>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='button'>Contact Support</a>
+                                        </div>
+                                        <p>Thank you for your effort in reporting. We appreciate your commitment to a safer community.</p>
+                                        <p>Warm regards,<br><strong>The SafeSpace PH Team</strong></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='footer'>
+                                        <div class='footer-branding'>
+                                            <img src=\"cid:logoimg_footer\"alt=\"SafeSpace PH Logo\" style=\"height: 50px; width: auto; vertical-align: middle; margin-right: 15px;\">
+                                            <span class='footer-title'>SafeSpace PH</span>
+                                        </div>
+                                        <div class='footer-links-container'>
+                                            <a href='https://safespaceph.byethost31.com/privacy.html' class='footer-link'>Privacy Policy</a>
+                                            <a href='https://safespaceph.byethost31.com/terms.html' class='footer-link'>Terms of Use</a>
+                                            <a href='https://safespaceph.byethost31.com/contactus.html' class='footer-link'>Contact Us</a>
+                                        </div>
+                                        <p>&copy; 2025 SafeSpace PH. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </body>
+        </html>";
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Client report rejected email error for {$recipientEmail}: {$mail->ErrorInfo}");
     }
 }
 ?>
