@@ -26,7 +26,7 @@ function sendConfirmationEmail($recipientEmail, $recipientName) {
         $mail->addAddress($recipientEmail, $recipientName);
 
         $mail->isHTML(true);
-        $mail->Subject = 'Welcome to SafeSpacePH!';
+        $mail->Subject = 'Welcome to SafeSpace PH!';
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg');
         $mail->addEmbeddedImage(__DIR__ . '/img/logo.png', 'logoimg_footer');
         $mail->Body    = "
