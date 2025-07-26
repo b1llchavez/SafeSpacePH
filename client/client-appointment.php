@@ -325,7 +325,7 @@
                 if($action == 'session-requested' && isset($_GET['title'])){
                     $title = htmlspecialchars(urldecode($_GET['title']));
                     $modal_title = 'Success!';
-                    $modal_header_color = '#5A2675';
+                    $modal_header_color = '#391053';
                     $modal_message = 'Your session request for "<b>'.$title.'</b>" has been submitted successfully.<br>You will be notified via email once a lawyer accepts your request.';
                 } elseif ($action == 'error' && isset($_GET['message'])) {
                     $message = htmlspecialchars(urldecode($_GET['message']));
@@ -334,7 +334,7 @@
                     $modal_message = $message;
                 } elseif ($action == 'cancel_success') {
                     $modal_title = 'Canceled!';
-                    $modal_header_color = '#5A2675';
+                    $modal_header_color = '#391053';
                     $modal_message = 'Your appointment has been canceled successfully.';
                 } elseif ($action == 'cancel_error') {
                     $modal_title = 'Error!';
