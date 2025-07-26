@@ -614,11 +614,12 @@
     </div>
     <div id="unverifyConfirmModal" class="overlay">
         <div class="modal-content" style="max-width: 500px;">
-            <h2 class="modal-header" style="color:#dc3545;">Confirm Unverification</h2>
+            <h2 class="modal-header" style="color:#5A2675;">Confirm Unverification</h2>
             <div class="modal-divider"></div>
             <div class="modal-body">
                 <p>Are you sure you want to unverify this lawyer?</p>
-                <p>This will revoke their verified status and change their user type.</p>
+                <p>This will revoke their verified status.</p>
+                 <p style="color: #dc3545; font-weight: bold; margin-top: 10px;">The lawyer must submit an application again once unverified.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="modal-btn modal-btn-secondary" onclick="hideUnverifyConfirmModal()">Cancel</button>
@@ -641,7 +642,7 @@
             echo '
             <div id="popup1" class="overlay" style="display:flex;">
                 <div class="modal-content" style="max-width: 500px;">
-                    <h2 class="modal-header" style="color:#dc3545;">Are you sure?</h2>
+                    <h2 class="modal-header" style="color:#5A2675;">Are you sure?</h2>
                     <div class="modal-divider"></div>
                     <div class="modal-body">
                         <p>You are about to permanently delete the record for<br><strong>'.htmlspecialchars($nameget).'</strong>.</p>
